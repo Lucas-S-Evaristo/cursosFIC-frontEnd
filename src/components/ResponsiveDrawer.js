@@ -20,6 +20,14 @@ import Button from '@mui/material/Button';
 import teste1 from './teste1'
 import { Link as RouterLink, MemoryRouter } from 'react-router-dom';
 import Link from '@mui/material/Link';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 
 
@@ -27,7 +35,33 @@ import Link from '@mui/material/Link';
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
+function ResponsiveDrawer(props,{vetor}) {
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+ console.log(vetor)
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+
+
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -39,24 +73,24 @@ function ResponsiveDrawer(props) {
     <div>
       <Toolbar />
       <a href="/">
-                <img style={{width:150,margin:20,position: 'relative', bottom: 72, left: 20}}src="https://upload.wikimedia.org/wikipedia/commons/8/8c/SENAI_S%C3%A3o_Paulo_logo.png" alt="Senai"></img>
-            </a>
+        <img style={{ width: 150, margin: 20, position: 'relative', bottom: 72, left: 20 }} src="https://upload.wikimedia.org/wikipedia/commons/8/8c/SENAI_S%C3%A3o_Paulo_logo.png" alt="Senai"></img>
+      </a>
       <Divider />
       <List>
-      <Button style={{margin:24,width:100}} variant="contained">teste</Button>
+        <Button style={{ margin: 24, width: 100 }} variant="contained">teste</Button>
 
-      {/* <Link
+        {/* <Link
         href="./teste1"
       >EEEEEE</Link> */}
 
-<Link
-        href="/teste1"
-        onClick={() => {
-          
-        }}
-      >EEEEEE</Link>
+        <Link
+          href="/teste1"
+          onClick={() => {
 
-      {/* <Link to="/teste1">EEEEE</Link> */}
+          }}
+        >EEEEEE</Link>
+
+        {/* <Link to="/teste1">EEEEE</Link> */}
       </List>
       <Divider />
       <List>
@@ -135,33 +169,26 @@ function ResponsiveDrawer(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>id</StyledTableCell>
+                <StyledTableCell align="right">nome</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {vetor?.map((obj, indice)=> (
+                <StyledTableRow key={indice}>
+                  <StyledTableCell component="th" scope="row">
+                    {obj.id}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{obj.name}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </Box>
   );
