@@ -18,8 +18,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import teste1 from './teste1'
-/*import Link from 'react-dom';*/
-import Link from "@material-ui/core/Link";
+import { Link as RouterLink, MemoryRouter } from 'react-router-dom';
+import Link from '@mui/material/Link';
+
+
+
 
 
 const drawerWidth = 240;
