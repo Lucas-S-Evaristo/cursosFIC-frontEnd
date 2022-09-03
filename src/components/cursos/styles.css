@@ -1,0 +1,60 @@
+.body{
+    text-align: center;
+    background-image: url(/src/components/cursos/image1.jpg)
+}
+
+.formulario{
+  
+    display: flex;
+    flex-direction: column;
+    border: 0.3em solid white;
+    padding: 2em;
+    background-color: transparent;
+    color: white;
+
+}
+
+.formulario input{
+    border: 0px;
+    border-bottom: 0.1em solid white;
+    margin-top: 0.5em;
+    background-color: transparent;
+    color: white;
+}
+
+label{
+
+    border: 0px;
+    padding:0.8em;
+    font-weight: bold
+    
+
+}
+
+.formulario ::placeholder{
+    text-align: center;
+    
+}
+
+input:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
+
+}
+
+.botao{
+   
+    background-color: white;
+    color: black;
+    width: 50%;
+    margin:1em auto;
+
+
+}
+
+.botao:hover{
+   
+    background-color: red;
+    color: white;
+    
+}
