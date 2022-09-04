@@ -12,6 +12,7 @@ function Formulario({ post, cadastrar }) {
         objetivo: "",
         preRequisito: "",
         conteudoProgramatico: "",
+        area_id: "",
         sigla: "",
         cargaHoraria: 0,
         valor: 0
@@ -39,7 +40,19 @@ function Formulario({ post, cadastrar }) {
         })
       }
 
+      useEffect(() => {
+        fetch("http://localhost:8080/api/area")
+        .then(retorno => retorno.json())
+        .then(retorno_convertido => setArea(retorno_convertido))//retorno convertido tem a lista de todos as areas
+    }, [])
+
+    
+
+    
+
       const [objCurso, setObjCurso] = useState(curso)
+
+      const [area, setArea] = useState([])
 
 
     return (
@@ -57,12 +70,20 @@ function Formulario({ post, cadastrar }) {
                     onChange={post}
                 />
                 
-                <label>selecione a area do atendimento</label>
+                <label>selecione a area do Curso</label>
                 <select class="form-select form-select-sm   " aria-label=".form-select-sm example"  name="area" onChange={post}>
-                    <option placeholder>
+                   
                         
+                        {
+                            area.map( (obj) => (
+                                <option>
+                                {obj.nome}
+                                </option>
+                            )
+                            )
+                        }
  
-                    </option>
+                   
                 </select>
                 <input
                     required
