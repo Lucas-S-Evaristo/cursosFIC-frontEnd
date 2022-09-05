@@ -1,13 +1,14 @@
 import './App.css';
 import React from 'react';
-import ListaUsuario from './components/Usuario/ListaUsuario';
-import FormUsuario from './components/Usuario/FormUsuario';
+import { BrowserRouter } from 'react-router-dom';
+import Rotas from './Rotas';
 
 function App() {
   return (
-    <div class = "App">
-      <FormUsuario />
-      <ListaUsuario />
+    <div class = "app">
+      <BrowserRouter>
+        <Rotas />
+      </BrowserRouter>
     </div>
   )
 }
