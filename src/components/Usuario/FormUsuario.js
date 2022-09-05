@@ -6,6 +6,7 @@ function FormUsuario({ post, cadastrar }) {
         id: 0,
         nome: '',
         nif: '',
+        tipoUsuario: '',
         email: '',
         senha: '',
     }
@@ -20,11 +21,11 @@ function FormUsuario({ post, cadastrar }) {
 
     post = (e) => {
   
-        console.log(e.target)
+        console.log(e.target.name)
         setObjUsuario({ ...objUsuario, [e.target.name]: e.target.value })
     }
     cadastrar = () => {
-        fetch("http://localhost:8080/api/usuario", {
+        fetch("http://10.92.198.11:8080/api/usuario", {
           method: 'post',
           body: JSON.stringify(objUsuario),
           headers: {
@@ -69,7 +70,7 @@ function FormUsuario({ post, cadastrar }) {
                     onChange={post}
                 />
                 <label>selecione o tipo de usuário</label>
-                <select>
+                <select name="tipoUsuario" onChange={post}>
                 {
 
                     tipoUsuarios.map((obj) => (

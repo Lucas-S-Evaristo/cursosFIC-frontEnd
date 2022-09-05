@@ -5,7 +5,7 @@ function ListaUsuario() {
     const [usuarios, setUsuario] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/usuario")
+        fetch("http://10.92.198.11:8080/api/usuario")
         .then(resp => resp.json())
         .then(retorno_convertido => setUsuario(retorno_convertido))//lista os usuarios
     }, [])
