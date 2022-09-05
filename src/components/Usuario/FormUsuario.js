@@ -1,8 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from 'react'
 
 function FormUsuario({ post, cadastrar }) {
-
-    const [objUsuario, setObjUsuario] = useState(usuario)
 
     const usuario = {
         id: 0,
@@ -11,6 +9,15 @@ function FormUsuario({ post, cadastrar }) {
         email: '',
         senha: '',
     }
+
+    const [objUsuario, setObjUsuario] = useState(usuario)
+
+    useEffect(() => {
+        fetch("http://10.92.198.11:8080/api/enum/tipoUsuario")
+        .then(resp => resp.json())
+        .then(retorno_convertido => setTipoUsuario(retorno_convertido))//lista os usuarios
+    }, [])
+
     post = (e) => {
   
         console.log(e.target)
@@ -31,6 +38,8 @@ function FormUsuario({ post, cadastrar }) {
           console.log(retorno_convertido)
         })
     }
+
+    const [tipoUsuarios, setTipoUsuario] = useState([])
 
     return(
         <div>
@@ -61,7 +70,20 @@ function FormUsuario({ post, cadastrar }) {
                 />
                 <label>selecione o tipo de usuário</label>
                 <select>
-                    <option onChange={post} ></option>
+                {
+
+                    tipoUsuarios.map((obj) => (
+                        <option key={obj}>
+
+                        {obj}
+
+                        </option>
+
+                    )
+
+                    )
+
+}
                 </select>
 
                 <button onClick={cadastrar}>cadastrar</button>

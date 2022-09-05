@@ -9,6 +9,7 @@ function ListaUsuario() {
         .then(resp => resp.json())
         .then(retorno_convertido => setUsuario(retorno_convertido))//lista os usuarios
     }, [])
+
     
     return (
 
@@ -26,7 +27,6 @@ function ListaUsuario() {
                 </thead>
                 <tbody>
                     {
-                        
                         usuarios.map((objeto) => (
                             <tr>
                                 <td>{objeto.id}</td>
@@ -35,7 +35,7 @@ function ListaUsuario() {
                                 <td>{objeto.email}</td>
                                 <td>{objeto.senha}</td>
                                 <td>{objeto.tipoUsuario}</td>
-                                <td><button onClick={excluir}>Excluir</button></td>
+                                <td><button /* onClick={excluir} */>Excluir</button></td>
                             </tr>
                         ))
                     }

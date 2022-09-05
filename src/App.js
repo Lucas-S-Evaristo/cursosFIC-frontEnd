@@ -5,7 +5,7 @@ import FormUsuario from './components/Usuario/FormUsuario';
 
 function App() {
   return (
-    <div>
+    <div class = "App">
       <FormUsuario />
       <ListaUsuario />
     </div>
