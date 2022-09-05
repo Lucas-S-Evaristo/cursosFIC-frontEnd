@@ -1,6 +1,6 @@
 
 
-import ResponsiveDrawer from './components/ResponsiveDrawer'
+import PgPricipal from './components/PgPricipal'
 import  React, { Component} from 'react';
 import { useEffect, useState } from 'react';
 
@@ -25,7 +25,7 @@ function App() {
 
   useEffect(()=>{
 
-    fetch('http://10.92.198.11:8080/api/instrutor ')
+    fetch('http://localhost:8080/api/instrutor')
     .then(resp => resp.json())
     .then(retorno_convertido=> setUsuario(retorno_convertido))
      
@@ -83,7 +83,7 @@ function App() {
   
     return (
 
-      <ResponsiveDrawer  vetor={usuarios}/>
+      <PgPricipal  vetor={usuarios}/>
         
 
     

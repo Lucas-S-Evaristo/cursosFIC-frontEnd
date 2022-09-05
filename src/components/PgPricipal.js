@@ -35,7 +35,7 @@ import Paper from '@mui/material/Paper';
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props,{vetor}) {
+function PgPricipal({vetor}) {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -62,12 +62,12 @@ function ResponsiveDrawer(props,{vetor}) {
 
 
 
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  /* const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false); */
 
-  const handleDrawerToggle = () => {
+ /*  const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
+  }; */
 
   const drawer = (
     <div>
@@ -122,11 +122,7 @@ function ResponsiveDrawer(props,{vetor}) {
       >
         <Toolbar>
           <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+      
           >
             <MenuIcon />
           </IconButton>
@@ -139,13 +135,13 @@ function ResponsiveDrawer(props,{vetor}) {
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
-          container={container}
+          /* container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
-          }}
+          }} */
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
@@ -183,7 +179,7 @@ function ResponsiveDrawer(props,{vetor}) {
                   <StyledTableCell component="th" scope="row">
                     {obj.id}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{obj.name}</StyledTableCell>
+                  <StyledTableCell align="right">{obj.nome}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
@@ -194,12 +190,12 @@ function ResponsiveDrawer(props,{vetor}) {
   );
 }
 
-ResponsiveDrawer.propTypes = {
+/**  ResponsiveDrawer.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window: PropTypes.func,
-};
+ /**  window: PropTypes.func,*/
+/**}; */
 
-export default ResponsiveDrawer;
+export default  PgPricipal;
