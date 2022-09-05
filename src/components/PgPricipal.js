@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -28,6 +28,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
 
 
 
@@ -35,7 +36,8 @@ import Paper from '@mui/material/Paper';
 
 const drawerWidth = 240;
 
-function PgPricipal({vetor}) {
+
+function PgPricipal({ vetor }) {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -45,7 +47,12 @@ function PgPricipal({vetor}) {
       fontSize: 14,
     },
   }));
- console.log(vetor)
+  const instrutors = () =>{
+    const [instrutor, setInstrutor] = useState([]);
+
+  
+  }
+  console.log(vetor)
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
@@ -59,15 +66,24 @@ function PgPricipal({vetor}) {
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
+  const setInstrutor = async(event)=>{
+    let key = event.target.value;
+    let result = await fetch(`http://localhost:8080/api/instrutor/buscar/${key}`)
+    result = await result.json();
+    if(result){
+
+    }
+
+  }
 
 
 
   /* const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false); */
 
- /*  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  }; */
+  /*  const handleDrawerToggle = () => {
+     setMobileOpen(!mobileOpen);
+   }; */
 
   const drawer = (
     <div>
@@ -122,7 +138,7 @@ function PgPricipal({vetor}) {
       >
         <Toolbar>
           <IconButton
-      
+
           >
             <MenuIcon />
           </IconButton>
@@ -165,21 +181,31 @@ function PgPricipal({vetor}) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
+        <form >
+          <TextField fullWidth onChange={setInstrutor} label="buscar istrutor" id="fullWidth" type="" name="parametro" required="required" />
+          <Button variant="contained" type="hidden" style={{margin:10}}>BUSCAR</Button>
+
+        </form>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>id</StyledTableCell>
-                <StyledTableCell align="right">nome</StyledTableCell>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell align="right">NOME</StyledTableCell>
+                <StyledTableCell align="right">DELETAR</StyledTableCell>
+                <StyledTableCell align="right">ALTERAR</StyledTableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
-              {vetor?.map((obj, indice)=> (
+              {vetor?.map((obj, indice) => (
                 <StyledTableRow key={indice}>
                   <StyledTableCell component="th" scope="row">
                     {obj.id}
                   </StyledTableCell>
                   <StyledTableCell align="right">{obj.nome}</StyledTableCell>
+                  <StyledTableCell align="right"><Button variant="contained">DELETAR</Button></StyledTableCell>
+                  <StyledTableCell align="right"><Button variant="contained">ALTERAR</Button></StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
@@ -195,7 +221,7 @@ function PgPricipal({vetor}) {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
- /**  window: PropTypes.func,*/
+/**  window: PropTypes.func,*/
 /**}; */
 
-export default  PgPricipal;
+export default PgPricipal;
