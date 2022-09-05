@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 
-function FormUsuario({ post, cadastrar }) {
+function FormUsuario({ post}) {
+
+    const [usuarios, setUsuario] = useState([])
+    const [tipoUsuarios, setTipoUsuario] = useState([])
+    const [objUsuario, setObjUsuario] = useState(usuario)
 
     const usuario = {
-        id: 0,
+        id: "",
         nome: '',
         nif: '',
         tipoUsuario: '',
@@ -11,20 +15,33 @@ function FormUsuario({ post, cadastrar }) {
         senha: '',
     }
 
-    const [objUsuario, setObjUsuario] = useState(usuario)
+    
 
+    // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
+    useEffect(() => {
+        fetch("http://10.92.198.11:8080/api/usuario")
+        .then(resp => resp.json())
+        .then(retorno_convertido => setUsuario(retorno_convertido))//lista os usuarios
+    }, [])
+
+  
+
+    // REQUISIÇÃO GET PARA PUXAR TODOS OS TIPOS DE USUARIOS
     useEffect(() => {
         fetch("http://10.92.198.11:8080/api/enum/tipoUsuario")
         .then(resp => resp.json())
         .then(retorno_convertido => setTipoUsuario(retorno_convertido))//lista os usuarios
     }, [])
 
+    // CAPTURANDO TODOS OS DADOS INFORMADOS NOS INPUT
     post = (e) => {
   
         console.log(e.target.name)
         setObjUsuario({ ...objUsuario, [e.target.name]: e.target.value })
     }
-    cadastrar = () => {
+
+    // REQUISIÇÃO POST PARA CADASTRAR NOVOS USUARIOS
+    const cadastrar = () => {
         fetch("http://10.92.198.11:8080/api/usuario", {
           method: 'post',
           body: JSON.stringify(objUsuario),
@@ -40,7 +57,39 @@ function FormUsuario({ post, cadastrar }) {
         })
     }
 
-    const [tipoUsuarios, setTipoUsuario] = useState([])
+    // REQUISIÇÃO DELETE PARA DELETAR O USUARIO
+    const deletar = () => {
+        fetch("http://10.92.198.11:8080/api/usuario" +objUsuario.id, {
+          method: 'delete',
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+          }
+    
+        })
+        .then(retorno => retorno.json())
+        .then(retorno_convertido => {
+          
+            alert("EXCLUIDO COM SUCESSO")
+
+            // copia do vetor de usuarios
+
+            let vetorTemp = [...usuarios]
+
+            // indice tem a posição que foi removida do vetor
+            //findIndex percorre o vetor
+            let indice = vetorTemp.findIndex((u)=>{
+                return u.id === objUsuario.id;
+            });
+
+            // remover produto do vetor temp
+            vetorTemp.splice(indice, 1)
+
+            // atualizar vetor de usuarios, sem o usuario deletado
+            setUsuario(vetorTemp)
+        })
+    }
+    
 
     return(
         <div>
@@ -87,7 +136,7 @@ function FormUsuario({ post, cadastrar }) {
 }
                 </select>
 
-                <button onClick={cadastrar}>cadastrar</button>
+                <button onClick={cadastrar}>Cadastrar</button>
             </form>
         </div>
     )
