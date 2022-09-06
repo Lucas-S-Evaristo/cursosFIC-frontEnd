@@ -20,7 +20,7 @@ function FormUsuario({ post}) {
 
     // REQUISIÇÃO POST PARA CADASTRAR NOVOS USUARIOS
     const cadastrar = () => {
-        fetch("http://10.92.198.11:8080/api/usuario", {
+        fetch("http://localhost:8080/api/usuario", {
           method: 'post',
           body: JSON.stringify(objUsuario),
           headers: {
@@ -37,7 +37,7 @@ function FormUsuario({ post}) {
 
     // REQUISIÇÃO GET PARA PUXAR TODOS OS TIPOS DE USUARIOS
     useEffect(() => {
-        fetch("http://10.92.198.11:8080/api/enum/tipoUsuario")
+        fetch("http://localhost:8080/api/enum/tipoUsuario")
         .then(resp => resp.json())
         .then(retorno_convertido => setTipoUsuario(retorno_convertido))//lista os usuarios
     }, [])
