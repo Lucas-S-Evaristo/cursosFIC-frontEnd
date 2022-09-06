@@ -92,13 +92,16 @@ const PgPricipal = ({ vetor }) => {
       }
   }
   const deleteinstrutor = async (id) => {
-    console.warn(id);
+         
     let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
       method: "DELETE"
     });
-    result = await result.json();
-    if (result) {
-      alert("instrutor Deletado")
+    
+    if (result) 
+    {
+     
+      getiInstrutor();
+      
     }
 
 
@@ -226,8 +229,8 @@ const PgPricipal = ({ vetor }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {instrutor.map((obj, indice) => (
-                <StyledTableRow key={indice}>
+              {instrutor.map((obj) => (
+                <StyledTableRow key={obj.id}>
                   <StyledTableCell component="th" scope="row">
                     {obj.id}
                   </StyledTableCell>
