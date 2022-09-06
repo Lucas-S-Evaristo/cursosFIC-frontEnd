@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react'
 
 function FormUsuario({ post}) {
 
-    const [usuarios, setUsuario] = useState([])
-    const [tipoUsuarios, setTipoUsuario] = useState([])
-    const [objUsuario, setObjUsuario] = useState(usuario)
+    /* const [usuarios, setUsuario] = useState([]) */
 
     const usuario = {
         id: "",
@@ -15,28 +13,10 @@ function FormUsuario({ post}) {
         senha: '',
     }
 
-    
-
-    // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
-    useEffect(() => {
-        fetch("http://10.92.198.11:8080/api/usuario")
-        .then(resp => resp.json())
-        .then(retorno_convertido => setUsuario(retorno_convertido))//lista os usuarios
-    }, [])
-
-  
-
-    // REQUISIÇÃO GET PARA PUXAR TODOS OS TIPOS DE USUARIOS
-    useEffect(() => {
-        fetch("http://10.92.198.11:8080/api/enum/tipoUsuario")
-        .then(resp => resp.json())
-        .then(retorno_convertido => setTipoUsuario(retorno_convertido))//lista os usuarios
-    }, [])
-
     // CAPTURANDO TODOS OS DADOS INFORMADOS NOS INPUT
     post = (e) => {
   
-        console.log(e.target.name)
+        console.log(e.target)
         setObjUsuario({ ...objUsuario, [e.target.name]: e.target.value })
     }
 
@@ -57,7 +37,21 @@ function FormUsuario({ post}) {
         })
     }
 
-    // REQUISIÇÃO DELETE PARA DELETAR O USUARIO
+    // REQUISIÇÃO GET PARA PUXAR TODOS OS TIPOS DE USUARIOS
+    useEffect(() => {
+        fetch("http://10.92.198.11:8080/api/enum/tipoUsuario")
+        .then(resp => resp.json())
+        .then(retorno_convertido => setTipoUsuario(retorno_convertido))//lista os usuarios
+    }, [])
+
+    /* // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
+    useEffect(() => {
+        fetch("http://10.92.198.11:8080/api/usuario")
+        .then(resp => resp.json())
+        .then(retorno_convertido => setUsuario(retorno_convertido))//lista os usuarios
+    }, []) */
+
+    /* // REQUISIÇÃO DELETE PARA DELETAR O USUARIO
     const deletar = () => {
         fetch("http://10.92.198.11:8080/api/usuario" +objUsuario.id, {
           method: 'delete',
@@ -88,8 +82,10 @@ function FormUsuario({ post}) {
             // atualizar vetor de usuarios, sem o usuario deletado
             setUsuario(vetorTemp)
         })
-    }
-    
+    } */
+
+    const [objUsuario, setObjUsuario] = useState(usuario)
+    const [tipoUsuarios, setTipoUsuario] = useState([])
 
     return(
         <div>
@@ -120,22 +116,14 @@ function FormUsuario({ post}) {
                 />
                 <label>selecione o tipo de usuário</label>
                 <select name="tipoUsuario" onChange={post}>
-                {
-
-                    tipoUsuarios.map((obj) => (
-                        <option key={obj}>
-
-                        {obj}
-
-                        </option>
-
-                    )
-
-                    )
-
-}
+                    {
+                        tipoUsuarios.map((obj) => (
+                            <option key={obj}>
+                            {obj}
+                            </option>
+                        ))
+                    }
                 </select>
-
                 <button onClick={cadastrar}>Cadastrar</button>
             </form>
         </div>
