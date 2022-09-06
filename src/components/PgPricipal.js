@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -37,7 +37,22 @@ import TextField from '@mui/material/TextField';
 const drawerWidth = 240;
 
 
-function PgPricipal({ vetor }) {
+
+
+const PgPricipal = ({ vetor }) => {
+  const [instrutor, setInstrutor] = useState([]);
+  useEffect(() => {
+    getiInstrutor();
+
+  }, []);
+  const getiInstrutor = async () => {
+    let result = await fetch(`http://localhost:8080/api/instrutor`)
+    result = await result.json();
+    setInstrutor(result)
+
+  }
+  console.log(instrutor)
+
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -47,11 +62,7 @@ function PgPricipal({ vetor }) {
       fontSize: 14,
     },
   }));
-  const instrutors = () =>{
-    const [instrutor, setInstrutor] = useState([]);
 
-  
-  }
   console.log(vetor)
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -66,13 +77,30 @@ function PgPricipal({ vetor }) {
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
-  const setInstrutor = async(event)=>{
+  const buscarInstrutor = async (event) => {
     let key = event.target.value;
-    let result = await fetch(`http://localhost:8080/api/instrutor/buscar/${key}`)
-    result = await result.json();
-    if(result){
+    if (key) {
+      let result = await fetch(`http://localhost:8080/api/instrutor/buscar/${key}`)
+      result = await result.json();
+      if (result) {
+        setInstrutor(result)
 
+      }
+
+      }else{
+        getiInstrutor();
+      }
+  }
+  const deleteinstrutor = async (id) => {
+    console.warn(id);
+    let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
+      method: "DELETE"
+    });
+    result = await result.json();
+    if (result) {
+      alert("instrutor Deletado")
     }
+
 
   }
 
@@ -181,11 +209,11 @@ function PgPricipal({ vetor }) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <form >
-          <TextField fullWidth onChange={setInstrutor} label="buscar istrutor" id="fullWidth" type="" name="parametro" required="required" />
-          <Button variant="contained" type="hidden" style={{margin:10}}>BUSCAR</Button>
 
-        </form>
+        <TextField fullWidth onChange={buscarInstrutor} style={{ marginBottom: 25 }} label="buscar istrutor" id="fullWidth" type="" name="parametro" required="required" />
+
+
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
@@ -198,13 +226,13 @@ function PgPricipal({ vetor }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {vetor?.map((obj, indice) => (
+              {instrutor.map((obj, indice) => (
                 <StyledTableRow key={indice}>
                   <StyledTableCell component="th" scope="row">
                     {obj.id}
                   </StyledTableCell>
                   <StyledTableCell align="right">{obj.nome}</StyledTableCell>
-                  <StyledTableCell align="right"><Button variant="contained">DELETAR</Button></StyledTableCell>
+                  <StyledTableCell align="right"><Button onClick={() => deleteinstrutor(obj.id)} variant="contained">DELETAR</Button></StyledTableCell>
                   <StyledTableCell align="right"><Button variant="contained">ALTERAR</Button></StyledTableCell>
                 </StyledTableRow>
               ))}
