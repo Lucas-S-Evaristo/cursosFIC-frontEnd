@@ -93,7 +93,7 @@ const PgPricipal = ({ vetor }) => {
   }
   const deleteinstrutor = async (id) => {
     console.warn(id);
-    let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
+    let result = await fetch("http://localhost:8080/api/instrutor/" + id , {
       method: "DELETE"
     });
     result = await result.json();
