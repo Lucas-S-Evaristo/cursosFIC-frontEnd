@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 
 function FormUsuario({ post}) {
 
-    /* const [usuarios, setUsuario] = useState([]) */
-
     const usuario = {
         id: "",
         nome: '',
@@ -44,46 +42,6 @@ function FormUsuario({ post}) {
         .then(retorno_convertido => setTipoUsuario(retorno_convertido))//lista os usuarios
     }, [])
 
-    /* // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
-    useEffect(() => {
-        fetch("http://10.92.198.11:8080/api/usuario")
-        .then(resp => resp.json())
-        .then(retorno_convertido => setUsuario(retorno_convertido))//lista os usuarios
-    }, []) */
-
-    /* // REQUISIÇÃO DELETE PARA DELETAR O USUARIO
-    const deletar = () => {
-        fetch("http://10.92.198.11:8080/api/usuario" +objUsuario.id, {
-          method: 'delete',
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
-          }
-    
-        })
-        .then(retorno => retorno.json())
-        .then(retorno_convertido => {
-          
-            alert("EXCLUIDO COM SUCESSO")
-
-            // copia do vetor de usuarios
-
-            let vetorTemp = [...usuarios]
-
-            // indice tem a posição que foi removida do vetor
-            //findIndex percorre o vetor
-            let indice = vetorTemp.findIndex((u)=>{
-                return u.id === objUsuario.id;
-            });
-
-            // remover produto do vetor temp
-            vetorTemp.splice(indice, 1)
-
-            // atualizar vetor de usuarios, sem o usuario deletado
-            setUsuario(vetorTemp)
-        })
-    } */
-
     const [objUsuario, setObjUsuario] = useState(usuario)
     const [tipoUsuarios, setTipoUsuario] = useState([])
 
@@ -111,7 +69,7 @@ function FormUsuario({ post}) {
                 <input
                     required
                     name="senha" className="senha"
-                    type="password" placeholder="Digite sua senha"
+                    type="text" placeholder="Digite sua senha"
                     onChange={post}
                 />
                 <label>selecione o tipo de usuário</label>
