@@ -51,16 +51,20 @@ const style = {
 
 
 
-
-const PgPricipal = ({ vetor }) => {
+  
+const PgPricipal = () => {
   const [instrutor, setInstrutor] = useState([]);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
+
   useEffect(() => {
     getiInstrutor();
 
   }, []);
+  
+  
   const getiInstrutor = async () => {
     let result = await fetch(`http://localhost:8080/api/instrutor`)
     result = await result.json();
@@ -79,7 +83,7 @@ const PgPricipal = ({ vetor }) => {
     },
   }));
 
-  console.log(vetor)
+  
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
@@ -121,22 +125,30 @@ const PgPricipal = ({ vetor }) => {
 
   }
   const cadastroInstrutor = async (event) => {
-    console.warn(event.target.value)
+    
+    
+    const formData = new FormData(event.target)
+    const data = Object.fromEntries(formData)
+    console.warn("teste",data)
+    console.warn(event.target)
+   
     
     let obgj = {
-      nome: event.target.value
+      nome:data
     }
     console.warn(obgj.nome)
 
     let result = await fetch(`http://localhost:8080/api/instrutor`,{
       method:'post',
-      body: JSON.stringify(obgj),
+      body: JSON.stringify(obgj.nome),
       headers:{
         'Content-type':'application/json',
         'Accept':'application/json'
       }
     })
-    alert(result);
+    if(result){
+      getiInstrutor();
+    }
 
   }
 
@@ -163,11 +175,12 @@ const PgPricipal = ({ vetor }) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        
       >
         <Box sx={style}>
-          <form onChange={cadastroInstrutor} >
-          <TextField id="nome-instrutor"  label="mome" variant="outlined" />
-          <Button variant="contained"   style={{margin:10}} type="submit">cadastrar</Button>
+          <form onSubmit={cadastroInstrutor} >
+          <TextField  name="nome" type="text" label="nome" variant="outlined" />
+          <Button variant="contained"  style={{margin:10}} type="submit" >cadastrar</Button>
           </form>
         </Box>
       </Modal>
