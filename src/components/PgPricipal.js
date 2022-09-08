@@ -51,20 +51,34 @@ const style = {
 
 
 
-  
+
 const PgPricipal = () => {
   const [instrutor, setInstrutor] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  
+  const [open2, setOpen2] = React.useState(false);
+  const [idistrutor, setidisntrutor] = useState([])
+  const [nomeistrutor, setnomeisntrutor] = useState([])
+  const modalCadastroAbrindo = () => setOpen(true);
+  const modalCadastroFechando = () => setOpen(false);
+  const modalAlterarAbrindo = (id, nome) => {
+    setOpen2(true)
+    setidisntrutor(id)
+    setnomeisntrutor(nome)
+
+  };
+  const modalAlterarFechando = () => {
+    setOpen2(false)
+  };
+
+
+
 
   useEffect(() => {
     getiInstrutor();
 
   }, []);
-  
-  
+
+
   const getiInstrutor = async () => {
     let result = await fetch(`http://localhost:8080/api/instrutor`)
     result = await result.json();
@@ -83,7 +97,7 @@ const PgPricipal = () => {
     },
   }));
 
-  
+
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
@@ -125,30 +139,60 @@ const PgPricipal = () => {
 
   }
   const cadastroInstrutor = async (event) => {
-    
-    
+
+
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
-    console.warn("teste",data)
+    console.warn("teste", data)
     console.warn(event.target)
-   
-    
+
+
     let obgj = {
-      nome:data
+      nome: data
     }
     console.warn(obgj.nome)
 
-    let result = await fetch(`http://localhost:8080/api/instrutor`,{
-      method:'post',
+    let result = await fetch(`http://localhost:8080/api/instrutor`, {
+      method: 'post',
       body: JSON.stringify(obgj.nome),
-      headers:{
-        'Content-type':'application/json',
-        'Accept':'application/json'
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
       }
     })
-    if(result){
+    if (result) {
       getiInstrutor();
     }
+
+  }
+  const alterainstrutor  = async (event) =>{
+    
+    console.warn(event.target)
+    
+    const formData = new FormData(event.target)
+    const data = Object.fromEntries(formData)
+    console.warn("teste", data)
+    let obgj = {
+      id:idistrutor,
+      nome: data.nome
+
+    }
+    console.warn(obgj)
+    let result = await fetch(`http://localhost:8080/api/instrutor/${idistrutor}`, {
+      method: 'PUT',
+      body: JSON.stringify(obgj),
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    result = await result.json();
+    if (result) {
+      getiInstrutor();
+    }
+
+    
+
 
   }
 
@@ -169,21 +213,21 @@ const PgPricipal = () => {
       </a>
       <Divider />
       <List>
-      <Button onClick={handleOpen} style={{margin: 10}} variant="contained">cadastrar isntrutor</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        
-      >
-        <Box sx={style}>
-          <form onSubmit={cadastroInstrutor} >
-          <TextField  name="nome" type="text" label="nome" variant="outlined" />
-          <Button variant="contained"  style={{margin:10}} type="submit" >cadastrar</Button>
-          </form>
-        </Box>
-      </Modal>
+        <Button onClick={modalCadastroAbrindo} style={{ margin: 10 }} variant="contained">cadastrar isntrutor</Button>
+        <Modal
+          open={open}
+          onClose={modalCadastroFechando}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+
+        >
+          <Box sx={style}>
+            <form onSubmit={cadastroInstrutor} >
+              <TextField name="nome" type="text" label="nome" variant="outlined" />
+              <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
+            </form>
+          </Box>
+        </Modal>
       </List>
       <Divider />
       <List>
@@ -282,7 +326,22 @@ const PgPricipal = () => {
                   </StyledTableCell>
                   <StyledTableCell align="right">{obj.nome}</StyledTableCell>
                   <StyledTableCell align="right"><Button onClick={() => deleteinstrutor(obj.id)} variant="contained">DELETAR</Button></StyledTableCell>
-                  <StyledTableCell align="right"><Button variant="contained">ALTERAR</Button></StyledTableCell>
+                  <StyledTableCell align="right"><Button onClick={() => modalAlterarAbrindo(obj.id, obj.nome)} variant="contained">ALTERAR</Button></StyledTableCell>
+                  <Modal
+                    open={open2}
+                    onClose={modalAlterarFechando}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+
+                  >
+                    <Box sx={style}>
+                      <form onSubmit={alterainstrutor} >
+              
+                        <TextField name="nome" type="text" label="nome"  placeholder={nomeistrutor} variant="outlined" />
+                        <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
+                      </form>
+                    </Box>
+                  </Modal>
                 </StyledTableRow>
               ))}
             </TableBody>
