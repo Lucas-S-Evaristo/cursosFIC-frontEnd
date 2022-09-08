@@ -1,17 +1,17 @@
 import './App.css';
 
-import ResponsiveDrawer from './components/ResponsiveDrawer'
-import React, { Component, useEffect, useState } from 'react';
-import Formulario from './components/cursos/formulario';
+
+import React from 'react';
+
 import Rotas from './Rotas';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter} from 'react-router-dom';
 
 function App() {
 
   
 
   return (
-    <div class="app">
+    <div className="app">
 
       
     <BrowserRouter>

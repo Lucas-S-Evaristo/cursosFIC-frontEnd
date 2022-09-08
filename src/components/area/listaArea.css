@@ -1,0 +1,14 @@
+.botaoCadastrar{
+    margin: auto;
+    text-align: center;
+    align-items: center;
+    
+}
+
+.inputNome{
+    border: 0px;
+    border-bottom: 0.1em solid black;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+}

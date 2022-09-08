@@ -1,6 +1,10 @@
 .body{
     text-align: center;
-    background-image: url(/src/components/cursos/image1.jpg)
+    background-image: url(/src/components/cursos/image1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100%;
 }
 
 .formulario{
@@ -20,6 +24,7 @@
     margin-top: 0.5em;
     background-color: transparent;
     color: white;
+    text-align: center;
 }
 
 label{

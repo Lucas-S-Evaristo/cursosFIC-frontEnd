@@ -1,5 +1,5 @@
-import { red } from "@mui/material/colors"
-import React, { Component, useEffect, useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 
 import  './styles.css'
 
@@ -12,7 +12,6 @@ function Formulario({ post, cadastrar }) {
         objetivo: "",
         preRequisito: "",
         conteudoProgramatico: "",
-        area_id: "",
         sigla: "",
         cargaHoraria: 0,
         valor: 0
@@ -56,22 +55,22 @@ function Formulario({ post, cadastrar }) {
 
 
     return (
-        <div class="body">
+        <div className="body">
 
-            <form class="formulario">
+            <form className="formulario">
 
                 
                 <h1>cadastrar cursos</h1>
 
                 <input
                     required
-                    name="nome" className="Nome"
+                    name="nome" classNameName="Nome"
                     type="text" placeholder="Nome do curso"
                     onChange={post}
                 />
                 
                 <label>selecione a area do Curso</label>
-                <select class="form-select form-select-sm   " aria-label=".form-select-sm example"  name="area" onChange={post}>
+                <select className="form-select form-select-sm   " aria-label=".form-select-sm example"  name="area" onChange={post}>
                    
                         
                         {
@@ -112,12 +111,12 @@ function Formulario({ post, cadastrar }) {
                 />
 
                 <label>selecione o nivel do curso</label>
-                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <select className="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option onChange={post} ></option>
                 </select>
 
                 <label>selecione o tipo de atendimento</label>
-                <select class="form-select form-select-sm" aria-label=".form-select-sm example" >
+                <select className="form-select form-select-sm" aria-label=".form-select-sm example" >
                     <option>
                       
                     </option>
@@ -134,7 +133,7 @@ function Formulario({ post, cadastrar }) {
                     type="text" placeholder="valor"
                     onChange={post}
                 />
-                <button class="botao" onClick={cadastrar}>cadastrar</button>
+                <button className="botao" onClick={cadastrar}>cadastrar</button>
 
             </form>
         </div>
