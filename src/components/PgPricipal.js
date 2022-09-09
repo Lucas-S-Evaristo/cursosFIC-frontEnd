@@ -337,7 +337,7 @@ const PgPricipal = () => {
                     <Box sx={style}>
                       <form onSubmit={alterainstrutor} >
               
-                        <TextField name="nome" type="text" label="nome"  placeholder={nomeistrutor} variant="outlined" />
+                        <TextField name="nome" type="text"  label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor} variant="outlined" />
                         <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
                       </form>
                     </Box>
