@@ -165,15 +165,15 @@ const PgPricipal = () => {
     }
 
   }
-  const alterainstrutor  = async (event) =>{
-    
+  const alterainstrutor = async (event) => {
+
     console.warn(event.target)
-    
+
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
     console.warn("teste", data)
     let obgj = {
-      id:idistrutor,
+      id: idistrutor,
       nome: data.nome
 
     }
@@ -191,7 +191,7 @@ const PgPricipal = () => {
       getiInstrutor();
     }
 
-    
+
 
 
   }
@@ -222,6 +222,7 @@ const PgPricipal = () => {
 
         >
           <Box sx={style}>
+            <h2 id="transition-modal-title">cadastro de instrutor</h2>
             <form onSubmit={cadastroInstrutor} >
               <TextField name="nome" type="text" label="nome" variant="outlined" />
               <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
@@ -335,10 +336,10 @@ const PgPricipal = () => {
 
                   >
                     <Box sx={style}>
+                      <h2 id="transition-modal-title">alterar insturtor</h2>
                       <form onSubmit={alterainstrutor} >
-              
-                        <TextField name="nome" type="text"  label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor} variant="outlined" />
-                        <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
+                        <TextField name="nome" type="text" label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor} variant="outlined" />
+                        <Button variant="contained" style={{ margin: 10 }} type="submit" >alterar</Button>
                       </form>
                     </Box>
                   </Modal>
