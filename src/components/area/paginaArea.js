@@ -10,17 +10,30 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 
-function Area(selecionarArea, cadastrar, post, excluir, sucesso) {
+function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar) {
 
   sucesso = () => {
-    toast.success("Cadastrado com Sucesso!", {position: "top-center",
-                                            autoClose: 5000,
-                                            hideProgressBar: false,
-                                            closeOnClick: true,
-                                            pauseOnHover: true,
-                                            theme: 'colored',
-                                            draggable: true,
-                                            progress: undefined,})
+    toast.success("Cadastrado com Sucesso!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,})
+   }
+
+   sucessoAlterar = () => {
+    toast.success("Alterado com Sucesso!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,})
    }
 
     const area = {
@@ -107,10 +120,15 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso) {
 
     const [show, setShow] = useState(false);
 
+    const [show2, setShow2] = useState(false);
+
     const [objArea, setObjArea] = useState(area)
   
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleShow2 = () => setShow2(true);
+    const handleClose2 = () => setShow2(false);
  
    const [btnCadastro, setBtnCadastro] = useState(true)
 
@@ -121,12 +139,59 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso) {
 
         <div>
         <Button variant="primary" className="botaoCadastrar" onClick={() => {
-            handleShow()
+            handleShow2()
 
             }}>
          cadastrar Area
         </Button>
         </div>
+
+        <Modal
+                        show={show2}
+                        onHide={handleClose2}
+                                    >
+                        <Modal.Header closeButton>  
+                        <Modal.Title>Cadastrar</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <form>
+                          <input className="inputNome" type="text" name="nome"onChange={post}/>
+
+                          </form>
+                        
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button type="submit" variant="danger" onClick={() => {
+                          handleClose2()
+                          window.location.reload()
+                          }}>
+                            Fechar
+                        </Button>
+
+                        <Button type='button' variant="warning" onClick={() => {
+                          
+                            cadastrar()
+                            sucesso()
+                            setInterval(function () {window.location.reload();}, 6000);
+                           
+                            
+
+                        }}>
+                            Cadastrar
+                        </Button>
+
+                        <ToastContainer position="top-center"
+                          autoClose={5000}
+                          hideProgressBar={false}
+                          newestOnTop={false}
+                          closeOnClick
+                          rtl={false}
+                          pauseOnFocusLoss
+                          draggable
+                          pauseOnHover/>
+                            
+                        </Modal.Footer>
+                    </Modal>
 
         <table className="table">
 
@@ -159,56 +224,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso) {
                             </Button>
                         </td>
 
-                        {
-                          btnCadastro
-
-                          ?
-                          <Modal
-                        show={show}
-                        onHide={handleClose}
-                                    >
-                        <Modal.Header closeButton>  
-                        <Modal.Title>Cadastrar</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                        <form>
-                          <input className="inputNome" type="text" name="nome" defaultValue={objArea.nome} onChange={post}/>
-
-                          </form>
-                        
-                        </Modal.Body>
-                        <Modal.Footer>
-                        <Button variant="danger" onClick={handleClose}>
-                            Fechar
-                        </Button>
-
-                        <Button type='button' variant="warning" onClick={() => {
-                          
-                            cadastrar()
-                            sucesso()
-                            setInterval(function () {window.location.reload();}, 6000);
-                           
-                            
-
-                        }}>
-                            Cadastrar
-                        </Button>
-
-                        <ToastContainer position="top-center"
-                          autoClose={5000}
-                          hideProgressBar={false}
-                          newestOnTop={false}
-                          closeOnClick
-                          rtl={false}
-                          pauseOnFocusLoss
-                          draggable
-                          pauseOnHover/>
-                            
-                        </Modal.Footer>
-                    </Modal>
-
-                    :
-
+                    
                     <Modal
                         show={show}
                         onHide={handleClose}
@@ -234,7 +250,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso) {
                         <Button type='button' variant="warning" onClick={() => {
                           
                             cadastrar()
-                            sucesso()
+                            sucessoAlterar()
                             setInterval(function () {window.location.reload();}, 6000);
                            
                             
@@ -255,13 +271,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso) {
                             
                         </Modal.Footer>
                     </Modal>
-
-
-
-                        }
-
-                        
-
+                              
                     </tr>
 
                     

@@ -189,10 +189,9 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
                     if (result) {
                         setCursos(result)
                     }
-
-                    else{
-                        getCursos();
-                    }
+                    
+                }else{
+                  getCursos();
                 }
                 
             }

@@ -7,7 +7,11 @@ import  {ToastContainer,toast}  from  'react-toastify' ;
 import  'react-toastify/dist/ReactToastify.css' ;
 
 
-function Formulario({ post, cadastrar, sucesso }) {
+function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
+
+    limparFormulario = () => {
+        setObjCurso(curso) 
+    }
 
     sucesso = () => {
         toast.success("Cadastrado com sucesso!", {position: "top-center",
@@ -50,6 +54,7 @@ function Formulario({ post, cadastrar, sucesso }) {
         .then(retorno => retorno.json())
         .then(retorno_convertido => {
           console.log(retorno_convertido)
+          limparFormulario()
          
         })
       }
