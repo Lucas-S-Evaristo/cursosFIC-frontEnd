@@ -5,7 +5,23 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import  './listaArea.css'
 
-function Area(selecionarArea, cadastrar, post, excluir) {
+import  {ToastContainer,toast}  from  'react-toastify' ; 
+import  'react-toastify/dist/ReactToastify.css' ;
+
+
+
+function Area(selecionarArea, cadastrar, post, excluir, sucesso) {
+
+  sucesso = () => {
+    toast.success("Cadastrado com Sucesso!", {position: "top-center",
+                                            autoClose: 5000,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            theme: 'colored',
+                                            draggable: true,
+                                            progress: undefined,})
+   }
 
     const area = {
         id: 0,
@@ -27,7 +43,7 @@ function Area(selecionarArea, cadastrar, post, excluir) {
         .then(retorno => retorno.json())
         .then(retorno_convertido => {
           console.log(retorno_convertido)
-          window.location.reload();
+          
         })
       }
 
@@ -83,6 +99,7 @@ function Area(selecionarArea, cadastrar, post, excluir) {
     selecionarArea = (indice) => {
 
         setObjArea(areas[indice])
+        setBtnCadastro(false)
         
       }
 
@@ -94,6 +111,8 @@ function Area(selecionarArea, cadastrar, post, excluir) {
   
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+ 
+   const [btnCadastro, setBtnCadastro] = useState(true)
 
     return (
 
@@ -140,7 +159,57 @@ function Area(selecionarArea, cadastrar, post, excluir) {
                             </Button>
                         </td>
 
-                        <Modal
+                        {
+                          btnCadastro
+
+                          ?
+                          <Modal
+                        show={show}
+                        onHide={handleClose}
+                                    >
+                        <Modal.Header closeButton>  
+                        <Modal.Title>Cadastrar</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <form>
+                          <input className="inputNome" type="text" name="nome" defaultValue={objArea.nome} onChange={post}/>
+
+                          </form>
+                        
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="danger" onClick={handleClose}>
+                            Fechar
+                        </Button>
+
+                        <Button type='button' variant="warning" onClick={() => {
+                          
+                            cadastrar()
+                            sucesso()
+                            setInterval(function () {window.location.reload();}, 6000);
+                           
+                            
+
+                        }}>
+                            Cadastrar
+                        </Button>
+
+                        <ToastContainer position="top-center"
+                          autoClose={5000}
+                          hideProgressBar={false}
+                          newestOnTop={false}
+                          closeOnClick
+                          rtl={false}
+                          pauseOnFocusLoss
+                          draggable
+                          pauseOnHover/>
+                            
+                        </Modal.Footer>
+                    </Modal>
+
+                    :
+
+                    <Modal
                         show={show}
                         onHide={handleClose}
                                     >
@@ -155,21 +224,43 @@ function Area(selecionarArea, cadastrar, post, excluir) {
                         
                         </Modal.Body>
                         <Modal.Footer>
-                        <Button variant="danger" onClick={handleClose}>
+                        <Button type="submit" variant="danger" onClick={() => {
+                          handleClose()
+                          window.location.reload()
+                          }}>
                             Fechar
                         </Button>
 
-                        <Button type='submit' variant="warning" onClick={() => {
+                        <Button type='button' variant="warning" onClick={() => {
                           
                             cadastrar()
+                            sucesso()
+                            setInterval(function () {window.location.reload();}, 6000);
+                           
                             
 
                         }}>
                             Alterar
                         </Button>
+
+                        <ToastContainer position="top-center"
+                          autoClose={5000}
+                          hideProgressBar={false}
+                          newestOnTop={false}
+                          closeOnClick
+                          rtl={false}
+                          pauseOnFocusLoss
+                          draggable
+                          pauseOnHover/>
                             
                         </Modal.Footer>
                     </Modal>
+
+
+
+                        }
+
+                        
 
                     </tr>
 

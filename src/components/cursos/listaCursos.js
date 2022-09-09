@@ -11,7 +11,7 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 
-function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucesso, erro}){
+function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucesso, sucessoExcluir}){
 
   sucesso = () => {
     toast.success("Alterado com sucesso!", {position: "top-center",
@@ -24,8 +24,8 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
                                             progress: undefined,})
    }
 
-   erro = () => {
-    toast.error("Excluido com sucesso!", {position: "top-center",
+   sucessoExcluir = () => {
+    toast.sycess("Excluido com sucesso!", {position: "top-center",
                                             autoClose: 5000,
                                             hideProgressBar: false,
                                             closeOnClick: true,
@@ -92,7 +92,7 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
         .then(retorno_convertido => {
          
 
-            alert("excluido com sucesso")
+       
 
             let vetorTemporario = [...cursos] //vetorTemporario vai ter acesso a todos os cursos
 
@@ -255,10 +255,16 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
                         <td>{obj.sigla}</td>
                         <td>{obj.tipoAtendimento}</td>
                         <td>{obj.area}</td>
-                        <td><button className="btn btn-danger" onClick={() => excluir(obj.id)}>Excluir</button></td>
+                        <td><button type='button' className="btn btn-danger" onClick={() => { 
+                          excluir(obj.id)
+                          sucessoExcluir()
+                          setInterval(function () {window.location.reload();}, 3000);
+                          
+                        }}>Excluir</button></td>
                         <td> <Button variant="warning" onClick={() => {
                             selecionarCurso(indice)
                             handleShow()
+                            
 
                         }}>
                                 Alterar
@@ -299,9 +305,10 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
                             Fechar
                         </Button>
 
-                        <Button type='submit' variant="warning" onClick={() => {
+                        <Button type='button' variant="warning" onClick={() => {
                           sucesso()
                           cadastrar()
+                          setInterval(function () {window.location.reload();}, 6000);
                           }}>
                             Alterar
                         </Button>
