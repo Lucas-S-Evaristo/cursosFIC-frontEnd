@@ -4,10 +4,36 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
+import  {ToastContainer,toast}  from  'react-toastify' ; 
+import  'react-toastify/dist/ReactToastify.css' ;
 
 
 
-function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar}){
+
+
+function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucesso, erro}){
+
+  sucesso = () => {
+    toast.success("Alterado com sucesso!", {position: "top-center",
+                                            autoClose: 5000,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            theme: 'colored',
+                                            draggable: true,
+                                            progress: undefined,})
+   }
+
+   erro = () => {
+    toast.error("Excluido com sucesso!", {position: "top-center",
+                                            autoClose: 5000,
+                                            hideProgressBar: false,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            theme: 'colored',
+                                            draggable: true,
+                                            progress: undefined,})
+   }
 
     const cursoExcluir = {
         id: "",
@@ -40,7 +66,7 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar}){
         .then(retorno => retorno.json())
         .then(retorno_convertido => {
           console.log(retorno_convertido)
-          window.location.reload();
+         
         })
 
         
@@ -248,31 +274,46 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar}){
                         </Modal.Header>
                         <Modal.Body>
                         <form>
-                          <input type="text" name="nome" defaultValue={objCurso.nome} onChange={post}/>
+                          <input type="text" className="inputNome" name="nome" defaultValue={objCurso.nome} onChange={post}/>
 
-                          <input type="text" name="objetivo" defaultValue={objCurso.objetivo} onChange={post}/>
+                          <input type="text" className="inputNome" name="objetivo" defaultValue={objCurso.objetivo} onChange={post}/>
 
-                          <input type="text" name="preRequisito" defaultValue={objCurso.preRequisito} onChange={post}/>
+                          <input type="text" className="inputNome" name="preRequisito" defaultValue={objCurso.preRequisito} onChange={post}/>
 
-                          <input type="text" name="conteudoProgramatico" defaultValue={objCurso.conteudoProgramatico} onChange={post}/>
+                          <input type="text" className="inputNome" name="conteudoProgramatico" defaultValue={objCurso.conteudoProgramatico} onChange={post}/>
 
-                          <input type="text" name="sigla" defaultValue={objCurso.sigla} onChange={post}/>
+                          <input type="text" className="inputNome" name="sigla" defaultValue={objCurso.sigla} onChange={post}/>
 
-                          <input type="text" name="cargaHoraria" defaultValue={objCurso.cargaHoraria} onChange={post}/>
+                          <input type="text" className="inputNome" name="cargaHoraria" defaultValue={objCurso.cargaHoraria} onChange={post}/>
 
-                          <input type="text" name="valor" defaultValue={objCurso.valor} onChange={post}/>
+                          <input type="text" className="inputNome" name="valor" defaultValue={objCurso.valor} onChange={post}/>
 
                           </form>
                         
                         </Modal.Body>
                         <Modal.Footer>
-                        <Button variant="danger" onClick={handleClose}>
+                        <Button type='submit' variant="danger" onClick={() => {
+                          handleClose()
+                          window.location.reload();
+                          }}>
                             Fechar
                         </Button>
 
-                        <Button type='submit' variant="warning" onClick={cadastrar}>
+                        <Button type='submit' variant="warning" onClick={() => {
+                          sucesso()
+                          cadastrar()
+                          }}>
                             Alterar
                         </Button>
+                        <ToastContainer position="top-center"
+                          autoClose={5000}
+                          hideProgressBar={false}
+                          newestOnTop={false}
+                          closeOnClick
+                          rtl={false}
+                          pauseOnFocusLoss
+                          draggable
+                          pauseOnHover/>
                             
                         </Modal.Footer>
                     </Modal>

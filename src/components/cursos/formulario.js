@@ -3,8 +3,22 @@ import React, { useEffect, useState } from 'react';
 
 import  './styles.css'
 
+import  {ToastContainer,toast}  from  'react-toastify' ; 
+import  'react-toastify/dist/ReactToastify.css' ;
 
-function Formulario({ post, cadastrar }) {
+
+function Formulario({ post, cadastrar, sucesso }) {
+
+    sucesso = () => {
+        toast.success("Cadastrado com sucesso!", {position: "top-center",
+                                                autoClose: 5000,
+                                                hideProgressBar: false,
+                                                closeOnClick: true,
+                                                pauseOnHover: true,
+                                                theme: 'colored',
+                                                draggable: true,
+                                                progress: undefined,})
+       }
 
     const curso = {
         id: 0,
@@ -36,6 +50,7 @@ function Formulario({ post, cadastrar }) {
         .then(retorno => retorno.json())
         .then(retorno_convertido => {
           console.log(retorno_convertido)
+         
         })
       }
 
@@ -133,8 +148,11 @@ function Formulario({ post, cadastrar }) {
                     type="text" placeholder="valor"
                     onChange={post}
                 />
-                <button className="botao" onClick={cadastrar}>cadastrar</button>
-
+                <button type='button' className="botao" onClick={() => {
+                    cadastrar()
+                    sucesso()
+                    }}>cadastrar</button>
+            <ToastContainer/>
             </form>
         </div>
     )

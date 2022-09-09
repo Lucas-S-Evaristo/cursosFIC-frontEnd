@@ -11,3 +11,10 @@ table{
     color: white;
     margin: 0.2em 0em;
 }
+.inputNome{
+    border: 0px;
+    border-bottom: 0.1em solid black;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+}
