@@ -11,7 +11,7 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 //função pra listar todos os cursos cadastrados
-function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucesso, sucessoExcluir}){
+function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso, sucessoExcluir}){
 
   //enviar notificação de sucesso
   sucesso = () => {
@@ -26,18 +26,7 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
       progress: undefined,})
 }
 
-    //enivar notiificação de sucesso ao excluir
-   sucessoExcluir = () => {
-    toast.sycess("Excluido com sucesso!", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      theme: 'colored',
-      draggable: true,
-      progress: undefined,})
-   }
+    
 
     const cursoExcluir = {
         id: "",
@@ -85,44 +74,19 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
     }, [])
 
     //faz uma requisição ao back-end de excluir
-    excluir = (id) => {
-        fetch("http://localhost:8080/api/curso/"+id, {
+    excluir = async (id) => {
+       let result = await fetch("http://localhost:8080/api/curso/"+id, {
           method: 'delete',
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
-          }
+          
     
         })
-        .then(retorno => retorno.json())
-        .then(retorno_convertido => {
-         
+        if(result) {
+          getCursos() 
+        }
+
+      }
 
        
-
-            let vetorTemporario = [...cursos] //vetorTemporario vai ter acesso a todos os cursos
-
-            console.log(vetorTemporario)
-
-            console.log(cursos)
-
-            //vetorIndex retorna a posição dos objetos
-            let indice = vetorTemporario.findIndex((p) =>{
-
-                
-                return p.id === objCurso.id
-            }) 
-
-            //remover curso do vetorTemporario
-             vetorTemporario.splice(indice, 1)
-
-            //atualizar o vetor de cursos
-
-            setCursos(vetorTemporario)
-            window.location.reload();
-
-        })
-      }
       //pega os valores do curso e passa para o input
       selecionarCurso = (indice) => {
 
@@ -186,7 +150,7 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
                 //faz a busca de cursos
                 onChange={buscarCs} 
                 type="" 
-                className="inBuscar"
+                className="inputNome"
                 name="parametro"
                 required="required"
                 />
@@ -237,10 +201,6 @@ function ListaCursos({excluir, alterar, selecionarCurso, post, cadastrar, sucess
                         <td><button type='button' className="btn btn-danger" onClick={() => { 
                           //excluir curso pelo id
                           excluir(obj.id)
-                          //exibir notificação de sucesso
-                          sucessoExcluir()
-                          //atribui um tempo pra recarregar a página
-                          setInterval(function () {window.location.reload();}, 3000);
                           
                         }}>Excluir</button></td>
                         <td> <Button variant="warning" onClick={() => {

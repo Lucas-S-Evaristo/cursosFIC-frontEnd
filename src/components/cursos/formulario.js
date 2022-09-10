@@ -7,22 +7,34 @@ import  {ToastContainer,toast}  from  'react-toastify' ;
 import  'react-toastify/dist/ReactToastify.css' ;
 
 
-function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
+//função pra cadastrar cursos
+function Formulario({ post, cadastrar, sucesso, erroCad }) {
 
-    limparFormulario = () => {
-        setObjCurso(curso) 
-    }
-
+    //enviar notificação de sucesso
     sucesso = () => {
-        toast.success("Cadastrado com sucesso!", {position: "top-center",
-                                                autoClose: 5000,
-                                                hideProgressBar: false,
-                                                closeOnClick: true,
-                                                pauseOnHover: true,
-                                                theme: 'colored',
-                                                draggable: true,
-                                                progress: undefined,})
+        toast.success("Cadastrado com sucesso!", {
+            position: "top-center",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            theme: 'colored',
+            draggable: true,
+            progress: undefined,})
        }
+
+       erroCad = () => {
+        toast.error("Preencha os campos corretamente!", {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'colored',
+          draggable: true,
+          progress: undefined,})
+       }
+    
 
     const curso = {
         id: 0,
@@ -35,12 +47,13 @@ function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
         valor: 0
       }
 
+      //captura dados digitados no formulario
     post = (e) => {
   
         console.log(e.target)
         setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
       }
-
+      //faz uma requisição ao back-end de cadastro
       cadastrar = () => {
         fetch("http://localhost:8080/api/curso", {
           method: 'post',
@@ -51,11 +64,26 @@ function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
           }
     
         })
-        .then(retorno => retorno.json())
+
+        
+        .then(retorno => {
+          //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+          if(retorno.status == 409){
+            erroCad()
+          }else {
+            //faz o processo de cadastro
+            retorno.json()
         .then(retorno_convertido => {
+
+          
+           //exibir notificação de sucesso
+           sucesso()
+           //atualiza a página depois de um tempo
+          setInterval(function () {window.location.reload();}, 1500);
           console.log(retorno_convertido)
-          limparFormulario()
-         
+        }
+        )
+          }
         })
       }
 
@@ -77,6 +105,7 @@ function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
     return (
         <div className="body">
 
+            {/*Formulario de cursos */}
             <form className="formulario">
 
                 
@@ -84,7 +113,7 @@ function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
 
                 <input
                     required
-                    name="nome" classNameName="Nome"
+                    name="nome" className="Nome"
                     type="text" placeholder="Nome do curso"
                     onChange={post}
                 />
@@ -94,8 +123,8 @@ function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
                    
                         
                         {
-                            area.map( (obj) => (
-                                <option>
+                            area.map((obj, indice) => (
+                                <option key={indice}>
                                 {obj.nome}
                                 </option>
                             )
@@ -154,8 +183,10 @@ function Formulario({ post, cadastrar, sucesso, limparFormulario }) {
                     onChange={post}
                 />
                 <button type='button' className="botao" onClick={() => {
+                      //efetua o cadastro 
                     cadastrar()
-                    sucesso()
+                    
+                    setInterval(function () {window.location.reload();}, 1500);
                     }}>cadastrar</button>
             <ToastContainer/>
             </form>

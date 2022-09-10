@@ -10,11 +10,11 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 //função pra listar todos as areas cadastradas
-function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar) {
+function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar, erroCad) {
 
   //enviar notificação de sucesso
   sucesso = () => {
-    toast.success("Cadastrado com Sucesso!", {
+    toast.success("Ação realizada com sucesso!", {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
@@ -27,6 +27,18 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
 //enivar notiificação de sucesso ao Alterar
    sucessoAlterar = () => {
     toast.success("Alterado com Sucesso!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,})
+   }
+
+   erroCad = () => {
+    toast.error("Preencha os campos corretamente!", {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
@@ -54,49 +66,40 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
           }
     
         })
-        .then(retorno => retorno.json())
+
+        
+        .then(retorno => {
+          //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+          if(retorno.status == 409){
+            erroCad()
+          }else {
+            //faz o processo de cadastro
+            retorno.json()
         .then(retorno_convertido => {
-          console.log(retorno_convertido)
+
           
+           //exibir notificação de sucesso
+           sucesso()
+           //atualiza a página depois de um tempo
+          setInterval(function () {window.location.reload();}, 1500);
+          console.log(retorno_convertido)
+        }
+        )
+          }
         })
       }
       //faz uma requisição ao back-end de excluir
-      excluir = (id) => {
-        fetch("http://localhost:8080/api/area/"+id, {
-          method: 'delete',
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
-          }
-    
-        })
-        .then(retorno => retorno.json())
-        .then(retorno_convertido => {
-         
-            let vetorTemporario = [...areas] //vetorTemporario vai ter acesso a todos as areas
-
-            console.log(vetorTemporario)
-
-         
-
-            //vetorIndex retorna a posição dos objetos
-            let indice = vetorTemporario.findIndex((p) =>{
-
-                
-                return p.id === objArea.id
-            }) 
-
-            //remover area do vetorTemporario
-             vetorTemporario.splice(indice, 1)
-
-            //atualizar o vetor de areas
-
-            setArea(vetorTemporario)
-
-            window.location.reload();
-
-        })
-      }
+      excluir = async (id) => {
+        let result = await fetch("http://localhost:8080/api/area/"+id, {
+           method: 'delete',
+           
+     
+         })
+         if(result) {
+           getAreas() 
+         }
+ 
+       }
       //captura dados digitados no formulario
       post = (e) => {
   
@@ -118,6 +121,37 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
         
       }
 
+      useEffect(() => {
+        getAreas();
+    }, []);
+
+    //puxa as areas pra fazer a busca
+    const getAreas = async ( ) => {
+        let result = await fetch(`http://localhost:8080/api/area`)
+        result = await result.json();
+        setArea(result)
+    }
+
+  //busca as áreas
+    const buscarCs = async (event) =>{
+        let key = event.target.value;
+        if (key) {
+            let result = 
+            //faz uma requisição ao back-end pra buscar a api de pesquisar áreas
+            await fetch(`http://localhost:8080/api/area/buscar/${key}`)
+            result = await result.json();
+            if (result) {
+
+                setArea(result)
+            }
+            
+        }else{
+          getAreas();
+        }
+        
+    }
+
+
     const [areas, setArea] = useState([])
 
     const [show, setShow] = useState(false);
@@ -135,9 +169,21 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
    const [btnCadastro, setBtnCadastro] = useState(true)
 
     return (
-        //cadastro de area
+        //cadastro de área
         <div className="botaoCadastrar">
         <h1 className="titulo">Lista de Area</h1>
+
+        <form>
+            <label>Buscar Áreas</label>
+            <input
+                //faz a busca de áreas
+                onChange={buscarCs} 
+                type="" 
+                className="inputNome"
+                name="parametro"
+                required="required"
+                />
+        </form>
 
         <div>
         <Button variant="primary" className="botaoCadastrar" onClick={() => {
@@ -159,7 +205,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                         </Modal.Header>
                         <Modal.Body>
                         <form>
-                          
+                          <label>Nome:</label>
                           <input className="inputNome" type="text" name="nome"onChange={post}/>
 
                           </form>
@@ -179,12 +225,6 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                           
                             //realiza o cadastro
                             cadastrar()
-                            //exibir notificação de sucesso
-                            sucesso()
-                             //atualiza a página depois de um tempo
-                            setInterval(function () {window.location.reload();}, 1500);
-                           
-                            
 
                         }}>
                             Cadastrar
@@ -203,7 +243,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                         </Modal.Footer>
                     </Modal>
 
-         {/*Tabela que irá mostrar as areas */}         
+         {/*Tabela que irá mostrar as áreas */}         
         <table className="table">
 
 <thead className="table-dark">
@@ -268,7 +308,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                             //efetua a alteração através do cadastro, pois puxa pelo indice que tem o id
                             cadastrar()
                             //exibir notificação de sucesso
-                            sucessoAlterar()
+                            
                             //atualiza a página depois de um tempo
                             setInterval(function () {window.location.reload();}, 1500);
                            
