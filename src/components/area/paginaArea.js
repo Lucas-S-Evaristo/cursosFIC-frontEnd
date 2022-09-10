@@ -9,13 +9,14 @@ import  {ToastContainer,toast}  from  'react-toastify' ;
 import  'react-toastify/dist/ReactToastify.css' ;
 
 
-
+//função pra listar todos as areas cadastradas
 function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar) {
 
+  //enviar notificação de sucesso
   sucesso = () => {
     toast.success("Cadastrado com Sucesso!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -23,11 +24,11 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
       draggable: true,
       progress: undefined,})
    }
-
+//enivar notiificação de sucesso ao Alterar
    sucessoAlterar = () => {
     toast.success("Alterado com Sucesso!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -42,7 +43,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
        
       }
 
-      
+      //faz uma requisição ao back-end de cadastro
       cadastrar = () => {
         fetch("http://localhost:8080/api/area", {
           method: 'post',
@@ -59,7 +60,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
           
         })
       }
-
+      //faz uma requisição ao back-end de excluir
       excluir = (id) => {
         fetch("http://localhost:8080/api/area/"+id, {
           method: 'delete',
@@ -96,19 +97,20 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
 
         })
       }
-
+      //captura dados digitados no formulario
       post = (e) => {
   
         console.log(e.target)
         setObjArea({ ...objArea, [e.target.name]: e.target.value })
       }
-
+    //useEffect faz a requisição com o back end pra receber as areas e enviar ao use State
     useEffect(() => {
         fetch("http://localhost:8080/api/area")
         .then(retorno => retorno.json())
-        .then(retorno_convertido => setArea(retorno_convertido))//retorno convertido tem a lista de todos os cursos
+        .then(retorno_convertido => setArea(retorno_convertido))//retorno convertido tem a lista de todos as areas
     }, [])
 
+     //pega os valores da area e passa para o input
     selecionarArea = (indice) => {
 
         setObjArea(areas[indice])
@@ -133,12 +135,13 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
    const [btnCadastro, setBtnCadastro] = useState(true)
 
     return (
-
+        //cadastro de area
         <div className="botaoCadastrar">
         <h1 className="titulo">Lista de Area</h1>
 
         <div>
         <Button variant="primary" className="botaoCadastrar" onClick={() => {
+          //abre a segunda modal
             handleShow2()
 
             }}>
@@ -146,6 +149,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
         </Button>
         </div>
 
+         {/*modal de cadastro */}     
         <Modal
                         show={show2}
                         onHide={handleClose2}
@@ -155,6 +159,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                         </Modal.Header>
                         <Modal.Body>
                         <form>
+                          
                           <input className="inputNome" type="text" name="nome"onChange={post}/>
 
                           </form>
@@ -162,7 +167,9 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                         </Modal.Body>
                         <Modal.Footer>
                         <Button type="submit" variant="danger" onClick={() => {
+                          //fecha a segunda modal
                           handleClose2()
+                          //recarrega a página
                           window.location.reload()
                           }}>
                             Fechar
@@ -170,18 +177,21 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
 
                         <Button type='button' variant="warning" onClick={() => {
                           
+                            //realiza o cadastro
                             cadastrar()
+                            //exibir notificação de sucesso
                             sucesso()
-                            setInterval(function () {window.location.reload();}, 6000);
+                             //atualiza a página depois de um tempo
+                            setInterval(function () {window.location.reload();}, 1500);
                            
                             
 
                         }}>
                             Cadastrar
                         </Button>
-
+                         {/*trás a notificação de sucesso*/}
                         <ToastContainer position="top-center"
-                          autoClose={5000}
+                          autoClose={1500}
                           hideProgressBar={false}
                           newestOnTop={false}
                           closeOnClick
@@ -193,6 +203,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                         </Modal.Footer>
                     </Modal>
 
+         {/*Tabela que irá mostrar as areas */}         
         <table className="table">
 
 <thead className="table-dark">
@@ -207,8 +218,9 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
 
         <tbody>
             {
-            
+                //trás os dados da área
                 areas.map((obj, indice) => (
+                  //atribui uma chave para a linha, ao qual obtem os dados das áreas
                     <tr key={indice}>
                         <td  >{obj.id}</td>
                        
@@ -216,7 +228,9 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                     
                         <td><button className="btn btn-danger" onClick={() => excluir(obj.id)}>Excluir</button></td>
                         <td> <Button variant="warning" onClick={() => {
+                           //puxa os valores/dados da área pelo indice
                             selecionarArea(indice)
+                            //abre a primeira modal
                             handleShow()
 
                         }}>
@@ -224,7 +238,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                             </Button>
                         </td>
 
-                    
+                    {/*modal de alterar */}
                     <Modal
                         show={show}
                         onHide={handleClose}
@@ -234,6 +248,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                         </Modal.Header>
                         <Modal.Body>
                         <form>
+                          <label>Nome:</label>
                           <input className="inputNome" type="text" name="nome" defaultValue={objArea.nome} onChange={post}/>
 
                           </form>
@@ -241,17 +256,21 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                         </Modal.Body>
                         <Modal.Footer>
                         <Button type="submit" variant="danger" onClick={() => {
+                          //fecha a modal
                           handleClose()
+                          //atualiza a página
                           window.location.reload()
                           }}>
                             Fechar
                         </Button>
 
                         <Button type='button' variant="warning" onClick={() => {
-                          
+                            //efetua a alteração através do cadastro, pois puxa pelo indice que tem o id
                             cadastrar()
+                            //exibir notificação de sucesso
                             sucessoAlterar()
-                            setInterval(function () {window.location.reload();}, 6000);
+                            //atualiza a página depois de um tempo
+                            setInterval(function () {window.location.reload();}, 1500);
                            
                             
 
@@ -259,6 +278,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar)
                             Alterar
                         </Button>
 
+                        {/*trás a notificação de sucesso*/}
                         <ToastContainer position="top-center"
                           autoClose={5000}
                           hideProgressBar={false}
