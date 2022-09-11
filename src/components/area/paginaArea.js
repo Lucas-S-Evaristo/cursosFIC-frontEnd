@@ -10,11 +10,11 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 //função pra listar todos as areas cadastradas
-function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar, erroCad) {
+function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar, erroCad, alterar) {
 
   //enviar notificação de sucesso
   sucesso = () => {
-    toast.success("Ação realizada com sucesso!", {
+    toast.success("Cadastro realizado com sucesso!", {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
@@ -70,7 +70,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
         
         .then(retorno => {
           //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-          if(retorno.status == 409){
+          if(retorno.status === 409){
             erroCad()
           }else {
             //faz o processo de cadastro
@@ -88,17 +88,51 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
           }
         })
       }
+
+      alterar = () => {
+        fetch("http://localhost:8080/api/area", {
+          method: 'post',
+          body: JSON.stringify(objArea),
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+          }
+    
+        })
+
+        
+        .then(retorno => {
+          //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+          if(retorno.status === 409){
+            erroCad()
+          }else {
+            //faz o processo de cadastro
+            retorno.json()
+        .then(retorno_convertido => {
+
+          
+           //exibir notificação de sucesso
+           sucessoAlterar()
+           //atualiza a página depois de um tempo
+          setInterval(function () {window.location.reload();}, 1500);
+          console.log(retorno_convertido)
+        }
+        )
+          }
+        })
+      }
       //faz uma requisição ao back-end de excluir
       excluir = async (id) => {
+        
         let result = await fetch("http://localhost:8080/api/area/"+id, {
            method: 'delete',
            
-     
          })
          if(result) {
            getAreas() 
+           
          }
- 
+         
        }
       //captura dados digitados no formulario
       post = (e) => {
@@ -174,6 +208,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
         <h1 className="titulo">Lista de Area</h1>
 
         <form>
+          
             <label>Buscar Áreas</label>
             <input
                 //faz a busca de áreas
@@ -306,7 +341,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
 
                         <Button type='button' variant="warning" onClick={() => {
                             //efetua a alteração através do cadastro, pois puxa pelo indice que tem o id
-                            cadastrar()
+                            alterar()
                             //exibir notificação de sucesso
                             
                             //atualiza a página depois de um tempo

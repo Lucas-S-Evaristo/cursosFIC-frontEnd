@@ -7,6 +7,9 @@ import  {ToastContainer,toast}  from  'react-toastify' ;
 import  'react-toastify/dist/ReactToastify.css' ;
 
 
+
+
+
 //função pra cadastrar cursos
 function Formulario({ post, cadastrar, sucesso, erroCad }) {
 
@@ -43,6 +46,11 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
         preRequisito: "",
         conteudoProgramatico: "",
         sigla: "",
+        nivel: "",
+        area: {
+          id: ""
+        },
+        tipoAtendimento: "",
         cargaHoraria: 0,
         valor: 0
       }
@@ -50,7 +58,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
       //captura dados digitados no formulario
     post = (e) => {
   
-        console.log(e.target)
+        console.log(e.target.value)
         setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
       }
       //faz uma requisição ao back-end de cadastro
@@ -65,11 +73,14 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
     
         })
 
-        
         .then(retorno => {
           //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-          if(retorno.status == 409){
+          if(retorno.status === 409){
             erroCad()
+            
+          }else if(retorno.status === 400){
+            erroCad()
+            
           }else {
             //faz o processo de cadastro
             retorno.json()
@@ -87,19 +98,34 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
         })
       }
 
+      //get na api de area
       useEffect(() => {
         fetch("http://localhost:8080/api/area")
         .then(retorno => retorno.json())
         .then(retorno_convertido => setArea(retorno_convertido))//retorno convertido tem a lista de todos as areas
-    }, [])
+    }, []) 
 
-    
-
-    
+    //get na api de enum de tipo de atendimento
+      useEffect(() => {
+      fetch("http://localhost:8080/api/enum/tipoAtendimento")
+      .then(retorno => retorno.json())
+      .then(retorno_convertido => setTipoAtendimento(retorno_convertido))//retorno convertido tem a lista de todos as enum de tipoAtendimento
+  }, [])
+  
+  //get na api de enum de nivel do curso
+  useEffect(() => {
+    fetch("http://localhost:8080/api/enum/nivel")
+    .then(retorno => retorno.json())
+    .then(retorno_convertido => setNivel(retorno_convertido))//retorno convertido tem a lista de todos as enum de nivel
+}, []) 
 
       const [objCurso, setObjCurso] = useState(curso)
 
       const [area, setArea] = useState([])
+
+      const [nivel, setNivel] = useState([])
+
+      const [tipoAtendimento, setTipoAtendimento] = useState([])
 
 
     return (
@@ -107,8 +133,6 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
 
             {/*Formulario de cursos */}
             <form className="formulario">
-
-                
                 <h1>cadastrar cursos</h1>
 
                 <input
@@ -119,20 +143,17 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
                 />
                 
                 <label>selecione a area do Curso</label>
-                <select className="form-select form-select-sm   " aria-label=".form-select-sm example"  name="area" onChange={post}>
-                   
-                        
-                        {
-                            area.map((obj, indice) => (
-                                <option key={indice}>
-                                {obj.nome}
-                                </option>
-                            )
-                            )
-                        }
- 
-                   
+                <select className="form-select form-select-sm" aria-label=".form-select-sm example"  name="area" onChange={post}>
+                              
+              {
+                  area.map((obj) => (
+                      <option key={obj.id}>
+                      {obj.nome}
+                      </option>
+                  ))}
+
                 </select>
+
                 <input
                     required
                     name="objetivo" className="obj_curso"
@@ -160,26 +181,38 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
                 />
 
                 <label>selecione o nivel do curso</label>
-                <select className="form-select form-select-sm" aria-label=".form-select-sm example">
-                    <option onChange={post} ></option>
-                </select>
+                <select onChange={post} name="nivel" className="form-select form-select-sm" aria-label=".form-select-sm example">
+                   {
+                    nivel.map((obj, indice) => (
+                      
+                    <option key={indice} value={obj}>
+                      {obj}
+                    </option>
+                  ))}
+                </select> 
 
                 <label>selecione o tipo de atendimento</label>
-                <select className="form-select form-select-sm" aria-label=".form-select-sm example" >
-                    <option>
+                <select name="tipoAtendimento" onChange={post} className="form-select form-select-sm" aria-label=".form-select-sm example" >
+                    {
+                    tipoAtendimento.map((obj, indice) => (
+                      
+                    <option key={indice} value={obj}>
+                      
+                      {obj}
                       
                     </option>
+                  ))}
                 </select>
                 <input
                     required
                     name="cargaHoraria" className="carga_horaria"
-                    type="text" placeholder="Carga horaria"
+                    type="number" placeholder="Carga horaria"
                     onChange={post}
                 />
                 <input
                     required
                     name="valor" className="valor_cursos"
-                    type="text" placeholder="valor"
+                    type="number" placeholder="valor"
                     onChange={post}
                 />
                 <button type='button' className="botao" onClick={() => {

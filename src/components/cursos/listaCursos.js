@@ -181,36 +181,36 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso, sucess
 
         <tbody>
             {
-                //trás os dados do curso
-                cursos.map((obj, indice) => (
-                  //atribui uma chave para a linha, ao qual obtem os dados dos cursos
-                    <tr key={indice}>
-                        <td  >{obj.id}</td>
-                       
-                        <td>{obj.nome}</td>
-                    
-                        <td>{obj.cargaHoraria}</td>
-                        <td>{obj.conteudoProgramatico}</td>
-                        
-                        <td>{obj.nivel}</td>
-                        <td>{obj.objetivo}</td>
-                        <td>{obj.preRequisito}</td>
-                        <td>{obj.sigla}</td>
-                        <td>{obj.tipoAtendimento}</td>
-                        <td>{obj.area}</td>
-                        <td><button type='button' className="btn btn-danger" onClick={() => { 
-                          //excluir curso pelo id
-                          excluir(obj.id)
-                          
-                        }}>Excluir</button></td>
-                        <td> <Button variant="warning" onClick={() => {
-                            //puxa os valores/dados do curso pelo indice
-                            selecionarCurso(indice)
-                            //chama a modal
-                            handleShow()
-                            
+      //trás os dados do curso
+      cursos.map((obj, indice) => (
+        //atribui uma chave para a linha, ao qual obtem os dados dos cursos
+          <tr key={indice}>
+              <td  >{obj.id}</td>
+              
+              <td>{obj.nome}</td>
+          
+              <td>{obj.cargaHoraria}</td>
+              <td>{obj.conteudoProgramatico}</td>
+              
+              <td>{obj.nivel}</td>
+              <td>{obj.objetivo}</td>
+              <td>{obj.preRequisito}</td>
+              <td>{obj.sigla}</td>
+              <td>{obj.tipoAtendimento}</td>
+              <td>{obj.area}</td>
+              <td><button type='button' className="btn btn-danger" onClick={() => { 
+                //excluir curso pelo id
+                excluir(obj.id)
+                
+              }}>Excluir</button></td>
+              <td> <Button variant="warning" onClick={() => {
+                  //puxa os valores/dados do curso pelo indice
+                  selecionarCurso(indice)
+                  //chama a modal
+                  handleShow()
+                  
 
-                        }}>
+              }}>
                                 Alterar
                             </Button>
                         </td>
