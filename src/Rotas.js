@@ -1,13 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import ListaUsuario from './components/Usuario/ListaUsuario';
-import FormUsuario from './components/Usuario/FormUsuario';
+import CadUsuario from './components/Usuario/CadUsuario';
 
 function Rotas(){
 
     return (
         <Routes>
-            <Route path='/' element={<FormUsuario/>}/>
-            <Route path='/listaUsuario' element={<ListaUsuario/>}/>
+            <Route path='/' element={<CadUsuario/>}/>
         </Routes>
     )
 }
