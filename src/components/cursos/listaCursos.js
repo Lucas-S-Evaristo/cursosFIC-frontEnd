@@ -11,7 +11,7 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 //função pra listar todos os cursos cadastrados
-function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso, sucessoExcluir}){
+function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
 
   //enviar notificação de sucesso
   sucesso = () => {
@@ -85,8 +85,6 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso, sucess
         }
 
       }
-
-       
       //pega os valores do curso e passa para o input
       selecionarCurso = (indice) => {
 
@@ -94,6 +92,20 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso, sucess
         setObjCurso(cursos[indice])
         
       }
+
+      //get na api de enum de tipo de atendimento
+      useEffect(() => {
+        fetch("http://localhost:8080/api/enum/tipoAtendimento")
+        .then(retorno => retorno.json())
+        .then(retorno_convertido => setTipoAtendimento(retorno_convertido))//retorno convertido tem a lista de todos as enum de tipoAtendimento
+    }, [])
+    
+      //get na api de enum de nivel do curso
+      useEffect(() => {
+        fetch("http://localhost:8080/api/enum/nivel")
+        .then(retorno => retorno.json())
+        .then(retorno_convertido => setNivel(retorno_convertido))//retorno convertido tem a lista de todos as enum de nivel
+    }, []) 
 
 
     const [cursos, setCursos] = useState([])
@@ -104,6 +116,10 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso, sucess
   
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [nivel, setNivel] = useState([])
+
+    const [tipoAtendimento, setTipoAtendimento] = useState([])
 
 
 
@@ -241,18 +257,45 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso, sucess
                           <label>Pré-Requisito:</label>
                           <input type="text" className="inputNome" name="preRequisito" defaultValue={objCurso.preRequisito} onChange={post}/>
 
-                          <label>conteúdo Programático:</label>
-                          <input type="text" className="inputNome" name="conteudoProgramatico" defaultValue={objCurso.conteudoProgramatico} onChange={post}/>
+                          <label>Conteúdo Programático:</label>
+                          <input type="text" className="inputNome" name="conteudoProgramatico" 
+                          defaultValue={objCurso.conteudoProgramatico} onChange={post}/>
 
                           <label>Sigla:</label>
                           <input type="text" className="inputNome" name="sigla" defaultValue={objCurso.sigla} onChange={post}/>
 
-                          <label>carga Horária:</label>
+                          <label>Carga Horária:</label>
                           <input type="text" className="inputNome" name="cargaHoraria" defaultValue={objCurso.cargaHoraria} onChange={post}/>
 
                           <label>Valor:</label>
                           <input type="text" className="inputNome" name="valor" defaultValue={objCurso.valor} onChange={post}/>
 
+
+                          <label>Nivel:</label>
+                          <select onChange={post} name="nivel" className="form-select form-select-sm" 
+                          aria-label=".form-select-sm example" defaultValue={objCurso.nivel}>
+                            {
+                              nivel.map((obj, indice) => (
+                                
+                              <option key={indice} value={obj}>
+                                {obj}
+                              </option>
+                            ))}
+                          </select> 
+
+                          <label>Tipo de atendimento:</label>
+                          <select name="tipoAtendimento" onChange={post} className="form-select form-select-sm" 
+                          aria-label=".form-select-sm example" defaultValue={objCurso.tipoAtendimento} >
+                              {
+                              tipoAtendimento.map((obj, indice) => (
+                                
+                              <option key={indice} value={obj}>
+                                
+                                {obj}
+                                
+                              </option>
+                            ))}
+                          </select>
                           </form>
                         
                         </Modal.Body>

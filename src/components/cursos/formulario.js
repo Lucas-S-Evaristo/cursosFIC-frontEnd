@@ -47,9 +47,6 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
         conteudoProgramatico: "",
         sigla: "",
         nivel: "",
-        area: {
-          id: ""
-        },
         tipoAtendimento: "",
         cargaHoraria: 0,
         valor: 0
