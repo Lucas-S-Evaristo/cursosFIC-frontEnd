@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
+import Input from '@material-ui/core/Input';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -97,19 +98,19 @@ const msgAlteracao = () => {
 
 
 const PgPricipal = () => {
-  const [instrutor, setInstrutor] = useState([]);
+  const [horario, setHorario] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
-  const [idistrutor, setidisntrutor] = useState([])
-  const [nomeistrutor, setnomeisntrutor] = useState([])
+  const [idiHorario, setidHorario] = useState([]);
+  const [pegarHorario, setpegarHorario] = useState([])
   const classes = useStyles();
   const modalCadastroAbrindo = () => setOpen(true);
   const modalCadastroFechando = () => setOpen(false);
-  const modalAlterarAbrindo = (id, nome) => {
+  const modalAlterarAbrindo = (id, horario) => {
     setOpen2(true)
-    setidisntrutor(id)
-    setnomeisntrutor(nome)
+    setidHorario(id)
+    setpegarHorario(horario)
 
   };
   const modalAlterarFechando = () => {
@@ -142,7 +143,7 @@ const PgPricipal = () => {
 
 
   useEffect(() => {
-    getiInstrutor();
+    getiHorario();
    
     
     
@@ -152,13 +153,13 @@ const PgPricipal = () => {
   }, []);
 
 
-  const getiInstrutor = async () => {
-    let result = await fetch(`http://localhost:8080/api/instrutor`)
+  const getiHorario = async () => {
+    let result = await fetch(`http://localhost:8080/api/horario`)
     result = await result.json();
-    setInstrutor(result)
+    setHorario(result)
 
   }
-  console.log(instrutor)
+  
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -181,36 +182,20 @@ const PgPricipal = () => {
     },
   }));
 
-
-  const buscarInstrutor = async (event) => {
-    let key = event.target.value;
-    if (key) {
-      let result = await fetch(`http://localhost:8080/api/instrutor/buscar/${key}`)
-      result = await result.json();
-      if (result) {
-        setInstrutor(result)
-
-      }
-
-    } else {
-      getiInstrutor();
-    }
-  }
-  const deleteinstrutor = async (id) => {
-    let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
+  const deletetarHorario = async (id) => {
+    let result = await fetch(`http://localhost:8080/api/horario/${id}`, {
       method: "DELETE"
     });
 
     if (result) {
-     
-
-      getiInstrutor();
+  
+      getiHorario();
 
     }
 
 
   }
-  const cadastroInstrutor = async (event) => {
+  const cadastroHorario = async (event) => {
 
     
     const formData = new FormData(event.target)
@@ -225,7 +210,7 @@ const PgPricipal = () => {
     }
     console.warn(data)
 
-    let result = await fetch(`http://localhost:8080/api/instrutor`, {
+    let result = await fetch(`http://localhost:8080/api/horario`, {
       method: 'post',
       body: JSON.stringify(data),
       headers: {
@@ -234,24 +219,24 @@ const PgPricipal = () => {
       }
     })
     if (result) {
-      getiInstrutor();
+      getiHorario();
     }
 
   }
-  const alterainstrutor = async (event) => {
-
+  const alteraHorario = async (event) => {
+   
     console.warn(event.target)
 
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
     console.warn("teste", data)
     let obgj = {
-      id: idistrutor,
-      nome: data.nome
+      id: idiHorario,
+      horario: data.horario
 
     }
     console.warn(obgj)
-    let result = await fetch(`http://localhost:8080/api/instrutor/${idistrutor}`, {
+    let result = await fetch(`http://localhost:8080/api/horario/${idiHorario}`, {
       method: 'PUT',
       body: JSON.stringify(obgj),
       headers: {
@@ -262,9 +247,7 @@ const PgPricipal = () => {
 
     if (result) {
       console.warn("ENTREEEEI")
-      setOpen3(true)
-      
-      getiInstrutor();
+      getiHorario();
       
     }
 
@@ -294,7 +277,7 @@ const PgPricipal = () => {
       </a>
       <Divider />
       <List>
-        <Button onClick={modalCadastroAbrindo} style={{ margin: 10 }} variant="contained">cadastrar  isntrutor</Button>
+        <Button onClick={modalCadastroAbrindo} style={{ margin: 10 }} variant="contained">cadastrar  Horaio</Button>
 
         <Modal
           open={open}
@@ -304,9 +287,10 @@ const PgPricipal = () => {
 
         >
           <Box sx={style}>
-            <h2 id="transition-modal-title">cadastro de instrutor</h2>
-            <form onSubmit={cadastroInstrutor} >
-              <TextField name="nome" type="text" label="nome" variant="outlined" />
+            <h2 id="transition-modal-title">cadastro de horario</h2>
+            <form onSubmit={cadastroHorario} >
+              <TextField name="horario" type="time" label="horario" variant="outlined" 
+           />
               <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
             </form>
           </Box>
@@ -396,33 +380,31 @@ const PgPricipal = () => {
       >
         <Toolbar />
 
-        <TextField fullWidth onChange={buscarInstrutor} style={{ marginBottom: 25 }} label="buscar istrutor" id="fullWidth" type="text" name="parametro" required="required" />
         <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
           This is a success message!
         </Alert>
-        </Snackbar>
+      </Snackbar>
       
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
                 <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell align="right">NOME</StyledTableCell>
+                <StyledTableCell align="right">Horario cadastrado</StyledTableCell>
                 <StyledTableCell align="right">DELETAR</StyledTableCell>
                 <StyledTableCell align="right">ALTERAR</StyledTableCell>
-
               </TableRow>
             </TableHead>
             <TableBody>
-              {instrutor.map((obj) => (
+              {horario.map((obj) => (
                 <StyledTableRow key={obj.id}>
                   <StyledTableCell component="th" scope="row">
                     {obj.id}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{obj.nome}</StyledTableCell>
-                  <StyledTableCell align="right">< Button onClick={() => deleteinstrutor(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
-                  <StyledTableCell align="right">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.nome)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
+                  <StyledTableCell align="right">{obj.horario}</StyledTableCell>
+                  <StyledTableCell align="right">< Button onClick={() => deletetarHorario(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
+                  <StyledTableCell align="right">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.horario)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
                   <Modal
                     open={open2}
                     onClose={modalAlterarFechando}
@@ -431,14 +413,11 @@ const PgPricipal = () => {
 
                   >
                     <Box sx={style}>
-                      <h2 id="transition-modal-title">alterar insturtor</h2>
-                      <form onSubmit={alterainstrutor }  >
-                        <TextField name="nome" type="text" label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor} variant="outlined" />
+                      <h2 id="transition-modal-title">alterar horario</h2>
+                      <form onSubmit={alteraHorario}  >
+                        <TextField name="horario" type="time" label="horario" defaultValue={pegarHorario}  variant="outlined" />
                         <Button variant="contained" style={{ margin: 10 }} type="submit"  >alterar</Button>
                       </form>
-
-
-
                     </Box>
                   </Modal>
                 </StyledTableRow>
