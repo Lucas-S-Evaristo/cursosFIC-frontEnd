@@ -36,6 +36,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import Alert from '@material-ui/lab/Alert';
 import { toast, ToastContainer, cssTransition } from 'react-toastify';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 
 
 
@@ -77,7 +80,7 @@ const msgAlteracao = () => {
 
     pauseOnHover: true,
 
-    theme: 'light',
+    theme: 'colored',
 
     // faz com que seja possivel arrastar
 
@@ -111,7 +114,9 @@ const PgPricipal = () => {
   const modalAlterarFechando = () => {
     setOpen2(false)
   };
-
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
   // metodo de msg de alteração feita com sucesso
 
@@ -304,8 +309,9 @@ const PgPricipal = () => {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
-  return (
+  
 
+  return (
 
 
 
@@ -370,20 +376,7 @@ const PgPricipal = () => {
         <Toolbar />
 
         <TextField fullWidth onChange={buscarInstrutor} style={{ marginBottom: 25 }} label="buscar istrutor" id="fullWidth" type="text" name="parametro" required="required" />
-       
-        <Box p={1}  m={1}    bgcolor="secondary.main" color="secondary.contrastText">
-        <ToastContainer 
-           
-            autoClose={1500}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-        </Box>
+      
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
