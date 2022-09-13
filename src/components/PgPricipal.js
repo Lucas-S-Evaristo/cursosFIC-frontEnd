@@ -100,6 +100,7 @@ const PgPricipal = () => {
   const [instrutor, setInstrutor] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
   const [idistrutor, setidisntrutor] = useState([])
   const [nomeistrutor, setnomeisntrutor] = useState([])
   const classes = useStyles();
@@ -114,9 +115,23 @@ const PgPricipal = () => {
   const modalAlterarFechando = () => {
     setOpen2(false)
   };
+ 
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
+
+  const handleClick = () => {
+    setOpen3(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen3(false);
+  };
+   
 
   // metodo de msg de alteração feita com sucesso
 
@@ -128,7 +143,10 @@ const PgPricipal = () => {
 
   useEffect(() => {
     getiInstrutor();
-    msgAlteracao();
+   
+    
+    
+    
 
 
   }, []);
@@ -184,6 +202,7 @@ const PgPricipal = () => {
     });
 
     if (result) {
+     
 
       getiInstrutor();
 
@@ -193,7 +212,7 @@ const PgPricipal = () => {
   }
   const cadastroInstrutor = async (event) => {
 
-    event.preventDefault();
+    
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
     console.warn("teste", data)
@@ -243,8 +262,10 @@ const PgPricipal = () => {
 
     if (result) {
       console.warn("ENTREEEEI")
+      setOpen3(true)
+      
       getiInstrutor();
-      msgAlteracao();
+      
     }
 
 
@@ -376,6 +397,11 @@ const PgPricipal = () => {
         <Toolbar />
 
         <TextField fullWidth onChange={buscarInstrutor} style={{ marginBottom: 25 }} label="buscar istrutor" id="fullWidth" type="text" name="parametro" required="required" />
+        <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          This is a success message!
+        </Alert>
+        </Snackbar>
       
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -406,9 +432,9 @@ const PgPricipal = () => {
                   >
                     <Box sx={style}>
                       <h2 id="transition-modal-title">alterar insturtor</h2>
-                      <form onSubmit={alterainstrutor} >
+                      <form onSubmit={alterainstrutor }  >
                         <TextField name="nome" type="text" label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor} variant="outlined" />
-                        <Button variant="contained" style={{ margin: 10 }} type="submit" >alterar</Button>
+                        <Button variant="contained" style={{ margin: 10 }} type="submit"  >alterar</Button>
                       </form>
 
 
