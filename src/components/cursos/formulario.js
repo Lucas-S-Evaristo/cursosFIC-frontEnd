@@ -9,7 +9,7 @@ import  'react-toastify/dist/ReactToastify.css' ;
 //função pra cadastrar cursos
 
 
-function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
+function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manterDadosPag, erroCadSelect  }) {
 
   const [idArea, setIdArea] = useState()
 
@@ -31,8 +31,6 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
 
   const [valueTipoAtend, setValueTip] = useState()
 
-  
-
   curso  = {
     id: 0,
     nome: nome,
@@ -47,6 +45,11 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
     tipoAtendimento: valueTipoAtend,
     cargaHoraria: cargaHoraria,
     valor: valor
+  }
+
+  manterDadosPag = (e) => {
+    e.preventdefault()
+
   }
 
   const [objCurso, setObjCurso] = useState(curso)
@@ -66,6 +69,18 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
 
        erroCad = () => {
         toast.error("Preencha os campos corretamente!", {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'colored',
+          draggable: true,
+          progress: undefined,})
+       }
+
+       erroCadSelect = () => {
+        toast.error("Selecione os valores corretamente!", {
           position: "top-center",
           autoClose: 1500,
           hideProgressBar: false,
@@ -113,11 +128,18 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
           //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
           if(retorno.status === 409){
             erroCad()
-            
+            manterDadosPag()
           }else if(retorno.status === 400){
-            erroServ()
+            erroCad()
+            manterDadosPag()
             
-          }else {
+          }else if(retorno.status === 500){
+            erroCad()
+            manterDadosPag()
+        }else if(retorno.status === 418){
+          erroCadSelect()
+          manterDadosPag()
+      }else {
             //faz o processo de cadastro
             retorno.json()
         .then(retorno_convertido => {
@@ -168,16 +190,10 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
       console.warn("Sigla: ", sigla)
       console.warn("Nivel: ", valueNivel)
       console.warn("Tipo Atendimento: ", valueTipoAtend)
-
-
-     
+  
       const [area, setArea] = useState([])
 
-       
       
-
-      
-
     return (
         <div className="body">
 
@@ -193,9 +209,6 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
                     onChange={(e) => {
 
                       setNome(e.target.value)
-    
-                     
-    
                       }}
                 />
                 
@@ -209,6 +222,8 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
                   }
 
                   }>
+
+                    <option>ÁREA: </option>
                               
               {
                   area.map((obj) => (
@@ -276,6 +291,8 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
 
                 <label>selecione o nivel do curso</label>
                 <select value={valueNivel} onChange={(e) => {setValueNivel(e.target.value)}} name="nivel" className="form-select form-select-sm" aria-label=".form-select-sm example">
+
+                <option>NIVEL: </option>
                    {
                     nivel.map((obj, indice) => (
                       
@@ -287,6 +304,8 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
 
                 <label>selecione o tipo de atendimento</label>
                 <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTip(e.target.value)}} className="form-select form-select-sm" aria-label=".form-select-sm example" >
+                    
+                <option readonly>TIPO ATENDIMENTO: </option>
                     {
                     tipoAtendimento.map((obj, indice) => (
                       
@@ -326,10 +345,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
                 <button type='button' className="botao" onClick={() => {
                       //efetua o cadastro 
                     cadastrar()
-                    
-                   
-                    
-                    setInterval(function () {window.location.reload();}, 1500);
+
                     }}>cadastrar</button>
             <ToastContainer/>
             </form>

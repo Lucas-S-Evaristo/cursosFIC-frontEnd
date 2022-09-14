@@ -26,6 +26,10 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
       progress: undefined,})
 }
 
+
+
+    const [idArea, setIdArea] = useState()
+
     
 
     const cursoExcluir = {
@@ -34,10 +38,15 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
         objetivo: "",
         preRequisito: "",
         conteudoProgramatico: "",
+        area: {
+          id: 1
+        },
         sigla: "",
         cargaHoraria: 0,
         valor: 0
       }
+
+      const [objCurso, setObjCurso] = useState(cursoExcluir)
 
       //captura dados digitados no formulario
       post = (e) => {
@@ -107,10 +116,18 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
         .then(retorno_convertido => setNivel(retorno_convertido))//retorno convertido tem a lista de todos as enum de nivel
     }, []) 
 
+    //get na api de area
+    useEffect(() => {
+      fetch("http://localhost:8080/api/area")
+      .then(retorno => retorno.json())
+      .then(retorno_convertido => setArea(retorno_convertido))//retorno convertido tem a lista de todos as areas
+  }, []) 
+
+
 
     const [cursos, setCursos] = useState([])
 
-    const [objCurso, setObjCurso] = useState(cursoExcluir)
+    
 
     const [show, setShow] = useState(false);
   
@@ -118,6 +135,8 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
     const handleShow = () => setShow(true);
 
     const [nivel, setNivel] = useState([])
+
+    const [area, setArea] = useState([])
 
     const [tipoAtendimento, setTipoAtendimento] = useState([])
 
@@ -213,7 +232,7 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
               <td>{obj.preRequisito}</td>
               <td>{obj.sigla}</td>
               <td>{obj.tipoAtendimento}</td>
-              <td>{obj.area_id}</td>
+              <td>{obj.area.nome}</td>
               <td><button type='button' className="btn btn-danger" onClick={() => { 
                 //excluir curso pelo id
                 excluir(obj.id)
@@ -279,6 +298,24 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
                                 
                               <option key={indice} value={obj}>
                                 {obj}
+                              </option>
+                            ))}
+                          </select> 
+
+                          <label>Área:</label>
+                          <select name="area" className="form-select form-select-sm" defaultValue={objCurso.area.nome}
+                          aria-label=".form-select-sm example" onChange={(e) => {
+
+                            setIdArea(e.target.value)
+          
+                            post(e)
+          
+                            }}>
+                            {
+                              area.map((obj, indice) => (
+                                
+                              <option key={obj.id} >
+                                {obj.nome}
                               </option>
                             ))}
                           </select> 
