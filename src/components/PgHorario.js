@@ -97,7 +97,7 @@ const msgAlteracao = () => {
 }
 
 
-const PgPricipal = () => {
+const PgHorario = () => {
   const [horario, setHorario] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
@@ -289,26 +289,15 @@ const PgPricipal = () => {
           <Box sx={style}>
             <h2 id="transition-modal-title">cadastro de horario</h2>
             <form onSubmit={cadastroHorario} >
-              <TextField name="horario" type="time" label="horario" variant="outlined" 
+              <TextField name="horario" type="time" defaultValue="00:00:00" label="horario" variant="outlined" 
            />
               <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
             </form>
           </Box>
         </Modal>
       </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      
+      
     </div>
   );
 
@@ -389,22 +378,18 @@ const PgPricipal = () => {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
-              <TableRow>
-                <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell align="right">Horario cadastrado</StyledTableCell>
-                <StyledTableCell align="right">DELETAR</StyledTableCell>
-                <StyledTableCell align="right">ALTERAR</StyledTableCell>
+              <TableRow> 
+                <StyledTableCell align="center">Horario cadastrado</StyledTableCell>
+                <StyledTableCell align="center">DELETAR</StyledTableCell>
+                <StyledTableCell align="center">ALTERAR</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {horario.map((obj) => (
                 <StyledTableRow key={obj.id}>
-                  <StyledTableCell component="th" scope="row">
-                    {obj.id}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">{obj.horario}</StyledTableCell>
-                  <StyledTableCell align="right">< Button onClick={() => deletetarHorario(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
-                  <StyledTableCell align="right">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.horario)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
+                  <StyledTableCell align="center">{obj.horario}</StyledTableCell>
+                  <StyledTableCell align="center">< Button onClick={() => deletetarHorario(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
+                  <StyledTableCell align="center">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.horario)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
                   <Modal
                     open={open2}
                     onClose={modalAlterarFechando}
@@ -439,4 +424,4 @@ const PgPricipal = () => {
 /**  window: PropTypes.func,*/
 /**}; */
 
-export default PgPricipal;
+export default PgHorario;

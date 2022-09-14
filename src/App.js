@@ -1,6 +1,6 @@
 
 
-import PgPricipal from './components/PgPricipal'
+import PgPricipal from './components/PgHorario'
 import  React, { Component} from 'react';
 import { useEffect, useState } from 'react';
 
