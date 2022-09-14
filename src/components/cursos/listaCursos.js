@@ -182,7 +182,7 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
         
               <th>Carga Horaria:</th>
               <th>Conteúdo programático:</th>
-            
+              <th>Valor:</th>
               <th>Nivel:</th>
               <th>Objetivo:</th>
               <th>Pre Requisito:</th>
@@ -207,13 +207,13 @@ function ListaCursos({excluir, selecionarCurso, post, cadastrar, sucesso}){
           
               <td>{obj.cargaHoraria}</td>
               <td>{obj.conteudoProgramatico}</td>
-              
+              <td>{obj.valor}</td>
               <td>{obj.nivel}</td>
               <td>{obj.objetivo}</td>
               <td>{obj.preRequisito}</td>
               <td>{obj.sigla}</td>
               <td>{obj.tipoAtendimento}</td>
-              <td>{obj.area}</td>
+              <td>{obj.area_id}</td>
               <td><button type='button' className="btn btn-danger" onClick={() => { 
                 //excluir curso pelo id
                 excluir(obj.id)

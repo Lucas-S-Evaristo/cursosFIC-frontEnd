@@ -6,12 +6,50 @@ import  './styles.css'
 import  {ToastContainer,toast}  from  'react-toastify' ; 
 import  'react-toastify/dist/ReactToastify.css' ;
 
-
-
-
-
 //função pra cadastrar cursos
-function Formulario({ post, cadastrar, sucesso, erroCad }) {
+
+
+function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ  }) {
+
+  const [idArea, setIdArea] = useState()
+
+  const [nome, setNome] = useState()
+
+  const [objetivo, setObjetivo] = useState()
+
+  const [preRequisito, setPreRequisito] = useState()
+
+  const [conteudoProgramatico, setConteudoProgramatico] = useState()
+
+  const [sigla, setSigla] = useState()
+
+  const [cargaHoraria, setCargaHoraria] = useState()
+
+  const [valor, setValor] = useState()
+
+  const [valueNivel, setValueNivel] = useState()
+
+  const [valueTipoAtend, setValueTip] = useState()
+
+  
+
+  curso  = {
+    id: 0,
+    nome: nome,
+    objetivo: objetivo,
+    preRequisito: preRequisito,
+    conteudoProgramatico: conteudoProgramatico,
+    sigla: sigla,
+    area: {
+      id: idArea
+    },
+    nivel: valueNivel,
+    tipoAtendimento: valueTipoAtend,
+    cargaHoraria: cargaHoraria,
+    valor: valor
+  }
+
+  const [objCurso, setObjCurso] = useState(curso)
 
     //enviar notificação de sucesso
     sucesso = () => {
@@ -37,32 +75,33 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
           draggable: true,
           progress: undefined,})
        }
-    
 
-    const curso = {
-        id: 0,
-        nome: "",
-        objetivo: "",
-        preRequisito: "",
-        conteudoProgramatico: "",
-        sigla: "",
-        nivel: "",
-        tipoAtendimento: "",
-        cargaHoraria: 0,
-        valor: 0
-      }
+       erroServ = () => {
+        toast.error("Erro, tente novamente!", {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'colored',
+          draggable: true,
+          progress: undefined,})
+       }
 
       //captura dados digitados no formulario
     post = (e) => {
   
-        console.log(e.target.value)
+        console.log("digitado input: ", e.target.value)
         setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
+
       }
+
+      
       //faz uma requisição ao back-end de cadastro
       cadastrar = () => {
         fetch("http://localhost:8080/api/curso", {
           method: 'post',
-          body: JSON.stringify(objCurso),
+          body: JSON.stringify(curso),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json'
@@ -76,7 +115,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
             erroCad()
             
           }else if(retorno.status === 400){
-            erroCad()
+            erroServ()
             
           }else {
             //faz o processo de cadastro
@@ -116,14 +155,28 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
     .then(retorno_convertido => setNivel(retorno_convertido))//retorno convertido tem a lista de todos as enum de nivel
 }, []) 
 
-      const [objCurso, setObjCurso] = useState(curso)
 
+        const [nivel, setNivel] = useState([])
+
+        const [tipoAtendimento, setTipoAtendimento] = useState([])
+
+      console.warn("ID AREA: ", idArea)
+      console.warn("nome: ", nome)
+      console.warn("objetivo: ", objetivo)
+      console.warn("pre Req: ", preRequisito)
+      console.warn("Conteudo prog: ", conteudoProgramatico)
+      console.warn("Sigla: ", sigla)
+      console.warn("Nivel: ", valueNivel)
+      console.warn("Tipo Atendimento: ", valueTipoAtend)
+
+
+     
       const [area, setArea] = useState([])
 
-      const [nivel, setNivel] = useState([])
+       
+      
 
-      const [tipoAtendimento, setTipoAtendimento] = useState([])
-
+      
 
     return (
         <div className="body">
@@ -134,17 +187,33 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
 
                 <input
                     required
+                    value={nome}
                     name="nome" className="Nome"
                     type="text" placeholder="Nome do curso"
-                    onChange={post}
+                    onChange={(e) => {
+
+                      setNome(e.target.value)
+    
+                     
+    
+                      }}
                 />
                 
                 <label>selecione a area do Curso</label>
-                <select className="form-select form-select-sm" aria-label=".form-select-sm example"  name="area" onChange={post}>
+                <select value={idArea} className="form-select form-select-sm" aria-label=".form-select-sm example"  name="area" onChange={(e) => {
+
+                  setIdArea(e.target.value)
+
+                  post(e)
+
+                  }
+
+                  }>
                               
               {
                   area.map((obj) => (
-                      <option key={obj.id}>
+                    
+                      <option id="idArea" name="area" key={obj.id} value={obj.id}>
                       {obj.nome}
                       </option>
                   ))}
@@ -155,45 +224,73 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
                     required
                     name="objetivo" className="obj_curso"
                     type="text" placeholder="objetivo do curso"
-                    onChange={post}
+                    value={objetivo}
+                    onChange={(e) => {
+
+                      setObjetivo(e.target.value)
+    
+                      post(e)
+    
+                      }}
 
                 />
                 <input
                     required
                     name="preRequisito" className="req_pré"
                     type="text" placeholder="Pré requisito"
-                    onChange={post}
+                    value={preRequisito}
+                    onChange={(e) => {
+
+                      setPreRequisito(e.target.value)
+    
+                      post(e)
+    
+                      }}
                 />
                 <input
                     required
                     name="conteudoProgramatico" className="cont_prog"
                     type="text" placeholder="Conteúdo programático"
-                    onChange={post}
+                    value={conteudoProgramatico}
+                    onChange={(e) => {
+
+                      setConteudoProgramatico(e.target.value)
+    
+                      post(e)
+    
+                      }}
                 />
                 <input
                     required
                     name="sigla" className="sigla"
                     type="text" placeholder="Sigla do curso"
-                    onChange={post}
+                    value={sigla}
+                    onChange={(e) => {
+
+                      setSigla(e.target.value)
+    
+                      post(e)
+    
+                      }}
                 />
 
                 <label>selecione o nivel do curso</label>
-                <select onChange={post} name="nivel" className="form-select form-select-sm" aria-label=".form-select-sm example">
+                <select value={valueNivel} onChange={(e) => {setValueNivel(e.target.value)}} name="nivel" className="form-select form-select-sm" aria-label=".form-select-sm example">
                    {
                     nivel.map((obj, indice) => (
                       
-                    <option key={indice} value={obj}>
+                    <option key={indice} defaultValue={obj}>
                       {obj}
                     </option>
                   ))}
                 </select> 
 
                 <label>selecione o tipo de atendimento</label>
-                <select name="tipoAtendimento" onChange={post} className="form-select form-select-sm" aria-label=".form-select-sm example" >
+                <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTip(e.target.value)}} className="form-select form-select-sm" aria-label=".form-select-sm example" >
                     {
                     tipoAtendimento.map((obj, indice) => (
                       
-                    <option key={indice} value={obj}>
+                    <option key={indice} defaultValue={obj}>
                       
                       {obj}
                       
@@ -204,17 +301,33 @@ function Formulario({ post, cadastrar, sucesso, erroCad }) {
                     required
                     name="cargaHoraria" className="carga_horaria"
                     type="number" placeholder="Carga horaria"
-                    onChange={post}
+                    value={cargaHoraria}
+                    onChange={(e) => {
+
+                      setCargaHoraria(e.target.value)
+    
+                      post(e)
+    
+                      }}
                 />
                 <input
                     required
                     name="valor" className="valor_cursos"
                     type="number" placeholder="valor"
-                    onChange={post}
+                    value={valor}
+                    onChange={(e) => {
+
+                      setValor(e.target.value)
+    
+                      post(e)
+    
+                      }}
                 />
                 <button type='button' className="botao" onClick={() => {
                       //efetua o cadastro 
                     cadastrar()
+                    
+                   
                     
                     setInterval(function () {window.location.reload();}, 1500);
                     }}>cadastrar</button>
