@@ -34,10 +34,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Alert from '@material-ui/lab/Alert';
-import { toast, ToastContainer, cssTransition } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+
+
 
 
 
@@ -68,7 +71,37 @@ const msgAlteracao = () => {
 
   console.log("entrei")
 
-  toast.success("Usuário Alterado com Sucesso", {
+  toast.success("Instrutor Alterado com Sucesso", {
+
+    position: "top-right",
+
+    autoClose: 1500,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: 'colored',
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined
+
+
+
+
+  })
+
+}
+const msgCadastrando = () => {
+
+  console.log("entrei")
+
+  toast.success("Instrutor Cadastrado  com Sucesso", {
 
     position: "top-right",
 
@@ -97,12 +130,13 @@ const msgAlteracao = () => {
 
 
 const PgPricipal = () => {
+
   const [instrutor, setInstrutor] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
-  const [open3, setOpen3] = React.useState(false);
   const [idistrutor, setidisntrutor] = useState([])
   const [nomeistrutor, setnomeisntrutor] = useState([])
+  const [pegandoMensagem, setpegandoMensage] = useState([])
   const classes = useStyles();
   const modalCadastroAbrindo = () => setOpen(true);
   const modalCadastroFechando = () => setOpen(false);
@@ -115,23 +149,9 @@ const PgPricipal = () => {
   const modalAlterarFechando = () => {
     setOpen2(false)
   };
- 
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
-  const handleClick = () => {
-    setOpen3(true);
-  };
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
 
-    setOpen3(false);
-  };
-   
 
   // metodo de msg de alteração feita com sucesso
 
@@ -140,13 +160,12 @@ const PgPricipal = () => {
 
 
 
-
   useEffect(() => {
+
+
     getiInstrutor();
-   
-    
-    
-    
+
+
 
 
   }, []);
@@ -202,7 +221,7 @@ const PgPricipal = () => {
     });
 
     if (result) {
-     
+
 
       getiInstrutor();
 
@@ -211,8 +230,7 @@ const PgPricipal = () => {
 
   }
   const cadastroInstrutor = async (event) => {
-
-    
+    event.preventDefault();
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
     console.warn("teste", data)
@@ -233,13 +251,21 @@ const PgPricipal = () => {
         'Accept': 'application/json'
       }
     })
-    if (result) {
+
+    if(result){
+
+      alert("erro")
+    }
+    else if (result) {
+      console.warn("oi")
+      msgCadastrando();
+      setOpen(false)
       getiInstrutor();
     }
 
   }
   const alterainstrutor = async (event) => {
-
+    event.preventDefault()
     console.warn(event.target)
 
     const formData = new FormData(event.target)
@@ -262,10 +288,16 @@ const PgPricipal = () => {
 
     if (result) {
       console.warn("ENTREEEEI")
-      setOpen3(true)
-      
+
+
+      msgAlteracao();
+      setOpen2(false);
       getiInstrutor();
-      
+
+
+
+
+
     }
 
 
@@ -306,39 +338,40 @@ const PgPricipal = () => {
           <Box sx={style}>
             <h2 id="transition-modal-title">cadastro de instrutor</h2>
             <form onSubmit={cadastroInstrutor} >
-              <TextField name="nome" type="text" label="nome" variant="outlined" />
+              <TextField name="nome" type="text" label="nome"  variant="outlined" />
               <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
             </form>
           </Box>
         </Modal>
       </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <ToastContainer position="top-right"
+
+        autoClose={1500}
+
+        hideProgressBar={false}
+
+        newestOnTop={false}
+
+        closeOnClick
+
+        rtl={false}
+
+        pauseOnFocusLoss
+
+        draggable
+
+        pauseOnHover
+
+      />
+
     </div>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
-  
+
 
   return (
-
-
-
-
-
-
 
     <Box sx={{ display: 'flex' }}>
 
@@ -397,32 +430,26 @@ const PgPricipal = () => {
         <Toolbar />
 
         <TextField fullWidth onChange={buscarInstrutor} style={{ marginBottom: 25 }} label="buscar istrutor" id="fullWidth" type="text" name="parametro" required="required" />
-        <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          This is a success message!
-        </Alert>
-        </Snackbar>
-      
+
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
-              <TableRow>
-                <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell align="right">NOME</StyledTableCell>
-                <StyledTableCell align="right">DELETAR</StyledTableCell>
-                <StyledTableCell align="right">ALTERAR</StyledTableCell>
+              <TableRow> 
+                <StyledTableCell align="center">ID</StyledTableCell>
+                <StyledTableCell align="center">NOME</StyledTableCell>
+                <StyledTableCell align="center">DELETAR</StyledTableCell>
+                <StyledTableCell align="center">ALTERAR</StyledTableCell>
 
               </TableRow>
             </TableHead>
             <TableBody>
               {instrutor.map((obj) => (
                 <StyledTableRow key={obj.id}>
-                  <StyledTableCell component="th" scope="row">
-                    {obj.id}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">{obj.nome}</StyledTableCell>
-                  <StyledTableCell align="right">< Button onClick={() => deleteinstrutor(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
-                  <StyledTableCell align="right">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.nome)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
+                  <StyledTableCell align="center">{obj.id}</StyledTableCell>
+                  <StyledTableCell align="center">{obj.nome}</StyledTableCell>
+                  <StyledTableCell align="center">< Button onClick={() => deleteinstrutor(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
+                  <StyledTableCell align="center">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.nome)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
                   <Modal
                     open={open2}
                     onClose={modalAlterarFechando}
@@ -432,13 +459,10 @@ const PgPricipal = () => {
                   >
                     <Box sx={style}>
                       <h2 id="transition-modal-title">alterar insturtor</h2>
-                      <form onSubmit={alterainstrutor }  >
-                        <TextField name="nome" type="text" label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor} variant="outlined" />
-                        <Button variant="contained" style={{ margin: 10 }} type="submit"  >alterar</Button>
+                      <form onSubmit={alterainstrutor}  >
+                        <TextField name="nome" type="text" label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor}  variant="outlined" />
+                        <Button variant="contained" style={{ margin: 10 }} type="submit">alterar</Button>
                       </form>
-
-
-
                     </Box>
                   </Modal>
                 </StyledTableRow>
