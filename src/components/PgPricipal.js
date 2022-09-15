@@ -33,7 +33,6 @@ import Modal from '@mui/material/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -94,6 +93,31 @@ const msgAlteracao = () => {
   })
 
 }
+const msgDeletado = () => {
+  toast.success("Instrutor deletado com Sucesso", {
+
+    position: "top-right",
+
+    autoClose: 1500,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: 'colored',
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined
+
+
+  })
+
+}
 const msgCadastrando = () => {
 
   console.log("entrei")
@@ -124,17 +148,27 @@ const msgCadastrando = () => {
   })
 
 }
- const erroCad = () => {
-    toast.error("Preencha os campos corretamente!", {
-      position: "top-center",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      theme: 'colored',
-      draggable: true,
-      progress: undefined,})
-   }
+const erroCad = () => {
+  toast.warn("Preencha os campos corretamente!", {
+    position: "top-right",
+
+    autoClose: 1500,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: 'colored',
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined
+  })
+}
 
 
 const PgPricipal = () => {
@@ -172,6 +206,7 @@ const PgPricipal = () => {
 
 
     getiInstrutor();
+
 
 
 
@@ -229,9 +264,8 @@ const PgPricipal = () => {
     });
 
     if (result) {
-
-
       getiInstrutor();
+      msgDeletado();
 
     }
 
@@ -260,15 +294,18 @@ const PgPricipal = () => {
       }
     })
 
-    if(result.status === 409 ){
+    if (result.status === 409) {
       erroCad();
-      alert("erro")
+
     }
     else if (result) {
       console.warn("oi")
       msgCadastrando();
+
       setOpen(false)
+
       getiInstrutor();
+
     }
 
   }
@@ -293,18 +330,15 @@ const PgPricipal = () => {
         'Accept': 'application/json'
       }
     })
+    if (result.status === 409) {
 
-    if (result) {
-      console.warn("ENTREEEEI")
+      erroCad();
 
-
-      msgAlteracao();
+    } else if (result) {
+      console.warn("ENTREEEEI");
       setOpen2(false);
+      msgAlteracao();
       getiInstrutor();
-
-
-
-
 
     }
 
@@ -334,6 +368,7 @@ const PgPricipal = () => {
       </a>
       <Divider />
       <List>
+
         <Button onClick={modalCadastroAbrindo} style={{ margin: 10 }} variant="contained">cadastrar  isntrutor</Button>
 
         <Modal
@@ -342,16 +377,30 @@ const PgPricipal = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
 
+
         >
           <Box sx={style}>
             <h2 id="transition-modal-title">cadastro de instrutor</h2>
             <form onSubmit={cadastroInstrutor} >
-              <TextField name="nome" type="text" label="nome"  variant="outlined" />
+              <TextField name="nome" type="text" label="nome" variant="outlined" />
               <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
             </form>
           </Box>
         </Modal>
       </List>
+
+
+    </div>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+
+
+  return (
+
+
+    <Box sx={{ display: 'flex' }}>
       <ToastContainer position="top-right"
 
         autoClose={1500}
@@ -371,17 +420,6 @@ const PgPricipal = () => {
         pauseOnHover
 
       />
-
-    </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
-
-
-  return (
-
-    <Box sx={{ display: 'flex' }}>
 
       <CssBaseline />
       <AppBar
@@ -443,7 +481,7 @@ const PgPricipal = () => {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
-              <TableRow> 
+              <TableRow>
                 <StyledTableCell align="center">ID</StyledTableCell>
                 <StyledTableCell align="center">NOME</StyledTableCell>
                 <StyledTableCell align="center">DELETAR</StyledTableCell>
@@ -458,6 +496,7 @@ const PgPricipal = () => {
                   <StyledTableCell align="center">{obj.nome}</StyledTableCell>
                   <StyledTableCell align="center">< Button onClick={() => deleteinstrutor(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
                   <StyledTableCell align="center">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.nome)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
+
                   <Modal
                     open={open2}
                     onClose={modalAlterarFechando}
@@ -466,9 +505,10 @@ const PgPricipal = () => {
 
                   >
                     <Box sx={style}>
-                      <h2 id="transition-modal-title">alterar insturtor</h2>
+
+                      <h2 id="transition-modal-title">alterar instrutor</h2>
                       <form onSubmit={alterainstrutor}  >
-                        <TextField name="nome" type="text" label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor}  variant="outlined" />
+                        <TextField name="nome" type="text" label="nome" defaultValue={nomeistrutor} placeholder={nomeistrutor} variant="outlined" />
                         <Button variant="contained" style={{ margin: 10 }} type="submit">alterar</Button>
                       </form>
                     </Box>
