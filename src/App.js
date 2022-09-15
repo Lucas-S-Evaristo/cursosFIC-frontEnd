@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 import PgPricipal from './components/PgPricipal'
@@ -92,5 +93,21 @@ function App() {
     }
     
 
+=======
+import './App.css';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Rotas from './Rotas';
+
+function App() {
+  return (
+    <div class = "app">
+      <BrowserRouter>
+        <Rotas />
+      </BrowserRouter>
+    </div>
+  )
+}
+>>>>>>> usuarios
 
 export default App;
