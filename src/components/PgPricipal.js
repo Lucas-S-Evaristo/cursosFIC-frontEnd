@@ -33,12 +33,9 @@ import Modal from '@mui/material/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Alert from '@material-ui/lab/Alert';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 
 
 
@@ -127,6 +124,17 @@ const msgCadastrando = () => {
   })
 
 }
+ const erroCad = () => {
+    toast.error("Preencha os campos corretamente!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,})
+   }
 
 
 const PgPricipal = () => {
@@ -252,8 +260,8 @@ const PgPricipal = () => {
       }
     })
 
-    if(result){
-
+    if(result.status === 409 ){
+      erroCad();
       alert("erro")
     }
     else if (result) {
