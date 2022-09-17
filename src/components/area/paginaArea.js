@@ -24,7 +24,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
       draggable: true,
       progress: undefined,})
    }
-//enivar notiificação de sucesso ao Alterar
+//enviar notiificação de sucesso ao Alterar
    sucessoAlterar = () => {
     toast.success("Alterado com Sucesso!", {
       position: "top-center",
@@ -36,7 +36,7 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
       draggable: true,
       progress: undefined,})
    }
-
+   //notificação de erro ao deixar campos vazios
    erroCad = () => {
     toast.error("Preencha os campos corretamente!", {
       position: "top-center",
@@ -48,9 +48,9 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
       draggable: true,
       progress: undefined,})
    }
-
+    //passar a area ao objArea
     const area = {
-        id: 0,
+        id: "",
         nome: "",
        
       }
@@ -88,38 +88,24 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
           }
         })
       }
-
-      alterar = () => {
-        fetch("http://localhost:8080/api/area", {
-          method: 'post',
+      //faz uma requisição ao back-end de alteração
+     alterar = async (id) => {
+        // requisição ao back-end
+       let resultado = await fetch("http://localhost:8080/api/area/" +id, {
+          method: 'PUT',
           body: JSON.stringify(objArea),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json'
           }
-    
         })
-
-        
-        .then(retorno => {
-          //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-          if(retorno.status === 409){
-            erroCad()
-          }else {
-            //faz o processo de cadastro
-            retorno.json()
-        .then(retorno_convertido => {
-
-          
-           //exibir notificação de sucesso
-           sucessoAlterar()
-           //atualiza a página depois de um tempo
+      
+        // verifica se existe resultado
+        if (resultado) {    
+          // exibe a msg de alteração concluida
+          sucessoAlterar()
           setInterval(function () {window.location.reload();}, 1500);
-          console.log(retorno_convertido)
         }
-        )
-          }
-        })
       }
       //faz uma requisição ao back-end de excluir
       excluir = async (id) => {
@@ -339,17 +325,10 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
                             Fechar
                         </Button>
 
-                        <Button type='button' variant="warning" onClick={() => {
+                        <Button type='button' variant="warning" onClick={() => 
                             //efetua a alteração através do cadastro, pois puxa pelo indice que tem o id
-                            alterar()
-                            //exibir notificação de sucesso
-                            
-                            //atualiza a página depois de um tempo
-                            setInterval(function () {window.location.reload();}, 1500);
-                           
-                            
-
-                        }}>
+                            alterar(objArea.id)                                         
+                        }>
                             Alterar
                         </Button>
 

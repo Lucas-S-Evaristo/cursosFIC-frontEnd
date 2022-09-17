@@ -7,10 +7,10 @@ import  {ToastContainer,toast}  from  'react-toastify' ;
 import  'react-toastify/dist/ReactToastify.css' ;
 
 //função pra cadastrar cursos
-
-
 function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manterDadosPag, erroCadSelect  }) {
 
+
+  //const pra puxar valores do formulario
   const [idArea, setIdArea] = useState()
 
   const [nome, setNome] = useState()
@@ -31,6 +31,8 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
 
   const [valueTipoAtend, setValueTip] = useState()
 
+
+  //curso recebe os valores dos input dos formulario
   curso  = {
     id: 0,
     nome: nome,
@@ -47,11 +49,13 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
     valor: valor
   }
 
+  //não atualizar a página ao dar erros
   manterDadosPag = (e) => {
     e.preventdefault()
 
   }
 
+  //obj curso recebe o curso com os valores preenchido
   const [objCurso, setObjCurso] = useState(curso)
 
     //enviar notificação de sucesso
@@ -67,6 +71,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
             progress: undefined,})
        }
 
+       //envia uma notificação de erro, caso o usuario não preencha os campos corretamente
        erroCad = () => {
         toast.error("Preencha os campos corretamente!", {
           position: "top-center",
@@ -79,6 +84,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
           progress: undefined,})
        }
 
+       //erro pra caso o usuario não selecionar os valores do select
        erroCadSelect = () => {
         toast.error("Selecione os valores corretamente!", {
           position: "top-center",
@@ -91,6 +97,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
           progress: undefined,})
        }
 
+       //mensagem de erro pro servidor
        erroServ = () => {
         toast.error("Erro, tente novamente!", {
           position: "top-center",
@@ -116,7 +123,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
       cadastrar = () => {
         fetch("http://localhost:8080/api/curso", {
           method: 'post',
-          body: JSON.stringify(curso),
+          body: JSON.stringify(curso),//corpo da resposta recebe um curso
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json'
@@ -129,13 +136,15 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
           if(retorno.status === 409){
             erroCad()
             manterDadosPag()
+            //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
           }else if(retorno.status === 400){
             erroCad()
             manterDadosPag()
-            
+            //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
           }else if(retorno.status === 500){
             erroCad()
             manterDadosPag()
+            //se os select estiverem vazios, passar uma resposta de erro e enviar mensagem de erro
         }else if(retorno.status === 418){
           erroCadSelect()
           manterDadosPag()
@@ -167,7 +176,8 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
       useEffect(() => {
       fetch("http://localhost:8080/api/enum/tipoAtendimento")
       .then(retorno => retorno.json())
-      .then(retorno_convertido => setTipoAtendimento(retorno_convertido))//retorno convertido tem a lista de todos as enum de tipoAtendimento
+      .then(retorno_convertido => setTipoAtendimento(retorno_convertido))
+      //retorno convertido tem a lista de todos as enum de tipoAtendimento
   }, [])
   
   //get na api de enum de nivel do curso
@@ -177,20 +187,13 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
     .then(retorno_convertido => setNivel(retorno_convertido))//retorno convertido tem a lista de todos as enum de nivel
 }, []) 
 
-
+        //const pra puxar os niveis do back
         const [nivel, setNivel] = useState([])
 
+        //const pra puxar os tipo de atendimento do back
         const [tipoAtendimento, setTipoAtendimento] = useState([])
 
-      console.warn("ID AREA: ", idArea)
-      console.warn("nome: ", nome)
-      console.warn("objetivo: ", objetivo)
-      console.warn("pre Req: ", preRequisito)
-      console.warn("Conteudo prog: ", conteudoProgramatico)
-      console.warn("Sigla: ", sigla)
-      console.warn("Nivel: ", valueNivel)
-      console.warn("Tipo Atendimento: ", valueTipoAtend)
-  
+      //const pra puxar os cadastros das áreas
       const [area, setArea] = useState([])
 
       
@@ -203,18 +206,20 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
 
                 <input
                     required
-                    value={nome}
+                    value={nome}//recebe o que foi digitado no input
                     name="nome" className="Nome"
                     type="text" placeholder="Nome do curso"
                     onChange={(e) => {
-
+                      //puxa o valor do nome digitado no input
                       setNome(e.target.value)
                       }}
                 />
                 
                 <label>selecione a area do Curso</label>
-                <select value={idArea} className="form-select form-select-sm" aria-label=".form-select-sm example"  name="area" onChange={(e) => {
+                <select value={idArea} className="form-select form-select-sm" aria-label=".form-select-sm example"  
+                name="area" onChange={(e) => {
 
+                  
                   setIdArea(e.target.value)
 
                   post(e)
@@ -226,6 +231,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
                     <option>ÁREA: </option>
                               
               {
+                //mostra os nomes das áreas cadastradas
                   area.map((obj) => (
                     
                       <option id="idArea" name="area" key={obj.id} value={obj.id}>
@@ -290,10 +296,12 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
                 />
 
                 <label>selecione o nivel do curso</label>
-                <select value={valueNivel} onChange={(e) => {setValueNivel(e.target.value)}} name="nivel" className="form-select form-select-sm" aria-label=".form-select-sm example">
+                <select value={valueNivel} onChange={(e) => {setValueNivel(e.target.value)}} 
+                name="nivel" className="form-select form-select-sm" aria-label=".form-select-sm example">
 
                 <option>NIVEL: </option>
                    {
+                    //puxa os niveis
                     nivel.map((obj, indice) => (
                       
                     <option key={indice} defaultValue={obj}>
@@ -303,10 +311,12 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
                 </select> 
 
                 <label>selecione o tipo de atendimento</label>
-                <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTip(e.target.value)}} className="form-select form-select-sm" aria-label=".form-select-sm example" >
+                <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTip(e.target.value)}}
+                 className="form-select form-select-sm" aria-label=".form-select-sm example" >
                     
                 <option readonly>TIPO ATENDIMENTO: </option>
                     {
+                      //puxa os tipos de atendimento
                     tipoAtendimento.map((obj, indice) => (
                       
                     <option key={indice} defaultValue={obj}>
