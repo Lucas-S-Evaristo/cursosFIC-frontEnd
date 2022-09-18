@@ -157,8 +157,9 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
            //exibir notificação de sucesso
            sucesso()
            //atualiza a página depois de um tempo
-          setInterval(function () {window.location.reload();}, 1500);
+          setInterval(function () {window.location.reload(); window.location.href = "http://localhost:3000/listaCurso";}, 1500);
           console.log(retorno_convertido)
+          
         }
         )
           }

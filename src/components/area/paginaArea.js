@@ -10,7 +10,7 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 //função pra listar todos as areas cadastradas
-function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar, erroCad, alterar) {
+function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar, erroCad, alterar, sucessoExcluir) {
 
   //enviar notificação de sucesso
   sucesso = () => {
@@ -39,6 +39,18 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
    //notificação de erro ao deixar campos vazios
    erroCad = () => {
     toast.error("Preencha os campos corretamente!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,})
+   }
+   //notificação de sucesso ao excluir
+   sucessoExcluir = () => {
+    toast.success("Excluido com sucesso!", {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
@@ -115,7 +127,8 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
            
          })
          if(result) {
-           getAreas() 
+           getAreas()
+           sucessoExcluir() 
            
          }
          
@@ -179,20 +192,26 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
     const [show2, setShow2] = useState(false);
 
     const [objArea, setObjArea] = useState(area)
+
+    const [modalExcluir, setShowExcluir] = useState(false);
   
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleShow2 = () => setShow2(true);
     const handleClose2 = () => setShow2(false);
+
+    const abrirModalExcluir = () => setShowExcluir(true);
+
+    const fecharModalExcluir = () => setShowExcluir(false);
+
  
    const [btnCadastro, setBtnCadastro] = useState(true)
 
     return (
         //cadastro de área
         <div className="botaoCadastrar">
-        <h1 className="titulo">Lista de Area</h1>
-
+    
         <form>
           
             <label>Buscar Áreas</label>
@@ -287,7 +306,36 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
                        
                         <td>{obj.nome}</td>
                     
-                        <td><button className="btn btn-danger" onClick={() => excluir(obj.id)}>Excluir</button></td>
+                        <td><button className="btn btn-danger" onClick={abrirModalExcluir}>Excluir</button></td>
+
+                        <Modal 
+              show={modalExcluir} 
+              onHide={fecharModalExcluir}
+              backdrop="static"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered>
+
+                
+                  <Modal.Header closeButton className="bodyExcluir">
+                    <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
+                 
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={fecharModalExcluir}>
+                      Não
+                    </Button>
+                    <Button variant="danger" onClick={() => { 
+                //excluir curso pelo id
+                excluir(obj.id)
+                fecharModalExcluir()}}>
+                      Sim
+                    </Button>
+                  </Modal.Footer>
+                 
+                </Modal>
+          
+              
                         <td> <Button variant="warning" onClick={() => {
                            //puxa os valores/dados da área pelo indice
                             selecionarArea(indice)
@@ -326,7 +374,8 @@ function Area(selecionarArea, cadastrar, post, excluir, sucesso, sucessoAlterar,
                         </Button>
 
                         <Button type='button' variant="warning" onClick={() => 
-                            //efetua a alteração através do cadastro, pois puxa pelo indice que tem o id
+                            //efetua a alteração 
+
                             alterar(objArea.id)                                         
                         }>
                             Alterar
