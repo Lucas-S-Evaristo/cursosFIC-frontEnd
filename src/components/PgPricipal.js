@@ -376,8 +376,6 @@ const PgPricipal = () => {
           onClose={modalCadastroFechando}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
-
-
         >
           <Box sx={style}>
             <h2 id="transition-modal-title">cadastro de instrutor</h2>
