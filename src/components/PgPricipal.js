@@ -185,6 +185,7 @@ const PgPricipal = () => {
   const modalAlterarAbrindo = (id, nome) => {
     setOpen2(true)
     setidisntrutor(id)
+
     setnomeisntrutor(nome)
 
   };
@@ -321,7 +322,8 @@ const PgPricipal = () => {
       nome: data.nome
 
     }
-    console.warn(obgj)
+    console.warn("obj altera instrutor",obgj)
+    console.warn(idistrutor)
     let result = await fetch(`http://localhost:8080/api/instrutor/${idistrutor}`, {
       method: 'PUT',
       body: JSON.stringify(obgj),
@@ -369,7 +371,7 @@ const PgPricipal = () => {
       <Divider />
       <List>
 
-        <Button onClick={modalCadastroAbrindo} style={{ margin: 10 }} variant="contained">cadastrar  isntrutor</Button>
+        <Button onClick={modalCadastroAbrindo} style={{ margin: 10 }} variant="contained">cadastrar  instrutor</Button>
 
         <Modal
           open={open}
@@ -473,7 +475,7 @@ const PgPricipal = () => {
       >
         <Toolbar />
 
-        <TextField fullWidth onChange={buscarInstrutor} style={{ marginBottom: 25 }} label="buscar istrutor" id="fullWidth" type="text" name="parametro" required="required" />
+        <TextField fullWidth onChange={buscarInstrutor} style={{ marginBottom: 25 }} label="buscar instrutor" id="fullWidth" type="text" name="parametro" required="required" />
 
 
         <TableContainer component={Paper}>
