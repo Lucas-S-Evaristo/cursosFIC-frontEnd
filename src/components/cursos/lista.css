@@ -102,3 +102,18 @@ table{
     
     background-color: white;
 }
+
+.inputNomeCadastro{
+    border: 0px;
+    border-bottom: 0.2em solid black;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+    margin-top: 0.5em;
+}
+
+.inputSelect{
+    margin-top: 1em;
+    border: 0px;
+    border-bottom: 0.1em solid gray;
+}

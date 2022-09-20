@@ -8,8 +8,8 @@ function Rotas(){
     return (
 
         <Routes>
-            <Route path='/' element={<Formulario/>}/>
-            <Route path='/listaCurso' element={<ListaCursos/>}/>
+          
+            <Route path='/' element={<ListaCursos/>}/>
             <Route path='/listaArea' element={<Area/>}/>
 
         </Routes>

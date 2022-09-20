@@ -29,7 +29,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
 
   const [valueNivel, setValueNivel] = useState()
 
-  const [valueTipoAtend, setValueTip] = useState()
+  const [valueTipoAtend, setValueTipoAtend] = useState()
 
 
   //curso recebe os valores dos input dos formulario
@@ -137,15 +137,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
             erroCad()
             manterDadosPag()
             //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-          }else if(retorno.status === 400){
-            erroCad()
-            manterDadosPag()
-            //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-          }else if(retorno.status === 500){
-            erroCad()
-            manterDadosPag()
-            //se os select estiverem vazios, passar uma resposta de erro e enviar mensagem de erro
-        }else if(retorno.status === 418){
+          }else if(retorno.status === 418){
           erroCadSelect()
           manterDadosPag()
       }else {
@@ -282,19 +274,6 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
     
                       }}
                 />
-                <input
-                    required
-                    name="sigla" className="sigla"
-                    type="text" placeholder="Sigla do curso"
-                    value={sigla}
-                    onChange={(e) => {
-
-                      setSigla(e.target.value)
-    
-                      post(e)
-    
-                      }}
-                />
 
                 <label>selecione o nivel do curso</label>
                 <select value={valueNivel} onChange={(e) => {setValueNivel(e.target.value)}} 
@@ -312,10 +291,10 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
                 </select> 
 
                 <label>selecione o tipo de atendimento</label>
-                <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTip(e.target.value)}}
+                <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTipoAtend(e.target.value)}}
                  className="form-select form-select-sm" aria-label=".form-select-sm example" >
                     
-                <option readonly>TIPO ATENDIMENTO: </option>
+                <option>TIPO ATENDIMENTO: </option>
                     {
                       //puxa os tipos de atendimento
                     tipoAtendimento.map((obj, indice) => (

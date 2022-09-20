@@ -16,7 +16,7 @@ import  'react-toastify/dist/ReactToastify.css' ;
 
 
 //função pra listar todos os cursos cadastrados
-function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
+function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, sucesso,  erroServ, manterDadosPag, erroCadSelect, erroCad, cadastrar, curso}){
 
   const [nome, setNome] = useState()
 
@@ -38,7 +38,7 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
 
   const [idArea, setIdArea] = useState()
 
-  const curso = {
+  const cursoAlterar = {
     id: "",
     nome: "",
     objetivo: "",
@@ -52,11 +52,27 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
     valor: ""
   }
 
+  curso  = {
+    id: 0,
+    nome: nome,
+    objetivo: objetivo,
+    preRequisito: preRequisito,
+    conteudoProgramatico: conteudoProgramatico,
+    sigla: sigla,
+    area: {
+      id: idArea
+    },
+    nivel: valueNivel,
+    tipoAtendimento: valueTipoAtend,
+    cargaHoraria: cargaHoraria,
+    valor: valor
+  }
+
   
   const [objCurso, setObjCurso] = useState(curso)
 
   //enviar notificação de sucesso
-  sucesso = () => {
+  sucessoAlterar = () => {
     toast.success("Alterado com sucesso!", {
       position: "top-center",
       autoClose: 1500,
@@ -67,6 +83,59 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
       draggable: true,
       progress: undefined,})
 }
+
+//enviar notificação de sucesso
+sucesso = () => {
+  toast.success("Cadastrado com sucesso!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,})
+ }
+
+ //envia uma notificação de erro, caso o usuario não preencha os campos corretamente
+ erroCad = () => {
+  toast.error("Preencha os campos corretamente!", {
+    position: "top-center",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    theme: 'colored',
+    draggable: true,
+    progress: undefined,})
+ }
+
+ //erro pra caso o usuario não selecionar os valores do select
+ erroCadSelect = () => {
+  toast.error("Selecione os valores corretamente!", {
+    position: "top-center",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    theme: 'colored',
+    draggable: true,
+    progress: undefined,})
+ }
+
+ //mensagem de erro pro servidor
+ erroServ = () => {
+  toast.error("Erro, tente novamente!", {
+    position: "top-center",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    theme: 'colored',
+    draggable: true,
+    progress: undefined,})
+ }
+
 
       //captura dados digitados no formulario
       const nomeValor = (e) => {
@@ -134,6 +203,45 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
         setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
       }
 
+      //faz uma requisição ao back-end de cadastro
+      cadastrar = () => {
+        fetch("http://localhost:8080/api/curso", {
+          method: 'post',
+          body: JSON.stringify(curso),//corpo da resposta recebe um curso
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+          }
+    
+        })
+
+        .then(retorno => {
+          //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+          if(retorno.status === 409){
+            erroCad()
+            manterDadosPag()
+            //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+          }else if(retorno.status === 418){
+          erroCadSelect()
+          manterDadosPag()
+      }else {
+            //faz o processo de cadastro
+            retorno.json()
+        .then(retorno_convertido => {
+
+          
+           //exibir notificação de sucesso
+           sucesso()
+           //atualiza a página depois de um tempo
+          setInterval(function () {window.location.reload(); window.location.href = "http://localhost:3000/listaCurso";}, 1500);
+          console.log(retorno_convertido)
+          
+        }
+        )
+          }
+        })
+      }
+
       //faz uma requisição ao back-end de alteração
       alterar = async (id) => {
         // requisição ao back-end
@@ -149,7 +257,7 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
         // verifica se existe resultado
         if (resultado) {    
           // exibe a msg de alteração concluida
-          sucesso()
+          sucessoAlterar()
           setInterval(function () {window.location.reload();}, 1500);
         }
       }
@@ -211,6 +319,8 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
     
     //const pra abrir a modal
     const [modalAlterar, setShow] = useState(false);
+
+    const [modalCadastrar, setShowCadastrar] = useState(false);
     
     const [modalExcluir, setShowExcluir] = useState(false);
   
@@ -222,6 +332,10 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
     const abrirModalExcluir = () => setShowExcluir(true);
 
     const fecharModalExcluir = () => setShowExcluir(false);
+
+    const abrirModalCadastrar = () => setShowCadastrar(true);
+
+    const fecharModalCadastrar = () => setShowCadastrar(false);
 
     //const pra puxar os niveis
     const [nivel, setNivel] = useState([])
@@ -251,7 +365,7 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
                 if (key) {
                     let result = 
                     //faz uma requisição ao back-end pra buscar a api de pesquisar cursos
-                    await fetch(`http://localhost:8080/api/curso/buscar/${key}`)
+                    await fetch(`http://localhost:8080/api/curso/buscarCurso/${key}`)
                     result = await result.json();
                     if (result) {
 
@@ -292,10 +406,191 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucesso}){
                 </div>
         </form>
 
-        <a href="/"><button className='addCadastro'><i class="bi bi-person-plus-fill"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+        <a ><button className='addCadastro' onClick={abrirModalCadastrar}><i class="bi bi-person-plus-fill"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
   <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
   <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
 </svg></i></button></a>
+
+
+ {/*modal de cadastrar */}
+ <Modal
+                        show={modalCadastrar}
+                        onHide={fecharModalCadastrar}
+                        scrollable={true}
+                                    >
+                        <Modal.Header closeButton>  
+                        <Modal.Title>Cadastrar</Modal.Title>
+                        </Modal.Header>
+                        {/*corpo da Modal */}
+                        <Modal.Body>
+
+                           {/*Formulario de cursos */}
+            <form className="formAlterar">
+          
+                <input
+                    required
+                    value={nome}//recebe o que foi digitado no input
+                    name="nome" className="inputNomeCadastro"
+                    type="text" placeholder="Nome"
+                    onChange={(e) => {
+                      //puxa o valor do nome digitado no input
+                      setNome(e.target.value)
+                      }}
+                />
+                
+             
+                <select value={idArea} className="form-select form-select-sm inputSelect" aria-label=".form-select-sm example"  
+                name="area" onChange={(e) => {
+                  setIdArea(e.target.value)
+
+                  post(e)
+
+                  }
+
+                  }>
+
+                    <option>ÁREA: </option>
+                              
+              {
+                //mostra os nomes das áreas cadastradas
+                  area.map((obj) => (
+                    
+                      <option id="idArea" name="area" key={obj.id} value={obj.id}>
+                      {obj.nome}
+                      </option>
+                  ))}
+
+                </select>
+
+                <input
+                    required
+                    name="objetivo" className="inputNomeCadastro"
+                    type="text" placeholder="objetivo do curso"
+                    value={objetivo}
+                    onChange={(e) => {
+
+                      setObjetivo(e.target.value)
+    
+                      post(e)
+    
+                      }}
+
+                />
+                <input
+                    required
+                    name="preRequisito" className="inputNomeCadastro"
+                    type="text" placeholder="Pré requisito"
+                    value={preRequisito}
+                    onChange={(e) => {
+
+                      setPreRequisito(e.target.value)
+    
+                      post(e)
+    
+                      }}
+                />
+                <input
+                    required
+                    name="conteudoProgramatico" className="inputNomeCadastro"
+                    type="text" placeholder="Conteúdo programático"
+                    value={conteudoProgramatico}
+                    onChange={(e) => {
+
+                      setConteudoProgramatico(e.target.value)
+    
+                      post(e)
+    
+                      }}
+                />
+
+          
+                <select value={valueNivel} onChange={(e) => {setValueNivel(e.target.value)}} 
+                name="nivel" className="form-select form-select-sm inputSelect" aria-label=".form-select-sm example">
+
+                <option>NIVEL: </option>
+                   {
+                    //puxa os niveis
+                    nivel.map((obj, indice) => (
+                      
+                    <option key={indice} defaultValue={obj}>
+                      {obj}
+                    </option>
+                  ))}
+                </select> 
+
+              
+                <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTipoAtend(e.target.value)}}
+                 className="form-select form-select-sm inputSelect" aria-label=".form-select-sm example" >
+                    
+                <option>TIPO ATENDIMENTO: </option>
+                    {
+                      //puxa os tipos de atendimento
+                    tipoAtendimento.map((obj, indice) => (
+                      
+                    <option key={indice} defaultValue={obj}>
+                      
+                      {obj}
+                      
+                    </option>
+                  ))}
+                </select>
+                <input
+                    required
+                    name="cargaHoraria" className="inputNomeCadastro"
+                    type="number" placeholder="Carga horaria"
+                    value={cargaHoraria}
+                    onChange={(e) => {
+
+                      setCargaHoraria(e.target.value)
+    
+                      post(e)
+    
+                      }}
+                />
+                <input
+                    required
+                    name="valor" className="inputNomeCadastro"
+                    type="number" placeholder="valor"
+                    value={valor}
+                    onChange={(e) => {
+
+                      setValor(e.target.value)
+    
+                      post(e)
+    
+                      }}
+                />
+            <ToastContainer/>
+            </form>
+                        
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button type='submit' variant="danger" onClick={() => {
+                          //fecha a modal
+                          fecharModalAlterar()
+                          //atualiza a página
+                          window.location.reload();
+                          }}>
+                            Fechar
+                        </Button>
+                        
+                                                                              {/*efetua a alteração */ }
+                        <Button type='button' variant="warning" onClick={() =>   cadastrar()}>
+                            Cadastrar
+                        </Button>
+                        <ToastContainer position="top-center"
+                          autoClose={1500}
+                          hideProgressBar={false}
+                          newestOnTop={false}
+                          closeOnClick
+                          rtl={false}
+                          pauseOnFocusLoss
+                          draggable
+                          pauseOnHover/>
+                            
+                        </Modal.Footer>
+                    </Modal>
+
         
         </div>
 
