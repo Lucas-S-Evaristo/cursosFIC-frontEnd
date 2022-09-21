@@ -38,6 +38,7 @@ table{
     float: left;
     background-color: #14213d;
     height: 100vh;
+    position: fixed;
     width: 15%;
 }
 .conteudoFormulario{
@@ -116,4 +117,29 @@ table{
     margin-top: 1em;
     border: 0px;
     border-bottom: 0.1em solid gray;
+}
+
+.conteudoCheckbox{
+    display: flex;
+    flex-direction: row;
+
+    
+}
+
+.divExcluir{
+    background-color: #dc3545;
+}
+
+.divAlterar{
+    background-color: #ffc107;
+    
+   
+}
+
+.botaoExcluir{
+    background-color: #dc3545;
+}
+
+.botaoAlterar{
+    background-color: #ffc107;
 }

@@ -38,6 +38,10 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, s
 
   const [idArea, setIdArea] = useState()
 
+  const [idCurso, setIdCurso] = useState()
+
+  const [botaoExcluir, setBtnExcluir] = useState(false)
+
   const cursoAlterar = {
     id: "",
     nome: "",
@@ -174,6 +178,12 @@ sucesso = () => {
         setSigla({ ...sigla, [e.target.name]: e.target.value })
       }
 
+      const valorIdCurso = (e) => {
+  
+        console.log(e.target)
+        setIdCurso({ ...idCurso, [e.target.name]: e.target.value })
+      }
+
       const cargaHorariaValor = (e) => {
   
         console.log(e.target)
@@ -223,6 +233,7 @@ sucesso = () => {
             //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
           }else if(retorno.status === 418){
           erroCadSelect()
+
           manterDadosPag()
       }else {
             //faz o processo de cadastro
@@ -233,7 +244,7 @@ sucesso = () => {
            //exibir notificação de sucesso
            sucesso()
            //atualiza a página depois de um tempo
-          setInterval(function () {window.location.reload(); window.location.href = "http://localhost:3000/listaCurso";}, 1500);
+          setInterval(function () {window.location.reload();  }, 1500);
           console.log(retorno_convertido)
           
         }
@@ -273,19 +284,56 @@ sucesso = () => {
     excluir = async (id) => {
        let result = await fetch("http://localhost:8080/api/curso/"+id, {
           method: 'delete',
-          
-    
+
         })
         if(result) {
           getCursos() 
+          setInterval(function () {window.location.reload();}, 5);
         }
 
       }
+
+      
+
+      const handleCheckBox = (e) =>{
+
+        const{value, checked} = e.target;
+
+        console.log(value +" "+checked)
+    
+
+        if (checked) {
+
+          setValueCheck([...valorCheck, value], value);
+          setBtnExcluir(true)
+       
+
+        } else {
+
+          setValueCheck(valorCheck.filter( (e)=>e!== value));
+          setBtnExcluir(false)
+          
+
+          console.log(valorCheck)
+        }
+
+      }
+
+        const deletar = async()=>{
+
+              console.log(valorCheck)
+              excluir(valorCheck)
+              setInterval(function () {window.location.reload();}, 5);
+              
+
+            }
       //pega os valores do curso e passa para o input
       selecionarCurso = (indice) => {
 
         //puxa o curso pelo indice dele, pegando assim o id
         setObjCurso(cursos[indice])
+
+        console.log("VALOR CHECK: ", valorCheck)
         
       }
 
@@ -336,6 +384,8 @@ sucesso = () => {
     const abrirModalCadastrar = () => setShowCadastrar(true);
 
     const fecharModalCadastrar = () => setShowCadastrar(false);
+
+    const [valorCheck, setValueCheck] = useState([])
 
     //const pra puxar os niveis
     const [nivel, setNivel] = useState([])
@@ -601,8 +651,43 @@ sucesso = () => {
          <div className='divTabela'>
         <table className="table">
  
+        {
+          botaoExcluir
+          ?
+          <div className='conteudoCheckbox'>
+
+            <div className='divExcluir'>
+          <button className='btn btn-danger botaoExcluir' onClick={abrirModalExcluir}><i class="bi bi-trash3-fill"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+       <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+          </svg></button>
+          </div>
+
+          <div className='divAlterar'>
+      <button  className='btn btn-warning botaoAlterar' onClick={() => {
+                  //puxa os valores/dados do curso pelo indice
+                  selecionarCurso(valorCheck - 3)
+
+                  console.log("VALOR CHECK: ", valorCheck)
+                  //chama a modal
+                  abrirModalAlterar()
+                  
+              }}><i class="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>
+                
+              </button>
+              </div>
+              </div>
+
+        :
+        <div></div>
+    }
+
     <thead>
-     <tr className='theadTabela'  >
+     <tr className='theadTabela'>
+              <th>#</th>
               <th>id:</th>
               <th>Nome:</th>
         
@@ -615,8 +700,6 @@ sucesso = () => {
               <th>Sigla:</th>
               <th>Tipo de atendimento:</th>
               <th>Área:</th>
-              <th>Excluir:</th>
-              <th>Alterar:</th>
              
      </tr>
      </thead>
@@ -626,9 +709,9 @@ sucesso = () => {
       //trás os dados do curso
       cursos.map((obj, indice) => (
         //atribui uma chave para a linha, ao qual obtem os dados dos cursos
-          <tr key={indice}>
+              <tr key={indice}>
+                 <td ><input type="checkbox" value={obj.id} checked={obj.valorCheck} onChange={(e)=> handleCheckBox(e)}/></td>
               <td  >{obj.id}</td>
-              
               <td>{obj.nome}</td>
           
               <td>{obj.cargaHoraria}</td>
@@ -640,12 +723,6 @@ sucesso = () => {
               <td>{obj.sigla}</td>
               <td>{obj.tipoAtendimento}</td>
               <td>{obj.area.nome}</td>
-              <td><button type='button' className="btn btn-danger botaoExcluir" onClick={abrirModalExcluir}>
-              <i class="bi bi-trash3-fill"></i>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-</svg>
-                </button></td> 
 
               <Modal 
               show={modalExcluir} 
@@ -666,7 +743,7 @@ sucesso = () => {
                     </Button>
                     <Button variant="danger" onClick={() => { 
                 //excluir curso pelo id
-                excluir(obj.id)
+                deletar()
                 fecharModalExcluir()}}>
                       Sim
                     </Button>
@@ -675,20 +752,7 @@ sucesso = () => {
                 </Modal>
           
               
-              <td> <Button variant="warning" className='botaoAlterar' onClick={() => {
-                  //puxa os valores/dados do curso pelo indice
-                  selecionarCurso(indice)
-                  //chama a modal
-                  abrirModalAlterar()
-                  
-              }}><i class="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-            </svg>
-                              
-                            </Button>
-                        </td>
-
+              
                         {/*modal de alterar */}
                         <Modal
                         show={modalAlterar}
