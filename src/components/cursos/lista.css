@@ -106,15 +106,15 @@ table{
 
 .inputNomeCadastro{
     border: 0px;
-    border-bottom: 0.2em solid black;
+    border-bottom: 0.1em solid black;
     width: 100%;
     background-color: transparent;
     text-align: center;
-    margin-top: 0.5em;
+    margin-top: 1.5em;
 }
 
 .inputSelect{
-    margin-top: 1em;
+    margin-top: 1.5em;
     border: 0px;
     border-bottom: 0.1em solid gray;
 }

@@ -12,12 +12,13 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import  {ToastContainer,toast}  from  'react-toastify' ; 
 import  'react-toastify/dist/ReactToastify.css' ;
 import { keyframes } from 'styled-components';
+import { Construction } from '@mui/icons-material';
 
 
 
 
 //função pra listar todos os cursos cadastrados
-function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, sucesso,  erroServ, manterDadosPag, erroCadSelect, erroCad, cadastrar, curso}){
+function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, sucesso,  erroServ, manterDadosPag, erroCadSelect, erroCad, cadastrar, curso, postAlterar}){
 
   const [nome, setNome] = useState()
 
@@ -40,10 +41,6 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, s
   const [idArea, setIdArea] = useState()
 
   const [idCurso, setIdCurso] = useState()
-
-  const [botaoExcluir, setBtnExcluir] = useState(false)
-
-  const [botaoAlterar, setBtnAlterar] = useState(false)
 
   const cursoAlterar = {
     id: "",
@@ -77,6 +74,8 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, s
 
   
   const [objCurso, setObjCurso] = useState(curso)
+
+  const [objCursoAlterar, setObjCursoAlterar] = useState(cursoAlterar)
 
   //enviar notificação de sucesso
   sucessoAlterar = () => {
@@ -214,6 +213,12 @@ sucesso = () => {
         setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
       }
 
+      postAlterar = (e) => {
+  
+        console.log(e.target)
+        setObjCursoAlterar({ ...objCursoAlterar, [e.target.name]: e.target.value })
+      }
+
       //faz uma requisição ao back-end de cadastro
       cadastrar = () => {
         fetch("http://localhost:8080/api/curso", {
@@ -259,7 +264,7 @@ sucesso = () => {
         // requisição ao back-end
        let resultado = await fetch("http://localhost:8080/api/curso/" +id, {
           method: 'PUT',
-          body: JSON.stringify(objCurso),
+          body: JSON.stringify(objCursoAlterar),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json'
@@ -296,40 +301,55 @@ sucesso = () => {
 
       const [valorCheck, setValueCheck] = useState([])
 
+      const [botaoExcluir, setBtnExcluir] = useState(false)
+
+      const [botaoAlterar, setBtnAlterar] = useState(false)
+
+      const [checks, setChecks] = useState(0)
+
+      
+
       const handleCheckBox = (e) =>{
 
         const{value, checked} = e.target;
 
-        console.log(value +" "+checked)
-    
+        console.log("Valor: ",value + " checado: "+checked)
+
         //se tiver um checkbox checado
         if (checked) {
+    
+          
+          console.log("if")
 
           setValueCheck([...valorCheck, value], value);
 
           setBtnExcluir(true)
 
           setBtnAlterar(true)
-
-          //quando tiver mais de um checkbox desabilitar botao de alterar
-          if(valorCheck.length > 0){
-
-            setBtnAlterar(false)
-          }
-
-        } else if(!checked) {
           
-          setValueCheck(valorCheck.filter( (e)=> e!== value));
-          
+          //se não tiver checado
+        } else{
+    
+          setChecks(checks-1)
+          setValueCheck(valorCheck.filter((e)=> e!== value));
+        
+          if(valorCheck.length == 0){
+         
           setBtnExcluir(false)
 
           setBtnAlterar(false)
-      
-          console.log(valorCheck)
-        }
+          }
+
+          console.log("else")
+
+      }
+    
 
       }
 
+      console.log(valorCheck)
+      console.log(valorCheck.length)
+  
         const deletar = async()=>{
 
               console.log(valorCheck)
@@ -375,7 +395,6 @@ sucesso = () => {
     //const pra puxar os dados do curso    
     const [cursos, setCursos] = useState([])
 
-    
     //const pra abrir a modal
     const [modalAlterar, setShow] = useState(false);
 
@@ -404,8 +423,6 @@ sucesso = () => {
 
     //const pra puxar os tipos de atendimentos
     const [tipoAtendimento, setTipoAtendimento] = useState([])
-
-
 
               useEffect(() => {
                 getCursos();
@@ -665,7 +682,7 @@ sucesso = () => {
         {
           botaoExcluir
           ?     
-          <button className='btn btn-danger botaoExcluir' onClick={abrirModalExcluir}><i className="bi bi-trash3-fill"></i>
+          <button className='btn btn-danger botaoExcluir' onClick={abrirModalExcluir}  disabled={valorCheck.length == 0}  ><i className="bi bi-trash3-fill"></i>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
           </svg></button>
@@ -677,9 +694,9 @@ sucesso = () => {
       botaoAlterar
       ?
      
-      <button  className='btn btn-warning botaoAlterar' onClick={() => {
+      <button  className='btn btn-warning botaoAlterar'  disabled={valorCheck.length != 1} onClick={() => {
               //puxa os valores/dados do curso pelo indice
-              selecionarCurso(valorCheck)
+              selecionarCurso(idCurso)
 
               console.log("VALOR CHECK: ", valorCheck)
               //chama a modal
@@ -701,7 +718,7 @@ sucesso = () => {
 
     <thead>
      <tr className='theadTabela'>
-              <th><input type='checkbox'/></th>
+              <th>#</th>
               <th>id:</th>
               <th>Nome:</th>
         
@@ -724,8 +741,12 @@ sucesso = () => {
       cursos.map((obj, indice) => (
         //atribui uma chave para a linha, ao qual obtem os dados dos cursos
               <tr key={indice}>
-                 <td ><input type="checkbox" value={obj.id} checked={obj.valorCheck} onChange={(e)=> handleCheckBox(e)}/></td>
-              <td  >{obj.id}</td>
+                 <td ><input type="checkbox" value={obj.id} onChange={(e)=> { 
+                  handleCheckBox(e)
+                  valorIdCurso(e)
+                 }
+                }/></td>
+              <td >{obj.id}</td>
               <td>{obj.nome}</td>
           
               <td>{obj.cargaHoraria}</td>
@@ -792,39 +813,39 @@ sucesso = () => {
 
                           <label>Objetivo:</label>                         
                           <input type="text" className="inputNome" name="objetivo" 
-                          defaultValue={objCurso.objetivo}  onChange={(e) => {
+                          defaultValue={objCursoAlterar.objetivo}  onChange={(e) => {
                             objetivoValor(e)
                             post(e)}}/>
 
                           <label>Pré-Requisito:</label>
                           <input type="text" className="inputNome" name="preRequisito" 
-                          defaultValue={objCurso.preRequisito}  onChange={(e) => {
+                          defaultValue={objCursoAlterar.preRequisito}  onChange={(e) => {
                             preReqValor(e)
-                            post(e)}}/>
+                            postAlterar(e)}}/>
 
                           <label>Conteúdo Programático:</label>
                           <input type="text" className="inputNome" name="conteudoProgramatico" 
-                          defaultValue={objCurso.conteudoProgramatico}  onChange={(e) => {
+                          defaultValue={objCursoAlterar.conteudoProgramatico}  onChange={(e) => {
                             conteudoProgValor(e)
-                            post(e)}}/>
+                            postAlterar(e)}}/>
 
                           <label>Sigla:</label>
                           <input type="text" className="inputNome" name="sigla" 
                           defaultValue={objCurso.sigla}  onChange={(e) => {
                             siglaValor(e)
-                            post(e)}}/>
+                            postAlterar(e)}}/>
 
                           <label>Carga Horária:</label>
                           <input type="text" className="inputNome" name="cargaHoraria" 
                           defaultValue={objCurso.cargaHoraria}  onChange={(e) => {
                             cargaHorariaValor(e)
-                            post(e)}}/>
+                            postAlterar(e)}}/>
 
                           <label>Valor:</label>
                           <input type="text" className="inputNome" name="valor" 
                           defaultValue={objCurso.valor}  onChange={(e) => {
                             valorValue(e)
-                            post(e)}}/>
+                            postAlterar(e)}}/>
 
 
                           <label>Nivel:</label>
