@@ -138,8 +138,10 @@ table{
 
 .botaoExcluir{
     background-color: #dc3545;
+    
 }
 
 .botaoAlterar{
     background-color: #ffc107;
+    margin-left: 1em;
 }
