@@ -246,13 +246,12 @@ sucesso = () => {
             retorno.json()
         .then(retorno_convertido => {
 
-          
            //exibir notificação de sucesso
            sucesso()
            //atualiza a página depois de um tempo
           setInterval(function () {window.location.reload();  }, 1500);
-          console.log(retorno_convertido)
-          
+         
+  
         }
         )
           }
@@ -264,7 +263,7 @@ sucesso = () => {
         // requisição ao back-end
        let resultado = await fetch("http://localhost:8080/api/curso/" +id, {
           method: 'PUT',
-          body: JSON.stringify(objCursoAlterar),
+          body: JSON.stringify(objCurso),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json'
@@ -313,7 +312,7 @@ sucesso = () => {
 
         const{value, checked} = e.target;
 
-        console.log("Valor: ",value + " checado: "+checked)
+     
 
         //se tiver um checkbox checado
         if (checked) {
@@ -344,27 +343,22 @@ sucesso = () => {
 
       }
     
-
       }
 
       console.log(valorCheck)
-      console.log(valorCheck.length)
-  
         const deletar = async()=>{
 
-              console.log(valorCheck)
               excluir(valorCheck)
               setInterval(function () {window.location.reload();}, 5);
               
 
             }
       //pega os valores do curso e passa para o input
-      selecionarCurso = (indice) => {
+      
+      selecionarCurso = (id) => {
 
         //puxa o curso pelo indice dele, pegando assim o id
-        setObjCurso(cursos[indice])
-
-        console.log("VALOR CHECK: ", valorCheck)
+        setObjCurso(cursos[id])
         
       }
 
@@ -424,6 +418,12 @@ sucesso = () => {
     //const pra puxar os tipos de atendimentos
     const [tipoAtendimento, setTipoAtendimento] = useState([])
 
+    const idCursos = cursos.map(function(obj) {
+       return obj.id
+})
+
+   
+
               useEffect(() => {
                 getCursos();
             }, []);
@@ -482,11 +482,11 @@ sucesso = () => {
                 </div>
         </form>
 
-        <a ><button className='addCadastro' onClick={abrirModalCadastrar}><i className="bi bi-person-plus-fill"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-plus-fill" viewBox="0 0 16 16">
+        <button className='addCadastro' onClick={abrirModalCadastrar}><i className="bi bi-person-plus-fill"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-plus-fill" viewBox="0 0 16 16">
   <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
   <path fillRule
 ="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-</svg></i></button></a>
+</svg></i></button>
 
 
  {/*modal de cadastrar */}
@@ -687,7 +687,7 @@ sucesso = () => {
        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
           </svg></button>
         :
-        <div></div>
+        <></>
     }
 
     {
@@ -696,11 +696,17 @@ sucesso = () => {
      
       <button  className='btn btn-warning botaoAlterar'  disabled={valorCheck.length != 1} onClick={() => {
               //puxa os valores/dados do curso pelo indice
-              selecionarCurso(idCurso)
 
-              console.log("VALOR CHECK: ", valorCheck)
-              //chama a modal
+              selecionarCurso(valorCheck[0])
+
               abrirModalAlterar()
+           
+             
+              console.log("valor check[0]: ", valorCheck[0])
+             
+
+              //chama a modal
+              
               
               }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -712,7 +718,7 @@ sucesso = () => {
              
               :
 
-              <div></div>
+              <></>
       
     }
 
@@ -740,12 +746,9 @@ sucesso = () => {
       //trás os dados do curso
       cursos.map((obj, indice) => (
         //atribui uma chave para a linha, ao qual obtem os dados dos cursos
-              <tr key={indice}>
-                 <td ><input type="checkbox" value={obj.id} onChange={(e)=> { 
-                  handleCheckBox(e)
-                  valorIdCurso(e)
-                 }
-                }/></td>
+              <tr key={obj.id}>
+                 <td ><input type="checkbox" value={obj.id} onChange={handleCheckBox}
+                /></td>
               <td >{obj.id}</td>
               <td>{obj.nome}</td>
           
@@ -786,8 +789,6 @@ sucesso = () => {
                  
                 </Modal>
           
-              
-              
                         {/*modal de alterar */}
                         <Modal
                         show={modalAlterar}
@@ -813,19 +814,19 @@ sucesso = () => {
 
                           <label>Objetivo:</label>                         
                           <input type="text" className="inputNome" name="objetivo" 
-                          defaultValue={objCursoAlterar.objetivo}  onChange={(e) => {
+                          defaultValue={objCurso.objetivo}  onChange={(e) => {
                             objetivoValor(e)
                             post(e)}}/>
 
                           <label>Pré-Requisito:</label>
                           <input type="text" className="inputNome" name="preRequisito" 
-                          defaultValue={objCursoAlterar.preRequisito}  onChange={(e) => {
+                          defaultValue={objCurso.preRequisito}  onChange={(e) => {
                             preReqValor(e)
                             postAlterar(e)}}/>
 
                           <label>Conteúdo Programático:</label>
                           <input type="text" className="inputNome" name="conteudoProgramatico" 
-                          defaultValue={objCursoAlterar.conteudoProgramatico}  onChange={(e) => {
+                          defaultValue={objCurso.conteudoProgramatico}  onChange={(e) => {
                             conteudoProgValor(e)
                             postAlterar(e)}}/>
 
