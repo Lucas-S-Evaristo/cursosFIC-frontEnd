@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AddIcon from '@material-ui/icons/Add';
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -378,13 +379,8 @@ const PgPricipal = () => {
       </a>
       <Divider />
       <List>
-        <Button
-          onClick={modalCadastroAbrindo}
-          style={{ margin: 10 }}
-          variant="outlined"
-        >
-          cadastrar instrutor
-        </Button>
+      
+       
 
         <Modal
           open={open}
@@ -502,6 +498,10 @@ const PgPricipal = () => {
          <IconButton aria-label="delete" color="primary"  onClick={deletar} className={classes.margin}
          >
           <DeleteIcon fontSize="small" />
+        </IconButton>
+        <IconButton aria-label="delete" color="primary"    onClick={modalCadastroAbrindo} className={classes.margin}
+         >
+          <AddIcon fontSize="small" />
         </IconButton>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
