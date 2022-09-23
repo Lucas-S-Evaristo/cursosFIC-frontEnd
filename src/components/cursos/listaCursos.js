@@ -12,7 +12,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import  {ToastContainer,toast}  from  'react-toastify' ; 
 import  'react-toastify/dist/ReactToastify.css' ;
 import { keyframes } from 'styled-components';
-import { Construction } from '@mui/icons-material';
+import { CheckBox, Construction } from '@mui/icons-material';
 
 
 
@@ -298,7 +298,7 @@ sucesso = () => {
 
       }
 
-      const [valorCheck, setValueCheck] = useState([])
+      let [valorCheck, setValueCheck] = useState([])
 
       const [botaoExcluir, setBtnExcluir] = useState(false)
 
@@ -324,7 +324,7 @@ sucesso = () => {
 
           setBtnExcluir(true)
 
-          setBtnAlterar(true)
+         
           
           //se não tiver checado
         } else{
@@ -336,7 +336,7 @@ sucesso = () => {
          
           setBtnExcluir(false)
 
-          setBtnAlterar(false)
+        
           }
 
           console.log("else")
@@ -345,7 +345,46 @@ sucesso = () => {
     
       }
 
-      console.log(valorCheck)
+      function marcarTodos(e) {
+
+        const { value, checked } = e.target;
+    
+
+        let listid = document.querySelectorAll('input[name="id"]'); ;
+    
+        let i = 0;
+    
+        console.warn("input" + listid);
+    
+        if (checked) {
+    
+          for (i = 0; i < listid.length; i++) {
+    
+            valorCheck.push(listid[i].value);
+    
+            listid[i].checked = checked;
+
+            setBtnExcluir(true)
+    
+          }
+    
+        } else {
+    
+          for (i = 0; i < listid.length; i++) {
+    
+            listid[i].checked = false;
+    
+            valorCheck = valorCheck.filter((e) => e !== listid[i].value);
+
+            setBtnExcluir(false)
+            
+            setInterval(function () {window.location.reload();}, 1000);
+          }
+    
+          listid = [];
+    
+        }
+      }
         const deletar = async()=>{
 
               excluir(valorCheck)
@@ -355,12 +394,13 @@ sucesso = () => {
             }
       //pega os valores do curso e passa para o input
       
-      selecionarCurso = (id) => {
+      selecionarCurso = (indice) => {
 
         //puxa o curso pelo indice dele, pegando assim o id
-        setObjCurso(cursos[id])
-        
+        setObjCurso(cursos[indice])
+       
       }
+      
 
       //get na api de enum de tipo de atendimento
       useEffect(() => {
@@ -417,12 +457,6 @@ sucesso = () => {
 
     //const pra puxar os tipos de atendimentos
     const [tipoAtendimento, setTipoAtendimento] = useState([])
-
-    const idCursos = cursos.map(function(obj) {
-       return obj.id
-})
-
-   
 
               useEffect(() => {
                 getCursos();
@@ -682,7 +716,7 @@ sucesso = () => {
         {
           botaoExcluir
           ?     
-          <button className='btn btn-danger botaoExcluir' onClick={abrirModalExcluir}  disabled={valorCheck.length == 0}  ><i className="bi bi-trash3-fill"></i>
+          <button className='btn btn-danger botaoExcluir' onClick={abrirModalExcluir}  style={valorCheck.length === 0 ? {visibility:"hidden"} : {visibility:"visible"}} ><i className="bi bi-trash3-fill"></i>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
           </svg></button>
@@ -690,55 +724,24 @@ sucesso = () => {
         <></>
     }
 
-    {
-      botaoAlterar
-      ?
-     
-      <button  className='btn btn-warning botaoAlterar'  disabled={valorCheck.length != 1} onClick={() => {
-              //puxa os valores/dados do curso pelo indice
-
-              selecionarCurso(valorCheck[0])
-
-              abrirModalAlterar()
-           
-             
-              console.log("valor check[0]: ", valorCheck[0])
-             
-
-              //chama a modal
-              
-              
-              }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
-              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-              <path fillRule
-="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-            </svg>
-                
-              </button>
-             
-              :
-
-              <></>
-      
-    }
-
     <thead>
-     <tr className='theadTabela'>
-              <th>#</th>
-              <th>id:</th>
-              <th>Nome:</th>
-        
-              <th>Carga Horaria:</th>
-              <th>Conteúdo programático:</th>
-              <th>Valor:</th>
-              <th>Nivel:</th>
-              <th>Objetivo:</th>
-              <th>Pre Requisito:</th>
-              <th>Sigla:</th>
-              <th>Tipo de atendimento:</th>
-              <th>Área:</th>
-             
-     </tr>
+  <tr className='theadTabela'>
+          <th><input type="checkbox" onChange={marcarTodos}/></th>
+          <th>id:</th>
+          <th>Nome:</th>
+    
+          <th>Carga Horaria:</th>
+          <th>Conteúdo programático:</th>
+          <th>Valor:</th>
+          <th>Nivel:</th>
+          <th>Objetivo:</th>
+          <th>Pre Requisito:</th>
+          <th>Sigla:</th>
+          <th>Tipo de atendimento:</th>
+          <th>Área:</th>
+          <th>Alterar:</th>
+          
+  </tr>
      </thead>
 
         <tbody>
@@ -747,8 +750,7 @@ sucesso = () => {
       cursos.map((obj, indice) => (
         //atribui uma chave para a linha, ao qual obtem os dados dos cursos
               <tr key={obj.id}>
-                 <td ><input type="checkbox" value={obj.id} onChange={handleCheckBox}
-                /></td>
+                 <td  name="id"><input type="checkbox" name="id" value={obj.id} onChange={handleCheckBox}/></td>
               <td >{obj.id}</td>
               <td>{obj.nome}</td>
           
@@ -761,7 +763,18 @@ sucesso = () => {
               <td>{obj.sigla}</td>
               <td>{obj.tipoAtendimento}</td>
               <td>{obj.area.nome}</td>
-
+              <td><button  className='btn btn-warning botaoAlterar' style={valorCheck.length >= 1 ? {visibility:"hidden"} : {visibility:"visible"}}  onClick={() => {
+        selecionarCurso(indice)
+        abrirModalAlterar()
+      }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
+        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+        <path fillRule
+="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+      </svg>
+          
+        </button>
+        </td>
+             
               <Modal 
               show={modalExcluir} 
               onHide={fecharModalExcluir}
@@ -837,13 +850,13 @@ sucesso = () => {
                             postAlterar(e)}}/>
 
                           <label>Carga Horária:</label>
-                          <input type="text" className="inputNome" name="cargaHoraria" 
+                          <input type="number" className="inputNome" name="cargaHoraria" 
                           defaultValue={objCurso.cargaHoraria}  onChange={(e) => {
                             cargaHorariaValor(e)
                             postAlterar(e)}}/>
 
                           <label>Valor:</label>
-                          <input type="text" className="inputNome" name="valor" 
+                          <input type="number" className="inputNome" name="valor" 
                           defaultValue={objCurso.valor}  onChange={(e) => {
                             valorValue(e)
                             postAlterar(e)}}/>
