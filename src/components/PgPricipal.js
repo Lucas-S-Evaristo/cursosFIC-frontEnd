@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -38,17 +38,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Checkbox from "@material-ui/core/Checkbox";
 
-let 
-
-
-
-
-
-
-
-
-
-ids = [];
+let ids = [];
 let listid = [];
 
 const drawerWidth = 240;
@@ -161,13 +151,13 @@ const erroCad = () => {
   });
 };
 
-const PgPricipal = () => {
+function PgPricipal() {
   const [instrutor, setInstrutor] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [idinstrutor, setidinsntrutor] = useState([]);
   const [nomeistrutor, setnomeisntrutor] = useState([]);
- 
+
   const classes = useStyles();
   const modalCadastroAbrindo = () => setOpen(true);
   const modalCadastroFechando = () => setOpen(false);
@@ -179,30 +169,30 @@ const PgPricipal = () => {
   const modalAlterarFechando = () => {
     setOpen2(false);
   };
-  
+
   // metodo de msg de alteração feita com sucesso
   const handleCheckBox = (e) => {
     const { value, checked } = e.target;
 
     if (checked) {
       ids.push(value);
-      
-
+      console.log("lista de ids " + ids.length);
     }
 
     // Case 2  : The user unchecks the box
     else {
       ids = ids.filter((e) => e !== value);
-   
+      console.log("lista de ids " + ids.length);
     }
-    console.warn("ids",ids.length)
+
+    console.warn("ids", ids.length);
     console.log(ids);
   };
 
   function marcarTodos(e) {
     const { value, checked } = e.target;
 
-    listid = document.querySelectorAll('input[name="id"]'); ;
+    listid = document.querySelectorAll('input[name="id"]');
     let i = 0;
     console.warn("input" + listid);
     if (checked) {
@@ -224,10 +214,8 @@ const PgPricipal = () => {
   /*  */
 
   const deletar = async () => {
-   
+    deleteinstrutor(ids);
 
-      deleteinstrutor(ids);
-    
     ids = [];
   };
   useEffect(() => {
@@ -379,9 +367,6 @@ const PgPricipal = () => {
       </a>
       <Divider />
       <List>
-      
-       
-
         <Modal
           open={open}
           onClose={modalCadastroFechando}
@@ -495,22 +480,31 @@ const PgPricipal = () => {
           name="parametro"
           required="required"
         />
-         <IconButton aria-label="delete" color="primary"  onClick={deletar} className={classes.margin}
-         >
+        <IconButton
+          aria-label="delete"
+          color="primary"
+          onClick={deletar}
+          className={classes.margin}
+        >
           <DeleteIcon fontSize="small" />
         </IconButton>
-        <IconButton aria-label="delete" color="primary"    onClick={modalCadastroAbrindo} className={classes.margin}
-         >
+        <IconButton
+          aria-label="delete"
+          color="primary"
+          onClick={modalCadastroAbrindo}
+          className={classes.margin}
+        >
           <AddIcon fontSize="small" />
         </IconButton>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
                 <StyledTableCell align="center">
-                  <input type="checkbox"  onChange={marcarTodos} />
+                  <input type="checkbox" onChange={marcarTodos} />
                 </StyledTableCell>
-             
+
                 <StyledTableCell align="center">NOME</StyledTableCell>
                 <StyledTableCell align="center">ALTERAR</StyledTableCell>
               </TableRow>
@@ -528,7 +522,7 @@ const PgPricipal = () => {
                   </StyledTableCell>
                   <StyledTableCell align="center">{nome}</StyledTableCell>
                   <StyledTableCell align="center">
-                  <IconButton
+                    <IconButton
                       aria-label="delete"
                       color="primary"
                       onClick={() => modalAlterarAbrindo(id, nome)}
@@ -573,7 +567,7 @@ const PgPricipal = () => {
       </Box>
     </Box>
   );
-};
+}
 
 /**  ResponsiveDrawer.propTypes = {
   /**
