@@ -146,3 +146,14 @@ table{
     margin-left: 1em;
     
 }
+
+.buttonFormModal{
+    padding-left: 2em;
+}
+
+.divBotaoModal{
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

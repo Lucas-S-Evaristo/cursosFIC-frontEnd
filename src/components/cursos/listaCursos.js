@@ -18,7 +18,7 @@ import { CheckBox, Construction } from '@mui/icons-material';
 
 
 //função pra listar todos os cursos cadastrados
-function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, sucesso,  erroServ, manterDadosPag, erroCadSelect, erroCad, cadastrar, curso, postAlterar}){
+function ListaCursos({excluir, selecionarCurso, post, sucessoAlterar, sucesso,  erroServ, manterDadosPag, erroCadSelect, erroCad, cadastrar, curso, postAlterar, cursoAlterar}){
 
   const [nome, setNome] = useState()
 
@@ -40,21 +40,10 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, s
 
   const [idArea, setIdArea] = useState()
 
+  const [idAreaAlterar, setIdAreaAlterar] = useState()
+
   const [idCurso, setIdCurso] = useState()
 
-  const cursoAlterar = {
-    id: "",
-    nome: "",
-    objetivo: "",
-    preRequisito:"",
-    conteudoProgramatico: "",
-    area: {
-      id: idArea
-    },
-    sigla:"",
-    cargaHoraria:"",
-    valor: ""
-  }
 
   curso  = {
     id: 0,
@@ -72,7 +61,22 @@ function ListaCursos({excluir, selecionarCurso, post, alterar, sucessoAlterar, s
     valor: valor
   }
 
-  
+  cursoAlterar  = {
+    id: 0,
+    nome: nome,
+    objetivo: objetivo,
+    preRequisito: preRequisito,
+    conteudoProgramatico: conteudoProgramatico,
+    sigla: sigla,
+    area: {
+      id: idAreaAlterar
+    },
+    nivel: valueNivel,
+    tipoAtendimento: valueTipoAtend,
+    cargaHoraria: cargaHoraria,
+    valor: valor
+  }
+
   const [objCurso, setObjCurso] = useState(curso)
 
   const [objCursoAlterar, setObjCursoAlterar] = useState(cursoAlterar)
@@ -153,6 +157,9 @@ sucesso = () => {
       const valorIdArea = (e) => {
   
         console.log("id AREA: ", e.target.value)
+
+        console.log("id AREA.TARGET: ", e.target)
+
         setIdArea({ ...idArea, [e.target.name]: e.target.value })
       }
 
@@ -188,7 +195,7 @@ sucesso = () => {
 
       const cargaHorariaValor = (e) => {
   
-        console.log(e.target)
+        console.log(e.target.value)
         setCargaHoraria({ ...cargaHoraria, [e.target.name]: e.target.value })
       }
 
@@ -213,12 +220,6 @@ sucesso = () => {
         setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
       }
 
-      postAlterar = (e) => {
-  
-        console.log(e.target)
-        setObjCursoAlterar({ ...objCursoAlterar, [e.target.name]: e.target.value })
-      }
-
       //faz uma requisição ao back-end de cadastro
       cadastrar = () => {
         fetch("http://localhost:8080/api/curso", {
@@ -241,7 +242,12 @@ sucesso = () => {
           erroCadSelect()
 
           manterDadosPag()
-      }else {
+          
+      }else if(retorno.status === 500) {
+        erroServ()
+        manterDadosPag()
+
+      }else{
             //faz o processo de cadastro
             retorno.json()
         .then(retorno_convertido => {
@@ -259,23 +265,69 @@ sucesso = () => {
       }
 
       //faz uma requisição ao back-end de alteração
-      alterar = async (id) => {
-        // requisição ao back-end
-       let resultado = await fetch("http://localhost:8080/api/curso/" +id, {
-          method: 'PUT',
-          body: JSON.stringify(objCurso),
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
+      const alterar = async (event) => {
+
+        event.preventDefault();
+    
+        console.warn(event.target);
+    
+    
+    
+        const formData = new FormData(event.target);
+    
+        const data = Object.fromEntries(formData);
+    
+        console.warn("data = formaData", data);
+
+        const selectIdArea = document.getElementById("selectArea").value
+    
+        let obgj = {
+    
+          id: objCurso.id,
+          nome: data.nome,
+          objetivo: data.objetivo,
+          preRequisito: data.preRequisito,
+          conteudoProgramatico: data.conteudoProgramatico,
+          sigla: data.sigla,
+          area: {
+            id: selectIdArea
+          },
+          nivel: data.nivel,
+          tipoAtendimento: data.tipoAtendimento,
+          cargaHoraria: data.cargaHoraria,
+          valor: data.valor
+    
+        };
+    
+        console.warn("obj altera instrutor", obgj);
+    
+    
+        let result = await fetch(
+    
+          `http://localhost:8080/api/curso/${objCurso.id}`,
+    
+          {
+    
+            method: "PUT",
+    
+            body: JSON.stringify(obgj),
+    
+            headers: {
+    
+              "Content-type": "application/json",
+    
+              Accept: "application/json",
+
+             
+            },
+           
+    
           }
-        })
-      
-        // verifica se existe resultado
-        if (resultado) {    
-          // exibe a msg de alteração concluida
-          sucessoAlterar()
-          setInterval(function () {window.location.reload();}, 1500);
-        }
+         
+    
+        );
+        setInterval(function(){window.location.reload();}, 1500);
+        sucessoAlterar()
       }
 
     //useEffect faz a requisição com o back end pra receber os cursos e enviar ao use State
@@ -293,6 +345,8 @@ sucesso = () => {
         })
         if(result) {
           getCursos() 
+
+          setInterval(function () {window.location.reload();}, 50);
       
         }
 
@@ -310,10 +364,7 @@ sucesso = () => {
 
       const handleCheckBox = (e) =>{
 
-        const{value, checked} = e.target;
-
-     
-
+        const{value, checked} = e.target;  
         //se tiver um checkbox checado
         if (checked) {
     
@@ -378,7 +429,7 @@ sucesso = () => {
 
             setBtnExcluir(false)
             
-            setInterval(function () {window.location.reload();}, 1000);
+            setInterval(function () {window.location.reload();}, 50);
           }
     
           listid = [];
@@ -388,7 +439,7 @@ sucesso = () => {
         const deletar = async()=>{
 
               excluir(valorCheck)
-              setInterval(function () {window.location.reload();}, 5);
+   
               
 
             }
@@ -398,6 +449,7 @@ sucesso = () => {
 
         //puxa o curso pelo indice dele, pegando assim o id
         setObjCurso(cursos[indice])
+        setIdCurso(cursos[indice])
        
       }
       
@@ -457,6 +509,8 @@ sucesso = () => {
 
     //const pra puxar os tipos de atendimentos
     const [tipoAtendimento, setTipoAtendimento] = useState([])
+
+    
 
               useEffect(() => {
                 getCursos();
@@ -716,10 +770,12 @@ sucesso = () => {
         {
           botaoExcluir
           ?     
+    
           <button className='btn btn-danger botaoExcluir' onClick={abrirModalExcluir}  style={valorCheck.length === 0 ? {visibility:"hidden"} : {visibility:"visible"}} ><i className="bi bi-trash3-fill"></i>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
           </svg></button>
+      
         :
         <></>
     }
@@ -749,11 +805,12 @@ sucesso = () => {
       //trás os dados do curso
       cursos.map((obj, indice) => (
         //atribui uma chave para a linha, ao qual obtem os dados dos cursos
-              <tr key={obj.id}>
+              <tr key={indice}>
                  <td  name="id"><input type="checkbox" name="id" value={obj.id} onChange={handleCheckBox}/></td>
+               
               <td >{obj.id}</td>
               <td>{obj.nome}</td>
-          
+
               <td>{obj.cargaHoraria}</td>
               <td>{obj.conteudoProgramatico}</td>
               <td>{obj.valor}</td>
@@ -764,7 +821,9 @@ sucesso = () => {
               <td>{obj.tipoAtendimento}</td>
               <td>{obj.area.nome}</td>
               <td><button  className='btn btn-warning botaoAlterar' style={valorCheck.length >= 1 ? {visibility:"hidden"} : {visibility:"visible"}}  onClick={() => {
-        selecionarCurso(indice)
+          selecionarCurso(indice)
+
+       
         abrirModalAlterar()
       }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -815,7 +874,7 @@ sucesso = () => {
                         <Modal.Body>
 
                            {/*Formulario que permite a visualização e alteração de dados dos cursos */}
-                        <form className="formAlterar">
+                        <form className="formAlterar" onSubmit={alterar}>
                           <label>Nome:</label>
 
                            {/*DefaultValue permite editar os input e alterar os dados */}  
@@ -835,31 +894,31 @@ sucesso = () => {
                           <input type="text" className="inputNome" name="preRequisito" 
                           defaultValue={objCurso.preRequisito}  onChange={(e) => {
                             preReqValor(e)
-                            postAlterar(e)}}/>
+                            post(e)}}/>
 
                           <label>Conteúdo Programático:</label>
                           <input type="text" className="inputNome" name="conteudoProgramatico" 
                           defaultValue={objCurso.conteudoProgramatico}  onChange={(e) => {
                             conteudoProgValor(e)
-                            postAlterar(e)}}/>
+                            post(e)}}/>
 
                           <label>Sigla:</label>
                           <input type="text" className="inputNome" name="sigla" 
                           defaultValue={objCurso.sigla}  onChange={(e) => {
                             siglaValor(e)
-                            postAlterar(e)}}/>
+                            post(e)}}/>
 
                           <label>Carga Horária:</label>
                           <input type="number" className="inputNome" name="cargaHoraria" 
                           defaultValue={objCurso.cargaHoraria}  onChange={(e) => {
                             cargaHorariaValor(e)
-                            postAlterar(e)}}/>
+                            post(e)}}/>
 
                           <label>Valor:</label>
                           <input type="number" className="inputNome" name="valor" 
                           defaultValue={objCurso.valor}  onChange={(e) => {
                             valorValue(e)
-                            postAlterar(e)}}/>
+                            post(e)}}/>
 
 
                           <label>Nivel:</label>
@@ -879,15 +938,18 @@ sucesso = () => {
                           </select> 
 
                           <label>Área:</label>
-                          <select name="area" className="form-select form-select-sm" defaultValue={objCurso.area.nome}
+                          <select name="area" className="form-select form-select-sm"
+                          id="selectArea"
+                          value={idArea}
+                          
                           aria-label=".form-select-sm example"  onChange={(e) => {
-                            valorIdArea(e)
+                            setIdArea(e.target.value)
                             post(e)}}>
                             {
                                //mostra os nomes das áreas cadastradas
-                              area.map((obj, indice) => (
+                              area.map((obj) => (
                                 
-                              <option key={obj.id}>
+                              <option id="idArea" name="area" value={obj.id} selected={objCurso.area.id == obj.id}>
                                 {obj.nome}
                               </option>
                             ))}
@@ -910,12 +972,12 @@ sucesso = () => {
                                 
                               </option>
                             ))}
+
+                      
                           </select>
-                          </form>
-                        
-                        </Modal.Body>
-                        <Modal.Footer>
-                        <Button type='submit' variant="danger" onClick={() => {
+
+                          <div class="divBotaoModal">
+                          <Button type='submit' variant="danger" onClick={() => {
                           //fecha a modal
                           fecharModalAlterar()
                           //atualiza a página
@@ -923,11 +985,12 @@ sucesso = () => {
                           }}>
                             Fechar
                         </Button>
-                        
-                                                                              {/*efetua a alteração */ }
-                        <Button type='button' variant="warning" onClick={() => alterar(objCurso.id)}>
+
+                          <Button type='submit' variant="warning" class="buttonFormModal">
                             Alterar
                         </Button>
+                        </div>
+
                         <ToastContainer position="top-center"
                           autoClose={1500}
                           hideProgressBar={false}
@@ -937,8 +1000,9 @@ sucesso = () => {
                           pauseOnFocusLoss
                           draggable
                           pauseOnHover/>
-                            
-                        </Modal.Footer>
+                          </form>
+                        
+                        </Modal.Body>
                     </Modal>
 
                     </tr>
