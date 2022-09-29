@@ -314,13 +314,13 @@ function PgPricipal() {
 
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    console.warn("teste", data);
+    console.warn("data = formaData", data);
     let obgj = {
       id: idinstrutor,
       nome: data.nome,
     };
     console.warn("obj altera instrutor", obgj);
-    console.warn(idinstrutor);
+    console.warn("id do instrutor ", idinstrutor);
     let result = await fetch(
       `http://localhost:8080/api/instrutor/${idinstrutor}`,
       {
@@ -332,10 +332,13 @@ function PgPricipal() {
         },
       }
     );
+
     if (result.status === 409) {
+      // caso de erro no result 409
       erroCad();
     } else if (result) {
       console.warn("ENTREEEEI");
+      // fecha a modal
       setOpen2(false);
       msgAlteracao();
       getiInstrutor();
@@ -480,14 +483,7 @@ function PgPricipal() {
           name="parametro"
           required="required"
         />
-        <IconButton
-          aria-label="delete"
-          color="primary"
-          onClick={deletar}
-          className={classes.margin}
-        >
-          <DeleteIcon fontSize="small" />
-        </IconButton>
+
         <IconButton
           aria-label="delete"
           color="primary"
@@ -501,26 +497,27 @@ function PgPricipal() {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center">
-                  <input type="checkbox" onChange={marcarTodos} />
-                </StyledTableCell>
+           
 
                 <StyledTableCell align="center">NOME</StyledTableCell>
+                <StyledTableCell align="center">DELETAR</StyledTableCell>
                 <StyledTableCell align="center">ALTERAR</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {instrutor.map(({ id, nome }, index) => (
                 <StyledTableRow key={id}>
-                  <StyledTableCell align="center">
-                    <input
-                      type="checkbox"
-                      value={id}
-                      name="id"
-                      onChange={handleCheckBox}
-                    />
-                  </StyledTableCell>
                   <StyledTableCell align="center">{nome}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <IconButton
+                      aria-label="delete"
+                      color="primary"
+                      onClick={() => deleteinstrutor(id)}
+                      className={classes.margin}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     <IconButton
                       aria-label="delete"
