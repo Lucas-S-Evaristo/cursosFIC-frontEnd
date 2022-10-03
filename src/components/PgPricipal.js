@@ -37,6 +37,14 @@ import EditIcon from "@material-ui/icons/Edit";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Checkbox from "@material-ui/core/Checkbox";
+import { yellow } from "@material-ui/core/colors";
+import purple from "@material-ui/core/colors/purple";
+import red from "@material-ui/core/colors/red";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AddSharpIcon from "@material-ui/icons/AddSharp";
+import TablePagination from "@material-ui/core/TablePagination";
+
+const secondary = red[500];
 
 let ids = [];
 let listid = [];
@@ -151,12 +159,15 @@ const erroCad = () => {
   });
 };
 
-function PgPricipal() {
+function PgPricipal(props) {
   const [instrutor, setInstrutor] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [idinstrutor, setidinsntrutor] = useState([]);
   const [nomeistrutor, setnomeisntrutor] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [page, setPage] = React.useState(0);
 
   const classes = useStyles();
   const modalCadastroAbrindo = () => setOpen(true);
@@ -169,8 +180,21 @@ function PgPricipal() {
   const modalAlterarFechando = () => {
     setOpen2(false);
   };
+  const handleChangePage = (event, newPage) => {
+    console.log("EVENTO" + event);
 
-  // metodo de msg de alteração feita com sucesso
+    console.log("PAGINA" + newPage);
+
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+
+    setPage(0);
+  };
+
+  /*   // metodo de msg de alteração feita com sucesso
   const handleCheckBox = (e) => {
     const { value, checked } = e.target;
 
@@ -213,11 +237,11 @@ function PgPricipal() {
 
   /*  */
 
-  const deletar = async () => {
+  /*   const deletar = async () => {
     deleteinstrutor(ids);
 
     ids = [];
-  };
+  }; */
   useEffect(() => {
     getiInstrutor();
   }, []);
@@ -484,83 +508,111 @@ function PgPricipal() {
           required="required"
         />
 
-        <IconButton
-          aria-label="delete"
+        <Button
+          style={{ margin: 10, fontWeight: "bold" }}
+          variant="contained"
           color="primary"
+          size="large"
           onClick={modalCadastroAbrindo}
-          className={classes.margin}
+          className={classes.button}
+          startIcon={<AddSharpIcon />}
         >
-          <AddIcon fontSize="small" />
-        </IconButton>
+          NOVO
+        </Button>
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-           
-
                 <StyledTableCell align="center">NOME</StyledTableCell>
-                <StyledTableCell align="center">DELETAR</StyledTableCell>
                 <StyledTableCell align="center">ALTERAR</StyledTableCell>
+                <StyledTableCell align="center">DELETAR</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {instrutor.map(({ id, nome }, index) => (
-                <StyledTableRow key={id}>
-                  <StyledTableCell align="center">{nome}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    <IconButton
-                      aria-label="delete"
-                      color="primary"
-                      onClick={() => deleteinstrutor(id)}
-                      className={classes.margin}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <IconButton
-                      aria-label="delete"
-                      color="primary"
-                      onClick={() => modalAlterarAbrindo(id, nome)}
-                      className={classes.margin}
-                    >
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </StyledTableCell>
+              {instrutor
+                .slice(
+                  page * rowsPerPage,
 
-                  <Modal
-                    open={open2}
-                    onClose={modalAlterarFechando}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <Box sx={style}>
-                      <h2 id="transition-modal-title">alterar instrutor</h2>
-                      <form onSubmit={alterainstrutor}>
-                        <TextField
-                          name="nome"
-                          type="text"
-                          label="nome"
-                          defaultValue={nomeistrutor}
-                          placeholder={nomeistrutor}
-                          variant="outlined"
-                        />
-                        <Button
-                          variant="contained"
-                          style={{ margin: 10 }}
-                          type="submit"
-                        >
-                          alterar
-                        </Button>
-                      </form>
-                    </Box>
-                  </Modal>
-                </StyledTableRow>
-              ))}
+                  page * rowsPerPage + rowsPerPage
+                )
+                .map(({ id, nome }, index) => (
+                  <StyledTableRow key={id}>
+                    <StyledTableCell align="center">{nome}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button
+                        variant="contained"
+                        size="large"
+                        style={{ backgroundColor: "#FFD60A" }}
+                        onClick={() => modalAlterarAbrindo(id, nome)}
+                        className={classes.button}
+                        startIcon={
+                          <BorderColorIcon
+                            style={{
+                              color: "#000",
+                              position: "relative",
+                              left: "0.2em",
+                            }}
+                          />
+                        }
+                      ></Button>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button
+                        variant="contained"
+                        size="large"
+                        style={{ backgroundColor: "#FF0000" }}
+                        onClick={() => deleteinstrutor(id)}
+                        className={classes.button}
+                        startIcon={
+                          <DeleteIcon
+                            style={{ position: "relative", left: "0.3em" }}
+                          />
+                        }
+                      ></Button>
+                    </StyledTableCell>
+
+                    <Modal
+                      open={open2}
+                      onClose={modalAlterarFechando}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <h2 id="transition-modal-title">alterar instrutor</h2>
+                        <form onSubmit={alterainstrutor}>
+                          <TextField
+                            name="nome"
+                            type="text"
+                            label="nome"
+                            defaultValue={nomeistrutor}
+                            placeholder={nomeistrutor}
+                            variant="outlined"
+                          />
+                          <Button
+                            variant="contained"
+                            style={{ margin: 10 }}
+                            type="submit"
+                          >
+                            alterar
+                          </Button>
+                        </form>
+                      </Box>
+                    </Modal>
+                  </StyledTableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[3, 5, 10, 15]}
+          component="div"
+          count={instrutor.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Box>
     </Box>
   );
