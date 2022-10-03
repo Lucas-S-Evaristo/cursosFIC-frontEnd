@@ -244,7 +244,7 @@ sucesso = () => {
           manterDadosPag()
           
       }else if(retorno.status === 500) {
-        erroServ()
+        erroCad()
         manterDadosPag()
 
       }else{
@@ -270,9 +270,7 @@ sucesso = () => {
         event.preventDefault();
     
         console.warn(event.target);
-    
-    
-    
+
         const formData = new FormData(event.target);
     
         const data = Object.fromEntries(formData);
@@ -534,6 +532,7 @@ sucesso = () => {
                     if (result) {
 
                         setCursos(result)
+                       
                     }
                     
                 }else{
@@ -542,10 +541,11 @@ sucesso = () => {
                 
             }
 
+    
     return(
         //lista de cursos
         <div className="lista">
-
+          
           <div className="painel">
             
 
@@ -561,7 +561,11 @@ sucesso = () => {
 </svg></i>
             <input
                 //faz a busca de cursos
-                onChange={buscarCs} 
+                onChange={(e) => {
+                  buscarCs(e)
+                 
+
+                  }}
                 type="" 
                 className="inputBusca"
                 name="parametro"
@@ -620,7 +624,7 @@ sucesso = () => {
                 //mostra os nomes das áreas cadastradas
                   area.map((obj) => (
                     
-                      <option id="idArea" name="area" key={obj.id} value={obj.id}>
+                      <option id="idArea" name="area" key={obj.id} value={obj.id} selected={obj.value}>
                       {obj.nome}
                       </option>
                   ))}
@@ -1017,6 +1021,7 @@ sucesso = () => {
         </div>
         
         </div>
+         
 
         </div>
     )
