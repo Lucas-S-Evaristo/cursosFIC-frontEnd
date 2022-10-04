@@ -1,0 +1,36 @@
+.botaoDelete{
+    background-color: red;
+    color: white;
+    border: 0px;
+    width: 64px;
+    height: 28px;
+}
+
+.botaoAlterar{
+    background-color: yellow;
+    color: black;
+    border: 0px;
+    width: 64px;
+    height: 28px;
+
+}
+
+.bi-plus-lg{
+    margin-right: 0.3em;
+    padding-bottom: 0.1em;
+}
+
+.painel{
+    display: block;
+    float: left;
+    background-color: black;
+    height: 100vh;
+    position: fixed;
+    width: 15%;
+}
+
+.tabelaDiv{
+    margin-left: 5em;
+    padding-left: 10em;
+   
+}

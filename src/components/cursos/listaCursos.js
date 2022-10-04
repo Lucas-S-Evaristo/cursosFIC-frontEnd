@@ -824,7 +824,7 @@ sucesso = () => {
               <td>{obj.sigla}</td>
               <td>{obj.tipoAtendimento}</td>
               <td>{obj.area.nome}</td>
-              <td><button  className='btn btn-warning botaoAlterar' style={valorCheck.length >= 1 ? {visibility:"hidden"} : {visibility:"visible"}}  onClick={() => {
+              <td><button className='btn btn-warning botaoAlterar' style={valorCheck.length >= 1 ? {visibility:"hidden"} : {visibility:"visible"}}  onClick={() => {
           selecionarCurso(indice)
 
        

@@ -13,7 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import { CurtainsOutlined } from "@mui/icons-material";
-
+import  './turma.css'
+import MenuLateral from "./menuLateral";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -23,8 +24,25 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
 
-
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
 
 function CadTurma() {
 
@@ -72,6 +90,8 @@ function CadTurma() {
     const [valuediaSemana, setvalueDiaSemana] = useState()
 
     const [idTurma, setidTurma] = useState([]);
+
+    
 
     console.log(valor)
     console.log(valuediaSemana)
@@ -356,7 +376,36 @@ function CadTurma() {
         if (key) {
 
             // fazendo uma requisição na api de busca e passando a key
-            let result = await fetch("http://localhost:8080/api/turma/buscar/" + key)
+            let result = await fetch("http://localhost:8080/api/turma/buscarTurma/" + key)
+            // tranformando a promessa em json
+            result = await result.json();
+            console.log(result)
+
+            // verifica se existe algum resultado
+            if (result) {
+
+                // setando as turmas que a api retornou de sua resposta de busca
+                setTurma(result)
+            }
+
+
+            // caso não exista chave, atualiza a lista
+        } else {
+            atualizaLista();
+        }
+    }
+
+    const buscaTurmaAno = async (event) => {
+
+        // valor que esta sendo digitado no input de pesquisa
+        let key = event.target.value;
+        console.log(key)
+
+        // verifica se existe 'valor'
+        if (key) {
+
+            // fazendo uma requisição na api de busca e passando a key
+            let result = await fetch("http://localhost:8080/api/turma/buscarTurmaAno/" + key)
             // tranformando a promessa em json
             result = await result.json();
             console.log(result)
@@ -434,10 +483,14 @@ function CadTurma() {
             draggable: true,
             progress: undefined
         })
+
+        
     }
     return (
 
         <>
+            <MenuLateral/>
+
             <ToastContainer position="top-right"
                 autoClose={1500}
                 hideProgressBar={false}
@@ -448,7 +501,9 @@ function CadTurma() {
                 draggable
                 pauseOnHover
             />
-            <Button onClick={handleOpen} style={{ margin: 10, float: 'left', borderRadius: '8px' }} variant="contained" color="primary" >ADICIONAR TURMA </Button>
+            <Button onClick={handleOpen} style={{ marginLeft: 500, float: 'left', borderRadius: '8px' }} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+</svg></i>ADICIONAR TURMA </Button>
 
             <Modal
                 open={modalAlt}
@@ -589,7 +644,7 @@ function CadTurma() {
                         </select>
                         <TextField value={objTurma.numMaxVagas} sx={styleTextField} className="textField" onChange={capturarDados} name="numMaxVagas" type="number" label="NÚMERO MÁXIMO DE VAGAS" variant="outlined" />
                         <TextField
-                            value={numMinVagas}
+                            value={objTurma.numMinVagas}
                             sx={styleTextField}
                             className="textField"
                             onChange={capturarDados}
@@ -881,14 +936,6 @@ function CadTurma() {
                 </Box>
             </Modal>
 
-
-
-
-
-
-
-            <input placeholder="Busque por uma turma" onChange={buscaTurma} style={styletSearch} name="parametro" />
-
             <form>
 
                 <div>
@@ -900,62 +947,73 @@ function CadTurma() {
                     />
                 </div>
             </form>
-
+                
+                      
             <TableContainer component={Paper}>
+            <div className="tabelaDiv"> 
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>CÓDIGO DE TURMA</th>
-                        <th>CURSO</th>
-                        <th>INSTRUTOR</th>
-                        <th>QUANTIDADE DE MATRÍCULA</th>
-                        <th>PERÍODO</th>
-                        <th>VALOR</th>
-                        <th>STATUS</th>
-                        <th>AMBIENTE</th>
-                        <th>Nº MÁXIMO DE VAGAS</th>
-                        <th>Nº MÍNIMO DE VAGAS</th>
-                        <th>DIAS DA SEMANA</th>
-                        <th>DATA DE INÍCIO</th>
-                        <th>DATA DE TÉRMINO</th>
-                        <th>VAI PARA O SITE</th>
-                        <th>EXCLUIR</th>
-                        <th>ALTERAR</th>
-                    </tr>
-                </thead>
-                <tbody>
+                 <TableHead>
+                 <TableRow>
+                        <StyledTableCell>Id</StyledTableCell>
+                        <StyledTableCell>CÓDIGO DE TURMA</StyledTableCell>
+                        <StyledTableCell>CURSO</StyledTableCell>
+                        <StyledTableCell>INSTRUTOR</StyledTableCell>
+                        <StyledTableCell>QUANTIDADE DE MATRÍCULA</StyledTableCell>
+                        <StyledTableCell>PERÍODO</StyledTableCell>
+                        <StyledTableCell>VALOR</StyledTableCell>
+                        <StyledTableCell>STATUS</StyledTableCell>
+                        <StyledTableCell>AMBIENTE</StyledTableCell>
+                        <StyledTableCell>Nº MÁXIMO DE VAGAS</StyledTableCell>
+                        <StyledTableCell>Nº MÍNIMO DE VAGAS</StyledTableCell>
+                        <StyledTableCell>DIAS DA SEMANA</StyledTableCell>
+                        <StyledTableCell>DATA DE INÍCIO</StyledTableCell>
+                        <StyledTableCell>DATA DE TÉRMINO</StyledTableCell>
+                        <StyledTableCell>ALTERAR</StyledTableCell>
+                        <StyledTableCell>EXCLUIR</StyledTableCell>
+                       
+                    </TableRow>
+                    </TableHead>
+                <TableBody>
                     {
                         turmas.map((obj, indice) => (
-                            <tr key={indice}>
-                                <td>{obj.simEnao}</td>
-                                <td>{obj.id}</td>
-                                <td>{obj.codigo}</td>
-                                <td>{obj.curso.nome}</td>
-                                <td>{obj.instrutor.nome}</td>
-                                <td>{obj.qtdMatriculas}</td>
-                                <td>{obj.periodo}</td>
-                                <td>{obj.valor}</td>
-                                <td>{obj.status}</td>
-                                <td>{obj.ambiente.nome}</td>
-                                <td>{obj.numMaxVagas}</td>
-                                <td>{obj.numMinVagas}</td>
-                                <td>{obj.diaSemana}</td>
-                                <td>{obj.dataInicio}</td>
-                                <td>{obj.dataTermino}</td>
-                                <td>
-                                    <Button variant="contained" color="warning" onClick={() => {
+                            <StyledTableRow key={indice}>
+                               
+                                <StyledTableCell>{obj.id}</StyledTableCell>
+                                <StyledTableCell>{obj.codigo}</StyledTableCell>
+                                <StyledTableCell>{obj.curso.nome}</StyledTableCell>
+                                <StyledTableCell>{obj.instrutor.nome}</StyledTableCell>
+                                <StyledTableCell>{obj.qStyledTableCellMatriculas}</StyledTableCell>
+                                <StyledTableCell>{obj.periodo}</StyledTableCell>
+                                <StyledTableCell>{obj.valor}</StyledTableCell>
+                                <StyledTableCell>{obj.status}</StyledTableCell>
+                                <StyledTableCell>{obj.ambiente.nome}</StyledTableCell>
+                                <StyledTableCell>{obj.numMaxVagas}</StyledTableCell>
+                                <StyledTableCell>{obj.numMinVagas}</StyledTableCell>
+                                <StyledTableCell>{obj.diaSemana}</StyledTableCell>
+                                <StyledTableCell>{obj.dataInicio}</StyledTableCell>
+                                <StyledTableCell>{obj.dataTermino}</StyledTableCell>
+                                <StyledTableCell>
+                                    <button className="botaoAlterar" onClick={() => {
                                         selecionarTurma(indice)
                                         setModalAlt(true)
-                                    }}>Alterar</Button>
-                                </td>
-                                <td><Button variant="contained" color="error" onClick={() => deletar(obj.id)}>Remover</Button></td>
-                            </tr>
+                                    }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fillRule
+                            ="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                  </svg></button>
+                                </StyledTableCell>
+                                <StyledTableCell><button className="botaoDelete" onClick={() => deletar(obj.id)}><i className="bi bi-trash3-fill"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
+       <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+          </svg></button></StyledTableCell>
+                            </StyledTableRow>
                         ))
                     }
-                </tbody>
+                </TableBody>
             </Table>
+            </div>
             </TableContainer>
+            
 
         </>
     )
