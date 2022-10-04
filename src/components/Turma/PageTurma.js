@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Modal from "@mui/material/Modal";
+import Modal from 'react-bootstrap/Modal';
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import { toast, ToastContainer } from 'react-toastify';
@@ -23,6 +23,26 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import SearchIcon from '@mui/icons-material/Search';
+
+import OutlinedInput from '@mui/material/OutlinedInput';
+
+import MenuItem from '@mui/material/MenuItem';
+
+import ListItemText from '@mui/material/ListItemText';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -228,10 +248,8 @@ function CadTurma() {
             .then(retorno_convertido => {
                 // metodo que atualiza a lista, que faz com que ao clicar seja adicionado "automaticamente"
                 atualizaLista()
-                // fecha modal
-                handleClose()
-                // limpa o formulario
-                limparForm()
+               
+                setInterval(function () {window.location.reload();}, 1500);
                 // exibindo a msg de aviso de cadastro
                 msgCadastro()
 
@@ -437,6 +455,19 @@ function CadTurma() {
         limparForm()
     }
 
+    const [modalAlterar, setShow] = useState(false);
+
+    const [modalCadastrar, setShowCadastrar] = useState(false);
+
+     //quando handleClose é chamado ele da um false no show e fecha a modal
+     const fecharModalAlterar = () => setShow(false);
+     //quando handleShow é chamado ele da um true no show e abre a modal
+     const abrirModalAlterar = () => setShow(true);
+
+    const abrirModalCadastrar = () => setShowCadastrar(true);
+
+    const fecharModalCadastrar = () => setShowCadastrar(false);
+
 
     // metodo de msg de cadastro efetuado com sucesso
     const msgCadastro = () => {
@@ -456,13 +487,13 @@ function CadTurma() {
     // metodo de msg de exclusão feita com sucesso
     const msgExclusao = () => {
 
-        toast.error("Turma Removido com Sucesso", {
+        toast.success("Turma Removido com Sucesso", {
             position: "top-right",
             autoClose: 1500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
-            theme: 'light',
+            theme: 'dark',
             // faz com que seja possivel arrastar
             draggable: true,
             progress: undefined
@@ -493,9 +524,9 @@ function CadTurma() {
          
             <header> 
             <div className="divBotaoAdd">
-                <Button className="botaoAdd" onClick={handleOpen} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <Button className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-            </svg></i>ADICIONAR TURMA </Button>
+            </svg></i>Novo</Button>
             </div>
 
             <form className="formBusca">
@@ -510,10 +541,11 @@ function CadTurma() {
             
         </header>
 
-        <TableContainer component={Paper} className="tabelaContainer">
+        <div className="conteudoTabela">
+        <TableContainer  className="tabelaContainer">
 
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                 <TableHead>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table" className="tabelaTurma">
+                 <TableHead className="theadTurma">
                  <TableRow>
                         <StyledTableCell>Id</StyledTableCell>
                         <StyledTableCell>CÓDIGO DE TURMA</StyledTableCell>
@@ -556,7 +588,7 @@ function CadTurma() {
                                 <StyledTableCell>
                                     <button className="botaoAlterar" onClick={() => {
                                         selecionarTurma(indice)
-                                        setModalAlt(true)
+                                        abrirModalAlterar()
                                     }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                     <path fillRule
@@ -573,6 +605,7 @@ function CadTurma() {
                 </TableBody>
             </Table>
             </TableContainer>
+            </div>
             
 
 
@@ -589,24 +622,27 @@ function CadTurma() {
            
 
             <Modal
-                open={modalAlt}
-                onClose={clearClose2}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description">
+                show={modalAlterar}
+                onHide={fecharModalAlterar}
+                scrollable={true}>
+                     <Modal.Header closeButton>  
+                        <Modal.Title>Alterar</Modal.Title>
+                        </Modal.Header>
 
-                <Box sx={style}>
+              
                     <form onSubmit={alterar}>
 
-                        <h1 id="teste">modal Alterar</h1>
                         {/*  input de quantidade de mátriculas */}
-                        <TextField value={objTurma.qtdMatriculas} sx={styleTextField} className="textField" onChange={capturarDados} name="qtdMatriculas" type="number" label="QUANTIDADE DE MATRICULA" variant="outlined" />
+                        <TextField value={objTurma.qtdMatriculas} sx={styleTextField} className="inputNomeCadastro"  onChange={capturarDados} name="qtdMatriculas" type="number" label="QUANTIDADE DE MATRICULA" variant="outlined" />
 
 
                         <TextField
                             name="dataInicio"
                             label="Data Inicio"
+                            sx={styleTextField}
                             value={objTurma.dataInicio}
-                            
+                            className="inputNomeCadastro"
+                           
                             InputLabelProps={{ shrink: true, required: true }}
                             type="date"
                            
@@ -614,9 +650,11 @@ function CadTurma() {
                         <TextField
                             name="dataTermino"
                             label="Data Terminio"
+                            sx={styleTextField}
                             InputLabelProps={{ shrink: true, required: true }}
                             type="date"
                             value={objTurma.dataTermino}
+                            className="inputNomeCadastro"
                         />
 
                         <select // select de instrutores
@@ -733,7 +771,7 @@ function CadTurma() {
                             onChange={capturarDados}
                             name="numMinVagas"
                             type="number"
-                            label="NÚMERO MÍNIMO DE VAGAS"
+
                             variant="outlined"
                             />
                         <select //select de período
@@ -784,70 +822,21 @@ function CadTurma() {
                             handleClose()
                         }} >Fechar</Button>
                     </form>
-                </Box>
+                
             </Modal>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <Modal
-                open={open}
-                onClose={clearClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description">
+                 show={modalCadastrar}
+                 onHide={fecharModalCadastrar}
+                 scrollable={true}>
 
-                <Box sx={style}>
-                    <form>
+                    <Modal.Header closeButton>  
+                        <Modal.Title>Cadastrar</Modal.Title>
+                        </Modal.Header>
 
-                        <h1>modal de Cadastrar</h1>
+                        <Modal.Body>
+                    <form className="formAlterar">
+
                         {/*  input de quantidade de mátriculas */}
                        {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
                         <TextField value={qtdMatriculas}  sx={styleTextField} className="textField" onChange={(e) => {
@@ -857,7 +846,7 @@ function CadTurma() {
 
 
                         <TextField
-                           
+                            sx={styleTextField}
                             label="Data inicio"
                             onChange={(e) => {
                                 setDataInicio(e.target.value)
@@ -868,7 +857,7 @@ function CadTurma() {
                             value={dataInicioFormatada}
                         />
                         <TextField
-        
+                            sx={styleTextField}
                             label="Data Terminio"
                             onChange={(e) => {
                                 setDataTermino(e.target.value)
@@ -1016,7 +1005,8 @@ function CadTurma() {
                             setModalAlt(false)
                         }} >Fechar</Button>
                     </form>
-                </Box>
+                </Modal.Body>
+
             </Modal>
 
         </>
@@ -1026,7 +1016,9 @@ function CadTurma() {
 const styleTextField = {
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '30px'
+    marginBottom: '2em'
+    
+
 
 };
 
