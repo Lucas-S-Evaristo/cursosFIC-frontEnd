@@ -21,16 +21,67 @@
 }
 
 .painel{
-    display: block;
     float: left;
+    
     background-color: black;
     height: 100vh;
-    position: fixed;
     width: 15%;
 }
 
-.tabelaDiv{
+.tabelaContainer{
     margin-left: 5em;
     padding-left: 10em;
+    padding-top: 2em;
    
+}
+
+.tabelaTurma{
+    position: absolute;
+
+}
+
+.logo{
+    position: fixed;
+    top:0px;
+    width: 100%;
+
+}
+
+.imagemLogo{
+    position: absolute;
+    top:0px
+}
+
+.botaoAdd{
+    display: flex;
+    position: absolute;
+    left: 0.5em;
+    top:1em;
+    
+}
+
+header{
+    position: relative;
+    top: 0px;
+    width: 80%;
+    float: right;
+
+}
+
+.formBusca{
+
+
+}
+
+.divBotaoAdd{
+    position: relative;
+}
+
+.buscarInput{
+    position: absolute;
+    width: 50%;
+    display: flex;
+    position: absolute;
+    left: 15em;
+    top:1em;    
 }

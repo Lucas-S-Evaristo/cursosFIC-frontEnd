@@ -489,7 +489,92 @@ function CadTurma() {
     return (
 
         <>
-            <MenuLateral/>
+          <MenuLateral/>
+         
+            <header> 
+            <div className="divBotaoAdd">
+                <Button className="botaoAdd" onClick={handleOpen} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+            </svg></i>ADICIONAR TURMA </Button>
+            </div>
+
+            <form className="formBusca">
+                <input
+                    //faz a busca
+                    onChange={buscaTurma}
+                    name="parametro"
+                    required="required"
+                    className="buscarInput"
+                />
+            </form>
+            
+        </header>
+
+        <TableContainer component={Paper} className="tabelaContainer">
+
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                 <TableHead>
+                 <TableRow>
+                        <StyledTableCell>Id</StyledTableCell>
+                        <StyledTableCell>CÓDIGO DE TURMA</StyledTableCell>
+                        <StyledTableCell>CURSO</StyledTableCell>
+                        <StyledTableCell>INSTRUTOR</StyledTableCell>
+                        <StyledTableCell>QUANTIDADE DE MATRÍCULA</StyledTableCell>
+                        <StyledTableCell>PERÍODO</StyledTableCell>
+                        <StyledTableCell>VALOR</StyledTableCell>
+                        <StyledTableCell>STATUS</StyledTableCell>
+                        <StyledTableCell>AMBIENTE</StyledTableCell>
+                        <StyledTableCell>Nº MÁXIMO DE VAGAS</StyledTableCell>
+                        <StyledTableCell>Nº MÍNIMO DE VAGAS</StyledTableCell>
+                        <StyledTableCell>DIAS DA SEMANA</StyledTableCell>
+                        <StyledTableCell>DATA DE INÍCIO</StyledTableCell>
+                        <StyledTableCell>DATA DE TÉRMINO</StyledTableCell>
+                        <StyledTableCell>ALTERAR</StyledTableCell>
+                        <StyledTableCell>EXCLUIR</StyledTableCell>
+                       
+                    </TableRow>
+                    </TableHead>
+                <TableBody>
+                    {
+                        turmas.map((obj, indice) => (
+                            <StyledTableRow key={indice}>
+                               
+                                <StyledTableCell>{obj.id}</StyledTableCell>
+                                <StyledTableCell>{obj.codigo}</StyledTableCell>
+                                <StyledTableCell>{obj.curso.nome}</StyledTableCell>
+                                <StyledTableCell>{obj.instrutor.nome}</StyledTableCell>
+                                <StyledTableCell>{obj.qStyledTableCellMatriculas}</StyledTableCell>
+                                <StyledTableCell>{obj.periodo}</StyledTableCell>
+                                <StyledTableCell>{obj.valor}</StyledTableCell>
+                                <StyledTableCell>{obj.status}</StyledTableCell>
+                                <StyledTableCell>{obj.ambiente.nome}</StyledTableCell>
+                                <StyledTableCell>{obj.numMaxVagas}</StyledTableCell>
+                                <StyledTableCell>{obj.numMinVagas}</StyledTableCell>
+                                <StyledTableCell>{obj.diaSemana}</StyledTableCell>
+                                <StyledTableCell>{obj.dataInicio}</StyledTableCell>
+                                <StyledTableCell>{obj.dataTermino}</StyledTableCell>
+                                <StyledTableCell>
+                                    <button className="botaoAlterar" onClick={() => {
+                                        selecionarTurma(indice)
+                                        setModalAlt(true)
+                                    }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fillRule
+                            ="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                  </svg></button>
+                                </StyledTableCell>
+                                <StyledTableCell><button className="botaoDelete" onClick={() => deletar(obj.id)}><i className="bi bi-trash3-fill"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
+       <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+          </svg></button></StyledTableCell>
+                            </StyledTableRow>
+                        ))
+                    }
+                </TableBody>
+            </Table>
+            </TableContainer>
+            
+
 
             <ToastContainer position="top-right"
                 autoClose={1500}
@@ -501,9 +586,7 @@ function CadTurma() {
                 draggable
                 pauseOnHover
             />
-            <Button onClick={handleOpen} style={{ marginLeft: 500, float: 'left', borderRadius: '8px' }} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-</svg></i>ADICIONAR TURMA </Button>
+           
 
             <Modal
                 open={modalAlt}
@@ -935,85 +1018,6 @@ function CadTurma() {
                     </form>
                 </Box>
             </Modal>
-
-            <form>
-
-                <div>
-                    <input
-                        //faz a busca
-                        onChange={buscaTurma}
-                        name="parametro"
-                        required="required"
-                    />
-                </div>
-            </form>
-                
-                      
-            <TableContainer component={Paper}>
-            <div className="tabelaDiv"> 
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                 <TableHead>
-                 <TableRow>
-                        <StyledTableCell>Id</StyledTableCell>
-                        <StyledTableCell>CÓDIGO DE TURMA</StyledTableCell>
-                        <StyledTableCell>CURSO</StyledTableCell>
-                        <StyledTableCell>INSTRUTOR</StyledTableCell>
-                        <StyledTableCell>QUANTIDADE DE MATRÍCULA</StyledTableCell>
-                        <StyledTableCell>PERÍODO</StyledTableCell>
-                        <StyledTableCell>VALOR</StyledTableCell>
-                        <StyledTableCell>STATUS</StyledTableCell>
-                        <StyledTableCell>AMBIENTE</StyledTableCell>
-                        <StyledTableCell>Nº MÁXIMO DE VAGAS</StyledTableCell>
-                        <StyledTableCell>Nº MÍNIMO DE VAGAS</StyledTableCell>
-                        <StyledTableCell>DIAS DA SEMANA</StyledTableCell>
-                        <StyledTableCell>DATA DE INÍCIO</StyledTableCell>
-                        <StyledTableCell>DATA DE TÉRMINO</StyledTableCell>
-                        <StyledTableCell>ALTERAR</StyledTableCell>
-                        <StyledTableCell>EXCLUIR</StyledTableCell>
-                       
-                    </TableRow>
-                    </TableHead>
-                <TableBody>
-                    {
-                        turmas.map((obj, indice) => (
-                            <StyledTableRow key={indice}>
-                               
-                                <StyledTableCell>{obj.id}</StyledTableCell>
-                                <StyledTableCell>{obj.codigo}</StyledTableCell>
-                                <StyledTableCell>{obj.curso.nome}</StyledTableCell>
-                                <StyledTableCell>{obj.instrutor.nome}</StyledTableCell>
-                                <StyledTableCell>{obj.qStyledTableCellMatriculas}</StyledTableCell>
-                                <StyledTableCell>{obj.periodo}</StyledTableCell>
-                                <StyledTableCell>{obj.valor}</StyledTableCell>
-                                <StyledTableCell>{obj.status}</StyledTableCell>
-                                <StyledTableCell>{obj.ambiente.nome}</StyledTableCell>
-                                <StyledTableCell>{obj.numMaxVagas}</StyledTableCell>
-                                <StyledTableCell>{obj.numMinVagas}</StyledTableCell>
-                                <StyledTableCell>{obj.diaSemana}</StyledTableCell>
-                                <StyledTableCell>{obj.dataInicio}</StyledTableCell>
-                                <StyledTableCell>{obj.dataTermino}</StyledTableCell>
-                                <StyledTableCell>
-                                    <button className="botaoAlterar" onClick={() => {
-                                        selecionarTurma(indice)
-                                        setModalAlt(true)
-                                    }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fillRule
-                            ="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                  </svg></button>
-                                </StyledTableCell>
-                                <StyledTableCell><button className="botaoDelete" onClick={() => deletar(obj.id)}><i className="bi bi-trash3-fill"></i>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
-       <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-          </svg></button></StyledTableCell>
-                            </StyledTableRow>
-                        ))
-                    }
-                </TableBody>
-            </Table>
-            </div>
-            </TableContainer>
-            
 
         </>
     )
