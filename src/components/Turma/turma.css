@@ -23,18 +23,6 @@
     padding-bottom: 0.1em;
 }
 
-.painelComponent{
-    display: block;
-    float: left;
-    background-color: #212529;
-    height: 100vh;
-    width: 15%;
-    position: fixed;
-   
-    
-}
-
-
 .conteudoTabela{
     display: block;
     float: right;
@@ -43,14 +31,7 @@
     
     
 }
-
-.imagemLogo{
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    margin-top: 1em;
-    
-}   
+  
 
 .botaoAdd{
     display: flex;
@@ -81,51 +62,6 @@ header{
     display: flex;
     left: 15em;
     top:1em;    
-}
-
-.linha{
-    position: absolute;
-    border-bottom: 0.1em solid white;
-    top: 5em;
-    left: 0em;
-    right: 0em;
-    
-    
-}
-
-.navegacao{
-   
-   float: left;
-   width: 100%;
-   margin-right: 1em;
-   position: relative;
-   top: 0em;
-}
-
-.nav{
-    position: absolute;
-    top: 3em;
-    left:1em;
-    display: flex;
-    flex-direction: column;
-    color: white;
-    
-}
-a{
-    margin-top: 1em;
-    text-decoration: none;
-    color: white;
-}
-
-a:hover{
-    background-color: #3a86ff;
-    color: white;
-
-}
-
-.theadTurma{
-    background-color: black;
-    
 }
 
 
