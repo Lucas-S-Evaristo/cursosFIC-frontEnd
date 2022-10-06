@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
-import AddIcon from "@material-ui/icons/Add";
-import PropTypes from "prop-types";
+import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import Person3OutlinedIcon from "@mui/icons-material/Person3Outlined";
+import InputAdornment from '@mui/material/InputAdornment';
+
+import Nav from "react-bootstrap/Nav";
+import CardMembershipOutlinedIcon from "@mui/icons-material/CardMembershipOutlined";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import SchoolIcon from "@mui/icons-material/School";
+import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
+import GroupIcon from "@mui/icons-material/Group";
+
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import teste1 from "./teste1";
-import { Link as RouterLink, MemoryRouter } from "react-router-dom";
-import Link from "@mui/material/Link";
+
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -36,13 +35,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Checkbox from "@material-ui/core/Checkbox";
-import { yellow } from "@material-ui/core/colors";
-import purple from "@material-ui/core/colors/purple";
+
 import red from "@material-ui/core/colors/red";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AddSharpIcon from "@material-ui/icons/AddSharp";
 import TablePagination from "@material-ui/core/TablePagination";
+import MenuLateral from "./menu/MenuLateral";
 
 const secondary = red[500];
 
@@ -160,26 +158,40 @@ const erroCad = () => {
 };
 
 function PgPricipal(props) {
+  /* lista de instrutor */
   const [instrutor, setInstrutor] = useState([]);
+  /* variavel que define  se a modal cadastro esta abreta ou fechada  */
   const [open, setOpen] = React.useState(false);
+  /* variavel que define  se a modal altera esta abreta ou fechada  */
   const [open2, setOpen2] = React.useState(false);
+  /* pega id do instrutor */
   const [idinstrutor, setidinsntrutor] = useState([]);
+  /* pega o nome do instrutor */
   const [nomeistrutor, setnomeisntrutor] = useState([]);
+  /* linhas maxima na coluna  */
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  /*  numero de pagina*/
   const [page, setPage] = React.useState(0);
-
+  /* estilo de classes */
   const classes = useStyles();
+  /* abrindo modal cadastro */
   const modalCadastroAbrindo = () => setOpen(true);
+  /* fechando modal cadastro */
   const modalCadastroFechando = () => setOpen(false);
+  /* abrindo modal alterar pegando id  e nome */
   const modalAlterarAbrindo = (id, nome) => {
+    /* abre a modal */
     setOpen2(true);
+    /* coloca id em uma variavel const */
     setidinsntrutor(id);
+    /* coloca nome em uma variavel const */
     setnomeisntrutor(nome);
   };
+  /* fechando modal alterar */
   const modalAlterarFechando = () => {
     setOpen2(false);
   };
+  /* pegando numero de pagina */
   const handleChangePage = (event, newPage) => {
     console.log("EVENTO" + event);
 
@@ -187,7 +199,7 @@ function PgPricipal(props) {
 
     setPage(newPage);
   };
-
+  /* zerano numero de pagina */
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
 
@@ -242,18 +254,22 @@ function PgPricipal(props) {
 
     ids = [];
   }; */
+  /* renderizar página  e faz requisição  */
   useEffect(() => {
     getiInstrutor();
   }, []);
-
+  /* fazendo uma requisição get  */
   const getiInstrutor = async () => {
     console.log("passou");
     let result = await fetch(`http://localhost:8080/api/instrutor`);
+    /* pegando json da requisição get */
     result = await result.json();
+    /* colocando json em uma variavel instrutor */
     setInstrutor(result);
   };
   console.log(instrutor);
 
+  /* css  da tabela */
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -263,7 +279,7 @@ function PgPricipal(props) {
       fontSize: 14,
     },
   }));
-
+  /* csss linha */
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -273,22 +289,29 @@ function PgPricipal(props) {
       border: 0,
     },
   }));
-
+  /* buscar instrutor  */
   const buscarInstrutor = async (event) => {
+    /* key rescebe um evento que e gerado quando usuario clicar no iput de buscar */
     let key = event.target.value;
+    /* verifica se o usuario digitou algo se não digitou nada ele faz   requisição get  para atulizar lista */
     if (key) {
+      /* faz uma requisição get  que faz uma busca de instrutor  */
       let result = await fetch(
         `http://localhost:8080/api/instrutor/buscar/${key}`
       );
+      /* pega o json da requição  */
       result = await result.json();
+      /* verificar se  requição foi feita com sucesso */
       if (result) {
+        /* coloca  o json na variavel instrutor */
         setInstrutor(result);
       }
     } else {
+      /* faz  uma requisição get do back end e renderizar página  */
       getiInstrutor();
     }
   };
-
+  /* metodo deletar instrutor */
   const deleteinstrutor = async (id) => {
     let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
       method: "DELETE",
@@ -376,24 +399,24 @@ function PgPricipal(props) {
      setMobileOpen(!mobileOpen);
    }; */
 
-  const drawer = (
-    <div>
-      <Toolbar />
-      <a href="/">
-        <img
-          style={{
-            width: 150,
-            margin: 20,
-            position: "relative",
-            bottom: 72,
-            left: 20,
-          }}
-          src="https://upload.wikimedia.org/wikipedia/commons/8/8c/SENAI_S%C3%A3o_Paulo_logo.png"
-          alt="Senai"
-        ></img>
-      </a>
-      <Divider />
-      <List>
+  //const container = window !== undefined ? () => window().document.body : undefined;
+
+  return (
+    <>
+      <MenuLateral />
+
+      <Box sx={{ display: "flex", marginLeft: "40px" }}>
+        <ToastContainer
+          position="top-right"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <Modal
           open={open}
           onClose={modalCadastroFechando}
@@ -415,206 +438,173 @@ function PgPricipal(props) {
             </form>
           </Box>
         </Modal>
-      </List>
-    </div>
-  );
 
-  //const container = window !== undefined ? () => window().document.body : undefined;
-
-  return (
-    <Box sx={{ display: "flex" }}>
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(0% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton>
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          /* container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }} */
+        <CssBaseline />
+        <AppBar
+          position="fixed"
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            width: { sm: `calc(0% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
           }}
         >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
+          <Toolbar>
+            <IconButton>
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label="mailbox folders"
+        >
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        </Box>
+        <Box
+          component="main"
           sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            flexGrow: 1,
+            p: 3,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
-          open
         >
-          {drawer}
-        </Drawer>
+          <Toolbar />
+
+          <TextField
+            fullWidth
+            onChange={buscarInstrutor}
+            style={{ marginBottom: 25 }}
+            label="buscar instrutor"
+            id="fullWidth"
+            type="text"
+            name="parametro"
+            required="required"
+            InputProps={{
+
+              startAdornment: (
+
+                <InputAdornment position="start">
+
+                  <SearchIcon />
+
+                </InputAdornment>
+
+              ),
+
+              inputMode: "email",
+
+            }}
+            
+          />
+
+          <Button
+            style={{ margin: 10, fontWeight: "bold" }}
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={modalCadastroAbrindo}
+            className={classes.button}
+            startIcon={<AddSharpIcon />}
+          >
+            NOVO
+          </Button>
+
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">NOME</StyledTableCell>
+                  <StyledTableCell align="center">ALTERAR</StyledTableCell>
+                  <StyledTableCell align="center">DELETAR</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {instrutor
+                  .slice(
+                    page * rowsPerPage,
+
+                    page * rowsPerPage + rowsPerPage
+                  )
+                  .map(({ id, nome }, index) => (
+                    <StyledTableRow key={id}>
+                      <StyledTableCell align="center">{nome}</StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Button
+                          variant="contained"
+                          size="large"
+                          style={{ backgroundColor: "#FFD60A" }}
+                          onClick={() => modalAlterarAbrindo(id, nome)}
+                          className={classes.button}
+                          startIcon={
+                            <BorderColorIcon
+                              style={{
+                                color: "#000",
+                                position: "relative",
+                                left: "0.2em",
+                              }}
+                            />
+                          }
+                        ></Button>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Button
+                          variant="contained"
+                          size="large"
+                          style={{ backgroundColor: "#FF0000" }}
+                          onClick={() => deleteinstrutor(id)}
+                          className={classes.button}
+                          startIcon={
+                            <DeleteIcon
+                              style={{ position: "relative", left: "0.3em" }}
+                            />
+                          }
+                        ></Button>
+                      </StyledTableCell>
+
+                      <Modal
+                        open={open2}
+                        onClose={modalAlterarFechando}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box sx={style}>
+                          <h2 id="transition-modal-title">alterar instrutor</h2>
+                          <form onSubmit={alterainstrutor}>
+                            <TextField
+                              name="nome"
+                              type="text"
+                              label="nome"
+                              defaultValue={nomeistrutor}
+                              placeholder={nomeistrutor}
+                              variant="outlined"
+                            />
+                            <Button
+                              variant="contained"
+                              style={{ margin: 10 }}
+                              type="submit"
+                            >
+                              alterar
+                            </Button>
+                          </form>
+                        </Box>
+                      </Modal>
+                    </StyledTableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[3, 5, 10, 15]}
+            component="div"
+            count={instrutor.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
       </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
-        <Toolbar />
-
-        <TextField
-          fullWidth
-          onChange={buscarInstrutor}
-          style={{ marginBottom: 25 }}
-          label="buscar instrutor"
-          id="fullWidth"
-          type="text"
-          name="parametro"
-          required="required"
-        />
-
-        <Button
-          style={{ margin: 10, fontWeight: "bold" }}
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={modalCadastroAbrindo}
-          className={classes.button}
-          startIcon={<AddSharpIcon />}
-        >
-          NOVO
-        </Button>
-
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">NOME</StyledTableCell>
-                <StyledTableCell align="center">ALTERAR</StyledTableCell>
-                <StyledTableCell align="center">DELETAR</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {instrutor
-                .slice(
-                  page * rowsPerPage,
-
-                  page * rowsPerPage + rowsPerPage
-                )
-                .map(({ id, nome }, index) => (
-                  <StyledTableRow key={id}>
-                    <StyledTableCell align="center">{nome}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Button
-                        variant="contained"
-                        size="large"
-                        style={{ backgroundColor: "#FFD60A" }}
-                        onClick={() => modalAlterarAbrindo(id, nome)}
-                        className={classes.button}
-                        startIcon={
-                          <BorderColorIcon
-                            style={{
-                              color: "#000",
-                              position: "relative",
-                              left: "0.2em",
-                            }}
-                          />
-                        }
-                      ></Button>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Button
-                        variant="contained"
-                        size="large"
-                        style={{ backgroundColor: "#FF0000" }}
-                        onClick={() => deleteinstrutor(id)}
-                        className={classes.button}
-                        startIcon={
-                          <DeleteIcon
-                            style={{ position: "relative", left: "0.3em" }}
-                          />
-                        }
-                      ></Button>
-                    </StyledTableCell>
-
-                    <Modal
-                      open={open2}
-                      onClose={modalAlterarFechando}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box sx={style}>
-                        <h2 id="transition-modal-title">alterar instrutor</h2>
-                        <form onSubmit={alterainstrutor}>
-                          <TextField
-                            name="nome"
-                            type="text"
-                            label="nome"
-                            defaultValue={nomeistrutor}
-                            placeholder={nomeistrutor}
-                            variant="outlined"
-                          />
-                          <Button
-                            variant="contained"
-                            style={{ margin: 10 }}
-                            type="submit"
-                          >
-                            alterar
-                          </Button>
-                        </form>
-                      </Box>
-                    </Modal>
-                  </StyledTableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[3, 5, 10, 15]}
-          component="div"
-          count={instrutor.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Box>
-    </Box>
+    </>
   );
 }
 
