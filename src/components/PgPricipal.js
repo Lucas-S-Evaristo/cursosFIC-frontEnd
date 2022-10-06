@@ -6,6 +6,12 @@ import CssBaseline from "@mui/material/CssBaseline";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Person3OutlinedIcon from "@mui/icons-material/Person3Outlined";
 import InputAdornment from '@mui/material/InputAdornment';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 import Nav from "react-bootstrap/Nav";
 import CardMembershipOutlinedIcon from "@mui/icons-material/CardMembershipOutlined";
@@ -41,6 +47,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AddSharpIcon from "@material-ui/icons/AddSharp";
 import TablePagination from "@material-ui/core/TablePagination";
 import MenuLateral from "./menu/MenuLateral";
+import Slide from '@mui/material/Slide';
 
 const secondary = red[500];
 
@@ -156,6 +163,10 @@ const erroCad = () => {
     progress: undefined,
   });
 };
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 function PgPricipal(props) {
   /* lista de instrutor */
@@ -164,6 +175,8 @@ function PgPricipal(props) {
   const [open, setOpen] = React.useState(false);
   /* variavel que define  se a modal altera esta abreta ou fechada  */
   const [open2, setOpen2] = React.useState(false);
+  /* variavel que define  se a modal deletar  esta abreta ou fechada */
+  const [open3, setOpen3] = React.useState(false);
   /* pega id do instrutor */
   const [idinstrutor, setidinsntrutor] = useState([]);
   /* pega o nome do instrutor */
@@ -186,6 +199,14 @@ function PgPricipal(props) {
     setidinsntrutor(id);
     /* coloca nome em uma variavel const */
     setnomeisntrutor(nome);
+  };
+  /* abrindo modal Deletar pegando id */
+  const modalAbrindoDelatar = (id) => {
+    /* abre a modal */
+    setOpen3(true);
+    /* coloca id em uma variavel const */
+    setidinsntrutor(id);
+   
   };
   /* fechando modal alterar */
   const modalAlterarFechando = () => {
@@ -318,6 +339,7 @@ function PgPricipal(props) {
     });
 
     if (result) {
+      setOpen3(false)
       getiInstrutor();
       msgDeletado();
     }
@@ -438,6 +460,24 @@ function PgPricipal(props) {
             </form>
           </Box>
         </Modal>
+        <Dialog
+        open={open3}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={ () => setOpen3(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Atenção"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+           Deseja Deletar instrutor 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => deleteinstrutor(idinstrutor)}>Sim</Button>
+          <Button onClick={() => setOpen3(false)}>Não</Button>
+        </DialogActions>
+      </Dialog>
 
         <CssBaseline />
         <AppBar
@@ -551,7 +591,7 @@ function PgPricipal(props) {
                           variant="contained"
                           size="large"
                           style={{ backgroundColor: "#FF0000" }}
-                          onClick={() => deleteinstrutor(id)}
+                          onClick={() =>  modalAbrindoDelatar(id)}
                           className={classes.button}
                           startIcon={
                             <DeleteIcon
