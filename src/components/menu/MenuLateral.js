@@ -13,12 +13,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function MenuLateral() {
   return (
     <>
-     
       <div className="painelComponent">
         <img className="imagemLogo" src={require("./logoSenai.png")}></img>
 
         <div className="navegacao">
-          <Nav variant="tabs" defaultActiveKey="/usuarios">
+          <Nav variant="tabs" defaultActiveKey="/instrutores">
             <Nav.Item className="navItem">
               <Nav.Link className="navLink" href="/home">
                 <HomeOutlinedIcon sx={{ marginRight: "30px" }} />
@@ -26,17 +25,17 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link
-                style={{ backgroundColor: "#0496ff", color: "#fff" }}
-                className="navLink"
-                href="/usuarios"
-              >
+              <Nav.Link className="navLink" href="/usuarios">
                 <Person3OutlinedIcon sx={{ marginRight: "30px" }} />
                 Usuários
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/instrutores">
+              <Nav.Link
+                className="navLink"
+                style={{ backgroundColor: "#0496ff", color: "#fff" }}
+                href="/instrutores"
+              >
                 <BadgeOutlinedIcon sx={{ marginRight: "30px" }} />
                 Instrutores
               </Nav.Link>
