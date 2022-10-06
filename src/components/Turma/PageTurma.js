@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import { CurtainsOutlined } from "@mui/icons-material";
-import  './turma.css'
+import './turma.css'
 import MenuLateral from "./menuLateral";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -24,8 +24,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import SearchIcon from '@mui/icons-material/Search';
-
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import TablePagination from '@mui/material/TablePagination';
 
 import MenuItem from '@mui/material/MenuItem';
 
@@ -36,38 +38,38 @@ import Checkbox from '@mui/material/Checkbox';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
-  },
 };
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
+        fontSize: 14,
     },
-  }));
+}));
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
+        backgroundColor: theme.palette.action.hover,
     },
     // hide last border
     '&:last-child td, &:last-child th': {
-      border: 0,
+        border: 0,
     },
-  }));
+}));
 
 function CadTurma() {
 
     //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
-  
+
     // variavel que tem acesso a um array com todas as turmas
     const [qtdMatriculas, setqtdMatriculas] = useState()
     // variavel que tem acesso a um array com todas as turmas
@@ -80,8 +82,8 @@ function CadTurma() {
     const [idhorario, sethorario] = useState()
     // variavel que tem acesso a um array com os cursos
     const [curso, setCurso] = useState([])
-    const [dataIdInicio, setDataInicio] = useState()
-    const [dataIdTermino, setDataTermino] = useState()
+    const [dataInicio, setDataInicio] = useState()
+    const [dataTermino, setDataTermino] = useState()
     const [simEnao, setsimEnao] = useState();
     // variavel que tem acesso a um array com os cursos
     const [idCurso, setidCurso] = useState()
@@ -111,41 +113,37 @@ function CadTurma() {
 
     const [idTurma, setidTurma] = useState([]);
 
-    
 
-    console.log(valor)
-    console.log(valuediaSemana)
 
-        const dataInicioFormatada = dataIdInicio;
-        const dataTerminoFormatada = dataIdTermino;
 
-       console.log( new Date(dataInicioFormatada).toLocaleString('pt-br'))
-       console.log( new Date(dataTerminoFormatada).toLocaleString('pt-br'))
 
-       const valorValue = (e) => {
+    const dataInicioFormatada = dataInicio;
+    const dataTerminoFormatada = dataTermino;
 
-        console.log(e.target)
+
+    const valorValue = (e) => {
+
+
 
         setValor({ ...valor, [e.target.name]: e.target.value })
 
-      }
+    }
 
-      const statusValor = (e) => {
+    const statusValor = (e) => {
 
-        console.log(e.target)
+
 
         setStatus({ ...status, [e.target.name]: e.target.value })
 
-      }
+    }
 
-      const cursoAlt = (e) => {
+    const cursoAlt = (e) => {
 
-        console.log(e.target.value)
-        console.log(e.target)
+
 
         setCurso({ ...curso, [e.target.name]: e.target.value })
 
-      }
+    }
 
     const turma = {
         id: 0,
@@ -179,8 +177,8 @@ function CadTurma() {
         someDate: "2022-09-19"
     };
 
-                        
-  
+
+
     // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
     useEffect(() => {
         fetch("http://localhost:8080/api/turma")
@@ -230,7 +228,7 @@ function CadTurma() {
             .then(retorno_convertido => setDiaSemana(retorno_convertido)) //lista de dia da semana
     }, [])
 
-   const erroDataIgual = () => {
+    const erroDataIgual = () => {
         toast.error("A data de inicio não pode ser igual a data final!", {
             position: "top-center",
             autoClose: 1500,
@@ -239,10 +237,11 @@ function CadTurma() {
             pauseOnHover: true,
             theme: 'colored',
             draggable: true,
-            progress: undefined,})
-       }
+            progress: undefined,
+        })
+    }
 
-       const erroDataMaiorFinal = () => {
+    const erroDataMaiorFinal = () => {
         toast.error("A data de inicio não pode ser depois da data final!", {
             position: "top-center",
             autoClose: 1500,
@@ -251,8 +250,9 @@ function CadTurma() {
             pauseOnHover: true,
             theme: 'colored',
             draggable: true,
-            progress: undefined,})
-       }
+            progress: undefined,
+        })
+    }
 
 
 
@@ -270,120 +270,129 @@ function CadTurma() {
         })
             // convertendo a resposta da promessa em json
             .then(retorno => {
-                
-                if(retorno.status == 409){
+
+                if (retorno.status == 409) {
 
                     erroDataIgual()
 
-                }else if(retorno.status == 418){
+                } else if (retorno.status == 418) {
                     erroDataMaiorFinal()
-                }else{
-                
-                
-                retorno.json()
-            // pegando o retorno convertido
-            .then(retorno_convertido => {
-                // metodo que atualiza a lista, que faz com que ao clicar seja adicionado "automaticamente"
-                atualizaLista()
-               
-                setInterval(function () {window.location.reload();}, 1500);
-                // exibindo a msg de aviso de cadastro
-                msgCadastro()
+                } else {
+
+
+                    retorno.json()
+                        // pegando o retorno convertido
+                        .then(retorno_convertido => {
+                            // metodo que atualiza a lista, que faz com que ao clicar seja adicionado "automaticamente"
+                            atualizaLista()
+
+                            setInterval(function () { window.location.reload(); }, 1500);
+                            // exibindo a msg de aviso de cadastro
+                            msgCadastro()
+                        })
+                }
             })
-            }})
-            
+
     }
 
-   
+
 
     // função que espera receber um id
     const alterar = async (event) => {
 
         const teste = document.getElementById("teste")
-        console.log(teste)
 
-    event.preventDefault();
 
-    console.warn(event.target);
+        event.preventDefault();
 
-    const selectCurso = document.getElementById("selectCurso").value
 
-    const selectAmbiente = document.getElementById("selectAmbiente").value 
 
-    const selectInstrutor = document.getElementById("selectInstrutor").value 
+        const selectCurso = document.getElementById("selectCurso").value
 
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",selectCurso)
+        const selectAmbiente = document.getElementById("selectAmbiente").value
 
-    const formData = new FormData(event.target);
+        const selectInstrutor = document.getElementById("selectInstrutor").value
 
-    const data = Object.fromEntries(formData);
 
-    console.warn("formatadaTurma ", data);
 
-    let obgj = {
+        const formData = new FormData(event.target);
 
-       
+        const data = Object.fromEntries(formData);
 
-        id: objTurma.id,
-         qtdMatriculas: data.qtdMatriculas,
-        instrutor: { id: selectInstrutor},
-        curso: { id: selectCurso },
-        periodo: data.periodo,
-        dataInicio: data.dataInicio,
-        dataTermino: data.dataTermino,
-        valor: data.valor,
-        status: data.status,
-        ambiente: { id: selectAmbiente},
-        numMaxVagas: data.numMaxVagas,
-        numMinVagas: data.numMinVagas,
-        simEnao: data.simEnao,
-        diaSemana: data.diaSemana,
-    
+        let obgj = {
+
+
+
+            id: objTurma.id,
+            qtdMatriculas: data.qtdMatriculas,
+            instrutor: { id: selectInstrutor },
+            curso: { id: selectCurso },
+            periodo: data.periodo,
+            dataInicio: data.dataInicio,
+            dataTermino: data.dataTermino,
+            valor: data.valor,
+            status: data.status,
+            ambiente: { id: selectAmbiente },
+            numMaxVagas: data.numMaxVagas,
+            numMinVagas: data.numMinVagas,
+            simEnao: data.simEnao,
+            diaSemana: data.diaSemana,
+
+
+        };
+
+
+
+        let result = await fetch(
+
+            `http://localhost:8080/api/turma/${objTurma.id}`,
+
+            {
+
+                method: "PUT",
+
+                body: JSON.stringify(obgj),
+
+                headers: {
+
+                    "Content-type": "application/json",
+
+                    Accept: "application/json",
+
+                },
+
+            }
+
+
+        )
+        if (result) {
+            setOpen(false)
+            setInterval(function () { window.location.reload(); }, 50);
+
+        }
 
     };
 
-    console.warn("objTurma " , obgj);
-
-    console.log(idCurso)
 
 
-    let result = await fetch(
-
-      `http://localhost:8080/api/turma/${objTurma.id}`,
-
-      {
-
-        method: "PUT",
-
-        body: JSON.stringify(obgj),
-
-        headers: {
-
-          "Content-type": "application/json",
-
-          Accept: "application/json",
-
-        },
-
-      }
-      
-
-    )
-    if (result) {
-        setOpen(false)
-        setInterval(function () {window.location.reload();}, 50);
-        
-    }
-  
-};
-
-
-    console.log(">>>>>>>>>>>>>>>>>>>>>"+objTurma.ambiente.id )
     // metodo que capta a turma que foi selecionado
-    const selecionarTurma = (indice) => {
-        setObjTurma(turmas[indice])
-        setidTurma(turmas[indice])
-        console.log(indice)
+    const selecionarTurma = (id, codigo, curso, instrutor, qtdMatriculas, periodo, valor, status, ambiente, numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino, objTurma ) => {
+      
+        setidTurma(id)
+        setCodigo(codigo)
+        setidCurso(curso)
+        setidInstrutor(instrutor)
+        setqtdMatriculas(qtdMatriculas)
+        setvaluePeriodo(periodo)
+        setValor(valor)
+        setvalueStatus(status)
+        setidAmbiente(ambiente)
+        setnumMaxVagas(numMaxVagas)
+        setnumMinVagas(numMinVagas)
+        setvalueDiaSemana(diaSemana)
+        setDataInicio(dataInicio)
+        setDataTermino(dataTermino)
+
     }
     // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api  
     const atualizaLista = async () => {
@@ -405,28 +414,27 @@ function CadTurma() {
         }
     }
 
-    const capturarDados = (e) => { 
+    const capturarDados = (e) => {
 
-        console.log(e.target.value);
-       
-    
+
+
+
         setObjTurma({ ...objTurma, [e.target.name]: e.target.value });
-        console.log(objTurma)
-      };
+
+    };
 
     // metodo que limpa os inputs do form
     const limparForm = () => {
         setObjTurma('')
     }
 
-    console.log(objTurma.dataInicio)
+
 
     // metodo que busca uma turma
     const buscaTurma = async (event) => {
 
         // valor que esta sendo digitado no input de pesquisa
         let key = event.target.value;
-        console.log(key)
 
         // verifica se existe 'valor'
         if (key) {
@@ -435,10 +443,11 @@ function CadTurma() {
             let result = await fetch("http://localhost:8080/api/turma/buscarTurma/" + key)
             // tranformando a promessa em json
             result = await result.json();
-            console.log(result)
+
 
             // verifica se existe algum resultado
             if (result) {
+
 
                 // setando as turmas que a api retornou de sua resposta de busca
                 setTurma(result)
@@ -455,7 +464,7 @@ function CadTurma() {
 
         // valor que esta sendo digitado no input de pesquisa
         let key = event.target.value;
-        console.log(key)
+
 
         // verifica se existe 'valor'
         if (key) {
@@ -464,7 +473,7 @@ function CadTurma() {
             let result = await fetch("http://localhost:8080/api/turma/buscarTurmaAno/" + key)
             // tranformando a promessa em json
             result = await result.json();
-            console.log(result)
+
 
             // verifica se existe algum resultado
             if (result) {
@@ -497,10 +506,10 @@ function CadTurma() {
 
     const [modalCadastrar, setShowCadastrar] = useState(false);
 
-     //quando handleClose é chamado ele da um false no show e fecha a modal
-     const fecharModalAlterar = () => setShow(false);
-     //quando handleShow é chamado ele da um true no show e abre a modal
-     const abrirModalAlterar = () => setShow(true);
+    //quando handleClose é chamado ele da um false no show e fecha a modal
+    const fecharModalAlterar = () => setShow(false);
+    //quando handleShow é chamado ele da um true no show e abre a modal
+    const abrirModalAlterar = () => setShow(true);
 
     const abrirModalCadastrar = () => setShowCadastrar(true);
 
@@ -553,98 +562,150 @@ function CadTurma() {
             progress: undefined
         })
 
-        
+
     }
+
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const [page, setPage] = React.useState(0);
+
+    const handleChangePage = (event, newPage) => {
+
+        console.log("EVENTO" + event);
+
+        console.log("PAGINA" + newPage);
+
+        setPage(newPage);
+
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+
+        setRowsPerPage(parseInt(event.target.value, 10));
+
+        setPage(0);
+
+    };
+
+
     return (
 
         <>
-          <MenuLateral/>
-         
-            <header> 
-            <div className="divBotaoAdd">
-                <Button className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-            </svg></i>Novo</Button>
+            <MenuLateral />
+
+            <header>
+                <div className="divBotaoAdd">
+                    <Button className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                    </svg></i>Novo</Button>
+                </div>
+
+                <form className="formBusca">
+                    <input
+                        //faz a busca
+                        onChange={buscaTurmaAno}
+                        name="parametro"
+                        required="required"
+                        className="buscarInput"
+                        type="date"
+                    />
+                </form>
+
+            </header>
+
+            <div className="conteudoTabela">
+                <TableContainer className="tabelaContainer">
+
+                    <Table sx={{ minWidth: 1500 }} aria-label="customized table" className="tabelaTurma">
+                        <TableHead className="theadTurma">
+                            <TableRow>
+                                <StyledTableCell>Id</StyledTableCell>
+                                <StyledTableCell>Código de turma</StyledTableCell>
+                                <StyledTableCell>Curso</StyledTableCell>
+                                <StyledTableCell>Instrutor</StyledTableCell>
+                                <StyledTableCell>Quantidade de matricula</StyledTableCell>
+                                <StyledTableCell>Período</StyledTableCell>
+                                <StyledTableCell>Valor</StyledTableCell>
+                                <StyledTableCell>Status</StyledTableCell>
+                                <StyledTableCell>Ambiente</StyledTableCell>
+                                <StyledTableCell>Nº Máximo de vagas</StyledTableCell>
+                                <StyledTableCell>Nº Minimo de vagas</StyledTableCell>
+                                <StyledTableCell>Dias da semana</StyledTableCell>
+                                <StyledTableCell>Data de inicio</StyledTableCell>
+                                <StyledTableCell>Data de Término</StyledTableCell>
+                                <StyledTableCell>Alterar</StyledTableCell>
+                                <StyledTableCell>Excluir</StyledTableCell>
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {turmas
+
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
+                                .map(({ id, codigo, curso, instrutor,qtdMatriculas, periodo, valor, status, ambiente, numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino}) => (
+                                    <StyledTableRow>
+
+                                        <StyledTableCell>{id}</StyledTableCell>
+                                        <StyledTableCell>{codigo}</StyledTableCell>
+                                        <StyledTableCell>{curso.nome}</StyledTableCell>
+                                        <StyledTableCell>{instrutor.nome}</StyledTableCell>
+                                        <StyledTableCell>{qtdMatriculas}</StyledTableCell>
+                                        <StyledTableCell>{periodo}</StyledTableCell>
+                                        <StyledTableCell>{valor}</StyledTableCell>
+                                        <StyledTableCell>{status}</StyledTableCell>
+                                        <StyledTableCell>{ambiente.nome}</StyledTableCell>
+                                        <StyledTableCell>{numMaxVagas}</StyledTableCell>
+                                        <StyledTableCell>{numMinVagas}</StyledTableCell>
+                                        <StyledTableCell>{diaSemana}</StyledTableCell>
+                                        <StyledTableCell>{dataInicio}</StyledTableCell>
+                                        <StyledTableCell>{dataTermino}</StyledTableCell>
+                                        <StyledTableCell>
+                                            <button className="botaoAlterarTurma" onClick={() => {
+                                                selecionarTurma(id, codigo, curso, instrutor, qtdMatriculas, periodo, valor, status, ambiente,
+                                                    numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino
+                                                    )
+                                                abrirModalAlterar()
+                                            }}>
+                                                <ModeEditOutlinedIcon /></button>
+
+                                        </StyledTableCell>
+                                        <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                    </StyledTableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
+                    <TablePagination
+
+                        sx={{
+
+                            marginTop: "40px",
+
+                            alignItems: "center",
+
+                            textAlign: "center",
+
+                        }}
+
+                        rowsPerPageOptions={[3, 5, 10, 15]}
+
+                        component="div"
+
+                        count={turmas.length}
+
+                        rowsPerPage={rowsPerPage}
+
+                        page={page}
+
+                        onPageChange={handleChangePage}
+
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+
+                    />
+                </TableContainer>
             </div>
 
-            <form className="formBusca">
-                <input
-                    //faz a busca
-                    onChange={buscaTurma}
-                    name="parametro"
-                    required="required"
-                    className="buscarInput"
-                />
-            </form>
-            
-        </header>
-
-        <div className="conteudoTabela">
-        <TableContainer  className="tabelaContainer">
-
-            <Table sx={{ minWidth: 700 }} aria-label="customized table" className="tabelaTurma">
-                 <TableHead className="theadTurma">
-                 <TableRow>
-                        <StyledTableCell>Id</StyledTableCell>
-                        <StyledTableCell>CÓDIGO DE TURMA</StyledTableCell>
-                        <StyledTableCell>CURSO</StyledTableCell>
-                        <StyledTableCell>INSTRUTOR</StyledTableCell>
-                        <StyledTableCell>QUANTIDADE DE MATRÍCULA</StyledTableCell>
-                        <StyledTableCell>PERÍODO</StyledTableCell>
-                        <StyledTableCell>VALOR</StyledTableCell>
-                        <StyledTableCell>STATUS</StyledTableCell>
-                        <StyledTableCell>AMBIENTE</StyledTableCell>
-                        <StyledTableCell>Nº MÁXIMO DE VAGAS</StyledTableCell>
-                        <StyledTableCell>Nº MÍNIMO DE VAGAS</StyledTableCell>
-                        <StyledTableCell>DIAS DA SEMANA</StyledTableCell>
-                        <StyledTableCell>DATA DE INÍCIO</StyledTableCell>
-                        <StyledTableCell>DATA DE TÉRMINO</StyledTableCell>
-                        <StyledTableCell>ALTERAR</StyledTableCell>
-                        <StyledTableCell>EXCLUIR</StyledTableCell>
-                       
-                    </TableRow>
-                    </TableHead>
-                <TableBody>
-                    {
-                        turmas.map((obj, indice) => (
-                            <StyledTableRow key={indice}>
-                               
-                                <StyledTableCell>{obj.id}</StyledTableCell>
-                                <StyledTableCell>{obj.codigo}</StyledTableCell>
-                                <StyledTableCell>{obj.curso.nome}</StyledTableCell>
-                                <StyledTableCell>{obj.instrutor.nome}</StyledTableCell>
-                                <StyledTableCell>{obj.qStyledTableCellMatriculas}</StyledTableCell>
-                                <StyledTableCell>{obj.periodo}</StyledTableCell>
-                                <StyledTableCell>{obj.valor}</StyledTableCell>
-                                <StyledTableCell>{obj.status}</StyledTableCell>
-                                <StyledTableCell>{obj.ambiente.nome}</StyledTableCell>
-                                <StyledTableCell>{obj.numMaxVagas}</StyledTableCell>
-                                <StyledTableCell>{obj.numMinVagas}</StyledTableCell>
-                                <StyledTableCell>{obj.diaSemana}</StyledTableCell>
-                                <StyledTableCell>{obj.dataInicio}</StyledTableCell>
-                                <StyledTableCell>{obj.dataTermino}</StyledTableCell>
-                                <StyledTableCell>
-                                    <button className="botaoAlterarTurma" onClick={() => {
-                                        selecionarTurma(indice)
-                                        abrirModalAlterar()
-                                    }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fillRule
-                            ="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                  </svg></button>
-                                </StyledTableCell>
-                                <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(obj.id)}><i className="bi bi-trash3-fill"></i>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
-       <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-          </svg></button></StyledTableCell>
-                            </StyledTableRow>
-                        ))
-                    }
-                </TableBody>
-            </Table>
-            </TableContainer>
-            </div>
-            
 
 
             <ToastContainer position="top-right"
@@ -657,230 +718,214 @@ function CadTurma() {
                 draggable
                 pauseOnHover
             />
-           
+
 
             <Modal
                 show={modalAlterar}
                 onHide={fecharModalAlterar}
                 scrollable={true}>
-                     <Modal.Header closeButton>  
-                        <Modal.Title>Alterar</Modal.Title>
-                        </Modal.Header>
-
-              
-                    <form onSubmit={alterar}>
-
-                        {/*  input de quantidade de mátriculas */}
-                        <TextField value={objTurma.qtdMatriculas} sx={styleTextField} className="inputNomeCadastro"  onChange={capturarDados} name="qtdMatriculas" type="number" label="QUANTIDADE DE MATRICULA" variant="outlined" />
+                <Modal.Header closeButton>
+                    <Modal.Title>Alterar</Modal.Title>
+                </Modal.Header>
 
 
-                        <TextField
-                            name="dataInicio"
-                            label="Data Inicio"
-                            sx={styleTextField}
-                            value={objTurma.dataInicio}
-                            className="inputNomeCadastro"
-                           
-                            InputLabelProps={{ shrink: true, required: true }}
-                            type="date"
-                           
-                        />
-                        <TextField
-                            name="dataTermino"
-                            label="Data Terminio"
-                            sx={styleTextField}
-                            InputLabelProps={{ shrink: true, required: true }}
-                            type="date"
-                            value={objTurma.dataTermino}
-                            className="inputNomeCadastro"
-                        />
+                <form onSubmit={alterar}>
 
-                        <select // select de instrutores
-                            name="instrutor" required
-                            style={styleTextField}
-                            value={idInstrutor}
-                            id="selectInstrutor"
-                            className="form-control"
-                            onChange={(e) => {
-                                setidInstrutor(e.target.value)
-                                capturarDados(e)
+                    {/*  input de quantidade de mátriculas */}
+                    <TextField value={qtdMatriculas} sx={styleTextField} className="inputNomeCadastro"name="qtdMatriculas" type="number" label="QUANTIDADE DE MATRICULA" variant="outlined" />
 
-                            }}
-                           
-                         
-                        >
-                            <option>SELECIONE O INSTRUTOR</option>
-                            {
-                                instrutor.map((obj, indice) => (
-                                    <option value={obj.id} key={obj.id} selected={objTurma.instrutor.id == obj.id}>
-                                        {obj.nome}
-                                    </option>
-                                ))
-                            }
-                        </select>
 
-                        <select // select de curso
-                            style={styleTextField}
-                            value={idCurso}
-                            name="curso" required
-                            id="selectCurso"
-                            className="form-control"
-                            onChange={(e) => {
-                                setidCurso(e.target.value)
-                                capturarDados(e)
+                    <TextField
+                        name="dataInicio"
+                        label="Data Inicio"
+                        sx={styleTextField}
+                        value={dataInicio}
+                        className="inputNomeCadastro"
 
-                            }}
-                           
-                        >
-                            <option>SELECIONE O CURSO</option>
-                            {
-                                curso.map((obj) => (
-                                    <option value={obj.id} selected={objTurma.curso.id == obj.id}>
-                                        {obj.nome}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                        <select //select de período
-                            value={objTurma.periodo}
-                            style={styleTextField}
-                            name="periodo" required
-                            className="form-control"
-                         
-                        >
-                            <option>SELECIONE O PERÍODO</option>
-                            {
-                                periodo.map((obj, indice) => (
-                                    <option key={obj}>
-                                        {obj}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                    
-                        <TextField sx={styleTextField} defaultValue={objTurma.valor} className="textField"  name="valor" type="text" label="VALOR" variant="outlined" />
+                        InputLabelProps={{ shrink: true, required: true }}
+                        type="date"
 
-                        <select //select de status
-                            value={objTurma.status}
-                            style={styleTextField}
-                            name="status" required
-                            className="form-control"
-                          
-                        >
-                            <option>SELECIONE O STATUS</option>
-                            {
-                                status.map((obj, indice) => (
-                                    <option key={obj}>
-                                        {obj}
-                                    </option>
-                                ))
-                            }
-                        </select>
+                    />
+                    <TextField
+                        name="dataTermino"
+                        label="Data Terminio"
+                        sx={styleTextField}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        type="date"
+                        value={dataTermino}
+                        className="inputNomeCadastro"
+                    />
 
-                        <select // select de ambiente
-                           
-                            name="ambiente" required
-                            style={styleTextField}
-                            value={idAmbiente}
-                            id="selectAmbiente"
-                            className="form-control"
-                            onChange={(e) => {
-                                setidAmbiente(e.target.value)
-                                capturarDados(e)
+                    <select // select de instrutores
+                        name="instrutor" required
+                        style={styleTextField}
+                        value={idInstrutor}
+                        id="selectInstrutor"
+                        className="form-control"
+                        
 
-                            }}
-                            
-                           
-                        >
-                            <option>SELECIONE O AMBIENTE</option>
-                            {
-                                ambiente.map((obj) => (
-                                    <option value={obj.id} selected={objTurma.ambiente.id == obj.id}>
-                                        {obj.nome}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                        <TextField value={objTurma.numMaxVagas} sx={styleTextField} className="textField" onChange={capturarDados} name="numMaxVagas" type="number" label="NÚMERO MÁXIMO DE VAGAS" variant="outlined" />
-                        <TextField
-                            value={objTurma.numMinVagas}
-                            sx={styleTextField}
-                            className="textField"
+
+                    >
+                        <option>SELECIONE O INSTRUTOR</option>
+                        {
+                            instrutor.map((obj) => (
+                                <option value={obj.id} key={obj.id} selected={idInstrutor.id == obj.id}>
+                                    {obj.nome}
+                                </option>
+                            ))
+                        }
+                    </select>
+
+                    <select // select de curso
+                        style={styleTextField}
+                       
+                        name="curso" required
+                        id="selectCurso"
+                        className="form-control"
+                        
+                    >
+                        <option>SELECIONE O CURSO</option>
+                        {
+                            curso.map((obj) => (
+                                <option value={obj.id} selected={idCurso.id == obj.id}>
+                                    {obj.nome}
+                                </option>
+                            ))
+                        }
+                    </select>
+                    <select //select de período
+                        value={ValuePeriodo}
+                        style={styleTextField}
+                        name="periodo" required
+                        className="form-control"
+
+                    >
+                        <option>SELECIONE O PERÍODO</option>
+                        {
+                            periodo.map((obj) => (
+                                <option key={obj}>
+                                    {obj}
+                                </option>
+                            ))
+                        }
+                    </select>
+
+                    <TextField sx={styleTextField} defaultValue={valor} className="textField" name="valor" type="text" label="VALOR" variant="outlined" />
+
+                    <select //select de status
+                        value={ValueStatus}
+                        style={styleTextField}
+                        name="status" required
+                        className="form-control"
+
+                    >
+                        <option>SELECIONE O STATUS</option>
+                        {
+                            status.map((obj, indice) => (
+                                <option key={obj}>
+                                    {obj}
+                                </option>
+                            ))
+                        }
+                    </select>
+
+                    <select // select de ambiente
+
+                        name="ambiente" required
+                        style={styleTextField}
+                        value={idAmbiente}
+                        id="selectAmbiente"
+                        className="form-control"
+                        
+                    >
+                        <option>SELECIONE O AMBIENTE</option>
+                        {
+                            ambiente.map((obj) => (
+                                <option value={obj.id} selected={objTurma.ambiente.id == obj.id}>
+                                    {obj.nome}
+                                </option>
+                            ))
+                        }
+                    </select>
+                    <TextField value={numMaxVagas} sx={styleTextField} className="textField"name="numMaxVagas" type="number" label="NÚMERO MÁXIMO DE VAGAS" variant="outlined" />
+                    <TextField
+                        value={numMinVagas}
+                        sx={styleTextField}
+                        className="textField"
+                        name="numMinVagas"
+                        type="number"
+
+                        variant="outlined"
+                    />
+                    <select //select de período
+                        style={styleTextField}
+                        name="diaSemana" required
+                        className="form-control"
+                        value={valuediaSemana}
+
+
+                    >
+                        <option>SELECIONE O DIA DA SEMANA</option>
+                        {
+                            diaSemana.map((obj) => (
+                                <option key={obj}>
+                                    {obj}
+                                </option>
+                            ))
+                        }
+                    </select>
+
+                    <FormControl>
+                        <FormLabel id="demo-controlled-radio-buttons-group">
+                            A turma vai para o site?
+                        </FormLabel>
+                        <RadioGroup
+                            aria-labelledby="demo-controlled-radio-buttons-group"
+                            name="controlled-radio-buttons-group simEnao"
+                            value={objTurma.simEnao}
                             onChange={capturarDados}
-                            name="numMinVagas"
-                            type="number"
-
-                            variant="outlined"
-                            />
-                        <select //select de período
-                            style={styleTextField}
-                            name="diaSemana" required
-                            className="form-control"
-                            value={objTurma.diaSemana}
-
-
                         >
-                            <option>SELECIONE O DIA DA SEMANA</option>
-                            {
-                                diaSemana.map((obj, indice) => (
-                                    <option key={obj}>
-                                        {obj}
-                                    </option>
-                                ))
-                            }
-                        </select>
-
-                        <FormControl>
-                            <FormLabel id="demo-controlled-radio-buttons-group">
-                                A turma vai para o site?
-                            </FormLabel>
-                            <RadioGroup
-                                aria-labelledby="demo-controlled-radio-buttons-group"
-                                name="controlled-radio-buttons-group simEnao"
-                                value={objTurma.simEnao}
-                                onChange={capturarDados}
-                            >
-                                <FormControlLabel
+                            <FormControlLabel
                                 value="true"
                                 control={<Radio />}
                                 label="Sim"
-                                />
-                                <FormControlLabel
+                            />
+                            <FormControlLabel
                                 value="false"
                                 control={<Radio />}
                                 label="Não"
-                                />
-                            </RadioGroup>
-                            </FormControl>
+                            />
+                        </RadioGroup>
+                    </FormControl>
 
-                        <Button variant="contained" type="submit" color="success" style={{ margin: 10 }} >Alterar</Button>
+                    <Button variant="contained" type="submit" color="success" style={{ margin: 10 }} >Alterar</Button>
 
-                        <Button variant="contained" color="error" style={{ margin: 10 }} onClick={() => {
-                            limparForm()
-                            handleClose()
-                        }} >Fechar</Button>
-                    </form>
-                
+                    <Button variant="contained" color="error" style={{ margin: 10 }} onClick={() => {
+                        limparForm()
+                        handleClose()
+                    }} >Fechar</Button>
+                </form>
+
             </Modal>
 
             <Modal
-                 show={modalCadastrar}
-                 onHide={fecharModalCadastrar}
-                 scrollable={true}>
+                show={modalCadastrar}
+                onHide={fecharModalCadastrar}
+                scrollable={true}>
 
-                    <Modal.Header closeButton>  
-                        <Modal.Title>Cadastrar</Modal.Title>
-                        </Modal.Header>
+                <Modal.Header closeButton>
+                    <Modal.Title>Cadastrar</Modal.Title>
+                </Modal.Header>
 
-                        <Modal.Body>
+                <Modal.Body>
                     <form className="formAlterar">
 
                         {/*  input de quantidade de mátriculas */}
-                       {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
-                        <TextField value={qtdMatriculas}  sx={styleTextField} className="textField" onChange={(e) => {
-                                setqtdMatriculas(e.target.value)
-                                capturarDados(e)
-                            }} name="qtdMatriculas" type="number" label="QUANTIDADE DE MATRICULA" variant="outlined" />
+                        {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
+                        <TextField value={qtdMatriculas} sx={styleTextField} className="textField" onChange={(e) => {
+                            setqtdMatriculas(e.target.value)
+                            capturarDados(e)
+                        }} name="qtdMatriculas" type="number" label="QUANTIDADE DE MATRICULA" variant="outlined" />
 
 
                         <TextField
@@ -910,7 +955,7 @@ function CadTurma() {
                             name="instrutor" required
                             style={styleTextField}
                             className="form-control"
-                           value={idInstrutor}
+                            value={idInstrutor}
                             onChange={(e) => {
                                 setidInstrutor(e.target.value)
                                 capturarDados(e)
@@ -938,7 +983,7 @@ function CadTurma() {
                         >
                             <option>SELECIONE O CURSO</option>
                             {
-                                curso.map((obj, indice) => (
+                                curso.map((obj) => (
                                     <option value={obj.id}>
                                         {obj.nome}
                                     </option>
@@ -965,14 +1010,17 @@ function CadTurma() {
                                 ))
                             }
                         </select>
-           
-                        <TextField value={valor} sx={styleTextField} className="textField" onChange={(e) => {{
-                            setValor(e.target.value)
-                            capturarDados(e) }}}
-                         name="valor" type="text" label="VALOR" variant="outlined" />
+
+                        <TextField value={valor} sx={styleTextField} className="textField" onChange={(e) => {
+                            {
+                                setValor(e.target.value)
+                                capturarDados(e)
+                            }
+                        }}
+                            name="valor" type="text" label="VALOR" variant="outlined" />
 
                         <select //select de status
-                           value={ValueStatus}
+                            value={ValueStatus}
                             style={styleTextField}
                             name="status" required
                             className="form-control"
@@ -1011,13 +1059,13 @@ function CadTurma() {
                             }
                         </select>
                         <TextField value={numMaxVagas} sx={styleTextField} className="textField" onChange={(e) => {
-                                setnumMaxVagas(e.target.value)
-                                capturarDados(e)
-                            }} name="numMaxVagas" type="number" label="NÚMERO MÁXIMO DE VAGAS" variant="outlined" />
+                            setnumMaxVagas(e.target.value)
+                            capturarDados(e)
+                        }} name="numMaxVagas" type="number" label="NÚMERO MÁXIMO DE VAGAS" variant="outlined" />
                         <TextField value={numMinVagas} sx={styleTextField} className="textField" onChange={(e) => {
-                                setnumMinVagas(e.target.value)
-                                capturarDados(e)
-                            }} name="numMinVagas" type="number" label="NÚMERO MÍNIMO DE VAGAS" variant="outlined" />
+                            setnumMinVagas(e.target.value)
+                            capturarDados(e)
+                        }} name="numMinVagas" type="number" label="NÚMERO MÍNIMO DE VAGAS" variant="outlined" />
                         <select //select de período
                             value={valuediaSemana}
                             style={styleTextField}
@@ -1055,7 +1103,7 @@ const styleTextField = {
     display: 'flex',
     flexDirection: 'row',
     marginBottom: '2em'
-    
+
 
 
 };
