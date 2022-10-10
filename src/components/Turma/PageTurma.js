@@ -298,7 +298,7 @@ function CadTurma() {
 
 
     // função que espera receber um id
-    const alterar = async (id) => {
+    const alterar = async (event) => {
 
         const teste = document.getElementById("teste")
 
@@ -326,32 +326,40 @@ function CadTurma() {
 
         const diaSemanaAlt = document.getElementById("valuediaSemana").value
 
+        const formData = new FormData(event.target);
 
+        const data = Object.fromEntries(formData);
+    
+        console.log("formatadaTurma    ", data);
+
+    
         let obgj = {
-
-            id: id,
-            qtdMatriculas: qtdMatriculasAlt,
-            instrutor: { id: 1 },
-            curso: { id: 1 },
-            periodo: periodoAlt,
-            dataInicio: dataInicioAlt,
-            dataTermino: dataTerminoAlt,
-            valor: valorAlt,
-            status: statusAlt,
-            ambiente: { id: 1 },
-            numMaxVagas: numMaxvagaAlt,
-            numMinVagas: numMinVagaAlt,
-            simEnao: simEnao,
-            diaSemana: diaSemanaAlt,
-
-
+    
+           
+    
+            id: idTurma,
+             qtdMatriculas: data.qtdMatriculas,
+            instrutor: { id: selectInstrutor},
+            curso: { id: selectCurso },
+            periodo: data.periodo,
+            dataInicio: data.dataInicio,
+            dataTermino: data.dataTermino,
+            valor: data.valor,
+            status: data.status,
+            ambiente: { id: selectAmbiente},
+            numMaxVagas: data.numMaxVagas,
+            numMinVagas: data.numMinVagas,
+            simEnao: data.simEnao,
+            diaSemana: data.diaSemana,
+        
+    
         };
-
+        console.log("obijeto truma ",obgj)
 
 
         let result = await fetch(
 
-            "http://localhost:8080/api/turma/" + id,
+            "http://localhost:8080/api/turma/" +  idTurma,
 
             {
 
@@ -743,7 +751,7 @@ function CadTurma() {
                     </div>
 
                     <div className="modalCad">
-                        <form className="formModalCad">
+                        <form className="formModalCad" onSubmit={alterar}>
 
                             <div className="parte1">
                                 {/*  input de quantidade de mátriculas */}
@@ -773,12 +781,13 @@ function CadTurma() {
                             </div>
 
                             <div className="parte3">
-                                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                               
                                     <InputLabel id="demo-simple-select-standard-label">Ambiente</InputLabel>
-                                    <Select // select de ambiente
+                                    <select // select de ambiente
 
                                         name="ambiente" required
-
+                                        style={styleTextField}
+                                        className="form-control"
                                         labelId="demo-simple-select-standard-label"
                                         id="selectAmbiente"
 
@@ -786,14 +795,12 @@ function CadTurma() {
 
                                         {
                                             ambiente.map((obj) => (
-                                                <MenuItem value={obj.id} >
+                                                <option value={obj.id} >
                                                     {obj.nome}
-                                                </MenuItem>
+                                                </option>
                                             ))
                                         }
-                                    </Select>
-                                </FormControl>
-
+                                    </select>
 
                                 <InputLabel id="demo-simple-select-standard-label">Dia da semana</InputLabel>
 
@@ -847,26 +854,29 @@ function CadTurma() {
 
                                 
 
-                                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                                
                                     <InputLabel id="demo-simple-select-standard-label">Cursos:</InputLabel>
 
-                                    <Select // select de curso
+                                    <select // select de curso
 
                                         labelId="demo-simple-select-standard-label"
+                                        style={styleTextField}
+                                        className="form-control"
                                         name="curso" required
+                                        defaultValue={idCurso}
                                         id="selectCurso"
 
                                     >
                                         {
                                             curso.map((obj) => (
-                                                <MenuItem value={obj.id}>
+                                                <option value={obj.id}>
                                                     {obj.nome}
-                                                </MenuItem>
+                                                </option>
                                             ))
                                         }
-                                    </Select>
+                                    </select>
 
-                                </FormControl>
+                               
 
 
                             </div>
@@ -975,8 +985,8 @@ function CadTurma() {
 
 
                             <div class="parteBotao">
-                                <Button variant="contained" color="success" style={{ margin: 10 }} onClick={() => {
-                                    alterar(idTurma)
+                                <Button variant="contained" color="success" type="submit" style={{ margin: 10 }} onClick={() => {
+                                    
                                 }} >Alterar</Button>
 
                                 <Button variant="contained" color="error" style={{ margin: 10 }} onClick={() => {
