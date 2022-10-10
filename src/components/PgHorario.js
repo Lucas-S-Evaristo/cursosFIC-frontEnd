@@ -5,7 +5,6 @@ import Input from '@material-ui/core/Input';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
@@ -39,6 +38,14 @@ import { toast, ToastContainer, cssTransition } from 'react-toastify';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import red from "@material-ui/core/colors/red";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AddSharpIcon from "@material-ui/icons/AddSharp";
+import TablePagination from "@material-ui/core/TablePagination";
+import MenuLateral from "./menu/MenuLateral";
+import Slide from '@mui/material/Slide';
+import "react-toastify/dist/ReactToastify.css";
+
 
 
 
@@ -104,6 +111,10 @@ const PgHorario = () => {
   const [open3, setOpen3] = React.useState(false);
   const [idiHorario, setidHorario] = useState([]);
   const [pegarHorario, setpegarHorario] = useState([])
+  /* linhas maxima na coluna  */
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  /*  numero de pagina*/
+  const [page, setPage] = React.useState(0);
   const classes = useStyles();
   const modalCadastroAbrindo = () => setOpen(true);
   const modalCadastroFechando = () => setOpen(false);
@@ -116,7 +127,23 @@ const PgHorario = () => {
   const modalAlterarFechando = () => {
     setOpen2(false)
   };
- 
+
+
+  /* pegando numero de pagina */
+  const handleChangePage = (event, newPage) => {
+    console.log("EVENTO" + event);
+
+    console.log("PAGINA" + newPage);
+
+    setPage(newPage);
+  };
+  /* zerano numero de pagina */
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+
+    setPage(0);
+  };
+
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -132,7 +159,7 @@ const PgHorario = () => {
 
     setOpen3(false);
   };
-   
+
 
   // metodo de msg de alteração feita com sucesso
 
@@ -144,10 +171,10 @@ const PgHorario = () => {
 
   useEffect(() => {
     getiHorario();
-   
-    
-    
-    
+
+
+
+
 
 
   }, []);
@@ -159,7 +186,7 @@ const PgHorario = () => {
     setHorario(result)
 
   }
-  
+
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -188,7 +215,7 @@ const PgHorario = () => {
     });
 
     if (result) {
-  
+
       getiHorario();
 
     }
@@ -197,7 +224,7 @@ const PgHorario = () => {
   }
   const cadastroHorario = async (event) => {
 
-    
+
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
     console.warn("teste", data)
@@ -224,7 +251,7 @@ const PgHorario = () => {
 
   }
   const alteraHorario = async (event) => {
-   
+
     console.warn(event.target)
 
     const formData = new FormData(event.target)
@@ -248,7 +275,7 @@ const PgHorario = () => {
     if (result) {
       console.warn("ENTREEEEI")
       getiHorario();
-      
+
     }
 
 
@@ -265,7 +292,7 @@ const PgHorario = () => {
      setMobileOpen(!mobileOpen);
    }; */
 
-  const drawer = (
+  /*const drawer = (
 
 
     <div>
@@ -301,118 +328,164 @@ const PgHorario = () => {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;*/
 
-  
+
 
   return (
+    <>
 
 
 
+      <MenuLateral />
 
 
+      <Box sx={{ display: 'flex', marginLeft: "40px" }}>
+        <ToastContainer
+          position="top-right"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
 
+        <Modal
+          open={open}
+          onClose={modalCadastroFechando}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
 
-    <Box sx={{ display: 'flex' }}>
+        >
+          <Box sx={style}>
+            <h2 id="transition-modal-title">cadastro de horario</h2>
+            <form onSubmit={cadastroHorario} >
+              <TextField name="horario" type="time" defaultValue="00:00:00" label="horario" variant="outlined"
+              />
+              <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
+            </form>
+          </Box>
+        </Modal>
 
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(0% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          sx={{
+            width: { sm: `calc(0% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
+          }}
+        >
+          <Toolbar>
+            <IconButton>
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label="mailbox folders"
+        >
+        </Box>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        >
+          <Toolbar />
+          <Button
+            style={{ margin: 10, fontWeight: "bold" }}
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={modalCadastroAbrindo}
+            className={classes.button}
+            startIcon={<AddSharpIcon />}
           >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          /* container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }} */
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
+            NOVO
+          </Button>
+
+          <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success">
+              This is a success message!
+            </Alert>
+          </Snackbar>
+
+          
+          
+
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">Horario cadastrado</StyledTableCell>
+                  <StyledTableCell align="center">DELETAR</StyledTableCell>
+                  <StyledTableCell align="center">ALTERAR</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {horario
+                  .slice(
+                    page * rowsPerPage,
+
+                    page * rowsPerPage + rowsPerPage
+                  )
+                .map((obj) => (
+                  <StyledTableRow key={obj.id}>
+                    <StyledTableCell align="center">{obj.horario}</StyledTableCell>
+                    <StyledTableCell align="center">< Button onClick={() => deletetarHorario(obj.id)} variant="contained"
+                          size="large"
+                          style={{ backgroundColor: "#FF0000" }} className={classes.button}
+                          startIcon={
+                            <DeleteIcon
+                              style={{ position: "relative", left: "0.3em" }}
+                            />
+                          } ></Button></StyledTableCell>
+                    <StyledTableCell align="center">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.horario)} variant="contained"
+                          size="large"
+                          style={{ backgroundColor: "#FFD60A" }} className={classes.button} startIcon={
+                            <BorderColorIcon
+                              style={{
+                                color: "#000",
+                                position: "relative",
+                                left: "0.2em",
+                              }}
+                            />
+                          } ></Button></StyledTableCell>
+                    <Modal
+                      open={open2}
+                      onClose={modalAlterarFechando}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+
+                    >
+                      <Box sx={style}>
+                        <h2 id="transition-modal-title">alterar horario</h2>
+                        <form onSubmit={alteraHorario}  >
+                          <TextField name="horario" type="time" label="horario" defaultValue={pegarHorario} variant="outlined" />
+                          <Button variant="contained" style={{ margin: 10 }} type="submit"  >alterar</Button>
+                        </form>
+                      </Box>
+                    </Modal>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[3, 5, 10, 15]}
+            component="div"
+            count={horario.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
       </Box>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
-        <Toolbar />
-
-        <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          This is a success message!
-        </Alert>
-      </Snackbar>
-      
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow> 
-                <StyledTableCell align="center">Horario cadastrado</StyledTableCell>
-                <StyledTableCell align="center">DELETAR</StyledTableCell>
-                <StyledTableCell align="center">ALTERAR</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {horario.map((obj) => (
-                <StyledTableRow key={obj.id}>
-                  <StyledTableCell align="center">{obj.horario}</StyledTableCell>
-                  <StyledTableCell align="center">< Button onClick={() => deletetarHorario(obj.id)} variant="contained" color="primary" className={classes.button} startIcon={<DeleteIcon />} >DELETAR</Button></StyledTableCell>
-                  <StyledTableCell align="center">< Button onClick={() => modalAlterarAbrindo(obj.id, obj.horario)} variant="contained" color="primary" className={classes.button} startIcon={<EditIcon />} >ALTERAR</Button></StyledTableCell>
-                  <Modal
-                    open={open2}
-                    onClose={modalAlterarFechando}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-
-                  >
-                    <Box sx={style}>
-                      <h2 id="transition-modal-title">alterar horario</h2>
-                      <form onSubmit={alteraHorario}  >
-                        <TextField name="horario" type="time" label="horario" defaultValue={pegarHorario}  variant="outlined" />
-                        <Button variant="contained" style={{ margin: 10 }} type="submit"  >alterar</Button>
-                      </form>
-                    </Box>
-                  </Modal>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </Box>
-
+    </>
   );
 }
 
