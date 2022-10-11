@@ -12,7 +12,7 @@ function Rotas(){
 
         <Routes>
           
-            <Route path='/' element={<ListaCursos/>}/>
+            <Route path='/listaCursos' element={<ListaCursos/>}/>
             <Route path='/listaArea' element={<Area/>}/>
             <Route path='/listaTurma' element={<CadTurma/>}/>
             <Route path='/painel' element={<MenuLateral/>}/>

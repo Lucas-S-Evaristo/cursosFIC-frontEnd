@@ -1,1029 +1,1153 @@
-import { useEffect, useState } from 'react'
-import  './lista.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import React, { useEffect, useState } from "react";
+import Modal from "@mui/material/Modal";
+import AppBar from "@mui/material/AppBar";
+import Typography from "@mui/material/Typography";
+import TablePagination from "@mui/material/TablePagination";
+import Paper from "@mui/material/Paper";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import EmailIcon from "@mui/icons-material/Email";
+import InputAdornment from "@mui/material/InputAdornment";
+import Table from "@mui/material/Table";
+import HttpsIcon from "@mui/icons-material/Https";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import Fab from "@mui/material/Fab";
+import EditIcon from "@mui/icons-material/Edit";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiDrawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import Grid from "@mui/material/Grid";
+import SearchIcon from "@mui/icons-material/Search";
+import Backdrop from "@mui/material/Backdrop";
+import Fade from "@mui/material/Fade";
+import List from "@mui/material/List";
+import { toast, ToastContainer, cssTransition } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import CreateIcon from "@mui/icons-material/Create";
+import SaveIcon from "@mui/icons-material/Save";
+import Toolbar from "@mui/material/Toolbar";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import PeopleIcon from "@mui/icons-material/People";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Container from "@mui/material/Container";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import LayersIcon from "@mui/icons-material/Layers";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import AdbIcon from "@mui/icons-material/Adb";
+import TextField from "@mui/material/TextField";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
+import Box from "@mui/material/Box";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import InputLabel from "@mui/material/InputLabel";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import BadgeIcon from "@mui/icons-material/Badge";
+import MenuLateral from "./Menu";
 
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+function ListaCurso() {
+  
 
-import  {ToastContainer,toast}  from  'react-toastify' ; 
-import  'react-toastify/dist/ReactToastify.css' ;
-import { keyframes } from 'styled-components';
-import { CheckBox, Construction } from '@mui/icons-material';
-
-
-
-
-//função pra listar todos os cursos cadastrados
-function ListaCursos({excluir, selecionarCurso, post, sucessoAlterar, sucesso,  erroServ, manterDadosPag, erroCadSelect, erroCad, cadastrar, curso, postAlterar, cursoAlterar}){
-
-  const [nome, setNome] = useState()
-
-  const [objetivo, setObjetivo] = useState()
-
-  const [preRequisito, setPreRequisito] = useState()
-
-  const [conteudoProgramatico, setConteudoProgramatico] = useState()
-
-  const [sigla, setSigla] = useState()
-
-  const [cargaHoraria, setCargaHoraria] = useState()
-
-  const [valor, setValor] = useState()
-
-  const [valueNivel, setValueNivel] = useState()
-
-  const [valueTipoAtend, setValueTipoAtend] = useState()
+  //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
+  // estado da modal
+  const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+  const [modalAlt, setModalAlt] = useState(false);
+  const [niveis, setNiveis] = useState([])  // estado do obj do ususario
+  
+  // metodo que abre a modal
+  const handleOpen = () => setOpenModal(true);
+  // metodo que fecha a modal
+  const handleClose = () => setOpenModal(false);
+  // variavel que tem acesso a um array com todos os usuarios
+  const [cursos, setCursos] = useState([]);
+  // variavel que tem acesso a um array com todos os tipos de usuarios
+  const [tipoArea, setTipoArea] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [tipoAtendimentos, setTipoAtendimentos] = useState([])
+  const [id, setId] = useState();
+  const [nome, setNome] = useState();
+  const [objetivo, setObjetivo] = useState();
+  const [preRequisito, setPreRequisito] = useState();
+  const [conteudoProgramatico, setConteudoProgramtico] = useState();
+  const [sigla, setSigla] = useState();
+  const [tipoAtendimento, setTipoAtendimento] = useState([]);
+  const [nivel, setNivel] = useState([]);
+  const [cargaHoraria, setCargaHoraria] = useState();
+  const [area, setArea] = useState();
 
   const [idArea, setIdArea] = useState()
 
-  const [idAreaAlterar, setIdAreaAlterar] = useState()
-
-  const [idCurso, setIdCurso] = useState()
-
-
-  curso  = {
+  const curso = {
     id: 0,
     nome: nome,
     objetivo: objetivo,
     preRequisito: preRequisito,
     conteudoProgramatico: conteudoProgramatico,
     sigla: sigla,
+    tipoAtendimento: tipoAtendimento,
+    nivel: nivel,
+    cargaHoraria: cargaHoraria,
     area: {
       id: idArea
-    },
-    nivel: valueNivel,
-    tipoAtendimento: valueTipoAtend,
-    cargaHoraria: cargaHoraria,
-    valor: valor
+    }
   }
 
-  cursoAlterar  = {
-    id: 0,
-    nome: nome,
-    objetivo: objetivo,
-    preRequisito: preRequisito,
-    conteudoProgramatico: conteudoProgramatico,
-    sigla: sigla,
-    area: {
-      id: idAreaAlterar
-    },
-    nivel: valueNivel,
-    tipoAtendimento: valueTipoAtend,
-    cargaHoraria: cargaHoraria,
-    valor: valor
+  const [objCurso, setObjCurso] = useState(curso);
+
+
+  // metodo que captura informações do input
+  const capturarDados = (e) => {
+    console.log(e.target.value);
+    setObjCurso({ ...objCurso, [e.target.name]: e.target.value });
+    console.log(objCurso);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    console.log("EVENTO" + event);
+    console.log("PAGINA" + newPage);
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
+  useEffect(() => {
+    fetch("http://localhost:8080/api/curso")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setCursos(retorno_convertido)); //lista de usuários
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/enum/nivel")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setNiveis(retorno_convertido)); //lista de usuários
+  }, []);
+
+
+  // REQUISIÇÃO GET PARA PUXAR TODOS OS TIPOS DE USUARIOS
+  useEffect(() => {
+    fetch("http://localhost:8080/api/area")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setTipoArea(retorno_convertido)); //lista de usuários
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/enum/tipoAtendimento")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setTipoAtendimentos(retorno_convertido)); //lista de usuários
+  }, []);
+
+
+  const post = (e) => {
+  
+    console.log(e.target)
+    setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
   }
 
-  const [objCurso, setObjCurso] = useState(curso)
 
-  const [objCursoAlterar, setObjCursoAlterar] = useState(cursoAlterar)
-
-  //enviar notificação de sucesso
-  sucessoAlterar = () => {
-    toast.success("Alterado com sucesso!", {
-      position: "top-center",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      theme: 'colored',
-      draggable: true,
-      progress: undefined,})
-}
-
-//enviar notificação de sucesso
-sucesso = () => {
-  toast.success("Cadastrado com sucesso!", {
-      position: "top-center",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      theme: 'colored',
-      draggable: true,
-      progress: undefined,})
- }
-
- //envia uma notificação de erro, caso o usuario não preencha os campos corretamente
- erroCad = () => {
-  toast.error("Preencha os campos corretamente!", {
-    position: "top-center",
-    autoClose: 1500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    theme: 'colored',
-    draggable: true,
-    progress: undefined,})
- }
-
- //erro pra caso o usuario não selecionar os valores do select
- erroCadSelect = () => {
-  toast.error("Selecione os valores corretamente!", {
-    position: "top-center",
-    autoClose: 1500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    theme: 'colored',
-    draggable: true,
-    progress: undefined,})
- }
-
- //mensagem de erro pro servidor
- erroServ = () => {
-  toast.error("Erro, tente novamente!", {
-    position: "top-center",
-    autoClose: 1500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    theme: 'colored',
-    draggable: true,
-    progress: undefined,})
- }
-
-
-      //captura dados digitados no formulario
-      const nomeValor = (e) => {
-  
-        console.log("NOME: ", e.target)
-        setNome({ ...nome, [e.target.name]: e.target.value })
-      }
-
-      const valorIdArea = (e) => {
-  
-        console.log("id AREA: ", e.target.value)
-
-        console.log("id AREA.TARGET: ", e.target)
-
-        setIdArea({ ...idArea, [e.target.name]: e.target.value })
-      }
-
-     const preReqValor = (e) => {
-  
-        console.log(e.target)
-        setPreRequisito({ ...preRequisito, [e.target.name]: e.target.value })
-      }
-
-      const objetivoValor = (e) => {
-  
-        console.log(e.target)
-        setObjetivo({ ...objetivo, [e.target.name]: e.target.value })
-      }
-
-      const conteudoProgValor = (e) => {
-  
-        console.log(e.target)
-        setConteudoProgramatico({ ...conteudoProgramatico, [e.target.name]: e.target.value })
-      }
-
-      const siglaValor = (e) => {
-  
-        console.log(e.target)
-        setSigla({ ...sigla, [e.target.name]: e.target.value })
-      }
-
-      const valorIdCurso = (e) => {
-  
-        console.log(e.target)
-        setIdCurso({ ...idCurso, [e.target.name]: e.target.value })
-      }
-
-      const cargaHorariaValor = (e) => {
-  
-        console.log(e.target.value)
-        setCargaHoraria({ ...cargaHoraria, [e.target.name]: e.target.value })
-      }
-
-      const valorValue = (e) => {
-  
-        console.log(e.target)
-        setValor({ ...valor, [e.target.name]: e.target.value })
-      }
-
-      const pegarValueNivel = (e) => {
-
-        setValueNivel({...valueNivel, [e.target.name]: e.target.value})
-      }
-
-      const pegarvalueTipoAtend = (e) => {
-        setValueTipoAtend({...valueTipoAtend, [e.target.name]: e.target.value})
-      }
-
-      post = (e) => {
-  
-        console.log(e.target)
-        setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
-      }
-
-      //faz uma requisição ao back-end de cadastro
-      cadastrar = () => {
-        fetch("http://localhost:8080/api/curso", {
-          method: 'post',
-          body: JSON.stringify(curso),//corpo da resposta recebe um curso
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
-          }
-    
-        })
-
-        .then(retorno => {
-          //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-          if(retorno.status === 409){
-            erroCad()
-            manterDadosPag()
-            //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-          }else if(retorno.status === 418){
-          erroCadSelect()
-
-          manterDadosPag()
-          
-      }else if(retorno.status === 500) {
-        erroCad()
-        manterDadosPag()
-
-      }else{
-            //faz o processo de cadastro
-            retorno.json()
-        .then(retorno_convertido => {
-
-           //exibir notificação de sucesso
-           sucesso()
-           //atualiza a página depois de um tempo
-          setInterval(function () {window.location.reload();  }, 1500);
-         
-  
-        }
-        )
-          }
-        })
-      }
-
-      //faz uma requisição ao back-end de alteração
-      const alterar = async (event) => {
-
-        event.preventDefault();
-    
-        console.warn(event.target);
-
-        const formData = new FormData(event.target);
-    
-        const data = Object.fromEntries(formData);
-    
-        console.warn("data = formaData", data);
-
-        const selectIdArea = document.getElementById("selectArea").value
-    
-        let obgj = {
-    
-          id: objCurso.id,
-          nome: data.nome,
-          objetivo: data.objetivo,
-          preRequisito: data.preRequisito,
-          conteudoProgramatico: data.conteudoProgramatico,
-          sigla: data.sigla,
-          area: {
-            id: selectIdArea
-          },
-          nivel: data.nivel,
-          tipoAtendimento: data.tipoAtendimento,
-          cargaHoraria: data.cargaHoraria,
-          valor: data.valor
-    
-        };
-    
-        console.warn("obj altera instrutor", obgj);
-    
-    
-        let result = await fetch(
-    
-          `http://localhost:8080/api/curso/${objCurso.id}`,
-    
-          {
-    
-            method: "PUT",
-    
-            body: JSON.stringify(obgj),
-    
-            headers: {
-    
-              "Content-type": "application/json",
-    
-              Accept: "application/json",
-
-             
-            },
-           
-    
-          }
-         
-    
-        );
-        setInterval(function(){window.location.reload();}, 1500);
-        sucessoAlterar()
-      }
-
-    //useEffect faz a requisição com o back end pra receber os cursos e enviar ao use State
-    useEffect(() => {
-        fetch("http://localhost:8080/api/curso")
-        .then(retorno => retorno.json())
-        .then(retorno_convertido => setCursos(retorno_convertido))//retorno convertido tem a lista de todos os cursos
-    }, [])
-
-    //faz uma requisição ao back-end de excluir
-    excluir = async (id) => {
-       let result = await fetch("http://localhost:8080/api/curso/"+id, {
-          method: 'delete',
-
-        })
-        if(result) {
-          getCursos() 
-
-          setInterval(function () {window.location.reload();}, 50);
-      
-        }
-
-      }
-
-      let [valorCheck, setValueCheck] = useState([])
-
-      const [botaoExcluir, setBtnExcluir] = useState(false)
-
-      const [botaoAlterar, setBtnAlterar] = useState(false)
-
-      const [checks, setChecks] = useState(0)
-
-      
-
-      const handleCheckBox = (e) =>{
-
-        const{value, checked} = e.target;  
-        //se tiver um checkbox checado
-        if (checked) {
-    
-          
-          console.log("if")
-
-          setValueCheck([...valorCheck, value], value);
-
-          setBtnExcluir(true)
-
-         
-          
-          //se não tiver checado
-        } else{
-    
-          setChecks(checks-1)
-          setValueCheck(valorCheck.filter((e)=> e!== value));
-        
-          if(valorCheck.length == 0){
-         
-          setBtnExcluir(false)
-
-        
-          }
-
-          console.log("else")
-
-      }
-    
-      }
-
-      function marcarTodos(e) {
-
-        const { value, checked } = e.target;
-    
-
-        let listid = document.querySelectorAll('input[name="id"]'); ;
-    
-        let i = 0;
-    
-        console.warn("input" + listid);
-    
-        if (checked) {
-    
-          for (i = 0; i < listid.length; i++) {
-    
-            valorCheck.push(listid[i].value);
-    
-            listid[i].checked = checked;
-
-            setBtnExcluir(true)
-    
-          }
-    
-        } else {
-    
-          for (i = 0; i < listid.length; i++) {
-    
-            listid[i].checked = false;
-    
-            valorCheck = valorCheck.filter((e) => e !== listid[i].value);
-
-            setBtnExcluir(false)
-            
-            setInterval(function () {window.location.reload();}, 50);
-          }
-    
-          listid = [];
-    
-        }
-      }
-        const deletar = async()=>{
-
-              excluir(valorCheck)
-   
-              
-
-            }
-      //pega os valores do curso e passa para o input
-      
-      selecionarCurso = (indice) => {
-
-        //puxa o curso pelo indice dele, pegando assim o id
-        setObjCurso(cursos[indice])
-        setIdCurso(cursos[indice])
-       
-      }
-      
-
-      //get na api de enum de tipo de atendimento
-      useEffect(() => {
-        fetch("http://localhost:8080/api/enum/tipoAtendimento")
-        .then(retorno => retorno.json())
-        .then(retorno_convertido => setTipoAtendimento(retorno_convertido))
-        //retorno convertido tem a lista de todos as enum de tipoAtendimento
-    }, [])
-    
-      //get na api de enum de nivel do curso
-      useEffect(() => {
-        fetch("http://localhost:8080/api/enum/nivel")
-        .then(retorno => retorno.json())
-        .then(retorno_convertido => setNivel(retorno_convertido))//retorno convertido tem a lista de todos as enum de nivel
-    }, []) 
-
-    //get na api de area
-    useEffect(() => {
-      fetch("http://localhost:8080/api/area")
-      .then(retorno => retorno.json())
-      .then(retorno_convertido => setArea(retorno_convertido))//retorno convertido tem a lista de todos as areas
-  }, []) 
-
-
-
-    //const pra puxar os dados do curso    
-    const [cursos, setCursos] = useState([])
-
-    //const pra abrir a modal
-    const [modalAlterar, setShow] = useState(false);
-
-    const [modalCadastrar, setShowCadastrar] = useState(false);
-    
-    const [modalExcluir, setShowExcluir] = useState(false);
-  
-    //quando handleClose é chamado ele da um false no show e fecha a modal
-    const fecharModalAlterar = () => setShow(false);
-    //quando handleShow é chamado ele da um true no show e abre a modal
-    const abrirModalAlterar = () => setShow(true);
-
-    const abrirModalExcluir = () => setShowExcluir(true);
-
-    const fecharModalExcluir = () => setShowExcluir(false);
-
-    const abrirModalCadastrar = () => setShowCadastrar(true);
-
-    const fecharModalCadastrar = () => setShowCadastrar(false);
-
-    //const pra puxar os niveis
-    const [nivel, setNivel] = useState([])
-
-    //const pra puxar as areas
-    const [area, setArea] = useState([])
-
-    //const pra puxar os tipos de atendimentos
-    const [tipoAtendimento, setTipoAtendimento] = useState([])
-
-    
-
-              useEffect(() => {
-                getCursos();
-            }, []);
-
-            //puxa os cursos pra fazer a busca
-            const getCursos = async ( ) => {
-                let result = await fetch(`http://localhost:8080/api/curso`)
-                result = await result.json();
-                setCursos(result)
-            }
-
-          //busca os cursos
-          const buscarCs = async (event) =>{
-                let key = event.target.value;
-                if (key) {
-                    let result = 
-                    //faz uma requisição ao back-end pra buscar a api de pesquisar cursos
-                    await fetch(`http://localhost:8080/api/curso/buscarCurso/${key}`)
-                    result = await result.json();
-                    if (result) {
-
-                        setCursos(result)
-                       
-                    }
-                    
-                }else{
-                  getCursos();
-                }
-                
-            }
-
-    
-    return(
-        //lista de cursos
-        <div className="lista">
-          
-          <div className="painel">
-            
-
-            </div>
-
-        <div className="buscar">
-
-        <form>
-
-      <div className='divInputPesquisa'>
-        <i className="bi bi-search "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search iconePesq" viewBox="0 0 16 16">
-  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-</svg></i>
-            <input
-                //faz a busca de cursos
-                onChange={(e) => {
-                  buscarCs(e)
-                 
-
-                  }}
-                type="" 
-                className="inputBusca"
-                name="parametro"
-                required="required"
-                />
-                </div>
-        </form>
-
-        <button className='addCadastro' onClick={abrirModalCadastrar}><i className="bi bi-person-plus-fill"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-plus-fill" viewBox="0 0 16 16">
-  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-  <path fillRule
-="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-</svg></i></button>
-
-
- {/*modal de cadastrar */}
- <Modal
-                        show={modalCadastrar}
-                        onHide={fecharModalCadastrar}
-                        scrollable={true}
-                                    >
-                        <Modal.Header closeButton>  
-                        <Modal.Title>Cadastrar</Modal.Title>
-                        </Modal.Header>
-                        {/*corpo da Modal */}
-                        <Modal.Body>
-
-                           {/*Formulario de cursos */}
-            <form className="formAlterar">
-          
-                <input
-                    required
-                    value={nome}//recebe o que foi digitado no input
-                    name="nome" className="inputNomeCadastro"
-                    type="text" placeholder="Nome"
-                    onChange={(e) => {
-                      //puxa o valor do nome digitado no input
-                      setNome(e.target.value)
-                      }}
-                />
-                
-             
-                <select value={idArea} className="form-select form-select-sm inputSelect" aria-label=".form-select-sm example"  
-                name="area" onChange={(e) => {
-                  setIdArea(e.target.value)
-
-                  post(e)
-
-                  }
-
-                  }>
-
-                    <option>ÁREA: </option>
-                              
-              {
-                //mostra os nomes das áreas cadastradas
-                  area.map((obj) => (
-                    
-                      <option id="idArea" name="area" key={obj.id} value={obj.id} selected={obj.value}>
-                      {obj.nome}
-                      </option>
-                  ))}
-
-                </select>
-
-                <input
-                    required
-                    name="objetivo" className="inputNomeCadastro"
-                    type="text" placeholder="objetivo do curso"
-                    value={objetivo}
-                    onChange={(e) => {
-
-                      setObjetivo(e.target.value)
-    
-                      post(e)
-    
-                      }}
-
-                />
-                <input
-                    required
-                    name="preRequisito" className="inputNomeCadastro"
-                    type="text" placeholder="Pré requisito"
-                    value={preRequisito}
-                    onChange={(e) => {
-
-                      setPreRequisito(e.target.value)
-    
-                      post(e)
-    
-                      }}
-                />
-                <input
-                    required
-                    name="conteudoProgramatico" className="inputNomeCadastro"
-                    type="text" placeholder="Conteúdo programático"
-                    value={conteudoProgramatico}
-                    onChange={(e) => {
-
-                      setConteudoProgramatico(e.target.value)
-    
-                      post(e)
-    
-                      }}
-                />
-
-          
-                <select value={valueNivel} onChange={(e) => {setValueNivel(e.target.value)}} 
-                name="nivel" className="form-select form-select-sm inputSelect" aria-label=".form-select-sm example">
-
-                <option>NIVEL: </option>
-                   {
-                    //puxa os niveis
-                    nivel.map((obj, indice) => (
-                      
-                    <option key={indice} defaultValue={obj}>
-                      {obj}
-                    </option>
-                  ))}
-                </select> 
-
-              
-                <select value={valueTipoAtend} name="tipoAtendimento" onChange={(e) => {setValueTipoAtend(e.target.value)}}
-                 className="form-select form-select-sm inputSelect" aria-label=".form-select-sm example" >
-                    
-                <option>TIPO ATENDIMENTO: </option>
-                    {
-                      //puxa os tipos de atendimento
-                    tipoAtendimento.map((obj, indice) => (
-                      
-                    <option key={indice} defaultValue={obj}>
-                      
-                      {obj}
-                      
-                    </option>
-                  ))}
-                </select>
-                <input
-                    required
-                    name="cargaHoraria" className="inputNomeCadastro"
-                    type="number" placeholder="Carga horaria"
-                    value={cargaHoraria}
-                    onChange={(e) => {
-
-                      setCargaHoraria(e.target.value)
-    
-                      post(e)
-    
-                      }}
-                />
-                <input
-                    required
-                    name="valor" className="inputNomeCadastro"
-                    type="number" placeholder="valor"
-                    value={valor}
-                    onChange={(e) => {
-
-                      setValor(e.target.value)
-    
-                      post(e)
-    
-                      }}
-                />
-            <ToastContainer/>
-            </form>
-                        
-                        </Modal.Body>
-                        <Modal.Footer>
-                        <Button type='submit' variant="danger" onClick={() => {
-                          //fecha a modal
-                          fecharModalAlterar()
-                          //atualiza a página
-                          window.location.reload();
-                          }}>
-                            Fechar
-                        </Button>
-                        
-                                                                              {/*efetua a alteração */ }
-                        <Button type='button' variant="warning" onClick={() =>   cadastrar()}>
-                            Cadastrar
-                        </Button>
-                        <ToastContainer position="top-center"
-                          autoClose={1500}
-                          hideProgressBar={false}
-                          newestOnTop={false}
-                          closeOnClick
-                          rtl={false}
-                          pauseOnFocusLoss
-                          draggable
-                          pauseOnHover/>
-                            
-                        </Modal.Footer>
-                    </Modal>
-
-        
-        </div>
-
-        
-        <div className='conteudoFormulario'>
-
-         {/*Tabela que irá mostrar os cursos */}
-         <div className='divTabela'>
-        <table className="table">
- 
-
-        {
-          botaoExcluir
-          ?     
-    
-          <button className='btn btn-danger botaoExcluir' onClick={abrirModalExcluir}  style={valorCheck.length === 0 ? {visibility:"hidden"} : {visibility:"visible"}} ><i className="bi bi-trash3-fill"></i>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
-       <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-          </svg></button>
-      
-        :
-        <></>
+  // função que espera receber um id
+  const alterar = async (id) => {
+    // pegando os valores dos inputs
+    let nome = document.getElementById("nome").value;
+    let objetivo = document.getElementById("objetivo").value;
+    let preRequisito = document.getElementById("preRequisito").value;
+    let conteudoProgramatico = document.getElementById("conteudoProgramatico").value;
+    let sigla = document.getElementById("sigla").value;
+    let tipoAtendimento = document.getElementById("tipoAtendimento").value;
+    let nivel = document.getElementById("nivel").value;
+    let area = document.getElementById("area").value;
+
+    //montando um json com os valores
+    const usuarioAlt = {
+      id: id,
+      nome: nome,
+      objetivo: objetivo,
+      preRequisito: preRequisito,
+      conteudoProgramatico: conteudoProgramatico,
+      sigla: sigla,
+      tipoAtendimento: tipoAtendimento,
+      nivel:nivel,
+      area:area
+    };
+
+    // requisição ao back-end
+    let resultado = await fetch("http://localhost:8080/api/curso/" + id, {
+      method: "PUT",
+      body: JSON.stringify(usuarioAlt),
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    /* if (resultado.status === 409) {
+      msgEmailExistente();
+      document.getElementById("email").value = "";
+      document.getElementById("email").focus();
     }
 
-    <thead>
-  <tr className='theadTabela'>
-          <th><input type="checkbox" onChange={marcarTodos}/></th>
-          <th>id:</th>
-          <th>Nome:</th>
-    
-          <th>Carga Horaria:</th>
-          <th>Conteúdo programático:</th>
-          <th>Valor:</th>
-          <th>Nivel:</th>
-          <th>Objetivo:</th>
-          <th>Pre Requisito:</th>
-          <th>Sigla:</th>
-          <th>Tipo de atendimento:</th>
-          <th>Área:</th>
-          <th>Alterar:</th>
-          
-  </tr>
-     </thead>
+    if (resultado.status === 510) {
+      msgNifExistente();
+      document.getElementById("nif").value = "";
+      document.getElementById("nif").focus();
+    }*/
 
-        <tbody>
-            {
-      //trás os dados do curso
-      cursos.map((obj, indice) => (
-        //atribui uma chave para a linha, ao qual obtem os dados dos cursos
-              <tr key={indice}>
-                 <td  name="id"><input type="checkbox" name="id" value={obj.id} onChange={handleCheckBox}/></td>
-               
-              <td >{obj.id}</td>
-              <td>{obj.nome}</td>
+    // verifica se existe resultado
 
-              <td>{obj.cargaHoraria}</td>
-              <td>{obj.conteudoProgramatico}</td>
-              <td>{obj.valor}</td>
-              <td>{obj.nivel}</td>
-              <td>{obj.objetivo}</td>
-              <td>{obj.preRequisito}</td>
-              <td>{obj.sigla}</td>
-              <td>{obj.tipoAtendimento}</td>
-              <td>{obj.area.nome}</td>
-              <td><button className='btn btn-warning botaoAlterar' style={valorCheck.length >= 1 ? {visibility:"hidden"} : {visibility:"visible"}}  onClick={() => {
-          selecionarCurso(indice)
+    if (resultado.status === 200) {
+      // atualiza a lista com o usuario alterado
+      atualizaLista();
+      // fecha a modal de alterar
+      setModalAlt(false);
+      // exibe a msg de alteração concluida
+      msgAlteracao();
+    }
+  };
 
-       
-        abrirModalAlterar()
-      }}><i className="bi bi-pencil-square"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
-        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-        <path fillRule
-="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-      </svg>
-          
-        </button>
-        </td>
-             
-              <Modal 
-              show={modalExcluir} 
-              onHide={fecharModalExcluir}
-              backdrop="static"
-              aria-labelledby="contained-modal-title-vcenter"
-              centered>
+  // metodo que efetua o cadastro do usuario
+  const cadastrar = () => {
+    fetch("http://localhost:8080/api/curso", {
+      method: "post",
+      body: JSON.stringify(curso),
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((retorno) => {
+      //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+      if (retorno.status === 500 || retorno.status === 400) {
+        msgCamposVazio();
 
-                
-                  <Modal.Header closeButton className="bodyExcluir">
-                    <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
-                 
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={fecharModalExcluir}>
-                      Não
-                    </Button>
-                    <Button variant="danger" onClick={() => { 
-                //excluir curso pelo id
-                deletar()
-                fecharModalExcluir()}}>
-                      Sim
-                    </Button>
-                  </Modal.Footer>
-                 
-                </Modal>
-          
-                        {/*modal de alterar */}
-                        <Modal
-                        show={modalAlterar}
-                        onHide={fecharModalAlterar}
-                        scrollable={true}
-                                    >
-                        <Modal.Header closeButton>  
-                        <Modal.Title>Alterar</Modal.Title>
-                        </Modal.Header>
-                        {/*corpo da Modal */}
-                        <Modal.Body>
+        // se existir um email existente
+      
+      } else {
+        //faz o processo de cadastro
+        retorno.json().then((retorno_convertido) => {
+          //exibir notificação de sucesso
+          msgCadastro();
+          atualizaLista();
+          //atualiza a página depois de um tempo
+          setOpenModal(false);
+        });
+      }
+    });
+  };
+  // metodo que capta o usuario que foi selecionado
+  const selecionarCurso = (id, nome, objetivo, preRequisito, conteudoProgramatico, sigla, tipoAtendimento, nivel, cargaHoraria, area) => {
+    setId(id);
+    setNome(nome);
+    setObjetivo(objetivo)
+    setPreRequisito(preRequisito);
+    setConteudoProgramtico(conteudoProgramatico);
+    setSigla(sigla);
+    setTipoAtendimento(tipoAtendimento)
+    setNivel(nivel)
+    setArea(area)
+    setCargaHoraria(cargaHoraria)
+  };
 
-                           {/*Formulario que permite a visualização e alteração de dados dos cursos */}
-                        <form className="formAlterar" onSubmit={alterar}>
-                          <label>Nome:</label>
+  const btnAlterar = {
+    backgroundColor: "#caf0f8",
+  };
 
-                           {/*DefaultValue permite editar os input e alterar os dados */}  
-                           {/*On change captura os dados informados */}
-                          <input type="text" className="inputNome" name="nome" defaultValue={objCurso.nome} 
-                          onChange={(e) => {
-                            nomeValor(e)
-                            post(e)}}/>
+  const btnExcluir = {
+    backgroundColor: "#f9564f",
+  };
 
-                          <label>Objetivo:</label>                         
-                          <input type="text" className="inputNome" name="objetivo" 
-                          defaultValue={objCurso.objetivo}  onChange={(e) => {
-                            objetivoValor(e)
-                            post(e)}}/>
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-                          <label>Pré-Requisito:</label>
-                          <input type="text" className="inputNome" name="preRequisito" 
-                          defaultValue={objCurso.preRequisito}  onChange={(e) => {
-                            preReqValor(e)
-                            post(e)}}/>
+  // metodo que atualiza a lista, puxando todos os usuarios da rest api
+  const atualizaLista = async () => {
+    const result = await fetch("http://localhost:8080/api/curso"); // await = espera uma promessa
+    const resultado = await result.json();
+    setCursos(resultado);
+  };
 
-                          <label>Conteúdo Programático:</label>
-                          <input type="text" className="inputNome" name="conteudoProgramatico" 
-                          defaultValue={objCurso.conteudoProgramatico}  onChange={(e) => {
-                            conteudoProgValor(e)
-                            post(e)}}/>
+  // metodo que deleta o usuario
+  const deletar = async (id) => {
+    let result = await fetch(`http://localhost:8080/api/curso/${id}`, {
+      method: "DELETE",
+    });
+    // caso exista um usuario a ser deletado, ele atualiza a lista assim removendo o usuario deletado
+    if (result) {
+      atualizaLista();
+      msgExclusao();
+    }
+  };
 
-                          <label>Sigla:</label>
-                          <input type="text" className="inputNome" name="sigla" 
-                          defaultValue={objCurso.sigla}  onChange={(e) => {
-                            siglaValor(e)
-                            post(e)}}/>
-
-                          <label>Carga Horária:</label>
-                          <input type="number" className="inputNome" name="cargaHoraria" 
-                          defaultValue={objCurso.cargaHoraria}  onChange={(e) => {
-                            cargaHorariaValor(e)
-                            post(e)}}/>
-
-                          <label>Valor:</label>
-                          <input type="number" className="inputNome" name="valor" 
-                          defaultValue={objCurso.valor}  onChange={(e) => {
-                            valorValue(e)
-                            post(e)}}/>
+  // metodo que limpa os inputs do form
+  const limparForm = () => {
+    setObjCurso("");
+  };
 
 
-                          <label>Nivel:</label>
-                          <select  onChange={(e) => {
-                            pegarValueNivel(e)
-                            post(e)}}
-                            name="nivel" className="form-select form-select-sm" 
-                          aria-label=".form-select-sm example" defaultValue={objCurso.nivel}>
-                            {
-                              //puxa os niveis
-                              nivel.map((obj, indice) => (
-                                
-                              <option key={indice} value={obj}>
-                                {obj}
-                              </option>
-                            ))}
-                          </select> 
 
-                          <label>Área:</label>
-                          <select name="area" className="form-select form-select-sm"
-                          id="selectArea"
-                          value={idArea}
-                          
-                          aria-label=".form-select-sm example"  onChange={(e) => {
-                            setIdArea(e.target.value)
-                            post(e)}}>
-                            {
-                               //mostra os nomes das áreas cadastradas
-                              area.map((obj) => (
-                                
-                              <option id="idArea" name="area" value={obj.id} selected={objCurso.area.id == obj.id}>
-                                {obj.nome}
-                              </option>
-                            ))}
-                          </select> 
+  const mdTheme = createTheme();
 
-                          <label>Tipo de atendimento:</label>
-                          <select name="tipoAtendimento"
-                            onChange={(e) => {
-                            pegarvalueTipoAtend(e)
-                            post(e)}}
-                            className="form-select form-select-sm" 
-                          aria-label=".form-select-sm example" defaultValue={objCurso.tipoAtendimento} >
-                              {
-                                //puxa os tipos de atendimento
-                              tipoAtendimento.map((obj, indice) => (
-                                
-                              <option key={indice} value={obj}>
-                                
-                                {obj}
-                                
-                              </option>
-                            ))}
+  // metodo que busca um usuario
+  const buscaCurso = async (event) => {
+    // valor que esta sendo digitado no input de pesquisa
+    let key = event.target.value;
+    console.log(key);
 
-                      
-                          </select>
+    // verifica se existe 'valor'
+    if (key) {
+      // fazendo uma requisição na api de buscar e passando a key
+      let result = await fetch(
+        "http://localhost:8080/api/curso/buscar/" + key
+      );
+      // tranformando a promessa em json
+      result = await result.json();
+      console.log(result);
 
-                          <div class="divBotaoModal">
-                          <Button type='submit' variant="danger" onClick={() => {
-                          //fecha a modal
-                          fecharModalAlterar()
-                          //atualiza a página
-                          window.location.reload();
-                          }}>
-                            Fechar
-                        </Button>
+      // verifica se existe algum resultado
+      if (result) {
+        // setando os usuarios que a api retornou de sua resposta de busca
+        setCursos(result);
+      }
 
-                          <Button type='submit' variant="warning" class="buttonFormModal">
-                            Alterar
-                        </Button>
-                        </div>
+      // caso não exista chave, atualiza a lista
+    } else {
+      atualizaLista();
+    }
+  };
 
-                        <ToastContainer position="top-center"
-                          autoClose={1500}
-                          hideProgressBar={false}
-                          newestOnTop={false}
-                          closeOnClick
-                          rtl={false}
-                          pauseOnFocusLoss
-                          draggable
-                          pauseOnHover/>
-                          </form>
-                        
-                        </Modal.Body>
-                    </Modal>
+  // toda vez que a modal é chamada, ela sera limpa e fechada
+  const clearClose = () => {
+    handleClose();
+    limparForm();
+  };
 
-                    </tr>
+  // metodo de msg de cadastro efetuado com sucesso
+  const msgCadastro = () => {
+    toast.success("Usuário Cadastrado com Sucesso", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-                    
-                ))
-        }
+  // registros duplicados
+  const msgEmailDuplicados = () => {
+    toast.error("Email ja esta associado a um usuario", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-        </tbody>
+  const msgNifDuplicados = () => {
+    toast.error("Nif ja esta associado a um usuario", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-        </table>
+  const msgCamposVazio = () => {
+    toast.warn("Preencha os Campos Corretamente", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  // metodo de msg de exclusão feita com sucesso
+  const msgExclusao = () => {
+    toast.error("Usuário Removido com Sucesso", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "light",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  // metodo de msg de alteração feita com sucesso
+  const msgAlteracao = () => {
+    toast.info("Usuário Alterado com Sucesso", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "light",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const msgEmailExistente = () => {
+    toast.info("Email já está associado a um Usuario", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "light",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const msgNifExistente = () => {
+    toast.info("Nif ja está associado a um Usuário", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "light",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  return (
+    <>
+
+    <MenuLateral/>
+
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          marginLeft: "300px",
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
+
+        <div
+          style={{
+            display: "block",
+            justifyContent: "initial",
+            width: "1500px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <Tooltip title="Adicionar Usuário" arrow placement="top-start">
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{
+                marginLeft: "300px",
+                float: "right",
+              }}
+              onClick={() => setOpenModal(true)}
+            >
+              <PersonAddIcon sx={{ marginRight: "7px" }}></PersonAddIcon>
+              NOVO CURSO
+            </Button>
+          </Tooltip>
+
+          <TextField
+            required="true"
+            inputProps={{
+              maxLength: 20,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              inputMode: "email",
+            }}
+            size="medium"
+            sx={{
+              marginBottom: "20px",
+              width: "500px",
+              position: "relative",
+              left: "30em",
+            }}
+            type="text"
+            label="Busque por Um cURSO"
+            onChange={buscaCurso}
+            variant="outlined"
+          >
+            <SearchIcon />
+          </TextField>
         </div>
-        
-        </div>
+        <TableContainer
+          sx={{
+            width: "1500px",
+            textAlign: "center",
+            marginLeft: "20em",
+            margin: "auto",
+          }}
+          component={Paper}
+        >
+          <Table size="medium">
+            <TableHead sx={{ backgroundColor: "#000814" }}>
+              <TableRow>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Nome
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Objetivo
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Pré Requisito
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Conteudo Programático
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="center">
+                  Sigla
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Tipo Atendimento
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Nível
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Carga Horaria
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Área
+                </TableCell>
+                <TableCell sx={{ color: "#fff" }} align="left">
+                  Ações
+                </TableCell>
+
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cursos
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map(({ id, nome, objetivo, preRequisito, conteudoProgramatico, sigla, tipoAtendimento, nivel, cargaHoraria, area }) => (
+                  <TableRow
+                    hover
+                    sx={{
+                      "&:last-child td, &:last-child th": {
+                        border: 0,
+                      },
+                      cursor: "pointer",
+                    }}
+                  >
+                    <TableCell
+                      className="row"
+                      align="left"
+                      component="th"
+                      scope="row"
+                    >
+                      {nome}
+                    </TableCell>
+                    <TableCell align="left" component="th" scope="row">
+                      {objetivo}
+                    </TableCell>
+                    <TableCell align="left" component="th" scope="row">
+                      {preRequisito}
+                    </TableCell>
+                    <TableCell align="left" component="th" scope="row">
+                      {conteudoProgramatico}
+                    </TableCell>
+                    <TableCell align="left" component="th" scope="row">
+                      {sigla}
+                    </TableCell>
+                    <TableCell align="left" component="th" scope="row">
+                      {tipoAtendimento}
+                    </TableCell>
+                    <TableCell align="left" component="th" scope="row">
+                      {nivel}
+                    </TableCell>
+                    <TableCell align="left" component="th" scope="row">
+                      {cargaHoraria}
+                    </TableCell>
+
+                    <TableCell align="left">
+                      <Stack direction="row" spacing={1}>
+                        <Chip
+                          variant="outlined"
+                          sx={{
+                            backgroundColor: "#212529",
+                            color: "#fff",
+                          }}
+                          label={area.nome}
+                        />
+                      </Stack>
+                    </TableCell>
+                    <Tooltip
+                      sx={{ paddingTop: "10px" }}
+                      title="Alterar"
+                      arrow
+                      placement="top-start"
+                    >
+                      <Fab
+                        sx={{ marginLeft: "7px" }}
+                        variant="circular"
+                        onClick={() => {
+                          selecionarCurso(
+                            id, nome, objetivo, preRequisito, conteudoProgramatico, sigla, tipoAtendimento, nivel, cargaHoraria, area
+                          );
+                          setModalAlt(true);
+                        }}
+                        size="small"
+                        color="warning"
+                        aria-label="edit"
+                      >
+                        <EditIcon />
+                      </Fab>
+                    </Tooltip>
+                    <Tooltip title="Deletar" arrow placement="top-start">
+                      <Fab
+                        sx={{ marginLeft: "7px" }}
+                        variant="circular"
+                        onClick={() => {
+                          deletar(id);
+                        }}
+                        size="small"
+                        color="error"
+                        aria-label="edit"
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </Tooltip>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            sx={{
+              marginTop: "40px",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+            rowsPerPageOptions={[3, 5, 10, 15]}
+            component="div"
+            count={cursos.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
+      </Box>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <Modal
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        closeAfterTransition
+        open={openModal}
+        onClose={clearClose}
+        disableEnforceFocus
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Fade in={openModal}>
+          <Box sx={style}>
+            <form>
+              <div>
+                <h2 style={titleModal}>ADICIONAR CURSO</h2>
+                <TextField
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountBoxIcon sx={{ color: "#000814" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  id="nome"
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) =>{ setNome(e.target.value)}}
+                  name="nome"
+                  type="text"
+                  label="NOME"
+                  variant="outlined"
+                  value={nome}
+                />
+                <TextField
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountBoxIcon sx={{ color: "#000814" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  id="objetivo"
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) =>{ setObjetivo(e.target.value)}}
+                  name="objetivo"
+                  type="text"
+                  label="OBJETIVO"
+                  variant="outlined"
+                  value={objetivo}
+                />
+                <TextField
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountBoxIcon sx={{ color: "#000814" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  id="preRequisito"
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) =>{ setPreRequisito(e.target.value)}}
+                  name="preRequisito"
+                  type="text"
+                  label="PRÉ REQUISITO"
+                  variant="outlined"
+                  value={preRequisito}
+                />
+                <TextField
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountBoxIcon sx={{ color: "#000814" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  id="nome"
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) =>{ setConteudoProgramtico(e.target.value)}}
+                  name="conteudoProgramatico"
+                  type="text"
+                  label="CONTEUDO PROGRAMATICO"
+                  variant="outlined"
+                  value={conteudoProgramatico}
+                />
          
 
-        </div>
-    )
+                <InputLabel id="demo-simple-select-label">
+                  Tipo Área
+                </InputLabel>
+                <select
+                  id="tipoArea"
+                  style={styleSelect}
+                  name="tipoArea"
+                  required
+                  className="form-control"
+                  onChange={(e) => {
+                    setIdArea(e.target.value)
+                    post(e)}}
+
+                  value={idArea}
+                >
+                  <option>Selecione:</option>
+
+                   {
+                   tipoArea.map((obj) => (
+                    <option value={obj.id}>{obj.nome}</option>
+                  ))
+                  } 
+                </select>
+                <InputLabel id="demo-simple-select-label">
+                  Tipo Atendimento
+                </InputLabel>
+                <select
+                  id="tipoAtendimento"
+                  style={styleSelect}
+                  name="tipoAtendimento"
+                  required
+                  className="form-control"
+                  onChange={(e) => setTipoAtendimento(e.target.value)}
+                  value={tipoAtendimento}
+                >
+                  <option>Selecione:</option>
+
+                   {tipoAtendimentos.map((obj, indice) => (
+                    <option key={indice}>{obj}</option>
+                  ))}
+                </select>
+                <InputLabel id="demo-simple-select-label">
+                  Nivel
+                </InputLabel>
+                <select
+                  id="nivel"
+                  style={styleSelect}
+                  name="nivel"
+                  required
+                  className="form-control"
+                  onChange={(e) => setNivel(e.target.value)}
+                  value={nivel}
+                >
+                  <option>Selecione:</option>
+
+                 {niveis.map((obj) => (
+                    <option>{obj}</option>
+                  ))}
+                </select>
+              </div>
+              <Button
+                variant="contained"
+                style={btnCad}
+                onClick={() => {
+                  cadastrar();
+                }}
+              >
+                <SaveIcon sx={{ marginRight: "10px" }} />
+                Cadastrar
+              </Button>
+
+              <Button
+                variant="contained"
+                color="error"
+                style={btnClose}
+                onClick={() => {
+                  limparForm();
+                  handleClose();
+                }}
+              >
+                <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+                Fechar
+              </Button>
+            </form>
+            <Paper elevation={0}>
+              <img style={imgStyle} src="../img/img3.png" />
+            </Paper>
+          </Box>
+        </Fade>
+      </Modal>
+      <Modal
+        onBackdropClick="true"
+        disableEnforceFocus
+        open={modalAlt}
+        onClose={clearClose}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box sx={style}>
+          <form>
+            <div>
+              <h2 style={titleModal}>ADICIONAR USUÁRIO</h2>
+              <TextField
+                autoFocus
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountBoxIcon sx={{ color: "#000814" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                id="nome"
+                sx={styleTextField}
+                className="textField"
+                onChange={capturarDados}
+                name="nome"
+                type="text"
+                label="NOME"
+                variant="outlined"
+              />
+              <TextField
+                autoFocus
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountBoxIcon sx={{ color: "#000814" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                id="objetivo"
+                sx={styleTextField}
+                className="textField"
+                onChange={capturarDados}
+                name="objetivo"
+                type="text"
+                label="OBJETIVO"
+                variant="outlined"
+              />
+              <TextField
+                autoFocus
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountBoxIcon sx={{ color: "#000814" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                id="preRequisito"
+                sx={styleTextField}
+                className="textField"
+                onChange={capturarDados}
+                name="nome"
+                type="text"
+                label="PRÉ REQUISITO"
+                variant="outlined"
+              />
+              <TextField
+                autoFocus
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountBoxIcon sx={{ color: "#000814" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                id="nome"
+                sx={styleTextField}
+                className="textField"
+                onChange={capturarDados}
+                name="conteudoProgramatico"
+                type="text"
+                label="CONTEUDO PROGRAMATICO"
+                variant="outlined"
+              />
+              <TextField
+                autoFocus
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountBoxIcon sx={{ color: "#000814" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                id="sigla"
+                sx={styleTextField}
+                className="textField"
+                onChange={capturarDados}
+                name="sigla"
+                type="text"
+                label="SIGLA"
+                variant="outlined"
+              />
+
+              <InputLabel id="demo-simple-select-label">
+                Tipo Área
+              </InputLabel>
+              <select
+                id="tipoArea"
+                style={styleSelect}
+                name="tipoArea"
+                required
+                className="form-control"
+                onChange={capturarDados}
+              >
+                <option>Selecione:</option>
+
+                {tipoArea.map((obj) => (
+                  <option>{obj}</option>
+                ))}
+              </select>
+              <InputLabel id="demo-simple-select-label">
+                Tipo Atendimento
+              </InputLabel>
+              <select
+                id="tipoAtendimento"
+                style={styleSelect}
+                name="tipoAtendimento"
+                required
+                className="form-control"
+                onChange={capturarDados}
+              >
+                <option>Selecione:</option>
+
+                {tipoAtendimentos.map((obj) => (
+                  <option>{obj}</option>
+                ))}
+              </select>
+              <InputLabel id="demo-simple-select-label">
+                Nivel
+              </InputLabel>
+              <select
+                id="nivel"
+                style={styleSelect}
+                name="nivel"
+                required
+                className="form-control"
+                onChange={capturarDados}
+              >
+                <option>Selecione:</option>
+
+                {niveis.map((obj) => (
+                  <option>{obj}</option>
+                ))}
+              </select>
+
+            </div>
+            <Button
+              variant="contained"
+              style={btnCad}
+              onClick={() => {
+                alterar(id);
+              }}
+            >
+              <CreateIcon
+                sx={{
+                  color: "#ffff",
+                  width: "100",
+                  border: "none",
+                  marginRight: "10px",
+                }}
+              />
+              Alterar
+            </Button>
+
+            <Button
+              variant="contained"
+              color="error"
+              style={btnClose}
+              onClick={() => {
+                limparForm();
+                setModalAlt(false);
+              }}
+            >
+              <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+              Fechar
+            </Button>
+          </form>
+          <Paper elevation={0}>
+            <img style={imgStyle} src="/img/img3.png" />
+          </Paper>
+        </Box>
+      </Modal >
+    </>
+  );
 }
-export default ListaCursos
+
+const usuario = {
+  id: "",
+  nome: "",
+  nif: "",
+  tipoUsuario: "",
+  email: "",
+  senha: "",
+};
+
+const imgStyle = {
+  border: "none",
+  width: "400px",
+  height: "400px",
+  margin: "50px auto",
+  position: "center",
+};
+
+const styleTextField = {
+  display: "flex",
+  flexDirection: "row",
+  marginBottom: "30px",
+};
+
+const styleSelect = {
+  width: "235px",
+  height: "40px",
+  marginBottom: "30px",
+};
+
+const styleTitle = {
+  textAlign: "center",
+  marginBottom: "30px",
+  color: "blue",
+};
+
+const titleModal = {
+  color: "#000814",
+  marginBottom: "65px",
+  boxShadow: 24,
+};
+const btnCad = {
+  marginTop: "20px",
+  borderRadius: "10px",
+  color: "#ffff",
+  backgroundColor: "#000814",
+};
+
+const btnClose = {
+  marginTop: "20px",
+  marginLeft: "20px",
+  borderRadius: "10px",
+  color: "#ffff",
+  backgroundColor: "#f25c54",
+};
+
+const imgLogo = {
+  width: "200px",
+  borderRadius: "20px",
+};
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  display: "flex",
+  flexDirection: "row",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 900,
+  bgcolor: "background.paper",
+  borderRadius: "37px",
+  border: "3px solid #8d99ae",
+  boxShadow: 240,
+  p: 4,
+};
+export default ListaCurso;
