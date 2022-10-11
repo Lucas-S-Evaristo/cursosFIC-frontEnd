@@ -77,7 +77,7 @@ function CadTurma() {
     // variavel que tem acesso a um array com os instrutores
     const [instrutor, setInstrutor] = useState([])
     // variavel que tem acesso a um array com os instrutores
-    const [idInstrutor, setidInstrutor] = useState()
+    const [idInstrutor, setidInstrutor] = useState([])
     // variavel que tem acesso a um array com o horario
     const [idhorario, sethorario] = useState()
     // variavel que tem acesso a um array com os cursos
@@ -86,7 +86,7 @@ function CadTurma() {
     const [dataTermino, setDataTermino] = useState()
     const [simEnao, setsimEnao] = useState();
     // variavel que tem acesso a um array com os cursos
-    const [idCurso, setidCurso] = useState()
+    const [idCurso, setidCurso] = useState([])
     // variavel que tem acesso a um array com os cursos setnumMaxVagas
     const [codigo, setCodigo] = useState()
     // variavel que tem acesso a um array com os cursos
@@ -105,7 +105,7 @@ function CadTurma() {
     // variavel que tem acesso a um array com o ambiente
     const [ambiente, setAmbiente] = useState([])
     // variavel que tem acesso a um array com o ambiente
-    const [idAmbiente, setidAmbiente] = useState()
+    const [idAmbiente, setidAmbiente] = useState([])
     // variavel que tem acesso a um array com os dias da semana
     const [diaSemana, setDiaSemana] = useState([])
     // variavel que tem acesso a um array com os dias da semana
@@ -178,7 +178,7 @@ function CadTurma() {
     };
 
 
-
+ console.log("oooooooooooooooooooooo ",idCurso.id)
     // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
     useEffect(() => {
         fetch("http://localhost:8080/api/turma")
@@ -600,6 +600,8 @@ function CadTurma() {
         setPage(0);
 
     };
+    
+  
 
 
     return (
@@ -792,10 +794,10 @@ function CadTurma() {
                                         id="selectAmbiente"
 
                                     >
-
+                                        
                                         {
                                             ambiente.map((obj) => (
-                                                <option value={obj.id} >
+                                                <option value={obj.id} selected={obj.id == idAmbiente.id} >
                                                     {obj.nome}
                                                 </option>
                                             ))
@@ -837,7 +839,7 @@ function CadTurma() {
                                         name="instrutor" required
                                         style={styleTextField}
                                         className="form-control"
-                                        defaultValue={idInstrutor}
+                                      
                                         id="selectInstrutor"
                                         labelId="demo-simple-select-standard-label"
 
@@ -845,7 +847,7 @@ function CadTurma() {
 
                                         {
                                             instrutor.map((obj) => (
-                                                <option value={obj.id} key={obj.id}>
+                                                <option value={obj.id} key={obj.id} selected={obj.id == idInstrutor.id}>
                                                     {obj.nome}
                                                 </option>
                                             ))
@@ -863,13 +865,13 @@ function CadTurma() {
                                         style={styleTextField}
                                         className="form-control"
                                         name="curso" required
-                                        defaultValue={idCurso}
+                                       
                                         id="selectCurso"
 
                                     >
                                         {
                                             curso.map((obj) => (
-                                                <option value={obj.id}>
+                                                <option value={obj.id} selected={obj.id == idCurso.id}>
                                                     {obj.nome}
                                                 </option>
                                             ))
