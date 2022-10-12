@@ -60,7 +60,7 @@ import BadgeIcon from "@mui/icons-material/Badge";
 import MenuLateral from "./Menu";
 
 function ListaCurso() {
-  
+
 
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
   // estado da modal
@@ -69,7 +69,7 @@ function ListaCurso() {
   const [page, setPage] = useState(0);
   const [modalAlt, setModalAlt] = useState(false);
   const [niveis, setNiveis] = useState([])  // estado do obj do ususario
-  
+
   // metodo que abre a modal
   const handleOpen = () => setOpenModal(true);
   // metodo que fecha a modal
@@ -80,18 +80,19 @@ function ListaCurso() {
   const [tipoArea, setTipoArea] = useState([]);
   const [open, setOpen] = useState(false);
   const [tipoAtendimentos, setTipoAtendimentos] = useState([])
-  const [id, setId] = useState();
+  const [id, setId] = useState([]);
   const [nome, setNome] = useState();
   const [objetivo, setObjetivo] = useState();
   const [preRequisito, setPreRequisito] = useState();
   const [conteudoProgramatico, setConteudoProgramtico] = useState();
   const [sigla, setSigla] = useState();
-  const [tipoAtendimento, setTipoAtendimento] = useState([]);
+  const [tipoAtendimento, setTipoAtendimento] = useState();
   const [nivel, setNivel] = useState([]);
   const [cargaHoraria, setCargaHoraria] = useState();
   const [area, setArea] = useState();
+  const [valor, setValor] = useState();
 
-  const [idArea, setIdArea] = useState()
+  const [idArea, setIdArea] = useState([])
 
   const curso = {
     id: 0,
@@ -103,6 +104,7 @@ function ListaCurso() {
     tipoAtendimento: tipoAtendimento,
     nivel: nivel,
     cargaHoraria: cargaHoraria,
+    valor: valor,
     area: {
       id: idArea
     }
@@ -158,35 +160,33 @@ function ListaCurso() {
 
 
   const post = (e) => {
-  
+
     console.log(e.target)
     setObjCurso({ ...objCurso, [e.target.name]: e.target.value })
   }
 
 
   // função que espera receber um id
-  const alterar = async (id) => {
+  const alterar = async (event) => {
     // pegando os valores dos inputs
-    let nome = document.getElementById("nome").value;
-    let objetivo = document.getElementById("objetivo").value;
-    let preRequisito = document.getElementById("preRequisito").value;
-    let conteudoProgramatico = document.getElementById("conteudoProgramatico").value;
-    let sigla = document.getElementById("sigla").value;
-    let tipoAtendimento = document.getElementById("tipoAtendimento").value;
-    let nivel = document.getElementById("nivel").value;
-    let area = document.getElementById("area").value;
+   
+    let area = document.getElementById("tipoArea").value;
+
+    const formData = new FormData(event.target);
+
+    const data = Object.fromEntries(formData);
 
     //montando um json com os valores
-    const usuarioAlt = {
+    let usuarioAlt = {
       id: id,
-      nome: nome,
-      objetivo: objetivo,
-      preRequisito: preRequisito,
-      conteudoProgramatico: conteudoProgramatico,
-      sigla: sigla,
-      tipoAtendimento: tipoAtendimento,
-      nivel:nivel,
-      area:area
+      nome: data.nome,
+      objetivo: data.objetivo,
+      preRequisito: data.preRequisito,
+      conteudoProgramatico: data.conteudoProgramatico,
+      sigla: data.sigla,
+      tipoAtendimento: data.tipoAtendimento,
+      nivel: data.nivel,
+      area: { id: area}
     };
 
     // requisição ao back-end
@@ -238,7 +238,7 @@ function ListaCurso() {
         msgCamposVazio();
 
         // se existir um email existente
-      
+
       } else {
         //faz o processo de cadastro
         retorno.json().then((retorno_convertido) => {
@@ -261,7 +261,7 @@ function ListaCurso() {
     setSigla(sigla);
     setTipoAtendimento(tipoAtendimento)
     setNivel(nivel)
-    setArea(area)
+    setIdArea(area)
     setCargaHoraria(cargaHoraria)
   };
 
@@ -369,6 +369,7 @@ function ListaCurso() {
     });
   };
 
+ 
   const msgNifDuplicados = () => {
     toast.error("Nif ja esta associado a um usuario", {
       position: "top-right",
@@ -458,7 +459,7 @@ function ListaCurso() {
   return (
     <>
 
-    <MenuLateral/>
+      <MenuLateral />
 
       <Box
         component="main"
@@ -724,7 +725,7 @@ function ListaCurso() {
                   id="nome"
                   sx={styleTextField}
                   className="textField"
-                  onChange={(e) =>{ setNome(e.target.value)}}
+                  onChange={(e) => { setNome(e.target.value) }}
                   name="nome"
                   type="text"
                   label="NOME"
@@ -743,7 +744,7 @@ function ListaCurso() {
                   id="objetivo"
                   sx={styleTextField}
                   className="textField"
-                  onChange={(e) =>{ setObjetivo(e.target.value)}}
+                  onChange={(e) => { setObjetivo(e.target.value) }}
                   name="objetivo"
                   type="text"
                   label="OBJETIVO"
@@ -762,7 +763,7 @@ function ListaCurso() {
                   id="preRequisito"
                   sx={styleTextField}
                   className="textField"
-                  onChange={(e) =>{ setPreRequisito(e.target.value)}}
+                  onChange={(e) => { setPreRequisito(e.target.value) }}
                   name="preRequisito"
                   type="text"
                   label="PRÉ REQUISITO"
@@ -781,14 +782,54 @@ function ListaCurso() {
                   id="nome"
                   sx={styleTextField}
                   className="textField"
-                  onChange={(e) =>{ setConteudoProgramtico(e.target.value)}}
+                  onChange={(e) => { setConteudoProgramtico(e.target.value) }}
                   name="conteudoProgramatico"
                   type="text"
                   label="CONTEUDO PROGRAMATICO"
                   variant="outlined"
                   value={conteudoProgramatico}
                 />
-         
+
+                <TextField
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountBoxIcon sx={{ color: "#000814" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  id="nome"
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) => { setCargaHoraria(e.target.value) }}
+                  name="cargaHoraria"
+                  type="text"
+                  label="CARGA HORÁRIA"
+                  variant="outlined"
+                  value={cargaHoraria}
+                />
+
+                <TextField
+                  autoFocus
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountBoxIcon sx={{ color: "#000814" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  id="nome"
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) => { setValor(e.target.value) }}
+                  name="cargaHoraria"
+                  type="number"
+                  label="VALOR"
+                  variant="outlined"
+                  value={valor}
+                />
+
 
                 <InputLabel id="demo-simple-select-label">
                   Tipo Área
@@ -801,17 +842,18 @@ function ListaCurso() {
                   className="form-control"
                   onChange={(e) => {
                     setIdArea(e.target.value)
-                    post(e)}}
+                    post(e)
+                  }}
 
                   value={idArea}
                 >
                   <option>Selecione:</option>
 
-                   {
-                   tipoArea.map((obj) => (
-                    <option value={obj.id}>{obj.nome}</option>
-                  ))
-                  } 
+                  {
+                    tipoArea.map((obj) => (
+                      <option value={obj.id}>{obj.nome}</option>
+                    ))
+                  }
                 </select>
                 <InputLabel id="demo-simple-select-label">
                   Tipo Atendimento
@@ -827,7 +869,7 @@ function ListaCurso() {
                 >
                   <option>Selecione:</option>
 
-                   {tipoAtendimentos.map((obj, indice) => (
+                  {tipoAtendimentos.map((obj, indice) => (
                     <option key={indice}>{obj}</option>
                   ))}
                 </select>
@@ -845,7 +887,7 @@ function ListaCurso() {
                 >
                   <option>Selecione:</option>
 
-                 {niveis.map((obj) => (
+                  {niveis.map((obj) => (
                     <option>{obj}</option>
                   ))}
                 </select>
@@ -855,6 +897,7 @@ function ListaCurso() {
                 style={btnCad}
                 onClick={() => {
                   cadastrar();
+                  limparForm()
                 }}
               >
                 <SaveIcon sx={{ marginRight: "10px" }} />
@@ -889,9 +932,9 @@ function ListaCurso() {
         aria-describedby="modal-description"
       >
         <Box sx={style}>
-          <form>
+          <form onSubmit={alterar}>
             <div>
-              <h2 style={titleModal}>ADICIONAR USUÁRIO</h2>
+              <h2 style={titleModal}>ALTERAR CURSO</h2>
               <TextField
                 autoFocus
                 InputProps={{
@@ -908,6 +951,7 @@ function ListaCurso() {
                 name="nome"
                 type="text"
                 label="NOME"
+                defaultValue={nome}
                 variant="outlined"
               />
               <TextField
@@ -922,6 +966,7 @@ function ListaCurso() {
                 id="objetivo"
                 sx={styleTextField}
                 className="textField"
+                defaultValue={objetivo}
                 onChange={capturarDados}
                 name="objetivo"
                 type="text"
@@ -941,7 +986,8 @@ function ListaCurso() {
                 sx={styleTextField}
                 className="textField"
                 onChange={capturarDados}
-                name="nome"
+                name="preRequisito"
+                defaultValue={preRequisito}
                 type="text"
                 label="PRÉ REQUISITO"
                 variant="outlined"
@@ -958,6 +1004,7 @@ function ListaCurso() {
                 id="nome"
                 sx={styleTextField}
                 className="textField"
+                defaultValue={conteudoProgramatico}
                 onChange={capturarDados}
                 name="conteudoProgramatico"
                 type="text"
@@ -976,6 +1023,7 @@ function ListaCurso() {
                 id="sigla"
                 sx={styleTextField}
                 className="textField"
+                defaultValue={sigla}
                 onChange={capturarDados}
                 name="sigla"
                 type="text"
@@ -989,7 +1037,7 @@ function ListaCurso() {
               <select
                 id="tipoArea"
                 style={styleSelect}
-                name="tipoArea"
+                name="area"
                 required
                 className="form-control"
                 onChange={capturarDados}
@@ -997,7 +1045,7 @@ function ListaCurso() {
                 <option>Selecione:</option>
 
                 {tipoArea.map((obj) => (
-                  <option>{obj}</option>
+                  <option value={obj.id} selected={idArea.id == obj.id}>{obj.nome}</option>
                 ))}
               </select>
               <InputLabel id="demo-simple-select-label">
@@ -1007,6 +1055,7 @@ function ListaCurso() {
                 id="tipoAtendimento"
                 style={styleSelect}
                 name="tipoAtendimento"
+                defaultValue={tipoAtendimento}
                 required
                 className="form-control"
                 onChange={capturarDados}
@@ -1026,6 +1075,7 @@ function ListaCurso() {
                 name="nivel"
                 required
                 className="form-control"
+                defaultValue={nivel}
                 onChange={capturarDados}
               >
                 <option>Selecione:</option>
@@ -1039,9 +1089,7 @@ function ListaCurso() {
             <Button
               variant="contained"
               style={btnCad}
-              onClick={() => {
-                alterar(id);
-              }}
+              type="submit"
             >
               <CreateIcon
                 sx={{
