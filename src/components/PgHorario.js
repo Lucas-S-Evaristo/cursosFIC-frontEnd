@@ -340,7 +340,7 @@ const PgHorario = () => {
       <MenuLateral />
 
 
-      <Box sx={{ display: 'flex', marginLeft: "40px" }}>
+      <Box sx={{ display: 'flex', marginLeft: "80px" }}>
         <ToastContainer
           position="top-right"
           autoClose={1500}
