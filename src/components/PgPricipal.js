@@ -5,13 +5,12 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Person3OutlinedIcon from "@mui/icons-material/Person3Outlined";
-import InputAdornment from '@mui/material/InputAdornment';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
+import InputAdornment from "@mui/material/InputAdornment";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import Nav from "react-bootstrap/Nav";
 import CardMembershipOutlinedIcon from "@mui/icons-material/CardMembershipOutlined";
@@ -47,7 +46,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AddSharpIcon from "@material-ui/icons/AddSharp";
 import TablePagination from "@material-ui/core/TablePagination";
 import MenuLateral from "./menu/MenuLateral";
-import Slide from '@mui/material/Slide';
+import Slide from "@mui/material/Slide";
 
 const secondary = red[500];
 
@@ -64,7 +63,7 @@ const style = {
   width: 500,
   bgcolor: "background.paper",
   border: "2px solid #000",
-  boxShadow: 24,
+  boxShadow: 10,
   p: 4,
 };
 
@@ -73,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
 }));
-// metodo de msg de alteração feita com sucesso
+/* faz  uma requisição get do back end e renderizar página  */
 const msgAlteracao = () => {
   console.log("entrei");
 
@@ -167,7 +166,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
 function PgPricipal(props) {
   /* lista de instrutor */
   const [instrutor, setInstrutor] = useState([]);
@@ -206,7 +204,6 @@ function PgPricipal(props) {
     setOpen3(true);
     /* coloca id em uma variavel const */
     setidinsntrutor(id);
-   
   };
   /* fechando modal alterar */
   const modalAlterarFechando = () => {
@@ -328,35 +325,43 @@ function PgPricipal(props) {
         setInstrutor(result);
       }
     } else {
-      /* faz  uma requisição get do back end e renderizar página  */
+      /* faz  uma requisição get do back end e renderização da página  */
       getiInstrutor();
     }
   };
-  /* metodo deletar instrutor */
+  /* metodo deletar instrutor recebe um id de instrutor para deletar */
   const deleteinstrutor = async (id) => {
     let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
       method: "DELETE",
     });
-
+    /* verificar se  requisição foi feita com sucesso */
     if (result) {
-      setOpen3(false)
+      /* fecha  Dialog que pergunta se deve excluir  */
+      setOpen3(false);
+      /* faz  uma requisição get do back end e renderizar página  */
       getiInstrutor();
+      /* Mensagem de deletar com sucesso */
       msgDeletado();
     }
   };
+  /* metodo de cadastrar instrutor */
   const cadastroInstrutor = async (event) => {
+    /* tiras as características de evento evitando Recarregar  a pagina */
     event.preventDefault();
+    /* pegar todos  os valores do evento */
     const formData = new FormData(event.target);
+    /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
+
     console.warn("teste", data);
     console.log("oi brasil", data.nome);
     console.warn("EVENTO", event.target);
 
-    let obgj = {
+    /* let obgj = {
       nome: data,
-    };
+    }; */
     console.warn(data);
-
+    /* verificar se  requisição foi feita com sucesso */
     let result = await fetch(`http://localhost:8080/api/instrutor`, {
       method: "post",
       body: JSON.stringify(data),
@@ -365,25 +370,31 @@ function PgPricipal(props) {
         Accept: "application/json",
       },
     });
-
+    /* verificar se a requisição Retornou um erro 409*/
     if (result.status === 409) {
       erroCad();
+      /* verificar se  requisição foi feita com sucesso */
     } else if (result) {
       console.warn("oi");
+      /* mensagem de cadastrar com sucesso */
       msgCadastrando();
-
+      /*fecha modal  de cadastrar */
       setOpen(false);
-
+      /* faz  uma requisição get do back end e renderização da página  */
       getiInstrutor();
     }
   };
+  /* metodo de alterar */
   const alterainstrutor = async (event) => {
+    /* tiras as características de evento evitando Recarregar  a pagina */
     event.preventDefault();
     console.warn(event.target);
-
+    /* pegar todos  os valores do evento */
     const formData = new FormData(event.target);
+    /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
     console.warn("data = formaData", data);
+    /*formata em um objeto em json com id */
     let obgj = {
       id: idinstrutor,
       nome: data.nome,
@@ -401,15 +412,17 @@ function PgPricipal(props) {
         },
       }
     );
-
+    /* verificar se a requisição Retornou um erro 409*/
     if (result.status === 409) {
-      // caso de erro no result 409
       erroCad();
+      /* verificar se  requisição foi feita com sucesso */
     } else if (result) {
       console.warn("ENTREEEEI");
-      // fecha a modal
+      // fecha a modal alterar
       setOpen2(false);
+      /* mensagem alterar com sucesso */
       msgAlteracao();
+      /* faz  uma requisição get do back end e renderização da página  */
       getiInstrutor();
     }
   };
@@ -461,23 +474,23 @@ function PgPricipal(props) {
           </Box>
         </Modal>
         <Dialog
-        open={open3}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={ () => setOpen3(false)}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Atenção"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-           Deseja Deletar instrutor 
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => deleteinstrutor(idinstrutor)}>Sim</Button>
-          <Button onClick={() => setOpen3(false)}>Não</Button>
-        </DialogActions>
-      </Dialog>
+          open={open3}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={() => setOpen3(false)}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{"Atenção"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Deseja Deletar instrutor
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => deleteinstrutor(idinstrutor)}>Sim</Button>
+            <Button onClick={() => setOpen3(false)}>Não</Button>
+          </DialogActions>
+        </Dialog>
 
         <CssBaseline />
         <AppBar
@@ -520,21 +533,14 @@ function PgPricipal(props) {
             name="parametro"
             required="required"
             InputProps={{
-
               startAdornment: (
-
                 <InputAdornment position="start">
-
                   <SearchIcon />
-
                 </InputAdornment>
-
               ),
 
               inputMode: "email",
-
             }}
-            
           />
 
           <Button
@@ -591,7 +597,7 @@ function PgPricipal(props) {
                           variant="contained"
                           size="large"
                           style={{ backgroundColor: "#FF0000" }}
-                          onClick={() =>  modalAbrindoDelatar(id)}
+                          onClick={() => modalAbrindoDelatar(id)}
                           className={classes.button}
                           startIcon={
                             <DeleteIcon
