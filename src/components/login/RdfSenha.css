@@ -13,14 +13,13 @@
     margin: 3vh;
     width: 15vh;
 }
-.formLogin{
+.formRDFS{
     background-color: white;
     position: absolute;
     left: 38%;
     top: 50%;
     width: 800px;
     height: 600px;
-    text-align: center;
     transform: translate(-50%, -50%);
     border-radius: 20px;
     box-shadow: 0px 0px 30px 3px black;
@@ -51,34 +50,19 @@
 .inputLogin::placeholder{
     color: black;
 }
-.aEscSennha{
-    text-decoration: none;
-    width: 144.5px;
-    text-align: left;
-    padding: 5px;
-    margin:3vh;
-    margin-top: 0%;
-    margin-left:0px;
-    color: black;
-    
-}
-.aEscSennha:hover{
-    text-decoration: none;
-    text-align: left;
-    padding: 5px;
-    margin:3vh;
-    margin-top: 0%;
-    margin-left:0px;
-    color: rgb(248, 0, 0);
-}
+
 .title{
+    text-align: left;
+    width: 30.5%;
     position: relative;
-    top: 3%;
+    right: 50%;
+    transform: translate(50%);
+    float: right;
 }
-.inNif{
+.inEmail{
     margin-bottom: 6vh;
 }
-.btnEntrar{
+.btnRedefinir{
     background-color: rgb(255,0,0);
     border: none;
     width: 100%;
@@ -91,16 +75,17 @@
     transition:  box-shadow  0.4s;
 
 }
-.btnEntrar:hover{
+.btnRedefinir:hover{
     background-color: rgb(255, 0, 0);
-    border: 1px solid rgb(168, 99, 99);
+    border: 1px solid rgb(255, 0, 0);
     box-shadow: 0px 0px 25px 1px rgb(255, 0, 0);
 
 }
 
 .divBtn{
-    background-color: rgb(255, 0, 0);
+    background-color: black;
     width: 50%;
+    margin-top: 5vh;
     border: 2px solid rgb(255, 0, 0) ;
     border-radius: 100px;
     transition:  border 0.5s;
@@ -112,11 +97,11 @@
     border: 2px solid rgb(255, 0, 0) ;
     border-radius: 100px;
 }
-.pEntrar{
+.pRedefinir{
     margin: 10%;
     padding: 0%;
 }
-.pEntrar:hover{
+.pRedefinir:hover{
     margin: 10%;
     padding: 0%;
 
@@ -138,33 +123,26 @@
     top:50%;
     transform: translate(0%,-50%);
 }
-.afolder{
-    position: relative;
-    
-    text-decoration: none;
-    width: 144.5px;
-    text-align: center;
-    border-bottom-left-radius: 100px;
-    margin:0%;
-    text-transform: uppercase;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 20px;
+.btnVoltar{
+    margin: 35px;
+    border: none;
+    background-color: transparent;
+}
+.btnVoltar:hover{
+}
+
+.arrow{
+    font-size: large;
+    border-radius: 100px;
     padding: 5px;
-    color: rgb(255, 255, 255);
-    float: right;
-    background-color: red;
-    box-shadow: 0px 0px 0px 0px black;
-    transition:  background-color 10s;
-    transition: color 10s;
-    transition: right 3s;
-    transition: padding 1s;
+    border: 3px solid black;
     
 }
-.afolder:hover{
-
-    padding: 15px;
-    background-color: #062d4c;
-    color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 30px 3px black;
-    
+.arrow:hover{
+    border: 3px solid #062d4c;
+    background-color: #062c4c42;
+    cursor: pointer;
+}
+.aVoltar{
+    cursor: auto;
 }
