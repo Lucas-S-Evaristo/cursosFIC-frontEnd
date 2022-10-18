@@ -28,13 +28,16 @@ import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import TablePagination from '@mui/material/TablePagination';
-import AssignmentIcon from "@mui/icons-material/Assignment";
+
 import MenuItem from '@mui/material/MenuItem';
 
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import { yellow } from "@mui/material/colors";
+import { maxWidth } from "@mui/system";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -50,6 +53,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
         color: theme.palette.common.white,
+        width: 0
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
@@ -58,7 +62,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
+        //backgroundColor: theme.palette.action.hover,
+        width:0
     },
     // hide last border
     '&:last-child td, &:last-child th': {
@@ -66,7 +71,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function CadTurma() {
+function Tarefas() {
 
     //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
 
@@ -79,7 +84,7 @@ function CadTurma() {
     // variavel que tem acesso a um array com os instrutores
     const [idInstrutor, setidInstrutor] = useState([])
     // variavel que tem acesso a um array com o horario
-    const [horarios, setHorarios] = useState([])
+    const [idhorario, sethorario] = useState()
     // variavel que tem acesso a um array com os cursos
     const [curso, setCurso] = useState([])
     const [dataInicio, setDataInicio] = useState()
@@ -105,15 +110,11 @@ function CadTurma() {
     // variavel que tem acesso a um array com o ambiente
     const [ambiente, setAmbiente] = useState([])
     // variavel que tem acesso a um array com o ambiente
-    const [ idAmbiente, setidAmbiente] = useState([])
+    const [idAmbiente, setidAmbiente] = useState([])
     // variavel que tem acesso a um array com os dias da semana
     const [diaSemana, setDiaSemana] = useState([])
     // variavel que tem acesso a um array com os dias da semana
     const [valuediaSemana, setvalueDiaSemana] = useState([])
-
-    const [horarioInicioValue, setHorarioInicioValue] = useState([])
-
-    const [horarioFinalValue, setHorarioFinalValue] = useState([])
 
     const [idTurma, setidTurma] = useState([]);
 
@@ -155,6 +156,7 @@ function CadTurma() {
         instrutor: { id: idInstrutor },
         curso: { id: idCurso },
         periodo: ValuePeriodo,
+        horario: idhorario,
         dataInicio: dataInicioFormatada,
         dataTermino: dataTerminoFormatada,
         valor: valor,
@@ -164,8 +166,19 @@ function CadTurma() {
         numMinVagas: numMinVagas,
         simEnao: simEnao,
         diaSemana: valuediaSemana,
-        horarioInicio: {id: horarioInicioValue},
-        horarioTermino: {id: horarioFinalValue}
+        dataLimInscricao: "",
+        confirmarTurma: "",
+        retiradaSite: "",
+        cobrarEntregaDocum: "",
+        verificarPCDs: "",
+        gerarDiarioEletr: "",
+        montarKitTurma: "",
+        verifQuemFaltouPrimDia: "",
+        iniciarTurma: "",
+        matriculaDefinitiva: "",
+        encerrarTurma: "",
+        escanearDocum: "",
+        simEnao: false
     }
     // estado do obj da turma
     const [objTurma, setObjTurma] = useState(turma)
@@ -200,9 +213,8 @@ function CadTurma() {
     useEffect(() => {
         fetch("http://localhost:8080/api/horario")
             .then(resp => resp.json())
-            .then(retorno_convertido => setHorarios(retorno_convertido)) //lista de horario
+            .then(retorno_convertido => sethorario(retorno_convertido)) //lista de horario
     }, [])
-
 
     useEffect(() => {
         fetch("http://localhost:8080/api/curso")
@@ -396,7 +408,7 @@ function CadTurma() {
 
 
     // metodo que capta a turma que foi selecionado
-    const selecionarTurma = (id, codigo, curso, instrutor, qtdMatriculas, periodo, valor, status, ambiente, numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino, horarioInicioValue, horarioFinalValue) => {
+    const selecionarTurma = (id, codigo, curso, instrutor, qtdMatriculas, periodo, valor, status, ambiente, numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino, objTurma) => {
 
         setidTurma(id)
         setCodigo(codigo)
@@ -412,8 +424,6 @@ function CadTurma() {
         setvalueDiaSemana(diaSemana)
         setDataInicio(dataInicio)
         setDataTermino(dataTermino)
-        setHorarioInicioValue(horarioInicioValue)
-        setHorarioFinalValue(horarioFinalValue)
 
     }
     // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api  
@@ -618,16 +628,10 @@ function CadTurma() {
             <MenuLateral />
 
             <header>
-                <div className="divBotaoAdd">
-                    <Button className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary" ><i class="bi bi-plus-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                    </svg></i>Novo</Button>
-                </div>
-
+                
                 <div className="divTarefas">
-                    <Button className="botaotarefas" href="/tarefa" variant="contained" color="primary" ><AssignmentIcon/><i class="bi bi-plus-lg"></i>Tarefas</Button>
+                    <Button className="botaoVoltar" href="/listaTurma" variant="contained" color="primary" ><ArrowBack/>   <i class="bi bi-plus-lg"></i>Voltar</Button>
                 </div>
-
                 <form className="formBusca">
                     <input
                         //faz a busca
@@ -644,63 +648,81 @@ function CadTurma() {
             <div className="conteudoTabela">
                 <TableContainer className="tabelaContainer">
 
-                    <Table sx={{ minWidth: 1500 }} aria-label="customized table" className="tabelaTurma">
+                    <Table sx={{ minWidth:1500, backgroundColor:"transparent"}} aria-label="customized table" className="tabelaTurma">
+
                         <TableHead className="theadTurma">
-                            <TableRow>
-                                <StyledTableCell>Id</StyledTableCell>
-                                <StyledTableCell>Código de turma</StyledTableCell>
-                                <StyledTableCell>Curso</StyledTableCell>
-                                <StyledTableCell>Instrutor</StyledTableCell>
-                                <StyledTableCell>Quantidade de matricula</StyledTableCell>
-                                <StyledTableCell>Período</StyledTableCell>
-                                <StyledTableCell>Valor</StyledTableCell>
-                                <StyledTableCell>Status</StyledTableCell>
-                                <StyledTableCell>Ambiente</StyledTableCell>
-                                <StyledTableCell>Nº Máximo de vagas</StyledTableCell>
-                                <StyledTableCell>Nº Minimo de vagas</StyledTableCell>
-                                <StyledTableCell>Dias da semana</StyledTableCell>
-                                <StyledTableCell>Data de inicio</StyledTableCell>
-                                <StyledTableCell>Data de Término</StyledTableCell>
-                                <StyledTableCell>Horario de Inicio</StyledTableCell>
-                                <StyledTableCell>Horario de término</StyledTableCell>
+                            {/*
+                            private Calendar dataLimInscricao;	
+                            private Calendar confirmarTurma;
+                            private Calendar retiradaSite;
+                            private Calendar cobrarEntregaDocum;
+                            private Calendar verificarPCDs;
+                            private Calendar gerarDiarioEletr;
+                            private Calendar montarKitTurma;
+                            private Calendar verifQuemFaltouPrimDia;
+                            private Calendar iniciarTurma;
+                            private Calendar matriculaDefinitiva;
+                            private Calendar encerrarTurma;
+                            private Calendar escanearDocum;
+                            private boolean simEnao;
+                            
+*/}
+                            <TableRow sx={{}} className="STC">
+                                <StyledTableCell sx={maxWidth}>Turma</StyledTableCell>
+                                <StyledTableCell>Data lim. para insc.</StyledTableCell>
+                                <StyledTableCell>Retirada do Site</StyledTableCell>
+                                <StyledTableCell>Cobrar Entrega do Documento</StyledTableCell>
+                                <StyledTableCell>Verificar PCDs</StyledTableCell>
+                                <StyledTableCell>Gerar Diario Eletronica</StyledTableCell>               
+                                <StyledTableCell>Montar Kit de Turma</StyledTableCell>
+                                <StyledTableCell>iniciar Turma</StyledTableCell>
+                                <StyledTableCell>Matricula Definitiva</StyledTableCell>
+                                <StyledTableCell>Encerrar Turma</StyledTableCell>
+                                <StyledTableCell>Confirmar Turma</StyledTableCell>
+                                <StyledTableCell>Escanear Documento</StyledTableCell>
+                                <StyledTableCell>Verificar Quem Faltou no 1°dia</StyledTableCell>
                                 <StyledTableCell>Alterar</StyledTableCell>
-                                <StyledTableCell>Excluir</StyledTableCell>
+
+                
+
 
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {turmas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
-                                    { id, codigo, curso, instrutor, qtdMatriculas, periodo, valor, status, ambiente, numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino, horarioInicio, horarioTermino }) => (
-                                    <StyledTableRow>
-
-                                        <StyledTableCell>{id}</StyledTableCell>
+                            {turmas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            /*dataLimInscricao: "",
+                            confirmarTurma: "",
+                            retiradaSite: "",
+                            cobrarEntregaDocum: "",
+                            verificarPCDs: "",
+                            gerarDiarioEletr: "",
+                            montarKitTurma: "",
+                            verifQuemFaltouPrimDia: "",
+                            iniciarTurma: "",
+                            matriculaDefinitiva: "",
+                            encerrarTurma: "",
+                            escanearDocum: "",
+                            simEnao: false*/ 
+                            .map(({ codigo, dataLimInscricao, confirmarTurma,  retiradaSite, cobrarEntregaDocum,
+                                 verificarPCDs, gerarDiarioEletr, montarKitTurma, verifQuemFaltouPrimDia, iniciarTurma, matriculaDefinitiva, encerrarTurma, escanearDocum, simEnao}) => (
+                                    <StyledTableRow >
+                                        
                                         <StyledTableCell>{codigo}</StyledTableCell>
-                                        <StyledTableCell>{curso.nome}</StyledTableCell>
-                                        <StyledTableCell>{instrutor.nome}</StyledTableCell>
-                                        <StyledTableCell>{qtdMatriculas}</StyledTableCell>
-                                        <StyledTableCell>{periodo}</StyledTableCell>
-                                        <StyledTableCell>{valor}</StyledTableCell>
-                                        <StyledTableCell>{status}</StyledTableCell>
-                                        <StyledTableCell>{ambiente.nome}</StyledTableCell>
-                                        <StyledTableCell>{numMaxVagas}</StyledTableCell>
-                                        <StyledTableCell>{numMinVagas}</StyledTableCell>
-                                        <StyledTableCell>{diaSemana}</StyledTableCell>
-                                        <StyledTableCell>{dataInicio}</StyledTableCell>
-                                        <StyledTableCell>{dataTermino}</StyledTableCell>
-                                        <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
-                                        <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
-                                      
-                                        <StyledTableCell>
-                                            <button className="botaoAlterarTurma" onClick={() => {
-                                                selecionarTurma(id, codigo, curso, instrutor, qtdMatriculas, periodo, valor, status, ambiente,
-                                                    numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino
-                                                )
-                                                abrirModalAlterar()
-                                            }}>
-                                                <ModeEditOutlinedIcon /></button>
-
-                                        </StyledTableCell>
-                                        <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                        <StyledTableCell>{dataLimInscricao}</StyledTableCell>
+                                        <StyledTableCell>{retiradaSite}</StyledTableCell>
+                                        <StyledTableCell>{cobrarEntregaDocum}</StyledTableCell>
+                                        <StyledTableCell>{verificarPCDs}</StyledTableCell>
+                                        <StyledTableCell>{gerarDiarioEletr}</StyledTableCell>
+                                        <StyledTableCell>{montarKitTurma}</StyledTableCell>
+                                        <StyledTableCell>{iniciarTurma}</StyledTableCell>
+                                        <StyledTableCell>{matriculaDefinitiva}</StyledTableCell>
+                                        <StyledTableCell>{encerrarTurma}</StyledTableCell>
+                                        <StyledTableCell>{confirmarTurma}</StyledTableCell>
+                                        <StyledTableCell>{escanearDocum}</StyledTableCell>
+                                        <StyledTableCell>{verifQuemFaltouPrimDia}</StyledTableCell>
+                                        <StyledTableCell></StyledTableCell>
+                                    
+                                
                                     </StyledTableRow>
                                 ))
                             }
@@ -709,11 +731,11 @@ function CadTurma() {
                     <TablePagination
 
                         sx={{
-
+                            width:"1600px",
                             marginTop: "40px",
-
+                            position:"fixed",
                             alignItems: "center",
-
+                            
                             textAlign: "center",
 
                         }}
@@ -949,7 +971,7 @@ function CadTurma() {
 
                             </div>
 
-                            <div className="select3Alt">
+                            <div className="select3">
 
                                 <TextField
                                     name="dataInicio"
@@ -1021,6 +1043,7 @@ function CadTurma() {
             <Modal
                 show={modalCadastrar}
                 onHide={fecharModalCadastrar}
+                
                 size="xl"
                 aria-labelledby="example-custom-modal-styling-title"
                 scrollable={true}>
@@ -1030,7 +1053,7 @@ function CadTurma() {
                     <Modal.Title>Cadastrar</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>
+                <Modal.Body className="modalCadastro">
 
                     <div>
                         <img className="imagemModal" src={require("./imagemModal.png")}></img>
@@ -1266,66 +1289,6 @@ function CadTurma() {
                                     type="date"
                                     value={dataTerminoFormatada}
                                 />
-                                
-                            </div>
-
-                            <div>
-
-                                    <div className="horarioInicio">
-                            <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                                    <InputLabel id="demo-simple-select-standard-label">Horario Inicio:</InputLabel>
-                                    <Select //select de período
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard"
-                                        name="horarioInicio" required
-
-                                        value={horarioInicioValue}
-                                        onChange={(e) => {
-                                            setHorarioInicioValue(e.target.value)
-                                            capturarDados(e)
-                                        }}
-                                    >
-
-                                        {
-                                            horarios.map((obj, indice) => (
-                                                <MenuItem value={obj.id} key={indice}>
-                                                    {obj.horario}
-                                                </MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </FormControl>
-
-                                </div>
-
-
-                                <div className="horarioFinal">
-
-                                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                                    <InputLabel id="demo-simple-select-standard-label">Horario Término:</InputLabel>
-                                    <Select //select de período
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard"
-                                        name="horarioFinal" required
-                                        value={horarioFinalValue}
-                                        onChange={(e) => {
-                                            setHorarioFinalValue(e.target.value)
-                                            capturarDados(e)
-                                        }}
-                                    >
-
-                                        {
-                                            horarios.map((obj, indice) => (
-                                                <MenuItem value={obj.id} key={indice}>
-                                                    {obj.horario}
-                                                </MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </FormControl>
-
-
-                                </div>
                             </div>
 
                             <div class="parteBotao">
@@ -1401,4 +1364,4 @@ const style = {
     p: 4,
 };
 
-export default CadTurma;
+export default Tarefas;

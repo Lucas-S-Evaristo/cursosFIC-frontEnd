@@ -49,8 +49,6 @@ header{
 
 }
 
-
-
 .divBotaoAdd{
     position: relative;
 }
@@ -81,7 +79,6 @@ header{
     float: right;
     position: relative;
     left: 1em;
-    
     width: 60%;
     height: 30em;
     
@@ -136,11 +133,59 @@ header{
   
 }
 
+.select3Alt{
+    position: absolute;
+    left: 17em;
+    top:21em;
+    width: 20%;
+  
+}
+
+
+.horarioInicio{
+    position: absolute;
+    left: 1em;
+    top:28.5em;
+    width: 20%;
+    
+}
+
+.horarioFinal{
+    position: absolute;
+    left: 16em;
+    top:28.5em;
+    width: 20%;
+    
+}
+
+.botaotarefas{
+    display: flex;
+    position: absolute;
+    left: 0.5em;
+    top:0em;
+}
+
+.botaoVoltar{
+    display: flex;
+    position: absolute;
+    left: 0.5em;
+    top:2em;
+}
+
+.divTarefas{
+    position: relative;
+    left: 93%;
+    top: 0%;
+    float: left;
+    transform: translate(-90%, -60%);
+}
+
+
 
 
 .parteBotao{
     position: absolute;
-    top:31em;
+    top:33em;
 }
 
 .parteBotao Button{
