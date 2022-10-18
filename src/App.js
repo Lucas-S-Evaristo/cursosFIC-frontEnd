@@ -1,7 +1,7 @@
 
 
-import PgPricipal from './components/PgPricipal'
-import Router from './components/teste'
+
+
 import  React, { Component} from 'react';
 import { useEffect, useState } from 'react';
 import Rotas from './Rotas';
@@ -14,7 +14,9 @@ function App() {
     return (
 
      <BrowserRouter>
+       
         <Rotas/>
+    
      </BrowserRouter>
         
 

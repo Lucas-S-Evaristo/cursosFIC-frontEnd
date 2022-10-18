@@ -25,7 +25,7 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/usuarios">
+              <Nav.Link className="navLink" href="/Usuario">
                 <Person3OutlinedIcon sx={{ marginRight: "30px" }} />
                 Usuários
               </Nav.Link>
