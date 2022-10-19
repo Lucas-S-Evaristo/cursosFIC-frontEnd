@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Person3OutlinedIcon from "@mui/icons-material/Person3Outlined";
-import "./usuario.css";
+import "./menu.css";
 import Nav from "react-bootstrap/Nav";
 import CardMembershipOutlinedIcon from "@mui/icons-material/CardMembershipOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";

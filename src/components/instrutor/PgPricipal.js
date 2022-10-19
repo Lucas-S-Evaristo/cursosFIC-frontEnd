@@ -47,6 +47,7 @@ import AddSharpIcon from "@material-ui/icons/AddSharp";
 import TablePagination from "@material-ui/core/TablePagination";
 import MenuLateral from "../menu/MenuLateral";
 import Slide from "@mui/material/Slide";
+import api from "../api/api"
 
 const secondary = red[500];
 
@@ -275,15 +276,25 @@ function PgPricipal(props) {
   /* renderizar página  e faz requisição  */
   useEffect(() => {
     getiInstrutor();
+    const token = localStorage.getItem('token');
+    console.log(token);
+   
   }, []);
+  const token = localStorage.getItem('token');
+  console.log("oi === ",token);
+
+
+ 
   /* fazendo uma requisição get  */
   const getiInstrutor = async () => {
+   
     console.log("passou");
     let result = await fetch(`http://localhost:8080/api/instrutor`);
     /* pegando json da requisição get */
     result = await result.json();
     /* colocando json em uma variavel instrutor */
     setInstrutor(result);
+   
   };
   console.log(instrutor);
 

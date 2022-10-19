@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./login.css"
+import api from "../api/api"
 
 import { ToastContainer, toast } from "react-toastify";
+import { Redirect } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 
 const msgErroLogin = () => {
@@ -30,6 +32,12 @@ const msgErroLogin = () => {
 
 
 function Login() {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+   
+  }, []);
+ 
     const loginToken = async (event) => {
         /* tiras as características de evento evitando Recarregar  a pagina */
         event.preventDefault();
@@ -56,6 +64,7 @@ function Login() {
             Accept: "application/json",
           },
         });
+       
         console.log("oi result "+result);
         /* verificar se a requisição Retornou um erro 401*/
         if (result.status === 401) {
@@ -63,9 +72,17 @@ function Login() {
 
           /* verificar se  requisição foi feita com sucesso */
         } else if (result) {
-          console.warn("oi");
+          result = await result.json();
+          console.warn("oi   === " , result);
+          const {  token  } =  result;
+          console.log("token 0000 ", token);
+          localStorage.setItem('token', JSON.stringify(token));
+        
+             
+
+
           
-          window.location.href = 'http://localhost:3000/instrutores'
+          window.location.href = 'http://localhost:3000/instrutores' 
           
           /* mensagem de cadastrar com sucesso */
      
@@ -120,4 +137,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default Login; 
