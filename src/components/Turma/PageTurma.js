@@ -260,6 +260,18 @@ function CadTurma() {
         })
     }
 
+    const erroDataInicioMaiorHoje = () => {
+        toast.error("A data de inicio não pode ser antes de hoje!", {
+            position: "top-center",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            theme: 'colored',
+            draggable: true,
+            progress: undefined,
+        })
+    }
 
 
     // metodo que efetua o cadastro da turma
@@ -277,12 +289,16 @@ function CadTurma() {
             // convertendo a resposta da promessa em json
             .then(retorno => {
 
-                if (retorno.status == 409) {
+                if (retorno.status === 409) {
 
                     erroDataIgual()
 
-                } else if (retorno.status == 418) {
+                } else if (retorno.status === 418) {
                     erroDataMaiorFinal()
+                    
+                }else if(retorno.status === 401){
+                    erroDataInicioMaiorHoje()
+
                 } else {
 
 
@@ -1212,67 +1228,7 @@ function CadTurma() {
                                     </Select>
                                 </FormControl>
 
-
                                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                                    <InputLabel id="demo-simple-select-standard-label">Status:</InputLabel>
-                                    <Select //select de status
-                                        value={ValueStatus}
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard"
-                                        name="status" required
-                                        onChange={(e) => {
-                                            setvalueStatus(e.target.value)
-                                            capturarDados(e)
-                                        }}
-                                    >
-
-                                        {
-                                            status.map((obj, indice) => (
-                                                <MenuItem value={indice} key={indice}>
-                                                    {obj}
-                                                </MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </FormControl>
-
-                            </div>
-
-
-                            <div className="select3">
-
-                                <TextField
-                                    sx={estiloData}
-                                    label="Data inicio"
-                                    onChange={(e) => {
-                                        setDataInicio(e.target.value)
-                                        capturarDados(e)
-                                    }}
-                                    InputLabelProps={{ shrink: true, required: true }}
-                                    type="date"
-                                    variant="standard"
-                                    value={dataInicioFormatada}
-                                />
-
-                                <TextField
-                                    sx={estiloData}
-                                    variant="standard"
-                                    label="Data Terminio"
-                                    onChange={(e) => {
-                                        setDataTermino(e.target.value)
-                                        capturarDados(e)
-                                    }}
-                                    InputLabelProps={{ shrink: true, required: true }}
-                                    type="date"
-                                    value={dataTerminoFormatada}
-                                />
-                                
-                            </div>
-
-                            <div>
-
-                                    <div className="horarioInicio">
-                            <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                                     <InputLabel id="demo-simple-select-standard-label">Horario Inicio:</InputLabel>
                                     <Select //select de período
                                         labelId="demo-simple-select-standard-label"
@@ -1295,13 +1251,46 @@ function CadTurma() {
                                         }
                                     </Select>
                                 </FormControl>
+                               
 
-                                </div>
+                            </div>
 
 
-                                <div className="horarioFinal">
+                            <div className="select3">
 
-                                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                            <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                                    <InputLabel id="demo-simple-select-standard-label">Status:</InputLabel>
+                                    <Select //select de status
+                                        value={ValueStatus}
+                                        labelId="demo-simple-select-standard-label"
+                                        id="demo-simple-select-standard"
+                                        name="status" required
+                                        onChange={(e) => {
+                                            setvalueStatus(e.target.value)
+                                            capturarDados(e)
+                                        }}
+                                    >
+
+                                        {
+                                            status.map((obj, indice) => (
+                                                <MenuItem value={indice} key={indice}>
+                                                    {obj}
+                                                </MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+
+                                 
+
+
+
+
+
+
+
+
+<FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                                     <InputLabel id="demo-simple-select-standard-label">Horario Término:</InputLabel>
                                     <Select //select de período
                                         labelId="demo-simple-select-standard-label"
@@ -1323,8 +1312,43 @@ function CadTurma() {
                                         }
                                     </Select>
                                 </FormControl>
+                                
+                            </div>
+
+                            <div>
+
+                                    <div className="horarioInicio">
+
+                                    <TextField
+                                    sx={estiloData}
+                                    label="Data inicio"
+                                    onChange={(e) => {
+                                        setDataInicio(e.target.value)
+                                        capturarDados(e)
+                                    }}
+                                    InputLabelProps={{ shrink: true, required: true }}
+                                    type="date"
+                                    variant="standard"
+                                    value={dataInicioFormatada}
+                                />
+                           
+                                </div>
 
 
+                                <div className="horarioFinal">
+                                <TextField
+                                    sx={estiloData}
+                                    variant="standard"
+                                    label="Data Terminio"
+                                    onChange={(e) => {
+                                        setDataTermino(e.target.value)
+                                        capturarDados(e)
+                                    }}
+                                    InputLabelProps={{ shrink: true, required: true }}
+                                    type="date"
+                                    value={dataTerminoFormatada}
+                                />
+                                
                                 </div>
                             </div>
 
