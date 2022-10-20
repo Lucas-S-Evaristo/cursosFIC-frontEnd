@@ -186,6 +186,8 @@ header{
 .parteBotao{
     position: absolute;
     top:33em;
+    background-color: aqua;
+    top: 600px;
 }
 
 .parteBotao Button{
