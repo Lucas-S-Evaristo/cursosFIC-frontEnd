@@ -34,6 +34,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import { yellow } from "@mui/material/colors";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -109,6 +110,8 @@ function CadTurma() {
   const [diaSemana, setDiaSemana] = useState([]);
   // variavel que tem acesso a um array com os dias da semana
   const [valuediaSemana, setvalueDiaSemana] = useState([]);
+
+  const [diasDaTurma, setDiasDaTurma] = useState([]);
 
   const [horarioInicioValue, setHorarioInicioValue] = useState([]);
 
@@ -334,40 +337,40 @@ function CadTurma() {
     const selectHorarioTermino = document.getElementById(
       "selectHorarioTermino"
     ).value;
+ /* pegar todos  os valores do evento */
+ const formData = new FormData(event.target);
+ /*formata em um objeto em  json */
+ const data = Object.fromEntries(formData);
+ console.log( "oi dia semana  ",data.diasDaTurma)
 
-    const formData = new FormData(event.target);
-
-    const data = Object.fromEntries(formData);
-
-    console.log("formatadaTurma    ", data);
-
-    let obgj = {
-      id: idTurma,
-      qtdMatriculas: data.qtdMatriculas,
-      instrutor: { id: selectInstrutor },
-      curso: { id: selectCurso },
-      periodo: data.periodo,
-      dataInicio: data.dataInicio,
-      dataTermino: data.dataTermino,
-      valor: data.valor,
-      status: data.status,
-      ambiente: { id: selectAmbiente },
-      numMaxVagas: data.numMaxVagas,
-      numMinVagas: data.numMinVagas,
-      simEnao: data.simEnao,
-      diaSemana: data.diaSemana,
-      horarioInicio: { id: selectHorarioInicio },
-      horarioTermino: { id: selectHorarioTermino },
-    };
-    console.log("obijeto truma ", obgj);
-
+ const turmas = {
+     id: 0,
+     qtdMatriculas: qtdMatriculas,
+     instrutor: { id: idInstrutor },
+     curso: { id: idCurso },
+     periodo: ValuePeriodo,
+     dataInicio: dataInicioFormatada,
+     dataTermino: dataTerminoFormatada,
+     valor: valor,
+     status: ValueStatus,
+     ambiente: { id: idAmbiente },
+     numMaxVagas: numMaxVagas,
+     numMinVagas: numMinVagas,
+     simEnao: simEnao,
+     diaSemana: valuediaSemana,
+     horarioInicio: { id: horarioInicioValue },
+     horarioTermino: { id: horarioFinalValue },
+     diasDaTurma: data.diasDaTurma
+   };
+   console.log( "oi turmas" ,turmas)
+   
     let result = await fetch(
       "http://localhost:8080/api/turma/" + idTurma,
 
       {
         method: "PUT",
 
-        body: JSON.stringify(obgj),
+        body: JSON.stringify(turmas),
 
         headers: {
           "Content-type": "application/json",
@@ -401,7 +404,8 @@ function CadTurma() {
     dataInicio,
     dataTermino,
     horarioInicio,
-    horarioTermino
+    horarioTermino,
+    diasDaTurma
   ) => {
     setidTurma(id);
     setCodigo(codigo);
@@ -419,6 +423,7 @@ function CadTurma() {
     setDataTermino(dataTermino);
     setHorarioInicioValue(horarioInicio);
     setHorarioFinalValue(horarioTermino);
+    setDiasDaTurma(diasDaTurma);
   };
   // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api
   const atualizaLista = async () => {
@@ -603,7 +608,7 @@ function CadTurma() {
     } = event;
     setDiasDaSemana(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(" / ") : value
+      typeof value === "string" ? value.split(",") : value
     );
   };
 
@@ -611,7 +616,7 @@ function CadTurma() {
     <>
       <MenuLateral />
 
-      <header>
+      <header style={{position:"fixed"}}>
         <div className="divBotaoAdd">
           <Button
             className="botaoAdd"
@@ -817,318 +822,7 @@ function CadTurma() {
           <Modal.Title>Alterar</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-          <div>
-            <img
-              className="imagemModal"
-              src={require("./imagemModal.png")}
-            ></img>
-          </div>
-
-          <div className="modalCad">
-            <form className="formModalCad" onSubmit={alterar}>
-              <div className="parte1">
-                {/*  input de quantidade de mátriculas */}
-                <TextField
-                  defaultValue={qtdMatriculas}
-                  sx={styleTextField}
-                  id="qtdMatriculas"
-                  className="inputNomeCadastro"
-                  name="qtdMatriculas"
-                  type="number"
-                  label="QUANTIDADE DE MATRICULA"
-                  variant="standard"
-                />
-
-                <TextField
-                  defaultValue={numMaxVagas}
-                  id="numMaxVagas"
-                  sx={styleTextField}
-                  className="textField"
-                  name="numMaxVagas"
-                  type="number"
-                  label="NÚMERO MÁXIMO DE VAGAS"
-                  variant="standard"
-                />
-              </div>
-
-              <div className="parte2">
-                <TextField
-                  sx={styleTextField}
-                  id="valor"
-                  defaultValue={valor}
-                  className="textField"
-                  name="valor"
-                  type="text"
-                  label="VALOR"
-                  variant="standard"
-                />
-
-                <TextField
-                  defaultValue={numMinVagas}
-                  sx={styleTextField}
-                  className="textField"
-                  name="numMinVagas"
-                  id="numMinVagas"
-                  type="number"
-                  label="Nº Minimo de vagas"
-                  variant="standard"
-                />
-              </div>
-
-              <div className="parte3">
-                <InputLabel id="demo-simple-select-standard-label">
-                  Ambiente
-                </InputLabel>
-                <select // select de ambiente
-                  name="ambiente"
-                  required
-                  style={styleTextField}
-                  className="form-control"
-                  labelId="demo-simple-select-standard-label"
-                  id="selectAmbiente"
-                >
-                  {ambiente.map((obj) => (
-                    <option value={obj.id} selected={obj.id == idAmbiente.id}>
-                      {obj.nome}
-                    </option>
-                  ))}
-                </select>
-
-                <InputLabel id="demo-simple-select-standard-label">
-                  Dia da semana
-                </InputLabel>
-
-                <select
-                  style={styleTextField}
-                  className="form-control"
-                  name="diaSemana"
-                  required
-                  labelId="demo-simple-select-standard-label"
-                  id="valuediaSemana"
-                  defaultValue={valuediaSemana}
-                >
-                  {diaSemana.map((obj, indice) => (
-                    <option value={indice} key={obj}>
-                      {obj}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="select1">
-                <InputLabel id="demo-simple-select-standard-label">
-                  Instrutor:
-                </InputLabel>
-                <select // select de instrutores
-                  name="instrutor"
-                  required
-                  style={styleTextField}
-                  className="form-control"
-                  id="selectInstrutor"
-                  labelId="demo-simple-select-standard-label"
-                >
-                  {instrutor.map((obj) => (
-                    <option
-                      value={obj.id}
-                      key={obj.id}
-                      selected={obj.id == idInstrutor.id}
-                    >
-                      {obj.nome}
-                    </option>
-                  ))}
-                </select>
-
-                <InputLabel id="demo-simple-select-standard-label">
-                  Cursos:
-                </InputLabel>
-
-                <select // select de curso
-                  labelId="demo-simple-select-standard-label"
-                  style={styleTextField}
-                  className="form-control"
-                  name="curso"
-                  required
-                  id="selectCurso"
-                >
-                  {curso.map((obj) => (
-                    <option value={obj.id} selected={obj.id == idCurso.id}>
-                      {obj.nome}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="select2">
-                <InputLabel id="demo-simple-select-standard-label">
-                  Periodo:
-                </InputLabel>
-
-                <select //select de período
-                  defaultValue={ValuePeriodo}
-                  style={styleTextField}
-                  labelId="demo-simple-select-standard-label"
-                  name="periodo"
-                  required
-                  className="form-control"
-                  id="ValuePeriodo"
-                >
-                  {periodo.map((obj) => (
-                    <option key={obj}>{obj}</option>
-                  ))}
-                </select>
-
-                <InputLabel id="demo-simple-select-standard-label">
-                  Status:
-                </InputLabel>
-
-                <select //select de status
-                  defaultValue={ValueStatus}
-                  style={styleTextField}
-                  className="form-control"
-                  labelId="demo-simple-select-standard-label"
-                  name="status"
-                  required
-                  id="ValueStatus"
-                >
-                  {status.map((obj, indice) => (
-                    <option key={obj}>{obj}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="select3Alt">
-                <TextField
-                  name="dataInicio"
-                  label="Data Inicio"
-                  sx={styleTextField}
-                  defaultValue={dataInicio}
-                  className="inputNomeCadastro"
-                  id="dataInicio"
-                  InputLabelProps={{ shrink: true, required: true }}
-                  type="date"
-                />
-
-                <TextField
-                  name="dataTermino"
-                  label="Data Terminio"
-                  sx={styleTextField}
-                  InputLabelProps={{ shrink: true, required: true }}
-                  type="date"
-                  defaultValue={dataTermino}
-                  className="inputNomeCadastro"
-                  id="dataTermino"
-                />
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Horario Inicio:
-                  </InputLabel>
-                  <select //select de período
-                    labelId="demo-simple-select-standard-label"
-                    style={styleTextField}
-                    id="selectHorarioInicio"
-                    name="horarioInicio"
-                    required
-                  >
-                    {horarios.map((obj, indice) => (
-                      <option
-                        value={obj.id}
-                        key={indice}
-                        selected={obj.id == horarioInicioValue.id}
-                      >
-                        {obj.horario}
-                      </option>
-                    ))}
-                  </select>
-                </FormControl>
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Horario Término:
-                  </InputLabel>
-                  <select //select de período
-                    style={styleTextField}
-                    id="selectHorarioTermino"
-                    name="horarioTermino"
-                    required
-                  >
-                    {horarios.map((obj, indice) => (
-                      <option
-                        value={obj.id}
-                        key={indice}
-                        selected={obj.id == horarioFinalValue.id}
-                      >
-                        {obj.horario}
-                      </option>
-                    ))}
-                  </select>
-                </FormControl>
-              </div>
-
-              {/* <FormControl>
-                                    <FormLabel id="demo-controlled-radio-buttons-group">
-                                        A turma vai para o site?
-                                    </FormLabel>
-                                    <RadioGroup
-                                        aria-labelledby="demo-controlled-radio-buttons-group"
-                                        name="controlled-radio-buttons-group simEnao"
-                                        value={objTurma.simEnao}
-                                        onChange={capturarDados}
-                                    >
-                                        <FormControlLabel
-                                            value="true"
-                                            control={<Radio />}
-                                            label="Sim"
-                                        />
-                                        <FormControlLabel
-                                            value="false"
-                                            control={<Radio />}
-                                            label="Não"
-                                        />
-                                    </RadioGroup>
-                                </FormControl> */}
-
-              <div class="parteBotao">
-                <Button
-                  variant="contained"
-                  color="success"
-                  type="submit"
-                  style={{ margin: 10 }}
-                  onClick={() => {}}
-                >
-                  Alterar
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color="error"
-                  style={{ margin: 10 }}
-                  onClick={() => {
-                    limparForm();
-                    handleClose();
-                  }}
-                >
-                  Fechar
-                </Button>
-              </div>
-            </form>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-      <Modal
-        show={modalCadastrar}
-        onHide={fecharModalCadastrar}
-        size="xl"
-        aria-labelledby="example-custom-modal-styling-title"
-        scrollable={true}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Cadastrar</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body style={{height:700}}>
+        <Modal.Body style={{height:610}}>
           <div>
             <img
               className="imagemModal"
@@ -1136,7 +830,7 @@ function CadTurma() {
             ></img>
           </div>
           <div className="modalCad">
-            <form className="formModalCad"    onSubmit={cadastrar}   >
+            <form className="formModalCad"    onSubmit={alterar}   >
               {/*  input de quantidade de mátriculas */}
               {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
@@ -1225,7 +919,27 @@ function CadTurma() {
                     ))}
                   </Select>
                 </FormControl>
-
+                  
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Cursos:
+                  </InputLabel>
+                  <Select // select de curso
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name="curso"
+                    required
+                    value={idCurso}
+                    onChange={(e) => {
+                      setidCurso(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {curso.map((obj) => (
+                      <MenuItem value={obj.id}>{obj.nome}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
      
               </div>
               
@@ -1255,26 +969,7 @@ function CadTurma() {
                 
                 
 
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Cursos:
-                  </InputLabel>
-                  <Select // select de curso
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="curso"
-                    required
-                    value={idCurso}
-                    onChange={(e) => {
-                      setidCurso(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {curso.map((obj) => (
-                      <MenuItem value={obj.id}>{obj.nome}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                
               </div>
 
               
@@ -1378,7 +1073,7 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300,top:500}}>
+              <FormControl sx={{ m: 1, width: 300,top:500, left:-10}}>
                   <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
                   <Select
                     labelId="demo-multiple-checkbox-label"
@@ -1388,7 +1083,7 @@ function CadTurma() {
                     defaultValue={diasDaSemana}
                     onChange={handleChange}
                     input={<OutlinedInput label="Dias da Semana" />}
-                    renderValue={(selected) => selected.join(" / ")}
+                    renderValue={(selected) => selected.join(",")}
                     MenuProps={MenuProps}
                   >
                     {DiasDaSemana.map((dias) => (
@@ -1401,7 +1096,7 @@ function CadTurma() {
                 </FormControl>
 
               <div>
-                <div className="horarioInicio">
+                <div className="horarioInicio" style={{left:30}}>
                   <TextField
                     sx={estiloData}
                     label="Data inicio"
@@ -1416,7 +1111,7 @@ function CadTurma() {
                   />
                 </div>
 
-                <div className="horarioFinal">
+                <div className="horarioFinal" style={{left:285}}>
                   <TextField
                     sx={estiloData}
                     variant="standard"
@@ -1432,7 +1127,341 @@ function CadTurma() {
                 </div>
               </div>
              
-              <div class="parteBotao">
+              <div class="parteBotao2" style={{left:330, top:535}}>
+                <Button
+                  variant="contained"
+                  style={{backgroundColor:"rgb(255,255,0)", color:"black"}}
+                  color="success"
+                  //onClick={() => cadastrar(objTurma.id)}
+                  type="submit"
+                >
+                  Alterar
+                </Button>
+
+      
+              </div>
+            </form>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={modalCadastrar}
+        onHide={fecharModalCadastrar}
+        size="xl"
+        aria-labelledby="example-custom-modal-styling-title"
+        scrollable={true}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Cadastrar</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body style={{height:610}}>
+          <div>
+            <img
+              className="imagemModal"
+              src={require("./imagemModal.png")}
+            ></img>
+          </div>
+          <div className="modalCad">
+            <form className="formModalCad"    onSubmit={cadastrar}   >
+              {/*  input de quantidade de mátriculas */}
+              {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
+
+              <div className="parte1">
+                <TextField
+                  value={qtdMatriculas}
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) => {
+                    setqtdMatriculas(e.target.value);
+                    capturarDados(e);
+                  }}
+                  name="qtdMatriculas"
+                  type="number"
+                  label="qtd de Matriculas"
+                  variant="standard"
+                />
+
+                <TextField
+                  value={numMaxVagas}
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) => {
+                    setnumMaxVagas(e.target.value);
+                    capturarDados(e);
+                  }}
+                  name="numMaxVagas"
+                  type="number"
+                  label="Máximo de vagas:"
+                  variant="standard"
+                />
+              </div>
+
+              <div className="parte2">
+                <TextField
+                  value={valor}
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) => {
+                    {
+                      setValor(e.target.value);
+                      capturarDados(e);
+                    }
+                  }}
+                  name="valor"
+                  type="text"
+                  label="VALOR"
+                  variant="standard"
+                />
+
+                <TextField
+                  value={numMinVagas}
+                  sx={styleTextField}
+                  className="textField"
+                  onChange={(e) => {
+                    setnumMinVagas(e.target.value);
+                    capturarDados(e);
+                  }}
+                  name="numMinVagas"
+                  type="number"
+                  label="Minimo de vagas"
+                  variant="standard"
+                />
+              </div>
+
+              <div className="parte3">
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Ambiente
+                  </InputLabel>
+                  <Select // select de ambiente
+                    value={idAmbiente}
+                    name="ambiente"
+                    required
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    onChange={(e) => {
+                      setidAmbiente(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {ambiente.map((obj, indice) => (
+                      <MenuItem value={obj.id} key={indice}>
+                        {obj.nome}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                  
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Cursos:
+                  </InputLabel>
+                  <Select // select de curso
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name="curso"
+                    required
+                    value={idCurso}
+                    onChange={(e) => {
+                      setidCurso(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {curso.map((obj) => (
+                      <MenuItem value={obj.id}>{obj.nome}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+     
+              </div>
+              
+
+              <div className="select1">
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Instrutor:
+                  </InputLabel>
+                  <Select // select de instrutores
+                    name="instrutor"
+                    required
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={idInstrutor}
+                    onChange={(e) => {
+                      setidInstrutor(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {instrutor.map((obj, indice) => (
+                      <MenuItem value={obj.id}>{obj.nome}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                
+                
+
+                
+              </div>
+
+              
+
+              <div className="select2">
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Periodo:
+                  </InputLabel>
+                  <Select //select de período
+                    defaultValue={objTurma.periodo}
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name="periodo"
+                    required
+                    value={ValuePeriodo}
+                    onChange={(e) => {
+                      setvaluePeriodo(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {periodo.map((obj, indice) => (
+                      <MenuItem value={indice} key={indice}>
+                        {obj}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Horario Inicio:
+                  </InputLabel>
+                  <Select //select de período
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name="horarioInicio"
+                    required
+                    value={horarioInicioValue}
+                    onChange={(e) => {
+                      setHorarioInicioValue(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {horarios.map((obj, indice) => (
+                      <MenuItem value={obj.id} key={indice}>
+                        {obj.horario}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+
+              <div className="select3">
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Status:
+                  </InputLabel>
+                  <Select //select de status
+                    value={ValueStatus}
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name="status"
+                    required
+                    onChange={(e) => {
+                      setvalueStatus(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {status.map((obj, indice) => (
+                      <MenuItem value={indice} key={indice}>
+                        {obj}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+               
+
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Horario Término:
+                  </InputLabel>
+                  <Select //select de período
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name="horarioFinal"
+                    required
+                    value={horarioFinalValue}
+                    onChange={(e) => {
+                      setHorarioFinalValue(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {horarios.map((obj, indice) => (
+                      <MenuItem value={obj.id} key={indice}>
+                        {obj.horario}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+
+              <FormControl sx={{ m: 1, width: 300,top:500, left:-10}}>
+                  <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
+                  <Select
+                    labelId="demo-multiple-checkbox-label"
+                    id="demo-multiple-checkbox"
+                    name="diasDaTurma"
+                    multiple
+                    defaultValue={diasDaSemana}
+                    onChange={handleChange}
+                    input={<OutlinedInput label="Dias da Semana" />}
+                    renderValue={(selected) => selected.join(",")}
+                    MenuProps={MenuProps}
+                  >
+                    {DiasDaSemana.map((dias) => (
+                      <MenuItem key={dias} value={dias}>
+                        <Checkbox checked={diasDaSemana.indexOf(dias) > -1} />
+                        <ListItemText primary={dias} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+              <div>
+                <div className="horarioInicio" style={{left:30}}>
+                  <TextField
+                    sx={estiloData}
+                    label="Data inicio"
+                    onChange={(e) => {
+                      setDataInicio(e.target.value);
+                      capturarDados(e);
+                    }}
+                    InputLabelProps={{ shrink: true, required: true }}
+                    type="date"
+                    variant="standard"
+                    value={dataInicioFormatada}
+                  />
+                </div>
+
+                <div className="horarioFinal" style={{left:285}}>
+                  <TextField
+                    sx={estiloData}
+                    variant="standard"
+                    label="Data Terminio"
+                    onChange={(e) => {
+                      setDataTermino(e.target.value);
+                      capturarDados(e);
+                    }}
+                    InputLabelProps={{ shrink: true, required: true }}
+                    type="date"
+                    value={dataTerminoFormatada}
+                  />
+                </div>
+              </div>
+             
+              <div class="parteBotao" style={{left:330, top:535}}>
                 <Button
                   variant="contained"
                   color="success"
@@ -1442,15 +1471,7 @@ function CadTurma() {
                   cadastrar
                 </Button>
 
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => {
-                    setModalAlt(false);
-                  }}
-                >
-                  Fechar
-                </Button>
+      
               </div>
             </form>
           </div>
@@ -1463,7 +1484,7 @@ function CadTurma() {
 const styleTextField = {
   display: "flex",
   flexDirection: "row",
-  marginBottom: "2em",
+  marginBottom: "2em"
 };
 
 const estiloData = {

@@ -27,6 +27,8 @@
     float: right;
     width: 84%;
     margin-top: 3em;
+    position: fixed;
+    left: 16%;
     
     
 }
@@ -41,11 +43,11 @@
 }
 
 header{
-    position: relative;
     top: 0px;
-    left: 5em;
     width: 85%;
     float: right;
+    position: fixed;
+    left: 16%;
 
 }
 
@@ -186,11 +188,19 @@ header{
 .parteBotao{
     position: absolute;
     top:33em;
-    background-color: aqua;
     top: 600px;
 }
 
 .parteBotao Button{
+    margin-left: 2em;
+}
+.parteBotao2{
+    position: absolute;
+    top:33em;
+    top: 600px;
+}
+
+.parteBotao2 Button{
     margin-left: 2em;
 }
 
