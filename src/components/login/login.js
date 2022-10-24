@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 
 const msgErroLogin = () => {
-  console.log("entrei");
+
 
   toast.error("Informações não encontrada", {
     position: "top-right",
@@ -32,11 +32,7 @@ const msgErroLogin = () => {
 
 
 function Login() {
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-   
-  }, []);
+ 
  
     const loginToken = async (event) => {
         /* tiras as características de evento evitando Recarregar  a pagina */
@@ -46,15 +42,10 @@ function Login() {
         /*formata em um objeto em  json */
         const data = Object.fromEntries(formData);
     
-        console.warn("teste", data);
-        console.log("oi brasil", data.nome);
-        console.warn("EVENTO", event.target);
-
-      
         /* let obgj = {
           nome: data,
         }; */
-        console.warn(data);
+       
         /* verificar se  requisição foi feita com sucesso */
         let result = await fetch(`http://localhost:8080/api/usuario/login`, {
           method: "post",
@@ -73,15 +64,11 @@ function Login() {
           /* verificar se  requisição foi feita com sucesso */
         } else if (result) {
           result = await result.json();
-          console.warn("oi   === " , result);
+     
           const {  token  } =  result;
-          console.log("token 0000 ", token);
+        
           localStorage.setItem('token', JSON.stringify(token));
         
-             
-
-
-          
           window.location.href = 'http://localhost:3000/instrutores' 
           
           /* mensagem de cadastrar com sucesso */

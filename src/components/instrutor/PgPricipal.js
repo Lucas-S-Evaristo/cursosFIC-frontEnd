@@ -274,14 +274,11 @@ function PgPricipal(props) {
     ids = [];
   }; */
   /* renderizar página  e faz requisição  */
-  useEffect(() => {
-    getiInstrutor();
-    const token = localStorage.getItem('token');
-    console.log(token);
-   
-  }, []);
+ 
   const token = localStorage.getItem('token');
   console.log("oi === ",token);
+
+  
 
 
  
