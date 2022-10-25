@@ -1,6 +1,6 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Formulario from "./components/cursos/formulario";
-import ListaCursos from "./components/cursos/listaCursos";
+import ListaCurso from "./components/cursos/PageCurso";
 import Area from "./components/area/paginaArea";
 import CadTurma from "./components/Turma/PageTurma";
 import MenuLateral from "./components/Turma/menuLateral";
@@ -13,9 +13,9 @@ function Rotas(){
 
         <Routes>
           
-            <Route path='/cursos' element={<ListaCursos/>}/>
+            <Route path='/cursos' element={<ListaCurso/>}/>
             <Route path='/listaArea' element={<Area/>}/>
-            <Route path='/listaTurma' element={<CadTurma/>}/>
+            <Route path='/turmas' element={<CadTurma/>}/>
             <Route path='/painel' element={<MenuLateral/>}/>
             <Route path='/tarefa' element={<Tarefas/>}/>
 
