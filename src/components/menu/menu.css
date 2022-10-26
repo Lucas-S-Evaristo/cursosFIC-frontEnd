@@ -1,7 +1,5 @@
-*{
-  margin: 0;
-  padding: 0;
-}
+
+
 .painelComponent {
   display: block;
   float: left;
@@ -63,6 +61,7 @@ a {
 .link {
   position: relative;
   bottom: 0.2em;
+  text-decoration: none;
 }
 
 .link:hover {
@@ -83,17 +82,19 @@ a {
 .navItem {
   border-radius: 200px;
   width: 220px;
+  text-decoration: none;
 }
 
 .navLink {
   background-color: #fff;
-  color: #fff;
+  color: #fff !important;
+  text-decoration: none;
   
 }
 
 .navLink:hover {
   background-color: #fff !important;
-  color: #4361ee !important;
+  color: black !important;
 
 }
 

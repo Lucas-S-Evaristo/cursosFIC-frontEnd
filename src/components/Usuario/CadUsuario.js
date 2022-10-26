@@ -1,250 +1,287 @@
 import React, { useEffect } from "react";
 import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
+import AppBar from "@mui/material/AppBar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Grid from "@mui/material/Grid";
+import Tooltip from "@mui/material/Tooltip";
+import FolderSharedRoundedIcon from "@mui/icons-material/FolderSharedRounded";
+import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import { toast, ToastContainer, cssTransition} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import List from "@mui/material/List";
+import { toast, ToastContainer, cssTransition } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CreateIcon from "@mui/icons-material/Create";
+import SaveIcon from "@mui/icons-material/Save";
+import Toolbar from "@mui/material/Toolbar";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Container from "@mui/material/Container";
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import Button from "@mui/material/Button";
+import AdbIcon from "@mui/icons-material/Adb";
 import TextField from "@mui/material/TextField";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
-import { Alert, Collapse, IconButton } from "@mui/material";
-import { Close } from "@mui/icons-material";
-import Snackbar from "@mui/material/Snackbar";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { height } from "@mui/system";
+import { ListItem } from "@mui/material";
+import MenuLateral from "../menu/MenuLateral";
 
-function CadUser(){
-
+function PageUsuario() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
-     // estado da modal
-    const [open,setOpen] = useState(false)
-    const [modalAlt,setModalAlt] = useState(false)
-     // estado do obj do ususario
-    const [objUsuario, setObjUsuario] = useState(usuario)
-    // metodo que abre a modal
-    const  handleOpen  =  ( )  =>  setOpen ( true ) ;
-      // metodo que fecha a modal
-    const  handleClose  =  ( )  =>  setOpen ( false );
-    // variavel que tem acesso a um array com todos os usuarios
-    const [usuarios,setUsuario] =useState([])
-    // variavel que tem acesso a um array com todos os tipos de usuarios
-    const [tipoUsuario,setTipoUsuario] = useState([])
+  // estado da modal
+  const [open, setOpen] = useState(false);
+  const [modalAlt, setModalAlt] = useState(false);
+  // estado do obj do ususario
+  const [objUsuario, setObjUsuario] = useState(usuario);
+  // metodo que abre a modal
+  const handleOpen = () => setOpen(true);
+  // metodo que fecha a modal
+  const handleClose = () => setOpen(false);
+  // variavel que tem acesso a um array com todos os usuarios
+  const [usuarios, setUsuario] = useState([]);
+  // variavel que tem acesso a um array com todos os tipos de usuarios
+  const [tipoUsuario, setTipoUsuario] = useState([]);
 
-   // metodo que captura informações do input
-    const capturarDados = (e) => {
-  
-         console.log(e.target.value)      
-        setObjUsuario({ ...objUsuario, [e.target.name]: e.target.value })
-        
-    }
+  // metodo que captura informações do input
+  const capturarDados = (e) => {
+    console.log(e.target.value);
+    setObjUsuario({ ...objUsuario, [e.target.name]: e.target.value });
+  };
 
-
-    // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
-  useEffect ( ( )  =>  {
-    fetch ( "http://localhost:8080/api/usuario" )
-    .then ( resp  =>  resp . json ( ) )
-    .then ( retorno_convertido  =>  setUsuario ( retorno_convertido ) ) //lista de usuários
-} ,  [ ] )
+  // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
+  useEffect(() => {
+    fetch("http://localhost:8080/api/usuario")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
+  }, []);
 
   // REQUISIÇÃO GET PARA PUXAR TODOS OS TIPOS DE USUARIOS
-  useEffect ( ( )  =>  {
-    fetch ( "http://localhost:8080/api/enum/tipoUsuario" )
-    .then ( resp  =>  resp . json ( ) )
-    .then ( retorno_convertido  =>  setTipoUsuario ( retorno_convertido ) ) //lista de usuários
-} ,  [ ] )
+  useEffect(() => {
+    fetch("http://localhost:8080/api/enum/tipoUsuario")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setTipoUsuario(retorno_convertido)); //lista de usuários
+  }, []);
 
+  // função que espera receber um id
+  const alterar = async (id) => {
+    // requisição ao back-end
+    let resultado = await fetch("http://localhost:8080/api/usuario/" + id, {
+      method: "PUT",
+      body: JSON.stringify(objUsuario),
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    });
 
-// função que espera receber um id
-const alterar = async (id) => {
-  // requisição ao back-end
- let resultado = await fetch("http://localhost:8080/api/usuario/" +id, {
-    method: 'PUT',
-    body: JSON.stringify(objUsuario),
-    headers: {
-      'Content-type': 'application/json',
-      'Accept': 'application/json'
+    // verifica se existe resultado
+    if (resultado) {
+      // atualiza a lista com o usuario alterado
+      atualizaLista();
+      // fecha a modal de alterar
+      setModalAlt(false);
+      // exibe a msg de alteração concluida
+      msgAlteracao();
     }
-  })
-
-  // verifica se existe resultado
-  if (resultado) {
-    // atualiza a lista com o usuario alterado
-    atualizaLista();
-    // fecha a modal de alterar
-    setModalAlt(false)
-    // exibe a msg de alteração concluida
-    msgAlteracao()
-  }
-}
-
+  };
 
   // metodo que efetua o cadastro do usuario
-    const cadastrar = () => {
-      //requisição ao back end
-        fetch("http://localhost:8080/api/usuario", {
-          method: 'post',
-          body: JSON.stringify(objUsuario),
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
-          }
-    
-        })
-        // convertendo a resposta da promessa em json
-        .then(retorno => retorno.json())
-        // pegando o retorno convertido
-        .then(retorno_convertido => {
-          console.log(retorno_convertido)
-          // metodo que atualiza a lista, que faz com que ao clicar seja adicionado "automaticamente"
-          atualizaLista()
-          // fecha modal
-         handleClose()
-         // limpa o formulario
-         limparForm()
-         // exibindo a msg de aviso de cadastro
-          msgCadastro()
-         
-        })
-    }
+  const cadastrar = () => {
+    fetch("http://localhost:8080/api/usuario", {
+      method: "post",
+      body: JSON.stringify(objUsuario),
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((retorno) => {
+      //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+      if (retorno.status === 500 || retorno.status === 400) {
+        msgCamposVazio();
 
-    // metodo que capta o usuario que foi selecionado
-    const selecionarUsuario = (indice) =>{
-     setObjUsuario(usuarios[indice])
-    }
+        // se existir um email existente
+      } else if (retorno.status === 409) {
+        document.getElementById("email").value = ""; // Limpa o campo
 
-    
-   
-
-    // metodo que atualiza a lista, puxando todos os usuarios da rest api  
-    const  atualizaLista  =  async  ( )  =>  {
-        const  result  =  await  fetch ( "http://localhost:8080/api/usuario" )  // await = espera uma promessa
-       const resultado  =  await result.json ( ) ;
-        setUsuario (resultado)
-
-    }
-  
-    // metodo que deleta o usuario
-    const deletar = async (id) => {
-        let result = await fetch(`http://localhost:8080/api/usuario/${id}`, {
-            method: "DELETE"
-        })
-        // caso exista um usuario a ser deletado, ele atualiza a lista assim removendo o usuario deletado
-        if(result) {
-        
-           atualizaLista()
-           msgExclusao()
-           
-        }
-
-       
-    }
-
-    // metodo que limpa os inputs do form
-    const limparForm = () =>{
-
-      setObjUsuario('')
-
-       }
-
-
-       // metodo que busca um usuario
-    const buscaUsuario = async (event) => {
-
-      // valor que esta sendo digitado no input de pesquisa
-      let key = event.target.value;
-      console.log(key)
-
-      // verifica se existe 'valor'
-      if(key){
-       
-        // fazendo uma requisição na api de busca e passando a key
-        let result = await fetch("http://localhost:8080/api/usuario/busca/" + key)
-        // tranformando a promessa em json
-        result = await result.json();
-        console.log(result)
-
-        // verifica se existe algum resultado
-        if(result){
-
-          // setando os usuarios que a api retornou de sua resposta de busca
-          setUsuario(result)
-        }
-
-        
-        // caso não exista chave, atualiza a lista
-      }else{
-
-        atualizaLista();
+        msgEmailDuplicados();
+      } else if (retorno.status === 510) {
+        document.getElementById("nif").value = ""; // Limpa o campo
+        msgNifDuplicados();
+      } else {
+        //faz o processo de cadastro
+        retorno.json().then((retorno_convertido) => {
+          //exibir notificação de sucesso
+          msgCadastro();
+          atualizaLista();
+          //atualiza a página depois de um tempo
+          setOpen(false);
+        });
       }
+    });
+  };
+  // metodo que capta o usuario que foi selecionado
+  const selecionarUsuario = (indice) => {
+    setObjUsuario(usuarios[indice]);
+  };
+
+  // metodo que atualiza a lista, puxando todos os usuarios da rest api
+  const atualizaLista = async () => {
+    const result = await fetch("http://localhost:8080/api/usuario"); // await = espera uma promessa
+    const resultado = await result.json();
+    setUsuario(resultado);
+  };
+
+  // metodo que deleta o usuario
+  const deletar = async (id) => {
+    let result = await fetch(`http://localhost:8080/api/usuario/${id}`, {
+      method: "DELETE",
+    });
+    // caso exista um usuario a ser deletado, ele atualiza a lista assim removendo o usuario deletado
+    if (result) {
+      atualizaLista();
+      msgExclusao();
     }
+  };
 
-    // toda vez que a modal é chamada, ela sera limpa e fechada
-    const clearClose= () =>{
+  // metodo que limpa os inputs do form
+  const limparForm = () => {
+    setObjUsuario("");
+  };
 
-      handleClose()
-      limparForm()
+  // metodo que busca um usuario
+  const buscaUsuario = async (event) => {
+    // valor que esta sendo digitado no input de pesquisa
+    let key = event.target.value;
+    console.log(key);
+
+    // verifica se existe 'valor'
+    if (key) {
+      // fazendo uma requisição na api de buscar e passando a key
+      let result = await fetch(
+        "http://localhost:8080/api/usuario/buscar/" + key
+      );
+      // tranformando a promessa em json
+      result = await result.json();
+      console.log(result);
+
+      // verifica se existe algum resultado
+      if (result) {
+        // setando os usuarios que a api retornou de sua resposta de busca
+        setUsuario(result);
+      }
+
+      // caso não exista chave, atualiza a lista
+    } else {
+      atualizaLista();
     }
+  };
 
+  // toda vez que a modal é chamada, ela sera limpa e fechada
+  const clearClose = () => {
+    handleClose();
+    limparForm();
+  };
 
-// metodo de msg de cadastro efetuado com sucesso
-const msgCadastro = () =>{
+  // metodo de msg de cadastro efetuado com sucesso
+  const msgCadastro = () => {
+    toast.success("Usuário Cadastrado com Sucesso", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-  toast.success("Usuário Cadastrado com Sucesso",{
-    position:"top-right",
-    autoClose:1500,
-    hideProgressBar:false,
-    closeOnClick:true,
-    pauseOnHover:true,
-    theme:'colored',
-    // faz com que seja possivel arrastar
-    draggable:true,
-    progress:undefined
+  // registros duplicados
+  const msgEmailDuplicados = () => {
+    toast.error("Email ja esta associado a um usuario", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
+  const msgNifDuplicados = () => {
+    toast.error("Nif ja esta associado a um usuario", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-  })
-}
+  const msgCamposVazio = () => {
+    toast.warn("Preencha os Campos Corretamente", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-// metodo de msg de exclusão feita com sucesso
-const msgExclusao = () =>{
+  // metodo de msg de exclusão feita com sucesso
+  const msgExclusao = () => {
+    toast.error("Usuário Removido com Sucesso", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "light",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-  toast.error("Usuário Removido com Sucesso",{
-    position:"top-right",
-    autoClose:1500,
-    hideProgressBar:false,
-    closeOnClick:true,
-    pauseOnHover:true,
-    theme:'light',
-    // faz com que seja possivel arrastar
-    draggable:true,
-    progress:undefined
+  // metodo de msg de alteração feita com sucesso
+  const msgAlteracao = () => {
+    toast.info("Usuário Alterado com Sucesso", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "light",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
-
-  })
-}
-
-// metodo de msg de alteração feita com sucesso
-const msgAlteracao = () =>{
-
-  toast.warn("Usuário Alterado com Sucesso",{
-    position:"top-right",
-    autoClose:1500,
-    hideProgressBar:false,
-    closeOnClick:true,
-    pauseOnHover:true,
-    theme:'light',
-    // faz com que seja possivel arrastar
-    draggable:true,
-    progress:undefined
-
-
-  })
-}
-
-
-    return(
-
-         <>       
-     
-        
-    <ToastContainer position="top-right"
+  return (
+    <>
+      <MenuLateral/>
+      
+      <ToastContainer
+        position="top-right"
         autoClose={1500}
         hideProgressBar={false}
         newestOnTop={false}
@@ -253,207 +290,396 @@ const msgAlteracao = () =>{
         pauseOnFocusLoss
         draggable
         pauseOnHover
-    />
-      <Button onClick={handleOpen} style={{margin: 10,float:'left',borderRadius:'8px'}} variant="contained" color="primary" >ADICIONAR USUÁRIO </Button>
-      
+      />
       <Modal
         open={open}
         onClose={clearClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
         <Box sx={style}>
-      
           <form>
-          <TextField sx={styleTextField} className="textField" onChange={capturarDados} name="nome" type="text" label="NOME" variant="outlined" />
-          <InputLabel  id="demo-simple-select-label">Tipo Usuario</InputLabel>
-          <select
-          style={styleTextField}
-          name="tipoUsuario"
-          required
-          className="form-control"
-            onChange={capturarDados}
-        >
+            <div>
+              <h2 style={titleModal}>ADICIONAR USUÁRIO</h2>
+              <TextField
+                id="nome"
+                sx={styleTextField}
+                className="textField"
+                onChange={capturarDados}
+                name="nome"
+                type="text"
+                label="NOME"
+                variant="outlined"
+              />
+              <InputLabel id="demo-simple-select-label">
+                Tipo Usuario
+              </InputLabel>
+              <select
+                id="tipoUsuario"
+                style={styleSelect}
+                name="tipoUsuario"
+                required
+                className="form-control"
+                onChange={capturarDados}
+              >
+                <Box></Box>
 
-          <option>Selecione:</option>
-               
-                    {
-                        tipoUsuario.map((obj,indice) => (
-                       
-                           <option key={indice}>
-                           {obj}
-                           </option>
-                        ))
-                    }
-    
-        </select>
-          <TextField required sx={styleTextField} onChange={capturarDados} name="nif" type="text" label="NIF" variant="outlined" />
-          <TextField required sx={styleTextField} onChange={capturarDados} name="email" type="email" label="EMAIL" variant="outlined" />
-          <TextField required sx={styleTextField} onChange={capturarDados}  name="senha" type="password" label="SENHA" variant="outlined" />
-          <Button variant="contained" color="success"  style={{margin:10}}  onClick={() => {
-                                          cadastrar()
-                                        
-                                        }}  >Cadastrar</Button>
+                <option>Selecione:</option>
 
+                {tipoUsuario.map((obj, indice) => (
+                  <option key={indice}>{obj}</option>
+                ))}
+              </select>
+              <TextField
+                required
+                sx={styleTextField}
+                id="nif"
+                onChange={capturarDados}
+                name="nif"
+                type="text"
+                label="NIF"
+                variant="outlined"
+              ></TextField>
+              <TextField
+                autoComplete="email"
+                sx={styleTextField}
+                id="email"
+                onChange={capturarDados}
+                name="email"
+                type="email"
+                label="EMAIL"
+                variant="outlined"
+              />
+            </div>
+            <Button
+              variant="contained"
+              style={btnCad}
+              onClick={() => {
+                cadastrar();
+              }}
+            >
+              <SaveIcon sx={{ marginRight: "10px" }} />
+              Cadastrar
+            </Button>
 
-          <Button variant="contained" color="error"  style={{margin:10}} onClick={() => {
-                                          limparForm()
-                                          handleClose()
-                                        }} >Fechar</Button>
-
+            <Button
+              variant="contained"
+              color="error"
+              style={btnClose}
+              onClick={() => {
+                limparForm();
+                handleClose();
+              }}
+            >
+              <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+              Fechar
+            </Button>
           </form>
+          <Paper elevation={0}>
+            <img
+              style={imgStyle}
+              src="https://img.freepik.com/vetores-gratis/ilustracao-em-vetor-conceito-abstrato-de-visualizacao-de-design-interativo-visualizacao-interativa-arquitetura-de-virtualidade-experiencia-do-usuario-de-realidade-virtual-metafora-abstrata-de-design-de-interacao_335657-2298.jpg"
+            />
+          </Paper>
         </Box>
       </Modal>
-
-
-
-
       <Modal
         open={modalAlt}
         onClose={clearClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
         <Box sx={style}>
           <form>
-          <TextField required defaultValue={objUsuario.nome}  sx={styleTextField} className="textField" onChange={capturarDados} name="nome" type="text" label="NOME" variant="outlined" />
-          <InputLabel  id="demo-simple-select-label">Tipo Usuario</InputLabel>
-          <select
-          defaultValue={objUsuario.tipoUsuario}
-          style={styleTextField}
-          name="tipoUsuario"
-          className="form-control"
-            onChange={capturarDados}
-        >
- 
-               
-                    {
-                        tipoUsuario.map((obj,indice) => (
-                       
-                           <option key={indice}>
-                           {obj}
-                           </option>
-                        ))
-                    }
-    
-        </select>
-          <TextField defaultValue={objUsuario.nif} required sx={styleTextField} onChange={capturarDados} name="nif" type="text" label="NIF" variant="outlined" />
-          <TextField defaultValue={objUsuario.email}  required sx={styleTextField} onChange={capturarDados} name="email" type="email" label="EMAIL" variant="outlined" />
-          <TextField required sx={styleTextField} onChange={capturarDados}  name="senha" type="password" label="SENHA" variant="outlined" />
-          <Button variant="contained" color="success"  style={{margin:10}} onClick={() => alterar(objUsuario.id)}  >Alterar</Button>
+            <div>
+              <h2 style={titleModal}>
+                <CreateIcon
+                  sx={{
+                    color: "#a2d2ff",
+                    width: "100",
+                    border: "none",
+                    marginRight: 2,
+                  }}
+                />{" "}
+                ALTERAR USUÁRIO
+              </h2>
+              <TextField
+                id="nome"
+                defaultValue={objUsuario.nome}
+                sx={styleTextField}
+                className="textField"
+                onChange={capturarDados}
+                name="nome"
+                type="text"
+                label="NOME"
+                variant="outlined"
+              />
+              <InputLabel id="demo-simple-select-label">
+                Tipo Usuario
+              </InputLabel>
+              <select
+                defaultValue={objUsuario.tipoUsuario}
+                id="tipoUsuario"
+                style={styleSelect}
+                name="tipoUsuario"
+                required
+                className="form-control"
+                onChange={capturarDados}
+              >
+                <Box></Box>
 
+                <option>Selecione:</option>
 
-          <Button variant="contained" color="error"  style={{margin:10}} onClick={() => {
-                                         
-                                         setModalAlt(false)
-                                        }} >Fechar</Button>
+                {tipoUsuario.map((obj, indice) => (
+                  <option key={indice}>{obj}</option>
+                ))}
+              </select>
+              <TextField
+                defaultValue={objUsuario.nif}
+                required
+                sx={styleTextField}
+                id="nif"
+                onChange={capturarDados}
+                name="nif"
+                type="text"
+                label="NIF"
+                variant="outlined"
+              ></TextField>
+              <TextField
+                defaultValue={objUsuario.email}
+                autoComplete="email"
+                sx={styleTextField}
+                id="email"
+                onChange={capturarDados}
+                name="email"
+                type="email"
+                label="EMAIL"
+                variant="outlined"
+              />
+            </div>
+            <Button
+              variant="contained"
+              style={btnCad}
+              onClick={() => {
+                alterar(objUsuario.id);
+              }}
+            >
+              <CreateIcon
+                sx={{
+                  color: "#ffff",
+                  width: "100",
+                  border: "none",
+                  marginRight: "10px",
+                }}
+              />
+              Alterar
+            </Button>
 
+            <Button
+              variant="contained"
+              color="error"
+              style={btnClose}
+              onClick={() => {
+                limparForm();
+                setModalAlt(false);
+              }}
+            >
+              <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+              Fechar
+            </Button>
           </form>
+          <Paper elevation={0}>
+            <img style={imgStyle} src="/img/img1.png" />
+          </Paper>
         </Box>
       </Modal>
+      <Paper
+        sx={{
+          maxWidth: 12000,
+          marginTop: "0px",
+          marginLeft: "20em",
+          overflow: "hidden",
 
+        }}
+      >
+        <AppBar
+          position="static"
+          color="default"
+          elevation={0}
+          style={{marginTop: 100}}
+          sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
+        >
+          <Toolbar style={{marginBottom:20}}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item>
+                <SearchIcon sx={{ display: "block", color: "#01161e" }} />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  onChange={buscaUsuario}
+                  fullWidth
+                  placeholder="Pesquise pelo nome do usuario"
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: { fontSize: "default", width: "200px" },
+                  }}
+                  variant="standard"
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  onClick={handleOpen}
+                  variant="contained"
+                  style={{ backgroundColor: "#a2d2ff" }}
+                  sx={{ mr: 1 }}
+                >
+                  <AddCircleIcon sx={{ marginRight: "12px", color: "#ffff" }} />{" "}
+                  ADICIONAR USUÁRIO
+                </Button>
+              </Grid>
+            </Grid>
+          </Toolbar>
+        </AppBar>
+        <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
+          <table
+            style={{ width: "100%" }}
+            className="table  table-lg  table-hover"
+          >
+            <thead
+              style={{ backgroundColor: "#212529", color: "white" }}
+              className="thead"
+            >
+              <tr>
+                <th scope="col">NOME</th>
+                <th scope="col">EMAIL</th>
+                <th scope="col">NIF</th>
+                <th scope="col">TIPO USUÁRIO</th>
+                <th scope="col">ALTERAR</th>
+                <th scope="col">DELETAR</th>
+              </tr>
+            </thead>
 
-   
-                 
-
-                           
-
-                           <h1 style={styleTitle}>Lista de Usuarios</h1>  
-                          <input placeholder="Busque por um Usuário" onChange={buscaUsuario} style={styletSearch}/>
-
-                           <table className="table">
-                            <thead>
-                             
-                                <th>NOME</th>
-                                <th>EMAIL</th>
-                                <th>NIF</th>
-                                <th>TIPO USUÁRIO</th>
-                                <th>ALTERAR</th>
-                                <th>DELETAR</th>
-                              </thead>
-
-                              <tbody>
-
-                             {
-                                usuarios.map((obj,indice) => (
-                                   
-                                        <tr key={indice}>
-                                       
-                                        <td>{obj.nome}</td>
-                                        <td>{obj.email}</td>
-                                        <td>{obj.nif}</td>
-                                        <td>{obj.tipoUsuario}</td>
-                                        <td><Button variant="contained" color="warning" onClick={() => {
-                                          selecionarUsuario(indice)
-                                         setModalAlt(true)
-                                        }}>Alterar</Button></td>
-                                        <td><Button variant="contained" color="error"  onClick={() => deletar(obj.id)}>Remover</Button></td>
-                                        </tr>
-                                      
-                         
-                              ))
-
-                                }
-
-                              </tbody>
-                           
-                           </table>
-
-                          
-      </>
-    )
+            <tbody>
+              {usuarios.map((obj, indice) => (
+                <tr key={indice}>
+                  <th scope="row">{obj.nome}</th>
+                  <th scope="row">{obj.email}</th>
+                  <th scope="row">{obj.nif}</th>
+                  <th scope="row">{obj.tipoUsuario}</th>
+                  <th scope="row">
+                    <Button
+                      variant="contained"
+                      style={btnAlterar}
+                      onClick={() => {
+                        selecionarUsuario(indice);
+                        setModalAlt(true);
+                      }}
+                    >
+                      <CreateIcon sx={{ marginRight: "10px" }} />
+                      Alterar
+                    </Button>
+                  </th>
+                  <th scope="row">
+                    <Button
+                      variant="contained"
+                      style={btnExcluir}
+                      onClick={() => deletar(obj.id)}
+                    >
+                      <DeleteIcon sx={{ marginRight: "10px" }} />
+                      Remover
+                    </Button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Typography>
+      </Paper>
+    </>
+  );
 }
 
 const usuario = {
-    id: '',
-    nome: '',
-    nif: '',
-    tipoUsuario: '',
-    email: '',
-    senha: '',
-}
+  id: "",
+  nome: "",
+  nif: "",
+  tipoUsuario: "",
+  email: "",
+  senha: "",
+};
 
+const imgStyle = {
+  border: "none",
+  width: "400px",
+  height: "400px",
+  margin: "50px auto",
+  position: "center",
+};
 
 const styleTextField = {
-    display:'flex',
-    flexDirection:'row',
-     marginBottom:'30px'
+  display: "flex",
+  flexDirection: "row",
+  marginBottom: "30px",
+  width: "450px",
+};
 
-  };
+const btnAlterar = {
+  backgroundColor: "#caf0f8",
+};
 
-  const styleTitle = {
-   
-   textAlign: 'center',
-   marginBottom:'30px',
-   color:'blue'
+const btnExcluir = {
+  backgroundColor: "#f9564f",
+};
 
-  };
+const styleSelect = {
+  width: "235px",
+  height: "40px",
+  marginBottom: "30px",
+};
 
-  const styletSearch ={
-    border: '2px solid blue',
-    alignItems:'center',
-     marginLeft: '500px',
-    padding:'10px',
-    borderRadius:'6px',
-    marginBottom:'30px',  
-    boxShadow: 24,
-  
-  }
+const styleTitle = {
+  textAlign: "center",
+  marginBottom: "30px",
+  color: "blue",
+};
 
-  const snackStyle ={
+const titleModal = {
+  color: "#a2d2ff",
+  marginBottom: "65px",
+  boxShadow: 24,
+};
+const btnCad = {
+  marginTop: "20px",
+  borderRadius: "10px",
+  color: "#ffff",
+  backgroundColor: "#a2d2ff",
+};
 
-    float:'right'
-  }
+const btnClose = {
+  marginTop: "20px",
+  marginLeft: "20px",
+  borderRadius: "10px",
+  color: "#ffff",
+  backgroundColor: "#f08080",
+};
+
+const imgLogo = {
+  width: "200px",
+  borderRadius: "20px",
+};
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    display:'flex',
-    flexDirection:'row',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 800,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-export default CadUser;
+  position: "absolute",
+  top: "50%",
+  display: "flex",
+  flexDirection: "row",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 900,
+  bgcolor: "background.paper",
+  borderRadius: "37px",
+  border: "3px solid #a2d2ff",
+  boxShadow: 240,
+  p: 4,
+};
+export default PageUsuario;

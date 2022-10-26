@@ -167,6 +167,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
+
+
 function PgPricipal(props) {
   /* lista de instrutor */
   const [instrutor, setInstrutor] = useState([]);
@@ -279,7 +282,9 @@ function PgPricipal(props) {
   console.log("oi === ",token);
 
   
-
+  useEffect(() => {
+    getiInstrutor();
+  }, []);
 
  
   /* fazendo uma requisição get  */
@@ -443,6 +448,8 @@ function PgPricipal(props) {
    }; */
 
   //const container = window !== undefined ? () => window().document.body : undefined;
+  let p = localStorage.getItem("payload");
+p = JSON.parse(p);
 
   return (
     <>

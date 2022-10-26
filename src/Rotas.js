@@ -20,6 +20,16 @@ import Login from "./components/login/login";
 
 import RedefinirSenha from "./components/login/redefinirSenha";
 
+import Area from "./components/area/paginaArea"
+
+import CadTurma from "./components/Turma/PageTurma"
+
+import MenuLateral from "./components/menu/MenuLateral"
+
+import Tarefas from "./components/Turma/tarefas"
+
+import PgHorario from "./components/horario/PgHorario";
+import ListaArea from "./components/area/paginaArea";
 
 function Rotas() {
 
@@ -75,17 +85,9 @@ function Rotas() {
   }
     function PrivadaRotasInstrutores() {
 
-
       let p = localStorage.getItem("payload");
       p = JSON.parse(p);
       
-      console.log("payload.QQQQQQQQQQQQQQ: ", p );
-     
-      console.log("payload: tipo_usuarioooooooooooooooooo  ", p );
-
-      
-
-
         if(p != null){
           if (p.tipo_usuario === "Master" || p.tipo_usuario === "Opp" ) {
 
@@ -113,8 +115,7 @@ function Rotas() {
 
 
     function PrivadaRotasUsuarios() {
-
-
+      
       let p = localStorage.getItem("payload");
       p = JSON.parse(p);
       
@@ -126,7 +127,7 @@ function Rotas() {
 
 
         if(p != null){
-          if (p.tipo_usuario === "Opp") {
+          if (p.tipo_usuario === "Opp" || p.tipo_usuario === "Master") {
 
             console.log("AAAAAAAAAUTORIZADOOOO!!!!")
             
@@ -173,6 +174,18 @@ function Rotas() {
             <Instrutor />
 
           </PrivadaRotasInstrutores>} />
+
+     
+        <Route path='/listaTurma' element={<CadTurma/>}/>
+
+        <Route path='/painel' element={<MenuLateral/>}/>
+
+        <Route path='/tarefa' element={<Tarefas/>}/>
+
+        <Route path='/horario' element={<PgHorario/>}/>
+
+        <Route path='listaArea' element={<ListaArea/>}/>
+          
       </Routes>
     );
   

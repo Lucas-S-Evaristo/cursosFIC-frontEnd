@@ -13,11 +13,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function MenuLateral() {
   return (
     <>
+     
       <div className="painelComponent">
         <img className="imagemLogo" src={require("./logoSenai.png")}></img>
 
         <div className="navegacao">
-          <Nav variant="tabs" defaultActiveKey="/instrutores">
+          <Nav variant="tabs" >
             <Nav.Item className="navItem">
               <Nav.Link className="navLink" href="/home">
                 <HomeOutlinedIcon sx={{ marginRight: "30px" }} />
@@ -25,17 +26,17 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/Usuario">
+              <Nav.Link
+              
+                className="navLink"
+                href="/Usuario"
+              >
                 <Person3OutlinedIcon sx={{ marginRight: "30px" }} />
                 Usuários
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link
-                className="navLink"
-                style={{ backgroundColor: "#0496ff", color: "#fff" }}
-                href="/instrutores"
-              >
+              <Nav.Link className="navLink" href="/instrutores">
                 <BadgeOutlinedIcon sx={{ marginRight: "30px" }} />
                 Instrutores
               </Nav.Link>
@@ -47,12 +48,12 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/turmas">
+              <Nav.Link className="navLink" href="/listaTurma">
                 <GroupIcon sx={{ marginRight: "30px" }} /> Turmas
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/horarios">
+              <Nav.Link className="navLink" href="/horario">
                 <QueryBuilderIcon sx={{ marginRight: "30px" }} />
                 Horário
               </Nav.Link>
