@@ -68,6 +68,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
+
+
+let p = localStorage.getItem("payload");
+      p = JSON.parse(p);
+
 function CadTurma() {
 
     //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
@@ -758,7 +763,7 @@ function CadTurma() {
                                             <ModeEditOutlinedIcon /></button>
 
                                     </StyledTableCell>
-                                    <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                <StyledTableCell><button  className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
                                 </StyledTableRow>
                             ))
                             }

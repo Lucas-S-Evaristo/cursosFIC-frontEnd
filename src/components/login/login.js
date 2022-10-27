@@ -69,7 +69,7 @@ function Login() {
         
           localStorage.setItem('token', JSON.stringify(token));
         
-          window.location.href = 'http://localhost:3000/instrutores' 
+          window.location.href = 'http://localhost:3000/listaInstrutores' 
           
           /* mensagem de cadastrar com sucesso */
      

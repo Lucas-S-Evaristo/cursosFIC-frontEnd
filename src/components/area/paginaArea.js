@@ -1,4 +1,4 @@
-import { Button, Table, TableBody, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Button, InputAdornment, Table, TableBody, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
 import { useState } from "react"
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import MenuLateral from "../menu/MenuLateral"
@@ -7,6 +7,13 @@ import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import TablePagination from '@mui/material/TablePagination';
 import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { AccountCircle } from "@mui/icons-material";
+import "../area/listaArea.css"
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+import Modal from 'react-bootstrap/Modal';
+import { useEffect } from "react";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,10 +48,50 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function ListaArea() {
 
+  const cadastroSucesso = () => {
+    toast.success("Cadastrado com sucesso!", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: 'colored',
+        draggable: true,
+        progress: undefined,
+    })
+}
+
+const camposVazios = () => {
+  toast.error("Informe algum nome!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,
+  })
+}
+
+const excluirSucesso = () => {
+  toast.success("Excluido com sucesso!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,
+  })
+}
+
+
   const [idArea, setIdArea] = useState()
   const [area, setArea] = useState([])
 
-  const [nome, setNome] = useState()
+  const [nome, setNome] = useState([])
 
   const cadastrarArea = async (event) => {
 
@@ -52,7 +99,7 @@ function ListaArea() {
     const data = Object.fromEntries(formData)
 
     let area = {
-      nome: data
+      nome: data.nome
     }
     console.warn(data)
 
@@ -64,7 +111,13 @@ function ListaArea() {
         'Accept': 'application/json'
       }
     })
-    if (result) {
+    if (result.status === 409) {
+        
+        camposVazios()
+        
+      
+    }else{
+      setInterval(function () { window.location.reload(); }, 1500);
       getArea()
     }
 
@@ -77,7 +130,7 @@ function ListaArea() {
 
     let obgj = {
       id: idArea,
-      horario: data.nome
+      nome: data.nome
 
     }
     console.warn(obgj)
@@ -91,17 +144,19 @@ function ListaArea() {
     })
 
     if (result) {
+      setInterval(function () { window.location.reload(); }, 1500);
       getArea()
     }
   }
 
   const deletar = async (id) => {
-    let result = await fetch(`http://localhost:8080/api/turma/${id}`, {
+    let result = await fetch(`http://localhost:8080/api/area/${id}`, {
         method: "DELETE"
     })
     // caso já exista uma turma a ser deletado, ele atualiza a lista assim removendo a turma deletado
     if (result) {
-      
+      getArea()
+      excluirSucesso()
     }
 }
 
@@ -112,23 +167,22 @@ function ListaArea() {
 
   }
 
+  useEffect(() => {
+    getArea();
+
+  }, []);
+
   const selecionarArea = (id, nome) => {
 
     setIdArea(id)
     setNome(nome)
-   
 
 }
-
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const [page, setPage] = useState(0);
 
     const handleChangePage = (event, newPage) => {
-
-        console.log("EVENTO" + event);
-
-        console.log("PAGINA" + newPage);
 
         setPage(newPage);
 
@@ -155,22 +209,30 @@ const abrirModalAlterar = () => setShow(true);
 //quando handleClose é chamado ele da um false no show e fecha a modal
 const fecharModalAlterar = () => setShow(false);
 
+console.log("AREAAAAAAAAAAa ", area)
+
   return (
     <>
       <MenuLateral />
       <header>
         <div className="divBotaoAdd">
-          <Button className="botaoAdd" variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
+          <Button className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
         </div>
 
         <form className="formBusca">
-          <input
-            //faz a busca
-            name="parametro"
-            required="required"
-            className="buscarInput"
-            type="text"
-          />
+        <TextField
+        id="input-with-icon-textfield"
+        label="TextField"
+        className="areaPesquisa"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchTwoToneIcon/>
+            </InputAdornment>
+          ),
+        }}
+        variant="standard"
+      />
         </form>
 
       </header>
@@ -241,7 +303,70 @@ const fecharModalAlterar = () => setShow(false);
           />
         </TableContainer>
 
+        <Modal
+                show={modalCadastrar}
+                onHide={fecharModalCadastrar}
+                backdrop="static"
+                keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Cadastrar</Modal.Title>
+                </Modal.Header>
 
+                <Modal.Body>
+                   <form onSubmit={cadastrarArea} className="formArea">
+                   <TextField className="textField" required name="nome" type="text" label="Área:" variant="standard" />
+
+                   <div class="parteBotaoArea">
+                                <Button variant="contained" color="success" type="submit" >cadastrar</Button>
+
+                                <Button variant="contained" color="error" onClick={() => {
+                                    setShowCadastrar(false)
+                                }} >Fechar</Button>
+                                </div>
+                        
+                   </form>
+
+                </Modal.Body>
+
+            </Modal>
+
+            <Modal
+                show={modalAlterar}
+                onHide={fecharModalAlterar}
+                backdrop="static"
+                keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Alterar</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                   <form onSubmit={alterarArea} className="formArea">
+                   <TextField className="textField" required defaultValue={nome} name="nome" type="text" label="Área:" variant="standard" />
+
+                   <div class="parteBotaoArea">
+                                <Button variant="contained" color="success" type="submit" >Alterar</Button>
+
+                                <Button variant="contained" color="error" onClick={() => {
+                                    setShow(false)
+                                }} >Fechar</Button>
+                                </div>
+                        
+                   </form>
+
+                </Modal.Body>
+
+            </Modal>
+
+            <ToastContainer position="top-center"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
 
       </div>
 

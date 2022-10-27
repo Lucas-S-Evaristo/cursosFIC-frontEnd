@@ -64,22 +64,6 @@ function Rotas() {
     }
     let payload = parseJwt(token);
 
-    localStorage.removeItem('token');
- localStorage.removeItem('payload');
-
-    console.log("Payload!!!!!!!!!!!!!!!!!: ", payload)
-
-    if (payload.tipo_usuario === "Master") {
-      console.log("MASTERRR");
-
-
-    } else if (payload.tipo_usuario === "Opp") {
-
-      console.log("Opp")
-
-    } else {
-      console.log("ELSEEEEE", payload.tipo_usuario);
-    }
     localStorage.setItem('payload', JSON.stringify(payload));
     
   }
@@ -88,86 +72,124 @@ function Rotas() {
       let p = localStorage.getItem("payload");
       p = JSON.parse(p);
       
-        if(p != null){
+        if(token != null){
+
           if (p.tipo_usuario === "Master" || p.tipo_usuario === "Opp" ) {
 
-            console.log("AAAAAAAAAUTORIZADOOOO!!!!")
-            
     
             return <Instrutor />
           } else {
-    
-            console.log("INAUTORIZADOOOO!!!!")
     
             return <Navigate to="/" />
           }
 
         }else{
 
-
-          console.log("NULOOOOOOOOOOOOOOOOO")
-
           return <Navigate to="/" />
         }
-
-     
     }
-
 
     function PrivadaRotasUsuarios() {
       
       let p = localStorage.getItem("payload");
       p = JSON.parse(p);
       
-      console.log("payload.QQQQQQQQQQQQQQ: ", p );
-     
-      console.log("payload: tipo_usuarioooooooooooooooooo  ", p );
+        if(token != null){
 
-      
-
-
-        if(p != null){
-          if (p.tipo_usuario === "Opp" || p.tipo_usuario === "Master") {
-
-            console.log("AAAAAAAAAUTORIZADOOOO!!!!")
-            
-    
+          if ( p.tipo_usuario === "Master") {
+          
             return <Usuario/>
           } else {
-    
-            console.log("INAUTORIZADOOOO!!!!")
     
             return <Navigate to="/" />
           }
 
         }else{
 
+          return <Navigate to="/" />
+        }
+    }
+    
+    function PrivadaRotasHorario() {
+      
+      let p = localStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
 
-          console.log("NULOOOOOOOOOOOOOOOOO")
+          if ( p.tipo_usuario === "Master" || p.tipo_usuario === "Opp") {
+          
+            return <PgHorario/>
+          } else {
+    
+            return <Navigate to="/" />
+          }
+
+        }else{
 
           return <Navigate to="/" />
         }
-
-     
     }
 
-    
+    function PrivadaRotasArea() {
+      
+      let p = localStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
 
+          if ( p.tipo_usuario === "Master" || p.tipo_usuario === "Opp") {
+          
+            return <Area/>
+          } else {
+    
+            return <Navigate to="/" />
+          }
+
+        }else{
+
+          return <Navigate to="/" />
+        }
+    }
+
+    function PrivadaRotasTurma() {
+      
+      let p = localStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" || p.tipo_usuario === "Opp") {
+          
+            return <CadTurma/>
+          } else {
+    
+            return <Navigate to="/" />
+          }
+
+        }else{
+
+          return <Navigate to="/" />
+        }
+    }
 
     return (
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/Usuario" element={
+
+        <Route path="/listaUsuario" element={
+
         <PrivadaRotasUsuarios>
+
             <Usuario/>
 
           </PrivadaRotasUsuarios>
           } />
 
+
         <Route path="/redefinirSenha" element={<RedefinirSenha />} />
 
-
-        <Route path="/instrutores" element={
+        <Route path="/listaInstrutores" element={
 
           <PrivadaRotasInstrutores>
 
@@ -176,15 +198,39 @@ function Rotas() {
           </PrivadaRotasInstrutores>} />
 
      
-        <Route path='/listaTurma' element={<CadTurma/>}/>
+        <Route path='/listaTurma' element={
 
-        <Route path='/painel' element={<MenuLateral/>}/>
+        <PrivadaRotasTurma>
 
-        <Route path='/tarefa' element={<Tarefas/>}/>
+        <CadTurma/>
 
-        <Route path='/horario' element={<PgHorario/>}/>
+        </PrivadaRotasTurma>
+        }/>
 
-        <Route path='listaArea' element={<ListaArea/>}/>
+        <Route path='/tarefa' element={
+          <Tarefas/>
+      
+      }/>
+
+        <Route path='/listaHorario' element={
+
+          <PrivadaRotasHorario>
+        
+            <PgHorario/>
+        
+        </PrivadaRotasHorario>}
+        
+        />
+
+        <Route path='listaArea' element={
+
+          <PrivadaRotasArea>
+        
+          <ListaArea/>
+        
+        </PrivadaRotasArea>
+
+        }/>
           
       </Routes>
     );

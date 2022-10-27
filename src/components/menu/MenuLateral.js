@@ -9,8 +9,20 @@ import SchoolIcon from "@mui/icons-material/School";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 import GroupIcon from "@mui/icons-material/Group";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ImportContactsTwoToneIcon from '@mui/icons-material/ImportContactsTwoTone';
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 
 function MenuLateral() {
+
+  function deslogar(){
+
+    localStorage.removeItem("token")
+    localStorage.removeItem("payload")
+
+    window.location.href = 'http://localhost:3000/'
+
+  }
+
   return (
     <>
      
@@ -29,14 +41,14 @@ function MenuLateral() {
               <Nav.Link
               
                 className="navLink"
-                href="/Usuario"
+                href="/listaUsuario"
               >
                 <Person3OutlinedIcon sx={{ marginRight: "30px" }} />
                 Usuários
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/instrutores">
+              <Nav.Link className="navLink" href="/listaInstrutores">
                 <BadgeOutlinedIcon sx={{ marginRight: "30px" }} />
                 Instrutores
               </Nav.Link>
@@ -53,11 +65,23 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/horario">
+              <Nav.Link className="navLink" href="/listaHorario">
                 <QueryBuilderIcon sx={{ marginRight: "30px" }} />
                 Horário
               </Nav.Link>
             </Nav.Item>
+
+            <Nav.Item className="navItem">
+              <Nav.Link className="navLink" href="/listaArea">
+                <ImportContactsTwoToneIcon sx={{ marginRight: "30px" }} />
+                Área
+              </Nav.Link>
+            </Nav.Item>
+
+          
+                <button className="sair" onClick={deslogar}><ExitToAppOutlinedIcon sx={{ marginRight: "30px" }}  /> <p className="sairP">Sair</p></button>
+          
+            
           </Nav>
         </div>
       </div>

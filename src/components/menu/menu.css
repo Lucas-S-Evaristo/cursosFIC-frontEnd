@@ -41,6 +41,33 @@ a {
   color: white;
 }
 
+.sair{
+  color: white;
+  background-color: transparent;
+  border: 0px;
+  position: absolute;
+  top: 28em;
+  width:50%;
+  height: 2.5em;
+  border-top-left-radius: 0.4em;
+  border-top-right-radius: 0.4em;
+}
+
+
+
+.sair:hover{
+  color: black;
+  background-color: white;
+  border: 0px;
+
+}
+
+.sairP{
+  position: relative;
+  bottom: 1.4em;
+  left: 2em;
+}
+
 .imagemLogo {
   margin: 30px auto;
   display: flex;
