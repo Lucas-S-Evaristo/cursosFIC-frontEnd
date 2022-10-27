@@ -71,7 +71,7 @@ function CadTurma() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
 
   // variavel que tem acesso a um array com todas as turmas
-  const [qtdMatriculas, setqtdMatriculas] = useState();
+  const [ qtdMatriculas, setqtdMatriculas] = useState();
   // variavel que tem acesso a um array com todas as turmas
   const [turmas, setTurma] = useState([]);
   // variavel que tem acesso a um array com os instrutores
@@ -703,10 +703,12 @@ function CadTurma() {
                           className="botaoAlterarTurma"
                           onClick={() => {
                             selecionarTurma(id, codigo, curso, instrutor, qtdMatriculas, periodo, valor, status, ambiente,
-                              numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino
-                            );
-                            abrirModalAlterar();
-                          }}
+                                numMaxVagas, numMinVagas, diaSemana, dataInicio, dataTermino
+                            )
+                            abrirModalAlterar()
+                        }}
+                          
+                          
                         >
                           <ModeEditOutlinedIcon />
                         </button>

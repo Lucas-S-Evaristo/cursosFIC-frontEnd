@@ -952,7 +952,7 @@ function ListaCurso() {
                     </InputAdornment>
                   ),
                 }}
-                value={cargaHoraria}
+                defaultValue={cargaHoraria}
                 id="cargaHoraria"
                 type="number"
                 sx={styleTextField}
