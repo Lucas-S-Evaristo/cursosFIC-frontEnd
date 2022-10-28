@@ -41,6 +41,9 @@ function Rotas() {
 
 
   const token = localStorage.getItem("token");
+  {console.log(token)}
+
+
 
   if (token != null) {
 
@@ -62,9 +65,9 @@ function Rotas() {
 
       return JSON.parse(jsonPayload);
     }
-    let payload = parseJwt(token);
+     let payload = parseJwt(token);
 
-    localStorage.setItem('payload', JSON.stringify(payload));
+    localStorage.setItem('payload', JSON.stringify(payload)); 
     
   }
     function PrivadaRotasInstrutores() {

@@ -87,6 +87,19 @@ const excluirSucesso = () => {
   })
 }
 
+const alterarSucesso = () => {
+  toast.success("Alterado com sucesso!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      draggable: true,
+      progress: undefined,
+  })
+}
+
 
   const [idArea, setIdArea] = useState()
   const [area, setArea] = useState([])
@@ -94,6 +107,8 @@ const excluirSucesso = () => {
   const [nome, setNome] = useState([])
 
   const cadastrarArea = async (event) => {
+
+    event.preventDefault()
 
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
@@ -111,19 +126,22 @@ const excluirSucesso = () => {
         'Accept': 'application/json'
       }
     })
-    if (result.status === 409) {
-        
+    if (result.status === 409) {      
+       
         camposVazios()
         
       
     }else{
-      setInterval(function () { window.location.reload(); }, 1500);
+      cadastroSucesso()
+      setShowCadastrar(false)
       getArea()
     }
 
   }
 
   const alterarArea = async (event) => {
+
+    event.preventDefault()
 
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData)
@@ -144,7 +162,8 @@ const excluirSucesso = () => {
     })
 
     if (result) {
-      setInterval(function () { window.location.reload(); }, 1500);
+      alterarSucesso()
+      setShow(false)
       getArea()
     }
   }
@@ -157,6 +176,7 @@ const excluirSucesso = () => {
     if (result) {
       getArea()
       excluirSucesso()
+
     }
 }
 
@@ -208,8 +228,6 @@ const abrirModalAlterar = () => setShow(true);
 
 //quando handleClose é chamado ele da um false no show e fecha a modal
 const fecharModalAlterar = () => setShow(false);
-
-console.log("AREAAAAAAAAAAa ", area)
 
   return (
     <>
