@@ -83,12 +83,12 @@ function Rotas() {
             return <Instrutor />
           } else {
     
-            return <Navigate to="/" />
+            return <Navigate to="/login" />
           }
 
         }else{
 
-          return <Navigate to="/" />
+          return <Navigate to="/login" />
         }
     }
 
@@ -104,12 +104,12 @@ function Rotas() {
             return <Usuario/>
           } else {
     
-            return <Navigate to="/" />
+            return <Navigate to="/login" />
           }
 
         }else{
 
-          return <Navigate to="/" />
+          return <Navigate to="/login" />
         }
     }
     
@@ -125,12 +125,12 @@ function Rotas() {
             return <PgHorario/>
           } else {
     
-            return <Navigate to="/" />
+            return <Navigate to="/login" />
           }
 
         }else{
 
-          return <Navigate to="/" />
+          return <Navigate to="/login" />
         }
     }
 
@@ -146,12 +146,12 @@ function Rotas() {
             return <Area/>
           } else {
     
-            return <Navigate to="/" />
+            return <Navigate to="/login" />
           }
 
         }else{
 
-          return <Navigate to="/" />
+          return <Navigate to="/login" />
         }
     }
 
@@ -167,18 +167,18 @@ function Rotas() {
             return <CadTurma/>
           } else {
     
-            return <Navigate to="/" />
+            return <Navigate to="/login" />
           }
 
         }else{
 
-          return <Navigate to="/" />
+          return <Navigate to="/login" />
         }
     }
 
     return (
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
 
         <Route path="/listaUsuario" element={
 
@@ -201,13 +201,11 @@ function Rotas() {
           </PrivadaRotasInstrutores>} />
 
      
-        <Route path='/listaTurma' element={
-
-        <PrivadaRotasTurma>
+        <Route path='/' element={
 
         <CadTurma/>
 
-        </PrivadaRotasTurma>
+       
         }/>
 
         <Route path='/tarefa' element={

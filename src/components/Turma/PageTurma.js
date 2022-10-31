@@ -12,9 +12,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
-import { CurtainsOutlined } from "@mui/icons-material";
+import { ConstructionOutlined, CurtainsOutlined } from "@mui/icons-material";
 import "./turma.css";
-import MenuLateral from "../menu/MenuLateral";
+import MenuLateral, { deslogar } from "../menu/MenuLateral";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -66,6 +66,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
+
+let p = localStorage.getItem("payload")
+
+p = JSON.parse(p)
+
+
+
+let token = localStorage.getItem("token")
 
 function CadTurma() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
@@ -153,7 +161,7 @@ function CadTurma() {
     horarioTermino: { id: horarioFinalValue },
     //diasDaTurma: setDiasDaSemana
   };
-  console.log("dia semana ", valuediaSemana)
+ 
   // estado do obj da turma
   const [objTurma, setObjTurma] = useState(turma);
   // estado da modal
@@ -169,7 +177,7 @@ function CadTurma() {
     someDate: "2022-09-19",
   };
 
-  console.log("oooooooooooooooooooooo ", idCurso.id);
+
   // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
   useEffect(() => {
     fetch("http://localhost:8080/api/turma")
@@ -258,13 +266,52 @@ function CadTurma() {
     });
   };
 
+  const erroCamposVazios = () => {
+    toast.error("Por favor, preencha os campos corretamente!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const erroHorariosDepois = () => {
+    toast.error("O horário de inicio não pode ser depois do horário de término!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const erroHorariosIguais = () => {
+    toast.error("O horário de inicio não pode ser igual ao horário de término!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "colored",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   // metodo que efetua o cadastro da turma
   const cadastrar =  async(event) => {
     /* pegar todos  os valores do evento */
     const formData = new FormData(event.target);
     /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
-    console.log( "oi dia semana  ",data.diasDaTurma)
+
     
 
     const turmas = {
@@ -286,7 +333,7 @@ function CadTurma() {
         horarioTermino: { id: horarioFinalValue },
         diasDaTurma: data.diasDaTurma
       };
-      console.log( "oi turmas" ,turmas)
+
 
     //requisição ao back end
     fetch("http://localhost:8080/api/turma", {
@@ -301,11 +348,20 @@ function CadTurma() {
       .then((retorno) => {
         if (retorno.status === 409) {
           erroDataIgual();
+
         } else if (retorno.status === 418) {
           erroDataMaiorFinal();
+
         } else if (retorno.status === 401) {
           erroDataInicioMaiorHoje();
-        } else {
+          
+        }else if (retorno.status === 408) {
+          erroCamposVazios();
+          
+        }else if (retorno.status === 401) {
+          erroDataInicioMaiorHoje();
+          
+        }    else {
           retorno
             .json()
             // pegando o retorno convertido
@@ -323,6 +379,8 @@ function CadTurma() {
       });
   };
 
+   
+
   // função que espera receber um id
   const alterar = async (event) => {
    
@@ -331,10 +389,7 @@ function CadTurma() {
  const formData = new FormData(event.target);
  /*formata em um objeto em  json */
  const data = Object.fromEntries(formData);
- console.log( "oi data.qtdMatriculas altera ",data.qtdMatriculas)
- console.log( "oi data.instrutor altera ",data.instrutor)
- console.log( "oi  ,data.diasDaTurma altera   ",data.diasDaTurma)
- console.log( "oi dia data.dataTermino  altera ",data.dataTermino)
+
 
 
  const turmasA = {
@@ -356,9 +411,7 @@ function CadTurma() {
      horarioTermino: { id: data.horarioFinal },
      diasDaTurma: data.diasDaTurma
    };
-   console.warn("oi alterar: ",turmasA)
-   console.log( "oi turmasss" ,turmas)
-   console.log("oiiiiiiiiiii")
+
    
     let result = await fetch(
       "http://localhost:8080/api/turma/" + idTurma,
@@ -421,8 +474,7 @@ function CadTurma() {
     setHorarioFinalValue(horarioTermino);
     setDiasDaTurma(diasDaTurma);
   };
-  console.log("diasDaTurma: ",diasDaTurma )
-  console.log("[horarioInicioValue: ", horarioInicioValue.id) 
+
   // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api
   const atualizaLista = async () => {
     const result = await fetch("http://localhost:8080/api/turma"); // await = espera uma promessa
@@ -619,12 +671,16 @@ function CadTurma() {
     );
   };
 
+  console.log("tipo USUARIOOOOOo ", p.tipo_usuario)
+
+  console.log("TOKENNNNNNNNNN ", token)
+
   return (
     <>
       <MenuLateral />
 
       <header style={{position:"fixed"}}>
-        <div className="divBotaoAdd">
+        <div className="divBotaoAdd" style={token == null || p.tipo_usuario === "Secretaria" ? {visibility: "hidden"} : {visibility: "visible"}}>
           <Button
             className="botaoAdd"
             onClick={abrirModalCadastrar}
@@ -699,8 +755,21 @@ function CadTurma() {
                 <StyledTableCell>Data de Término</StyledTableCell>
                 <StyledTableCell>Horario de Inicio</StyledTableCell>
                 <StyledTableCell>Horario de término</StyledTableCell>
-                <StyledTableCell>Alterar</StyledTableCell>
-                <StyledTableCell>Excluir</StyledTableCell>
+                <StyledTableCell id="alterar" 
+                style={token === null || p.tipo_usuario === "Secretária" 
+                ? 
+                {display: "none"} 
+               :
+                {visibility: "visible"}
+                }
+                
+                >Alterar</StyledTableCell>
+                <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" 
+                ? 
+                {display: "none"} 
+               :
+                {visibility: "visible"}
+                }>Excluir</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -748,6 +817,13 @@ function CadTurma() {
 
                       <StyledTableCell>
                         <button
+                         style={token === null || p.tipo_usuario === "Secretária" 
+                         ? 
+                         {display: "none"} 
+                        :
+                         {visibility: "visible"}
+                         }
+                          
                           className="botaoAlterarTurma"
                           onClick={() => {
                             selecionarTurma(
@@ -769,7 +845,7 @@ function CadTurma() {
                               horarioTermino,
                               diasDaTurma
                             );
-                            console.log("diasDaTurma: ",diasDaTurma)
+                           
                             abrirModalAlterar();
                           }}
                         >
@@ -778,6 +854,12 @@ function CadTurma() {
                       </StyledTableCell>
                       <StyledTableCell>
                         <button
+                     style={token === null || p.tipo_usuario === "Secretária" 
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }
                           className="botaoDeleteTurma"
                           onClick={() => deletar(id)}
                         >
@@ -1064,10 +1146,10 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300,top:500, left:-10}}>
+              <FormControl variant="standard" sx={{ m: 1, width: 210,top:500, left:-10}}>
                   <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
                   <Select
-                    labelId="demo-multiple-checkbox-label"
+                     labelId="demo-simple-select-standard-label"
                     id="demo-multiple-checkbox"
                     name="diasDaTurma"
                     multiple
@@ -1516,5 +1598,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 
 export default CadTurma;

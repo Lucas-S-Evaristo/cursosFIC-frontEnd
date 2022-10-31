@@ -630,7 +630,7 @@ function Tarefas() {
             <header>
                 
                 <div className="divTarefas">
-                    <Button className="botaoVoltar" href="/listaTurma" variant="contained" color="primary" ><ArrowBack/>   <i class="bi bi-plus-lg"></i>Voltar</Button>
+                    <Button className="botaoVoltar" href="/" variant="contained" color="primary" ><ArrowBack/>   <i class="bi bi-plus-lg"></i>Voltar</Button>
                 </div>
                 <form className="formBusca">
                     <input

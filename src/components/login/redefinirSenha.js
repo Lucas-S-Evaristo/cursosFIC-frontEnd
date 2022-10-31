@@ -12,12 +12,12 @@ function RedefinirSenha() {
             <div className="div1">
 
                 <form className="formRDFS">
-                    <a href="/" className="aVoltar"><button className="btnVoltar" type={"button"}><ArrowBackIcon className="arrow" fontSize="large"/></button></a>
+                    <a href="/login" className="aVoltar"><button className="btnVoltar" type={"button"}><ArrowBackIcon className="arrow" fontSize="large"/></button></a>
 
                    <h1 className="title">Redefinir Senha</h1>
                    <div className="divInput">
                    <input placeholder="Email" className="inEmail inputLogin" type={"email"}  />
-                   <input placeholder="Nova senha" type={ "password"} className="insenha inputLogin"  />
+                  
                    <div className="divBtn">
                        <button className="btnRedefinir">
                                <p className="pRedefinir">Redefinir</p>
