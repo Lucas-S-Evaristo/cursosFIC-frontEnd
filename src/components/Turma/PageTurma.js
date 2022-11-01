@@ -202,6 +202,7 @@ function CadTurma() {
   }, []);
 
   useEffect(() => {
+    
     fetch("http://localhost:8080/api/enum/status")
       .then((resp) => resp.json())
       .then((retorno_convertido) => setStatus(retorno_convertido)); //lista de status
@@ -419,7 +420,7 @@ function CadTurma() {
     setDataTermino(dataTermino);
     setHorarioInicioValue(horarioInicio);
     setHorarioFinalValue(horarioTermino);
-    setDiasDaTurma(diasDaTurma);
+    setDiasDaTurma(diasDaTurma.split(','))
   };
   console.log("diasDaTurma: ",diasDaTurma )
   console.log("[horarioInicioValue: ", horarioInicioValue.id) 
@@ -597,6 +598,7 @@ function CadTurma() {
     "SEX",
     "SAB",
   ]
+ ;
 
   const [diasDaSemana, setDiasDaSemana] = React.useState([]);
 
@@ -617,6 +619,7 @@ function CadTurma() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
+    console.log(value)
   };
 
   return (
@@ -1071,15 +1074,18 @@ function CadTurma() {
                     id="demo-multiple-checkbox"
                     name="diasDaTurma"
                     multiple
-                    defaultValue={diasDaSemana}
-                    onChange={handleChange}
+                    defaultValue={diasDaTurma}
+                    onChange={handleChange2}
                     input={<OutlinedInput label="Dias da Semana" />}
-                    renderValue={(selected) => selected.join(",")}
+                    renderValue={selected => selected.join(",")}
                     MenuProps={MenuProps}
                   >
                     {DiasDaSemana.map((dias) => (
-                      <MenuItem key={dias} selected={dias == diasDaSemana} value={dias}>
-                        <Checkbox checked={diasDaSemana.indexOf(dias) > -1} />
+                      <MenuItem key={dias} value={dias}>
+                        
+                        {console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr "+diasDaTurma)}
+                        {console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww "+dias)}
+                        <Checkbox checked={diasDaTurma.indexOf(dias) > -1} />
                         <ListItemText primary={dias} />
                       </MenuItem>
                     ))}
