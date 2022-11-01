@@ -29,7 +29,10 @@ import MenuLateral from "./components/menu/MenuLateral"
 import Tarefas from "./components/Turma/tarefas"
 
 import PgHorario from "./components/horario/PgHorario";
+
 import ListaArea from "./components/area/paginaArea";
+
+import ListaCursos from "./components/curso/listaCursos";
 
 function Rotas() {
 
@@ -232,6 +235,8 @@ function Rotas() {
         </PrivadaRotasArea>
 
         }/>
+
+        <Route path="listaCurso" element={<ListaCursos/>}/>
           
       </Routes>
     );

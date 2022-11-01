@@ -61,7 +61,7 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/cursos">
+              <Nav.Link className="navLink" href="/listaCurso">
                 <CardMembershipOutlinedIcon sx={{ marginRight: "30px" }} />
                 Cursos
               </Nav.Link>

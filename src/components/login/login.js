@@ -10,7 +10,7 @@ const msgErroLogin = () => {
 
 
   toast.error("Informações não encontrada", {
-    position: "top-right",
+    position: "top-center",
 
     autoClose: 1500,
 
@@ -93,7 +93,9 @@ function Login() {
         />
             <header style={{color:"white"}}>
                 <img src={require("../login/LogoSenaiOriginal.png")}  className="logo"/>
-                <a href="/redefinirSenha" className="afolder">Folders</a>
+                <a href="" className="afolder">Folders</a>
+
+                <a href="/" className="aTurmas">Lista de Turmas</a>
             </header>
             <div className="divs">
             <div className="div1">

@@ -307,6 +307,9 @@ function CadTurma() {
 
   // metodo que efetua o cadastro da turma
   const cadastrar =  async(event) => {
+
+    event.preventDefault()
+
     /* pegar todos  os valores do evento */
     const formData = new FormData(event.target);
     /*formata em um objeto em  json */
@@ -331,7 +334,7 @@ function CadTurma() {
         diaSemana: valuediaSemana,
         horarioInicio: { id: horarioInicioValue },
         horarioTermino: { id: horarioFinalValue },
-        diasDaTurma: data.diasDaTurma
+     
       };
 
 
@@ -358,10 +361,13 @@ function CadTurma() {
         }else if (retorno.status === 408) {
           erroCamposVazios();
           
-        }else if (retorno.status === 401) {
-          erroDataInicioMaiorHoje();
+        }else if (retorno.status === 402) {
+          erroHorariosDepois();
           
-        }    else {
+        }else if (retorno.status === 406) {
+          erroHorariosIguais();
+          
+        }else {
           retorno
             .json()
             // pegando o retorno convertido
@@ -369,9 +375,7 @@ function CadTurma() {
               // metodo que atualiza a lista, que faz com que ao clicar seja adicionado "automaticamente"
               atualizaLista();
 
-              setInterval(function () {
-                window.location.reload();
-              }, 1500);
+              setShowCadastrar(false)
               // exibindo a msg de aviso de cadastro
               msgCadastro();
             });
@@ -472,7 +476,7 @@ function CadTurma() {
     setDataTermino(dataTermino);
     setHorarioInicioValue(horarioInicio);
     setHorarioFinalValue(horarioTermino);
-    setDiasDaTurma(diasDaTurma);
+    setDiasDaTurma(diasDaTurma.split(','));
   };
 
   // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api
@@ -581,7 +585,7 @@ function CadTurma() {
   // metodo de msg de cadastro efetuado com sucesso
   const msgCadastro = () => {
     toast.success("Turma Cadastrado com Sucesso", {
-      position: "top-right",
+      position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
@@ -596,7 +600,7 @@ function CadTurma() {
   // metodo de msg de exclusão feita com sucesso
   const msgExclusao = () => {
     toast.success("Turma Removido com Sucesso", {
-      position: "top-right",
+      position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
@@ -611,7 +615,7 @@ function CadTurma() {
   // metodo de msg de alteração feita com sucesso
   const msgAlteracao = () => {
     toast.warn("Turma Alterado com Sucesso", {
-      position: "top-right",
+      position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
@@ -811,18 +815,16 @@ function CadTurma() {
                       <StyledTableCell>{dataInicio}</StyledTableCell>
                       <StyledTableCell>{dataTermino}</StyledTableCell>
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
-                      <StyledTableCell>
-                        {horarioTermino.horario}
-                      </StyledTableCell>
+                      <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
 
-                      <StyledTableCell>
-                        <button
-                         style={token === null || p.tipo_usuario === "Secretária" 
+                      <StyledTableCell  style={token === null || p.tipo_usuario === "Secretária" 
                          ? 
                          {display: "none"} 
                         :
                          {visibility: "visible"}
-                         }
+                         }>
+                        <button
+                        
                           
                           className="botaoAlterarTurma"
                           onClick={() => {
@@ -852,14 +854,14 @@ function CadTurma() {
                           <ModeEditOutlinedIcon />
                         </button>
                       </StyledTableCell>
-                      <StyledTableCell>
-                        <button
-                     style={token === null || p.tipo_usuario === "Secretária" 
+                      <StyledTableCell  style={token === null || p.tipo_usuario === "Secretária" 
                      ? 
                      {display: "none"} 
                     :
                      {visibility: "visible"}
-                     }
+                     }>
+                        <button
+                    
                           className="botaoDeleteTurma"
                           onClick={() => deletar(id)}
                         >
@@ -891,7 +893,7 @@ function CadTurma() {
       </div>
 
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={1500}
         hideProgressBar={false}
         newestOnTop={false}
@@ -902,7 +904,7 @@ function CadTurma() {
         pauseOnHover
       />
 
-      <Modal
+<Modal
         show={modalAlterar}
         onHide={fecharModalAlterar}
         size="xl"
@@ -1146,22 +1148,25 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl variant="standard" sx={{ m: 1, width: 210,top:500, left:-10}}>
+              <FormControl sx={{ m: 1, width: 300,top:500, left:-10}}>
                   <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
                   <Select
-                     labelId="demo-simple-select-standard-label"
+                    labelId="demo-multiple-checkbox-label"
                     id="demo-multiple-checkbox"
                     name="diasDaTurma"
                     multiple
-                    defaultValue={diasDaSemana}
-                    onChange={handleChange}
+                    defaultValue={diasDaTurma}
+                    onChange={handleChange2}
                     input={<OutlinedInput label="Dias da Semana" />}
                     renderValue={(selected) => selected.join(",")}
                     MenuProps={MenuProps}
                   >
                     {DiasDaSemana.map((dias) => (
-                      <MenuItem key={dias} selected={dias == diasDaSemana} value={dias}>
-                        <Checkbox checked={diasDaSemana.indexOf(dias) > -1} />
+                      <MenuItem key={dias} value={dias}>
+                        
+                        {console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr "+diasDaTurma)}
+                        {console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww "+dias)}
+                        <Checkbox checked={diasDaTurma.indexOf(dias) > -1} />
                         <ListItemText primary={dias} />
                       </MenuItem>
                     ))}
