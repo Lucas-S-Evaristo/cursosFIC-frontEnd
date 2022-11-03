@@ -62,6 +62,10 @@ function Login() {
             msgErroLogin()
 
           /* verificar se  requisição foi feita com sucesso */
+        }else if(result.status === 100){
+
+          window.location.href = 'http://localhost:3000/redefinirSenha' 
+
         } else if (result) {
           result = await result.json();
      

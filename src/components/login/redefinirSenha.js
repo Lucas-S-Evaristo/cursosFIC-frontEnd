@@ -4,10 +4,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const msgErroRedefinir = () => {
-  toast.error("E-mail não encontrada", {
+  toast.error("E-mail não encontrado", {
     position: "top-center",
 
-    autoClose: 1500,
+    autoClose: 2500,
 
     hideProgressBar: false,
 
@@ -24,11 +24,11 @@ const msgErroRedefinir = () => {
     progress: undefined,
   });
 };
-const msgsussecoRedefinir = () => {
-    toast.success("Verifique o E-mail ", {
+const msgRedefinir = () => {
+    toast.warning("Verifique o E-mail ", {
       position: "top-center",
   
-      autoClose: 1500,
+      autoClose: 12000,
   
       hideProgressBar: false,
   
@@ -67,7 +67,7 @@ const redefinirsenha = async (event) => {
 
 
   }else if(result){
-    msgsussecoRedefinir();
+    msgRedefinir();
 
   }
 };

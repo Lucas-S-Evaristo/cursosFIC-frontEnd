@@ -675,16 +675,14 @@ function CadTurma() {
     );
   };
 
-  console.log("tipo USUARIOOOOOo ", p.tipo_usuario)
-
-  console.log("TOKENNNNNNNNNN ", token)
+  console.log(p)
 
   return (
     <>
       <MenuLateral />
 
       <header style={{position:"fixed"}}>
-        <div className="divBotaoAdd" style={token == null || p.tipo_usuario === "Secretaria" ? {visibility: "hidden"} : {visibility: "visible"}}>
+        <div className="divBotaoAdd" style={token == null || p.tipo_usuario === "Secretária" || p === null ? {visibility: "hidden"} : {visibility: "visible"}}>
           <Button
             className="botaoAdd"
             onClick={abrirModalCadastrar}
@@ -743,7 +741,7 @@ function CadTurma() {
           >
             <TableHead className="theadTurma">
               <TableRow>
-                <StyledTableCell>Id</StyledTableCell>
+                <StyledTableCell s>Id</StyledTableCell>
                 <StyledTableCell>Código de turma</StyledTableCell>
                 <StyledTableCell>Curso</StyledTableCell>
                 <StyledTableCell>Instrutor</StyledTableCell>
@@ -760,7 +758,7 @@ function CadTurma() {
                 <StyledTableCell>Horario de Inicio</StyledTableCell>
                 <StyledTableCell>Horario de término</StyledTableCell>
                 <StyledTableCell id="alterar" 
-                style={token === null || p.tipo_usuario === "Secretária" 
+                style={token === null || p.tipo_usuario === "Secretária" || p === null 
                 ? 
                 {display: "none"} 
                :
@@ -768,7 +766,7 @@ function CadTurma() {
                 }
                 
                 >Alterar</StyledTableCell>
-                <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" 
+                <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
                 ? 
                 {display: "none"} 
                :
@@ -817,7 +815,7 @@ function CadTurma() {
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
 
-                      <StyledTableCell  style={token === null || p.tipo_usuario === "Secretária" 
+                      <StyledTableCell  style={token === null || p === null || p.tipo_usuario === "Secretária"
                          ? 
                          {display: "none"} 
                         :
@@ -854,7 +852,7 @@ function CadTurma() {
                           <ModeEditOutlinedIcon />
                         </button>
                       </StyledTableCell>
-                      <StyledTableCell  style={token === null || p.tipo_usuario === "Secretária" 
+                      <StyledTableCell  style={token === null || p.tipo_usuario === "Secretária" || p === null
                      ? 
                      {display: "none"} 
                     :

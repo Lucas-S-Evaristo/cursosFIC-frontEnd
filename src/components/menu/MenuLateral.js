@@ -17,6 +17,8 @@ import CadTurma, {esconder} from "../Turma/PageTurma";
  export function deslogar(){
 
   localStorage.removeItem("token")
+
+  localStorage.removeItem("payload")
   
   window.location.href = 'http://localhost:3000/login'
 
