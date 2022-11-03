@@ -349,7 +349,7 @@ const PgHorario = () => {
           <Box sx={style}>
             <h2 id="transition-modal-title">cadastro de horario</h2>
             <form onSubmit={cadastroHorario} >
-              <TextField name="horario" type="time" label="horario" variant="outlined"
+              <TextField name="horario" type="time" label="horario" variant="outlined" required
               />
               <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
             </form>
@@ -450,7 +450,7 @@ const PgHorario = () => {
                       <Box sx={style}>
                         <h2 id="transition-modal-title">alterar horario</h2>
                         <form onSubmit={alteraHorario}  >
-                          <TextField name="horario" type="time" label="horario" defaultValue={pegarHorario} variant="outlined" />
+                          <TextField name="horario" type="time" label="horario" defaultValue={pegarHorario} variant="outlined" required />
                           <Button variant="contained" style={{ margin: 10 }} type="submit"  >alterar</Button>
                         </form>
                       </Box>
