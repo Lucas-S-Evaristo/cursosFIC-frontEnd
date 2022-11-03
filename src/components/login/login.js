@@ -1,13 +1,15 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./login.css"
 import api from "../api/api"
-
+import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from "react-toastify";
 import { Redirect } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
+import { Button, TextField } from "@mui/material";
+import { AlterarSenha } from "./redefinirSenha";
+
 
 const msgErroLogin = () => {
-
 
   toast.error("Informações não encontrada", {
     position: "top-center",
@@ -33,6 +35,11 @@ const msgErroLogin = () => {
 
 function Login() {
  
+  const [modalSenha, setShowSenha] = useState(false);
+
+  const abrirModalSenha = () => setShowSenha(true);
+
+  const fecharModalSenha = () => setShowSenha(false);
  
     const loginToken = async (event) => {
         /* tiras as características de evento evitando Recarregar  a pagina */
@@ -62,9 +69,10 @@ function Login() {
             msgErroLogin()
 
           /* verificar se  requisição foi feita com sucesso */
-        }else if(result.status === 100){
-
-          window.location.href = 'http://localhost:3000/redefinirSenha' 
+        }else if(result.status === 409){
+          abrirModalSenha()
+          console.log("409999999999999")
+          
 
         } else if (result) {
           result = await result.json();
@@ -72,7 +80,9 @@ function Login() {
           const {  token  } =  result;
         
           localStorage.setItem('token', JSON.stringify(token));
-        
+
+          console.log("RESUUUUUUUUUUUUUUUUUUUUUULLLLLLLLLLTTTTTTTTTTTTTTTTTTTTTTTTT")
+
           window.location.href = 'http://localhost:3000/listaInstrutores' 
           
           /* mensagem de cadastrar com sucesso */
@@ -124,7 +134,28 @@ function Login() {
            </div>
             </div>
             
-        
+            <Modal
+                show={modalSenha}
+                onHide={fecharModalSenha}
+                backdrop="static"
+                keyboard={false}>
+               
+                <Modal.Body className="redefinirSenha">
+                   <form className="redefinirSenha" onSubmit={AlterarSenha}>
+
+                    <h5 className="tituloRedefinir">Por favor, Redefina sua senha!</h5>
+                   <input className="inputRedefinir" name="senha" type="text"/>
+
+                   <div class="parteBotaoRedefinirSenha">
+                                <Button variant="contained" color="success" type="submit" >Redefinir</Button>
+
+                                </div>
+                        
+                   </form>
+
+                </Modal.Body>
+
+            </Modal>
             
         </div>
     )

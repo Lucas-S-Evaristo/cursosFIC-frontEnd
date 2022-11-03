@@ -334,6 +334,7 @@ function CadTurma() {
         diaSemana: valuediaSemana,
         horarioInicio: { id: horarioInicioValue },
         horarioTermino: { id: horarioFinalValue },
+        diasDaTurma: data.diasDaTurma
      
       };
 

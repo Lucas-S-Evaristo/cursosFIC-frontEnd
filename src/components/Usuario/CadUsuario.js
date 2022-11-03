@@ -248,13 +248,13 @@ function PageUsuario() {
 
   // metodo de msg de exclusão feita com sucesso
   const msgExclusao = () => {
-    toast.error("Usuário Removido com Sucesso", {
+    toast.success("Usuário Removido com Sucesso", {
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "light",
+      theme: "colored",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -263,13 +263,13 @@ function PageUsuario() {
 
   // metodo de msg de alteração feita com sucesso
   const msgAlteracao = () => {
-    toast.info("Usuário Alterado com Sucesso", {
+    toast.success("Usuário Alterado com Sucesso", {
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "light",
+      theme: "colored",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,

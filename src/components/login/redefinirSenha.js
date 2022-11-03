@@ -46,7 +46,7 @@ const msgRedefinir = () => {
     });
   };
 
-const redefinirsenha = async (event) => {
+ export const AlterarSenha = async (event) => {
   /* tiras as características de evento evitando Recarregar  a pagina */
   event.preventDefault();
   /* pegar todos  os valores do evento */
@@ -91,7 +91,7 @@ function RedefinirSenha() {
       </header>
       <div className="divs">
         <div className="div1">
-          <form className="formRDFS" onSubmit={redefinirsenha}>
+          <form className="formRDFS" onSubmit={AlterarSenha}>
             <a href="/login" className="aVoltar">
               <button className="btnVoltar" type={"button"}>
                 <ArrowBackIcon className="arrow" fontSize="large" />
@@ -119,6 +119,9 @@ function RedefinirSenha() {
           <img src={require("./imgPc.png")} className="imgDiv2" />
         </div>
       </div>
+
+
+      
     </div>
   );
 }
