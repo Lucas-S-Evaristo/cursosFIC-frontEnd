@@ -33,6 +33,7 @@ import PgHorario from "./components/horario/PgHorario";
 import ListaArea from "./components/area/paginaArea";
 
 import ListaCursos from "./components/curso/listaCursos";
+import Folder from "./components/folders/Folder";
 
 function Rotas() {
 
@@ -45,6 +46,9 @@ function Rotas() {
 
   const token = localStorage.getItem("token");
   {console.log(token)}
+
+
+
 
 
 
@@ -237,6 +241,7 @@ function Rotas() {
         }/>
 
         <Route path="listaCurso" element={<ListaCursos/>}/>
+        <Route path="folders" element={<Folder/>}/>
           
       </Routes>
     );
