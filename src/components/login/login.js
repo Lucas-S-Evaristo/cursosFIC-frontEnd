@@ -97,7 +97,7 @@ function Login() {
         />
             <header style={{color:"white"}}>
                 <img src={require("../login/LogoSenaiOriginal.png")}  className="logo"/>
-                <a href="" className="afolder">Folders</a>
+                <a href="folders" className="afolder">Folders</a>
 
                 <a href="/" className="aTurmas">Lista de Turmas</a>
             </header>

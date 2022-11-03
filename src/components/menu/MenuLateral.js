@@ -11,15 +11,15 @@ import GroupIcon from "@mui/icons-material/Group";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ImportContactsTwoToneIcon from '@mui/icons-material/ImportContactsTwoTone';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import CadTurma, {esconder} from "../Turma/PageTurma";
+import CadTurma, { esconder } from "../Turma/PageTurma";
 
 
- export function deslogar(){
+export function deslogar() {
 
   localStorage.removeItem("token")
 
   localStorage.removeItem("payload")
-  
+
   window.location.href = 'http://localhost:3000/login'
 
 }
@@ -34,7 +34,7 @@ function MenuLateral() {
 
   return (
     <>
-     
+
       <div className="painelComponent">
         <img className="imagemLogo" src={require("./logoSenai.png")}></img>
 
@@ -48,7 +48,7 @@ function MenuLateral() {
             </Nav.Item>
             <Nav.Item className="navItem">
               <Nav.Link
-              
+
                 className="navLink"
                 href="/listaUsuario"
               >
@@ -66,6 +66,13 @@ function MenuLateral() {
               <Nav.Link className="navLink" href="/listaCurso">
                 <CardMembershipOutlinedIcon sx={{ marginRight: "30px" }} />
                 Cursos
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item className="navItem">
+              <Nav.Link className="navLink" href="/folders">
+                <ImportContactsTwoToneIcon sx={{ marginRight: "30px" }} />
+                Folders
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">
@@ -87,24 +94,24 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
 
-              {
-                token === null
+            {
+              token === null
                 ?
                 <button className="sair" onClick={deslogar}
-                ><ExitToAppOutlinedIcon sx={{ marginRight: "30px" }}  /> <p
-                
-                className="sairP">Logar</p></button>
+                ><ExitToAppOutlinedIcon sx={{ marginRight: "30px" }} /> <p
+
+                  className="sairP">Logar</p></button>
 
                 :
 
                 <button className="sair" onClick={deslogar}
-                ><ExitToAppOutlinedIcon sx={{ marginRight: "30px" }}  /> <p
-                
-                className="sairP">Sair</p></button>
+                ><ExitToAppOutlinedIcon sx={{ marginRight: "30px" }} /> <p
 
-              }
-          
-            
+                  className="sairP">Sair</p></button>
+
+            }
+
+
           </Nav>
         </div>
       </div>
