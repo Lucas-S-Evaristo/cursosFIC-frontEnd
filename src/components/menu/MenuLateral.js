@@ -32,6 +32,8 @@ let token = sessionStorage.getItem("token")
 
 function MenuLateral() {
 
+  console.log(p)
+
   return (
     <>
 
@@ -40,13 +42,23 @@ function MenuLateral() {
 
         <div className="navegacao">
           <Nav variant="tabs" >
-            <Nav.Item className="navItem">
+            <Nav.Item className="navItem" style={ p === null || token === null || p.tipo_usuario === "Secretária"  
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
               <Nav.Link className="navLink" href="/home">
                 <HomeOutlinedIcon sx={{ marginRight: "30px" }} />
                 Home
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item className="navItem">
+            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária" || p.tipo_usuario === "Opp"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
               <Nav.Link
 
                 className="navLink"
@@ -56,13 +68,23 @@ function MenuLateral() {
                 Usuários
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item className="navItem">
+            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
               <Nav.Link className="navLink" href="/listaInstrutores">
                 <BadgeOutlinedIcon sx={{ marginRight: "30px" }} />
                 Instrutores
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item className="navItem">
+            <Nav.Item className="navItem" style={ p === null ||token === null 
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
               <Nav.Link className="navLink" href="/listaCurso">
                 <CardMembershipOutlinedIcon sx={{ marginRight: "30px" }} />
                 Cursos
@@ -80,14 +102,24 @@ function MenuLateral() {
                 <GroupIcon sx={{ marginRight: "30px" }} /> Turmas
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item className="navItem">
+            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
               <Nav.Link className="navLink" href="/listaHorario">
                 <QueryBuilderIcon sx={{ marginRight: "30px" }} />
                 Horário
               </Nav.Link>
             </Nav.Item>
 
-            <Nav.Item className="navItem">
+            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
               <Nav.Link className="navLink" href="/listaArea">
                 <ImportContactsTwoToneIcon sx={{ marginRight: "30px" }} />
                 Área
@@ -97,17 +129,30 @@ function MenuLateral() {
             {
               token === null
                 ?
-                <button className="sair" onClick={deslogar}
-                ><ExitToAppOutlinedIcon sx={{ marginRight: "30px" }} /> <p
-
-                  className="sairP">Logar</p></button>
-
+                <Nav.Item className="navItem" style={token === null || p.tipo_usuario === "Secretária"
+                ? 
+                {position: "absolute", top: "7.5em"}
+               :
+                {marginTop: "2em"}
+                }>
+                <Nav.Link className="navLink " href="/login">
+                  <ExitToAppOutlinedIcon sx={{ marginRight: "30px" }} />
+                  Logar
+                </Nav.Link>
+              </Nav.Item>
                 :
 
-                <button className="sair" onClick={deslogar}
-                ><ExitToAppOutlinedIcon sx={{ marginRight: "30px" }} /> <p
-
-                  className="sairP">Sair</p></button>
+                <Nav.Item className="navItem" style={token === null 
+                ? 
+                {position: "absolute", top: "7.5em"}
+               :
+                {position: "relative", top: "4em"}
+                }>
+                <Nav.Link className="navLink" href="/login" onClick={deslogar}>
+                  <ExitToAppOutlinedIcon sx={{ marginRight: "30px" }} />
+                  Sair
+                </Nav.Link>
+              </Nav.Item>
 
             }
 

@@ -42,25 +42,10 @@ a {
 }
 
 .sair{
-  color: white;
-  background-color: transparent;
-  border: 0px;
-  position: absolute;
-  top: 31em;
-  width:50%;
-  height: 2.5em;
-  border-top-left-radius: 0.4em;
-  border-top-right-radius: 0.4em;
+  position: absolute !important;
+  top: 31em !important;
 }
 
-
-
-.sair:hover{
-  color: black;
-  background-color: white;
-  border: 0px;
-
-}
 
 .sairP{
   position: relative;
