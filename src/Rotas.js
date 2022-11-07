@@ -34,17 +34,18 @@ import ListaArea from "./components/area/paginaArea";
 
 import ListaCursos from "./components/curso/listaCursos";
 import Folder from "./components/folders/Folder";
+import Senha from "./components/login/redefinirSenha";
 
 function Rotas() {
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
 
   }, []);
 
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   {console.log(token)}
 
 
@@ -74,12 +75,12 @@ function Rotas() {
     }
      let payload = parseJwt(token);
 
-    localStorage.setItem('payload', JSON.stringify(payload)); 
+     sessionStorage.setItem('payload', JSON.stringify(payload)); 
     
   }
     function PrivadaRotasInstrutores() {
 
-      let p = localStorage.getItem("payload");
+      let p = sessionStorage.getItem("payload");
       p = JSON.parse(p);
       
         if(token != null){
@@ -101,7 +102,7 @@ function Rotas() {
 
     function PrivadaRotasUsuarios() {
       
-      let p = localStorage.getItem("payload");
+      let p = sessionStorage.getItem("payload");
       p = JSON.parse(p);
       
         if(token != null){
@@ -122,7 +123,7 @@ function Rotas() {
     
     function PrivadaRotasHorario() {
       
-      let p = localStorage.getItem("payload");
+      let p = sessionStorage.getItem("payload");
       p = JSON.parse(p);
       
         if(token != null){
@@ -143,7 +144,7 @@ function Rotas() {
 
     function PrivadaRotasArea() {
       
-      let p = localStorage.getItem("payload");
+      let p = sessionStorage.getItem("payload");
       p = JSON.parse(p);
       
         if(token != null){
@@ -164,7 +165,7 @@ function Rotas() {
 
     function PrivadaRotasTurma() {
       
-      let p = localStorage.getItem("payload");
+      let p = sessionStorage.getItem("payload");
       p = JSON.parse(p);
       
         if(token != null){
@@ -197,7 +198,7 @@ function Rotas() {
           } />
 
 
-        <Route path="/redefinirSenha" element={<RedefinirSenha />} />
+        <Route path="/redefinirSenha" element={<Senha />} />
 
         <Route path="/listaInstrutores" element={
 

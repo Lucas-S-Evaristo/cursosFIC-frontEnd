@@ -67,13 +67,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-let p = localStorage.getItem("payload")
+let p = sessionStorage.getItem("payload")
 
 p = JSON.parse(p)
 
 
 
-let token = localStorage.getItem("token")
+let token = sessionStorage.getItem("token")
 
 function CadTurma() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL

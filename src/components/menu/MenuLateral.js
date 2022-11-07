@@ -16,19 +16,19 @@ import CadTurma, { esconder } from "../Turma/PageTurma";
 
 export function deslogar() {
 
-  localStorage.removeItem("token")
+  sessionStorage.removeItem("token")
 
-  localStorage.removeItem("payload")
+  sessionStorage.removeItem("payload")
 
   window.location.href = 'http://localhost:3000/login'
 
 }
 
-let p = localStorage.getItem("payload")
+let p = sessionStorage.getItem("payload")
 
 p = JSON.parse(p)
 
-let token = localStorage.getItem("token")
+let token = sessionStorage.getItem("token")
 
 function MenuLateral() {
 

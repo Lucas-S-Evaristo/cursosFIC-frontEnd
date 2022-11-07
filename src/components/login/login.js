@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Redirect } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { Button, TextField } from "@mui/material";
-import { AlterarSenha } from "./redefinirSenha";
+import { AlterarSenha, redefinirSenha, verificarEmail } from "./redefinirSenha";
 
 
 const msgErroLogin = () => {
@@ -15,6 +15,50 @@ const msgErroLogin = () => {
     position: "top-center",
 
     autoClose: 1500,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
+
+const msgSucessoSenha = () => {
+  toast.success("Senha redefinida com sucesso! ", {
+    position: "top-center",
+
+    autoClose: 2000,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
+
+const msgMinimoSenha = () => {
+  toast.error("Sua senha precisa ter no minimo 4 caracteres! ", {
+    position: "top-right",
+
+    autoClose: 2000,
 
     hideProgressBar: false,
 
@@ -68,18 +112,19 @@ function Login() {
         if (result.status === 401) {
             msgErroLogin()
 
-          /* verificar se  requisição foi feita com sucesso */
-        }else if(result.status === 409){
+        }else if(result.status === 307){
+          
           abrirModalSenha()
-          console.log("409999999999999")
           
 
         } else if (result) {
           result = await result.json();
      
           const {  token  } =  result;
+
+          
         
-          localStorage.setItem('token', JSON.stringify(token));
+          sessionStorage.setItem('token', JSON.stringify(token));
 
           console.log("RESUUUUUUUUUUUUUUUUUUUUUULLLLLLLLLLTTTTTTTTTTTTTTTTTTTTTTTTT")
 
@@ -87,6 +132,35 @@ function Login() {
           
           /* mensagem de cadastrar com sucesso */
      
+        }
+      };
+
+      const redefinirSenha = async (event) => {
+        /* tiras as características de evento evitando Recarregar  a pagina */
+        event.preventDefault();
+        /* pegar todos  os valores do evento */
+        const formData = new FormData(event.target);
+        /*formata em um objeto em  json */
+        const data = Object.fromEntries(formData);
+        console.log(data);
+        let result = await fetch(`http://localhost:8080/api/usuario/redefinirSenha`, {
+          method: "post",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        if(result.status === 409){
+            msgMinimoSenha()
+
+      
+        }else{
+      
+          msgSucessoSenha()
+          fecharModalSenha()
+          setInterval(function () {window.location.reload();  }, 1500);
+      
         }
       };
 
@@ -141,13 +215,13 @@ function Login() {
                 keyboard={false}>
                
                 <Modal.Body className="redefinirSenha">
-                   <form className="redefinirSenha" onSubmit={AlterarSenha}>
+                   <form className="redefinirSenha" onSubmit={redefinirSenha}>
 
                     <h5 className="tituloRedefinir">Por favor, Redefina sua senha!</h5>
-                   <input className="inputRedefinir" name="senha" type="text"/>
+                   <input className="inputRedefinir" name="senha" type="password"/>
 
                    <div class="parteBotaoRedefinirSenha">
-                                <Button variant="contained" color="success" type="submit" >Redefinir</Button>
+                                <Button variant="contained" color="success" type="submit">Redefinir</Button>
 
                                 </div>
                         

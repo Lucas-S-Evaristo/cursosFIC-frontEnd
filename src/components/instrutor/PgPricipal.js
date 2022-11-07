@@ -278,10 +278,6 @@ function PgPricipal(props) {
   }; */
   /* renderizar página  e faz requisição  */
  
-  const token = localStorage.getItem('token');
-  console.log("oi === ",token);
-
-  
   useEffect(() => {
     getiInstrutor();
   }, []);
