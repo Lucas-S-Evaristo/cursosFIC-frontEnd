@@ -67,3 +67,8 @@ input:focus {
 option {
     text-align: center;
 }
+.sectionComponents{
+    display: flex;
+    flex-direction: row;
+    width: 70vh;
+}

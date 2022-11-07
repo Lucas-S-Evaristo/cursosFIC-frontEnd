@@ -5,6 +5,7 @@ import Area from "./components/area/paginaArea";
 import CadTurma from "./components/Turma/PageTurma";
 import MenuLateral from "./components/Turma/menuLateral";
 import Tarefas from "./components/Turma/tarefas";
+import Home from "./components/home/home";
 
 
 function Rotas(){
@@ -12,7 +13,7 @@ function Rotas(){
     return (
 
         <Routes>
-          
+            <Route path='/' element={<Home/>}/>
             <Route path='/cursos' element={<ListaCurso/>}/>
             <Route path='/listaArea' element={<Area/>}/>
             <Route path='/turmas' element={<CadTurma/>}/>

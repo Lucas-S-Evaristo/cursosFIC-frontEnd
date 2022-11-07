@@ -329,55 +329,11 @@ function Tarefas() {
   };
 
   // função que espera receber um id
-  const alterar = async (event) => {
-    const formData = new FormData(event.target);
-
-    const data = Object.fromEntries(formData);
-
-    console.log("tarefas: ", data);
-
-    let obgj = {
-      id: idTurma,
-      dataLimInscricao: data.dataLimInscricao,
-      confirmarTurma: data.confirmarTurma,
-      retiradaSite: data.retiradaSite,
-      cobrarEntregaDocum: data.cobrarEntregaDocum,
-      verificarPCDs: data.verificarPCDs,
-      gerarDiarioEletr: data.gerarDiarioEletr,
-      montarKitTurma: data.montarKitTurma,
-      verifQuemFaltouPrimDia: data.verifQuemFaltouPrimDia,
-      iniciarTurma: data.iniciarTurma,
-      matriculaDefinitiva: data.matriculaDefinitiva,
-      encerrarTurma: data.encerrarTurma,
-      escanearDocum: data.escanearDocum,
-    };
-    console.log("obijeto truma ", obgj);
-
-    let result = await fetch(
-      "http://localhost:8080/api/turma/" + idTurma,
-
-      {
-        method: "PUT",
-
-        body: JSON.stringify(obgj),
-
-        headers: {
-          "Content-type": "application/json",
-
-          Accept: "application/json",
-        },
-      }
-    );
-    if (result) {
-      setOpen(false);
-      setInterval(function () {
-        window.location.reload();
-      }, 50);
-    }
-  };
+  
 
   // metodo que capta a turma que foi selecionado
   const selecionarTurma = (
+    id,
     codigo,
     dataLimInscricao,
     retiradaSite,
@@ -392,6 +348,7 @@ function Tarefas() {
     escanearDocum,
     verifQuemFaltouPrimDia
   ) => {
+    setidTurma(id)
     setCodigo(codigo);
     setDataLimInsc(dataLimInscricao);
     setRetiradaSite(retiradaSite);
@@ -599,6 +556,11 @@ function Tarefas() {
     verifQuemFaltouPrimDia
   );
 
+  const [checkDataInsc, setCheckDataInsc] = useState ([]);
+
+    function checkValue() {
+
+    }
   return (
     <>
       <MenuLateral />
@@ -627,13 +589,13 @@ function Tarefas() {
       <div className="conteudoTabela">
         <TableContainer className="tabelaContainer">
           <Table
-            sx={{ minWidth: 1500, backgroundColor: "transparent" }}
+            sx={{ minWidth: 1704.5, backgroundColor: "transparent" }}
             aria-label="customized table"
             className="tabelaTurma"
           >
             <TableHead className="theadTurma">
               <TableRow sx={{}} className="STC">
-                <StyledTableCell sx={maxWidth}>Turma</StyledTableCell>
+                <StyledTableCell>Turma</StyledTableCell>
                 <StyledTableCell>Data lim. para insc.</StyledTableCell>
                 <StyledTableCell>Retirada do Site</StyledTableCell>
                 <StyledTableCell>Cobrar Entrega do Documento</StyledTableCell>
@@ -648,7 +610,7 @@ function Tarefas() {
                 <StyledTableCell>
                   Verificar Quem Faltou no 1°dia
                 </StyledTableCell>
-                <StyledTableCell>Alterar</StyledTableCell>
+                
               </TableRow>
             </TableHead>
             <TableBody>
@@ -669,6 +631,7 @@ function Tarefas() {
                             simEnao: false*/
                 .map(
                   ({
+                    id,
                     codigo,
                     dataLimInscricao,
                     retiradaSite,
@@ -700,35 +663,7 @@ function Tarefas() {
                       <StyledTableCell>
                         {verifQuemFaltouPrimDia}
                       </StyledTableCell>
-                      <StyledTableCell>
-                        <Button
-                          onClick={() => {
-                            selecionarTurma(
-                              codigo,
-                              dataLimInscricao,
-                              retiradaSite,
-                              cobrarEntregaDocum,
-                              verificarPCDs,
-                              gerarDiarioEletr,
-                              montarKitTurma,
-                              iniciarTurma,
-                              matriculaDefinitiva,
-                              encerrarTurma,
-                              confirmarTurma,
-                              escanearDocum,
-                              verifQuemFaltouPrimDia
-                            );
-                            abrirModalAlterar();
-                          }}
-                          style={{
-                            backgroundColor: "#ffd60a",
-                            color: "black",
-                            borderRadius: 7,
-                          }}
-                        >
-                          <img src={require("../Turma/updateIcon.png")} />
-                        </Button>
-                      </StyledTableCell>
+                     
                     </StyledTableRow>
                   )
                 )}
@@ -764,185 +699,7 @@ function Tarefas() {
         draggable
         pauseOnHover
       />
-      <Modal
-        show={modalAlterar}
-        onHide={fecharModalAlterar}
-        size="xl"
-        aria-labelledby="example-custom-modal-styling-title"
-        scrollable={true}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Alterar</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body className="modalAltT">
-          <form onSubmit={alterar}>
-            <div className="imgModal">
-              <img className="imagemModal" src={require("./imagemModal.png")} />
-            </div>
-            <div className="divInputs">
-              <div className="containerInputs">
-                <section className="div1">
-                  <TextField
-                    name="dataLimInscricao"
-                    label="Data limite de inscrição"
-                    sx={styleTextField}
-                    defaultValue={dataLimInsc}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                    style={{paddingRight:50}}
-                  />
-                  <TextField
-                    name="RetiradaDosite"
-                    label="Retirada do site"
-                    sx={styleTextField}
-                    defaultValue={retiradaSite}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                </section>
-                <section className="div2">
-                  <TextField
-                    name="retiradaDoSite"
-                    label="Cobrar entrega de documento"
-                    sx={styleTextField}
-                    defaultValue={cobrarEnDoc}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                  <TextField
-                    name="Retirada do site"
-                    label="Verificar PCDs"
-                    sx={styleTextField}
-                    defaultValue={verificarPcds}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                </section>
-
-                <section class="div3">
-                  <TextField
-                    name="retiradaDoSite"
-                    label="Gerar diario eletronico"
-                    sx={styleTextField}
-                    defaultValue={gerarDiarioEletro}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                  <TextField
-                    name="Retirada do site"
-                    label="Montar kit de turma"
-                    sx={styleTextField}
-                    defaultValue={montarKitTurma}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                </section>
-
-                <section className="div4">
-                  <TextField
-                    name="retiradaDoSite"
-                    label="Iniciar turma"
-                    sx={styleTextField}
-                    defaultValue={iniciarTurma}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                  <TextField
-                    name="Retirada do site"
-                    label="Matricula definitiva"
-                    sx={styleTextField}
-                    defaultValue={matriDef}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                </section>
-                <section className="div5">
-                  <TextField
-                    name="retiradaDoSite"
-                    label="Encerrar documento"
-                    sx={styleTextField}
-                    defaultValue={encerrarTurma}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                  <TextField
-                    name="Retirada do site"
-                    label="Confirmar turma"
-                    sx={styleTextField}
-                    defaultValue={confirmarTurma}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                </section>
-
-                <section className="div6">
-                <TextField
-                    name="Retirada do site"
-                    label="Verificar quem faltou no 1ºdia"
-                    sx={styleTextField}
-                    defaultValue={verifQuemFaltouPrimDia}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                    s
-                  />
-
-                  <TextField
-                    name="retiradaDoSite"
-                    label="Escanear documento"
-                    sx={styleTextField}
-                    defaultValue={escanearDocum}
-                    className="inputNomeAlterar"
-                    id="dataLimInscricao"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                  />
-                  
-                </section>
-              </div>
-
-              <div className="Dbtn">
-                <Button
-                  variant="contained"
-                  color="success"
-                  type="submit"
-                  style={{
-                    margin: 10,
-                    backgroundColor: "yellow",
-                    color: "black",
-                    fontWeight: 551,
-                  }}
-                  onClick={() => {}}
-                >
-                  Alterar
-                </Button>
-              </div>
-            </div>
-          </form>
-        </Modal.Body>
-      </Modal>
+      
     </>
   );
 }

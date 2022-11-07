@@ -1,0 +1,35 @@
+.divHome{
+    background-color: aqua;
+}
+.headHome{
+    background-color: black;
+    color: white;
+    height: 70px;
+    position: fixed;
+    width: 100%;
+}
+.logoHome{
+    padding: 20px;
+    float: left;
+}
+.btLoginH{
+    float: right;
+    padding: 10px;
+    margin: 12px;
+    color: white;
+    border-radius: 10px;
+    width: 100px;
+    border: none;
+    background-color: rgb(255, 0, 0);
+}
+.btLoginH:hover{
+    float: right;
+    padding: 10px;
+    margin: 12px;
+    color: white;
+    border-radius: 10px;
+    width: 100px;
+    border: none;
+    box-shadow: 0px 0px 20px 2px rgb(255, 120, 120);
+    background-color: rgb(255, 0, 0);
+}

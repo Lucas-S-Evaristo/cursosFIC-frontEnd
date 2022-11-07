@@ -600,7 +600,7 @@ function CadTurma() {
     <>
       <MenuLateral />
 
-      <header style={{position:"fixed"}}>
+      <header className="headTurma">
         <div className="divBotaoAdd">
           <Button
             className="botaoAdd"
@@ -632,7 +632,6 @@ function CadTurma() {
             className="botaotarefas"
             href="/tarefa"
             variant="contained"
-            color="primary"
           >
             <AssignmentIcon />
             <i class="bi bi-plus-lg"></i>Tarefas
