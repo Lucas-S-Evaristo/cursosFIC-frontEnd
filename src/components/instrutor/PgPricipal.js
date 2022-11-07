@@ -118,6 +118,27 @@ const msgDeletado = () => {
     progress: undefined,
   });
 };
+const msgDeletadoerror = () => {
+  toast.warning(" Não e possível deletar Instrutor porque ele está associado a uma Área ", {
+    position: "top-right",
+
+    autoClose: 4500,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
 const msgCadastrando = () => {
   console.log("entrei");
 
@@ -343,8 +364,10 @@ function PgPricipal(props) {
     let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
       method: "DELETE",
     });
-    /* verificar se  requisição foi feita com sucesso */
-    if (result) {
+    if(result.status === 409){
+      msgDeletadoerror() 
+
+    }else if (result) {
       /* fecha  Dialog que pergunta se deve excluir  */
       setOpen3(false);
       /* faz  uma requisição get do back end e renderizar página  */

@@ -99,6 +99,30 @@ const alterarSucesso = () => {
       progress: undefined,
   })
 }
+const msgDeletadoerror = () => {
+  toast.warning(
+    " Não e possível deletar Àrea porque ele está associado a uma Curso ",
+    {
+      position: "top-right",
+
+      autoClose: 4500,
+
+      hideProgressBar: false,
+
+      closeOnClick: true,
+
+      pauseOnHover: true,
+
+      theme: "colored",
+
+      // faz com que seja possivel arrastar
+
+      draggable: true,
+
+      progress: undefined,
+    }
+  );
+};
 
 
   const [idArea, setIdArea] = useState()
@@ -173,7 +197,11 @@ const alterarSucesso = () => {
         method: "DELETE"
     })
     // caso já exista uma turma a ser deletado, ele atualiza a lista assim removendo a turma deletado
-    if (result) {
+    if(result.status === 409){
+      msgDeletadoerror();
+
+
+    } else if (result) {
       getArea()
       excluirSucesso()
 
