@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
+import Chip from '@mui/material/Chip';
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Grid from "@mui/material/Grid";
@@ -248,7 +249,7 @@ function PageUsuario() {
 
   // metodo de msg de exclusão feita com sucesso
   const msgExclusao = () => {
-    toast.success("Usuário Removido com Sucesso", {
+    toast.error("Usuário Removido com Sucesso", {
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,

@@ -82,6 +82,7 @@ function CadTurma() {
   const [qtdMatriculas, setqtdMatriculas] = useState();
   // variavel que tem acesso a um array com todas as turmas
   const [turmas, setTurma] = useState([]);
+  const moment = require('moment')
   // variavel que tem acesso a um array com os instrutores
   const [instrutor, setInstrutor] = useState([]);
   // variavel que tem acesso a um array com os instrutores
@@ -161,7 +162,7 @@ function CadTurma() {
     horarioTermino: { id: horarioFinalValue },
     //diasDaTurma: setDiasDaSemana
   };
- 
+
   // estado do obj da turma
   const [objTurma, setObjTurma] = useState(turma);
   // estado da modal
@@ -210,6 +211,7 @@ function CadTurma() {
   }, []);
 
   useEffect(() => {
+
     fetch("http://localhost:8080/api/enum/status")
       .then((resp) => resp.json())
       .then((retorno_convertido) => setStatus(retorno_convertido)); //lista de status
@@ -306,7 +308,7 @@ function CadTurma() {
   };
 
   // metodo que efetua o cadastro da turma
-  const cadastrar =  async(event) => {
+  const cadastrar = async (event) => {
 
     event.preventDefault()
 
@@ -315,28 +317,28 @@ function CadTurma() {
     /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
 
-    
+
 
     const turmas = {
-        id: 0,
-        qtdMatriculas: qtdMatriculas,
-        instrutor: { id: idInstrutor },
-        curso: { id: idCurso },
-        periodo: ValuePeriodo,
-        dataInicio: dataInicioFormatada,
-        dataTermino: dataTerminoFormatada,
-        valor: valor,
-        status: ValueStatus,
-        ambiente: { id: idAmbiente },
-        numMaxVagas: numMaxVagas,
-        numMinVagas: numMinVagas,
-        simEnao: simEnao,
-        diaSemana: valuediaSemana,
-        horarioInicio: { id: horarioInicioValue },
-        horarioTermino: { id: horarioFinalValue },
-        diasDaTurma: data.diasDaTurma
-     
-      };
+      id: 0,
+      qtdMatriculas: qtdMatriculas,
+      instrutor: { id: idInstrutor },
+      curso: { id: idCurso },
+      periodo: ValuePeriodo,
+      dataInicio: dataInicioFormatada,
+      dataTermino: dataTerminoFormatada,
+      valor: valor,
+      status: ValueStatus,
+      ambiente: { id: idAmbiente },
+      numMaxVagas: numMaxVagas,
+      numMinVagas: numMinVagas,
+      simEnao: simEnao,
+      diaSemana: valuediaSemana,
+      horarioInicio: { id: horarioInicioValue },
+      horarioTermino: { id: horarioFinalValue },
+      diasDaTurma: data.diasDaTurma
+
+    };
 
 
     //requisição ao back end
@@ -358,17 +360,17 @@ function CadTurma() {
 
         } else if (retorno.status === 401) {
           erroDataInicioMaiorHoje();
-          
-        }else if (retorno.status === 408) {
+
+        } else if (retorno.status === 408) {
           erroCamposVazios();
-          
-        }else if (retorno.status === 402) {
+
+        } else if (retorno.status === 402) {
           erroHorariosDepois();
-          
-        }else if (retorno.status === 406) {
+
+        } else if (retorno.status === 406) {
           erroHorariosIguais();
-          
-        }else {
+
+        } else {
           retorno
             .json()
             // pegando o retorno convertido
@@ -384,40 +386,40 @@ function CadTurma() {
       });
   };
 
-   
+
 
   // função que espera receber um id
   const alterar = async (event) => {
-   
- /* pegar todos  os valores do evento */
-    
- const formData = new FormData(event.target);
- /*formata em um objeto em  json */
- const data = Object.fromEntries(formData);
+
+    /* pegar todos  os valores do evento */
+
+    const formData = new FormData(event.target);
+    /*formata em um objeto em  json */
+    const data = Object.fromEntries(formData);
 
 
 
- const turmasA = {
-     id: idTurma,
-     qtdMatriculas: data.qtdMatriculas,
-     instrutor: { id: data.instrutor },
-     curso: { id: data.curso },
-     periodo: data.periodo,
-     dataInicio: data.dataInicio,
-     dataTermino: data.dataTermino,
-     valor: data.valor,
-     status: data.status,
-     ambiente: { id: data.ambiente },
-     numMaxVagas: data.numMaxVagas,
-     numMinVagas: data.numMinVagas,
-     simEnao: simEnao,
-     diaSemana: data.diasDaTurma,
-     horarioInicio: { id: data.horarioInicio },
-     horarioTermino: { id: data.horarioFinal },
-     diasDaTurma: data.diasDaTurma
-   };
+    const turmasA = {
+      id: idTurma,
+      qtdMatriculas: data.qtdMatriculas,
+      instrutor: { id: data.instrutor },
+      curso: { id: data.curso },
+      periodo: data.periodo,
+      dataInicio: data.dataInicio,
+      dataTermino: data.dataTermino,
+      valor: data.valor,
+      status: data.status,
+      ambiente: { id: data.ambiente },
+      numMaxVagas: data.numMaxVagas,
+      numMinVagas: data.numMinVagas,
+      simEnao: simEnao,
+      diaSemana: data.diasDaTurma,
+      horarioInicio: { id: data.horarioInicio },
+      horarioTermino: { id: data.horarioFinal },
+      diasDaTurma: data.diasDaTurma
+    };
 
-   
+
     let result = await fetch(
       "http://localhost:8080/api/turma/" + idTurma,
 
@@ -433,11 +435,18 @@ function CadTurma() {
         },
       }
     );
-    if (result) {
+
+
+
+    if (result.status === 402) {
+
+      alert("OII")
+    }
+    if (result.status === 200) {
       setOpen(false);
-      setInterval(function () {
-        window.location.reload();
-      }, 50);
+      atualizaLista();
+      msgExclusao();
+
     }
   };
 
@@ -537,7 +546,7 @@ function CadTurma() {
   const buscaTurmaAno = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
     let key = event.target.value;
-
+    console.log(key)
     // verifica se existe 'valor'
     if (key) {
       // fazendo uma requisição na api de busca e passando a key
@@ -600,7 +609,7 @@ function CadTurma() {
 
   // metodo de msg de exclusão feita com sucesso
   const msgExclusao = () => {
-    toast.success("Turma Removido com Sucesso", {
+    toast.error("Turma Removido com Sucesso", {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
@@ -666,6 +675,9 @@ function CadTurma() {
       typeof value === "string" ? value.split(",") : value
     );
   };
+
+
+
   const handleChange2 = (event) => {
     const {
       target: { value },
@@ -682,8 +694,8 @@ function CadTurma() {
     <>
       <MenuLateral />
 
-      <header style={{position:"fixed"}}>
-        <div className="divBotaoAdd" style={token == null || p.tipo_usuario === "Secretária" || p === null ? {visibility: "hidden"} : {visibility: "visible"}}>
+      <header style={{ position: "fixed" }}>
+        <div className="divBotaoAdd" style={token == null || p.tipo_usuario === "Secretária" || p === null ? { visibility: "hidden" } : { visibility: "visible" }}>
           <Button
             className="botaoAdd"
             onClick={abrirModalCadastrar}
@@ -758,20 +770,20 @@ function CadTurma() {
                 <StyledTableCell>Data de Término</StyledTableCell>
                 <StyledTableCell>Horario de Inicio</StyledTableCell>
                 <StyledTableCell>Horario de término</StyledTableCell>
-                <StyledTableCell id="alterar" 
-                style={token === null || p.tipo_usuario === "Secretária" || p === null 
-                ? 
-                {display: "none"} 
-               :
-                {visibility: "visible"}
-                }
-                
+                <StyledTableCell id="alterar"
+                  style={token === null || p.tipo_usuario === "Secretária" || p === null
+                    ?
+                    { display: "none" }
+                    :
+                    { visibility: "visible" }
+                  }
+
                 >Alterar</StyledTableCell>
                 <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
-                ? 
-                {display: "none"} 
-               :
-                {visibility: "visible"}
+                  ?
+                  { display: "none" }
+                  :
+                  { visibility: "visible" }
                 }>Excluir</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -796,7 +808,8 @@ function CadTurma() {
                     dataTermino,
                     horarioInicio,
                     horarioTermino,
-                    diasDaTurma
+                    diasDaTurma,
+                   
                   }) => (
                     <StyledTableRow>
                       <StyledTableCell>{id}</StyledTableCell>
@@ -811,20 +824,20 @@ function CadTurma() {
                       <StyledTableCell>{numMaxVagas}</StyledTableCell>
                       <StyledTableCell>{numMinVagas}</StyledTableCell>
                       <StyledTableCell>{diasDaTurma}</StyledTableCell>
-                      <StyledTableCell>{dataInicio}</StyledTableCell>
-                      <StyledTableCell>{dataTermino}</StyledTableCell>
+                      <StyledTableCell>{moment(dataInicio).format('DD/MM/YYYY')}</StyledTableCell>
+                      <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
 
-                      <StyledTableCell  style={token === null || p === null || p.tipo_usuario === "Secretária"
-                         ? 
-                         {display: "none"} 
+                      <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
+                        ?
+                        { display: "none" }
                         :
-                         {visibility: "visible"}
-                         }>
+                        { visibility: "visible" }
+                      }>
                         <button
-                        
-                          
+
+
                           className="botaoAlterarTurma"
                           onClick={() => {
                             selecionarTurma(
@@ -846,21 +859,21 @@ function CadTurma() {
                               horarioTermino,
                               diasDaTurma
                             );
-                           
+
                             abrirModalAlterar();
                           }}
                         >
                           <ModeEditOutlinedIcon />
                         </button>
                       </StyledTableCell>
-                      <StyledTableCell  style={token === null || p.tipo_usuario === "Secretária" || p === null
-                     ? 
-                     {display: "none"} 
-                    :
-                     {visibility: "visible"}
-                     }>
+                      <StyledTableCell style={token === null || p.tipo_usuario === "Secretária" || p === null
+                        ?
+                        { display: "none" }
+                        :
+                        { visibility: "visible" }
+                      }>
                         <button
-                    
+
                           className="botaoDeleteTurma"
                           onClick={() => deletar(id)}
                         >
@@ -903,7 +916,7 @@ function CadTurma() {
         pauseOnHover
       />
 
-<Modal
+      <Modal
         show={modalAlterar}
         onHide={fecharModalAlterar}
         size="xl"
@@ -914,7 +927,7 @@ function CadTurma() {
           <Modal.Title>Alterar</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{height:610}}>
+        <Modal.Body style={{ height: 610 }}>
           <div>
             <img
               className="imagemModal"
@@ -922,7 +935,7 @@ function CadTurma() {
             ></img>
           </div>
           <div className="modalCad">
-            <form className="formModalCad"    onSubmit={alterar}   >
+            <form className="formModalCad" onSubmit={alterar}   >
               {/*  input de quantidade de mátriculas */}
               {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
@@ -999,16 +1012,16 @@ function CadTurma() {
                     required
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
-                 
+
                   >
                     {ambiente.map((obj, indice) => (
-                      <MenuItem value={obj.id} selected={obj.id == idAmbiente.id } key={indice}>
+                      <MenuItem value={obj.id} selected={obj.id == idAmbiente.id} key={indice}>
                         {obj.nome}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                  
+
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Cursos:
@@ -1019,16 +1032,16 @@ function CadTurma() {
                     name="curso"
                     required
                     defaultValue={idCurso.id}
-                   
+
                   >
                     {curso.map((obj) => (
-                      <MenuItem value={obj.id} selected={obj.id == idCurso.id }>{obj.nome}</MenuItem>
+                      <MenuItem value={obj.id} selected={obj.id == idCurso.id}>{obj.nome}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-     
+
               </div>
-              
+
 
               <div className="select1">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
@@ -1041,7 +1054,7 @@ function CadTurma() {
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     defaultValue={idInstrutor.id}
-                  
+
                   >
                     {instrutor.map((obj, indice) => (
                       <MenuItem value={obj.id} selected={obj.id == idInstrutor.id} key={indice}>  {obj.nome}</MenuItem>
@@ -1049,13 +1062,13 @@ function CadTurma() {
                   </Select>
                 </FormControl>
 
-                
-                
 
-                
+
+
+
               </div>
 
-              
+
 
               <div className="select2">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
@@ -1068,11 +1081,11 @@ function CadTurma() {
                     id="demo-simple-select-standard"
                     name="periodo"
                     required
-                   
-                    
+
+
                   >
                     {periodo.map((obj, indice) => (
-                      <MenuItem value={obj} selected={obj == ValuePeriodo} key={indice}>
+                      <MenuItem value={obj} selected={obj === ValuePeriodo} key={indice}>
                         {obj}
                       </MenuItem>
                     ))}
@@ -1089,10 +1102,10 @@ function CadTurma() {
                     name="horarioInicio"
                     required
                     defaultValue={horarioInicioValue.id}
-                  
+
                   >
                     {horarios.map((obj, indice) => (
-                      <MenuItem value={obj.id} selected={obj.id == horarioInicioValue.id} key={indice}>
+                      <MenuItem value={obj.id} selected={obj.id === horarioInicioValue.id} key={indice}>
                         {obj.horario}
                       </MenuItem>
                     ))}
@@ -1111,17 +1124,17 @@ function CadTurma() {
                     id="demo-simple-select-standard"
                     name="status"
                     required
-                   
+
                   >
                     {status.map((obj, indice) => (
-                      <MenuItem value={obj} selected={indice == ValueStatus} key={indice}>
+                      <MenuItem value={obj} selected={indice === ValueStatus} key={indice}>
                         {obj}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
 
-               
+
 
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
@@ -1133,13 +1146,13 @@ function CadTurma() {
                     name="horarioFinal"
                     required
                     defaultValue={horarioFinalValue.id}
-                 
-                  
-                  
-                    
+
+
+
+
                   >
                     {horarios.map((obj, indice) => (
-                      <MenuItem value={obj.id} selected={obj.id == horarioFinalValue.id} key={indice} >
+                      <MenuItem value={obj.id} selected={obj.id === horarioFinalValue.id} key={indice} >
                         {obj.horario}
                       </MenuItem>
                     ))}
@@ -1147,33 +1160,31 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300,top:500, left:-10}}>
-                  <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
-                  <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    name="diasDaTurma"
-                    multiple
-                    defaultValue={diasDaTurma}
-                    onChange={handleChange2}
-                    input={<OutlinedInput label="Dias da Semana" />}
-                    renderValue={(selected) => selected.join(",")}
-                    MenuProps={MenuProps}
-                  >
-                    {DiasDaSemana.map((dias) => (
-                      <MenuItem key={dias} value={dias}>
-                        
-                        {console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr "+diasDaTurma)}
-                        {console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww "+dias)}
-                        <Checkbox checked={diasDaTurma.indexOf(dias) > -1} />
-                        <ListItemText primary={dias} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              
+              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }}>
+                <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  name="diasDaTurma"
+                  multiple
+                  defaultValue={diasDaTurma}
+                  onChange={handleChange2}
+                  input={<OutlinedInput label="Dias da Semana" />}
+                  renderValue={(selected) => selected.join(",")}
+                  MenuProps={MenuProps}
+                >
+                  {DiasDaSemana.map((dias) => (
+                    <MenuItem key={dias} value={dias}>
+
+                      <Checkbox checked={diasDaTurma.indexOf(dias) > -1} />
+                      <ListItemText primary={dias} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
               <div>
-                <div className="horarioInicio" style={{left:30}}>
+                <div className="horarioInicio" style={{ left: 30 }}>
                   <TextField
                     sx={estiloData}
                     name="dataInicio"
@@ -1189,7 +1200,7 @@ function CadTurma() {
                   />
                 </div>
 
-                <div className="horarioFinal" style={{left:285}}>
+                <div className="horarioFinal" style={{ left: 285 }}>
                   <TextField
                     sx={estiloData}
                     variant="standard"
@@ -1205,16 +1216,16 @@ function CadTurma() {
                   />
                 </div>
               </div>
-             
-              <div class="parteBotao2" style={{left:330, top:535}}>
+
+              <div class="parteBotao2" style={{ left: 330, top: 535 }}>
                 <Button
-                
+
                   type="submit"
                 >
                   Alterar
                 </Button>
 
-      
+
               </div>
             </form>
           </div>
@@ -1232,7 +1243,7 @@ function CadTurma() {
           <Modal.Title>Cadastrar</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{height:610}}>
+        <Modal.Body style={{ height: 610 }}>
           <div>
             <img
               className="imagemModal"
@@ -1240,7 +1251,7 @@ function CadTurma() {
             ></img>
           </div>
           <div className="modalCad">
-            <form className="formModalCad"    onSubmit={cadastrar}   >
+            <form className="formModalCad" onSubmit={cadastrar}   >
               {/*  input de quantidade de mátriculas */}
               {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
@@ -1329,7 +1340,7 @@ function CadTurma() {
                     ))}
                   </Select>
                 </FormControl>
-                  
+
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Cursos:
@@ -1350,9 +1361,9 @@ function CadTurma() {
                     ))}
                   </Select>
                 </FormControl>
-     
+
               </div>
-              
+
 
               <div className="select1">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
@@ -1376,13 +1387,13 @@ function CadTurma() {
                   </Select>
                 </FormControl>
 
-                
-                
 
-                
+
+
+
               </div>
 
-              
+
 
               <div className="select2">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
@@ -1457,7 +1468,7 @@ function CadTurma() {
                   </Select>
                 </FormControl>
 
-               
+
 
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
@@ -1483,30 +1494,30 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300,top:500, left:-10}}>
-                  <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
-                  <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    name="diasDaTurma"
-                    multiple
-                    defaultValue={diasDaSemana}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Dias da Semana" />}
-                    renderValue={(selected) => selected.join(",")}
-                    MenuProps={MenuProps}
-                  >
-                    {DiasDaSemana.map((dias) => (
-                      <MenuItem key={dias} value={dias}>
-                        <Checkbox checked={diasDaSemana.indexOf(dias) > -1} />
-                        <ListItemText primary={dias} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }}>
+                <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  name="diasDaTurma"
+                  multiple
+                  defaultValue={diasDaSemana}
+                  onChange={handleChange}
+                  input={<OutlinedInput label="Dias da Semana" />}
+                  renderValue={(selected) => selected.join(",")}
+                  MenuProps={MenuProps}
+                >
+                  {DiasDaSemana.map((dias) => (
+                    <MenuItem key={dias} value={dias}>
+                      <Checkbox checked={diasDaSemana.indexOf(dias) > -1} />
+                      <ListItemText primary={dias} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               <div>
-                <div className="horarioInicio" style={{left:30}}>
+                <div className="horarioInicio" style={{ left: 30 }}>
                   <TextField
                     sx={estiloData}
                     label="Data inicio"
@@ -1521,7 +1532,7 @@ function CadTurma() {
                   />
                 </div>
 
-                <div className="horarioFinal" style={{left:285}}>
+                <div className="horarioFinal" style={{ left: 285 }}>
                   <TextField
                     sx={estiloData}
                     variant="standard"
@@ -1536,8 +1547,8 @@ function CadTurma() {
                   />
                 </div>
               </div>
-             
-              <div class="parteBotao" style={{left:330, top:535}}>
+
+              <div class="parteBotao" style={{ left: 330, top: 535 }}>
                 <Button
                   variant="contained"
                   color="success"
@@ -1547,7 +1558,7 @@ function CadTurma() {
                   cadastrar
                 </Button>
 
-      
+
               </div>
             </form>
           </div>

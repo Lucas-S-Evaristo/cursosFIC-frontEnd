@@ -63,7 +63,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
         //backgroundColor: theme.palette.action.hover,
-        width:0
+        width: 0
     },
     // hide last border
     '&:last-child td, &:last-child th': {
@@ -79,6 +79,7 @@ function Tarefas() {
     const [qtdMatriculas, setqtdMatriculas] = useState()
     // variavel que tem acesso a um array com todas as turmas
     const [turmas, setTurma] = useState([])
+    const moment = require('moment')
     // variavel que tem acesso a um array com os instrutores
     const [instrutor, setInstrutor] = useState([])
     // variavel que tem acesso a um array com os instrutores
@@ -196,12 +197,14 @@ function Tarefas() {
     };
 
 
- console.log("oooooooooooooooooooooo ",idCurso.id)
+
     // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
     useEffect(() => {
         fetch("http://localhost:8080/api/turma")
             .then(resp => resp.json())
             .then(retorno_convertido => setTurma(retorno_convertido)) //lista de turmas
+
+        console.log(turmas)
     }, [])
 
     useEffect(() => {
@@ -347,37 +350,39 @@ function Tarefas() {
         const formData = new FormData(event.target);
 
         const data = Object.fromEntries(formData);
-    
+
         console.log("formatadaTurma    ", data);
 
-    
+        console.log(">>>>>>>>>>>>>>>>" + turmas)
+
+
         let obgj = {
-    
-           
-    
+
+
+
             id: idTurma,
-             qtdMatriculas: data.qtdMatriculas,
-            instrutor: { id: selectInstrutor},
+            qtdMatriculas: data.qtdMatriculas,
+            instrutor: { id: selectInstrutor },
             curso: { id: selectCurso },
             periodo: data.periodo,
             dataInicio: data.dataInicio,
             dataTermino: data.dataTermino,
             valor: data.valor,
             status: data.status,
-            ambiente: { id: selectAmbiente},
+            ambiente: { id: selectAmbiente },
             numMaxVagas: data.numMaxVagas,
             numMinVagas: data.numMinVagas,
             simEnao: data.simEnao,
             diaSemana: data.diaSemana,
-        
-    
+
+
         };
-        console.log("obijeto truma ",obgj)
+        console.log("obijeto truma ", obgj)
 
 
         let result = await fetch(
 
-            "http://localhost:8080/api/turma/" +  idTurma,
+            "http://localhost:8080/api/turma/" + idTurma,
 
             {
 
@@ -491,6 +496,32 @@ function Tarefas() {
             atualizaLista();
         }
     }
+
+
+    const buscarTarefa = async (event) => {
+        // valor que esta sendo digitado no input de pesquisa
+        let key = event.target.value;
+        console.log(key)
+        // verifica se existe 'valor'
+        if (key) {
+            // fazendo uma requisição na api de busca e passando a key
+            let result = await fetch(
+                "http://localhost:8080/api/turma/buscarTarefa/" + key
+            );
+            // tranformando a promessa em json
+            result = await result.json();
+
+            // verifica se existe algum resultado
+            if (result) {
+                // setando as turmas que a api retornou de sua resposta de busca
+                setTurma(result);
+            }
+
+            // caso não exista chave, atualiza a lista
+        } else {
+            atualizaLista();
+        }
+    };
 
     const buscaTurmaAno = async (event) => {
 
@@ -618,8 +649,8 @@ function Tarefas() {
         setPage(0);
 
     };
-    
-  
+
+
 
 
     return (
@@ -628,14 +659,14 @@ function Tarefas() {
             <MenuLateral />
 
             <header>
-                
+
                 <div className="divTarefas">
-                    <Button className="botaoVoltar" href="/" variant="contained" color="primary" ><ArrowBack/>   <i class="bi bi-plus-lg"></i>Voltar</Button>
+                    <Button className="botaoVoltar" href="/" variant="contained" color="primary" ><ArrowBack />   <i class="bi bi-plus-lg"></i>Voltar</Button>
                 </div>
                 <form className="formBusca">
                     <input
                         //faz a busca
-                        onChange={buscaTurmaAno}
+                        onChange={buscarTarefa}
                         name="parametro"
                         required="required"
                         className="buscarInput"
@@ -648,7 +679,7 @@ function Tarefas() {
             <div className="conteudoTabela">
                 <TableContainer className="tabelaContainer">
 
-                    <Table sx={{ minWidth:1500, backgroundColor:"transparent"}} aria-label="customized table" className="tabelaTurma">
+                    <Table sx={{ minWidth: 1500, backgroundColor: "transparent" }} aria-label="customized table" className="tabelaTurma">
 
                         <TableHead className="theadTurma">
                             {/*
@@ -673,7 +704,7 @@ function Tarefas() {
                                 <StyledTableCell>Retirada do Site</StyledTableCell>
                                 <StyledTableCell>Cobrar Entrega do Documento</StyledTableCell>
                                 <StyledTableCell>Verificar PCDs</StyledTableCell>
-                                <StyledTableCell>Gerar Diario Eletronica</StyledTableCell>               
+                                <StyledTableCell>Gerar Diario Eletronica</StyledTableCell>
                                 <StyledTableCell>Montar Kit de Turma</StyledTableCell>
                                 <StyledTableCell>iniciar Turma</StyledTableCell>
                                 <StyledTableCell>Matricula Definitiva</StyledTableCell>
@@ -681,48 +712,48 @@ function Tarefas() {
                                 <StyledTableCell>Confirmar Turma</StyledTableCell>
                                 <StyledTableCell>Escanear Documento</StyledTableCell>
                                 <StyledTableCell>Verificar Quem Faltou no 1°dia</StyledTableCell>
-                                <StyledTableCell>Alterar</StyledTableCell>
 
-                
+
+
 
 
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {turmas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            /*dataLimInscricao: "",
-                            confirmarTurma: "",
-                            retiradaSite: "",
-                            cobrarEntregaDocum: "",
-                            verificarPCDs: "",
-                            gerarDiarioEletr: "",
-                            montarKitTurma: "",
-                            verifQuemFaltouPrimDia: "",
-                            iniciarTurma: "",
-                            matriculaDefinitiva: "",
-                            encerrarTurma: "",
-                            escanearDocum: "",
-                            simEnao: false*/ 
-                            .map(({ codigo, dataLimInscricao, confirmarTurma,  retiradaSite, cobrarEntregaDocum,
-                                 verificarPCDs, gerarDiarioEletr, montarKitTurma, verifQuemFaltouPrimDia, iniciarTurma, matriculaDefinitiva, encerrarTurma, escanearDocum, simEnao}) => (
+                                /*dataLimInscricao: "",
+                                confirmarTurma: "",
+                                retiradaSite: "",
+                                cobrarEntregaDocum: "",
+                                verificarPCDs: "",
+                                gerarDiarioEletr: "",
+                                montarKitTurma: "",
+                                verifQuemFaltouPrimDia: "",
+                                iniciarTurma: "",
+                                matriculaDefinitiva: "",
+                                encerrarTurma: "",
+                                escanearDocum: "",
+                                simEnao: false*/
+                                .map(({ codigo, dataLimInscricao, confirmarTurma, retiradaSite, cobrarEntregaDocum,
+                                    verificarPCDs, gerarDiarioEletr, montarKitTurma, verifQuemFaltouPrimDia, iniciarTurma, matriculaDefinitiva, encerrarTurma, escanearDocum }) => (
                                     <StyledTableRow >
-                                        
+
                                         <StyledTableCell>{codigo}</StyledTableCell>
-                                        <StyledTableCell>{dataLimInscricao}</StyledTableCell>
-                                        <StyledTableCell>{retiradaSite}</StyledTableCell>
-                                        <StyledTableCell>{cobrarEntregaDocum}</StyledTableCell>
-                                        <StyledTableCell>{verificarPCDs}</StyledTableCell>
-                                        <StyledTableCell>{gerarDiarioEletr}</StyledTableCell>
-                                        <StyledTableCell>{montarKitTurma}</StyledTableCell>
-                                        <StyledTableCell>{iniciarTurma}</StyledTableCell>
-                                        <StyledTableCell>{matriculaDefinitiva}</StyledTableCell>
-                                        <StyledTableCell>{encerrarTurma}</StyledTableCell>
-                                        <StyledTableCell>{confirmarTurma}</StyledTableCell>
-                                        <StyledTableCell>{escanearDocum}</StyledTableCell>
-                                        <StyledTableCell>{verifQuemFaltouPrimDia}</StyledTableCell>
+                                        <StyledTableCell>{moment(escanearDocum).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(retiradaSite).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(cobrarEntregaDocum).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(verificarPCDs).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(gerarDiarioEletr).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(montarKitTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(iniciarTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(matriculaDefinitiva).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(encerrarTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(confirmarTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(escanearDocum).format('DD/MM/YYYY')}</StyledTableCell>
+                                        <StyledTableCell>{moment(verifQuemFaltouPrimDia).format('DD/MM/YYYY')}</StyledTableCell>
                                         <StyledTableCell></StyledTableCell>
-                                    
-                                
+
+
                                     </StyledTableRow>
                                 ))
                             }
@@ -731,11 +762,11 @@ function Tarefas() {
                     <TablePagination
 
                         sx={{
-                            width:"1600px",
+                            width: "1600px",
                             marginTop: "40px",
-                            position:"fixed",
+                            position: "fixed",
                             alignItems: "center",
-                            
+
                             textAlign: "center",
 
                         }}
@@ -819,26 +850,26 @@ function Tarefas() {
                             </div>
 
                             <div className="parte3">
-                               
-                                    <InputLabel id="demo-simple-select-standard-label">Ambiente</InputLabel>
-                                    <select // select de ambiente
 
-                                        name="ambiente" required
-                                        style={styleTextField}
-                                        className="form-control"
-                                        labelId="demo-simple-select-standard-label"
-                                        id="selectAmbiente"
+                                <InputLabel id="demo-simple-select-standard-label">Ambiente</InputLabel>
+                                <select // select de ambiente
 
-                                    >
-                                        
-                                        {
-                                            ambiente.map((obj) => (
-                                                <option value={obj.id} selected={obj.id == idAmbiente.id} >
-                                                    {obj.nome}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
+                                    name="ambiente" required
+                                    style={styleTextField}
+                                    className="form-control"
+                                    labelId="demo-simple-select-standard-label"
+                                    id="selectAmbiente"
+
+                                >
+
+                                    {
+                                        ambiente.map((obj) => (
+                                            <option value={obj.id} selected={obj.id == idAmbiente.id} >
+                                                {obj.nome}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
 
                                 <InputLabel id="demo-simple-select-standard-label">Dia da semana</InputLabel>
 
@@ -869,52 +900,52 @@ function Tarefas() {
 
                             <div className="select1">
 
-                              
-                                    <InputLabel id="demo-simple-select-standard-label">Instrutor:</InputLabel>
-                                    <select // select de instrutores
-                                        name="instrutor" required
-                                        style={styleTextField}
-                                        className="form-control"
-                                      
-                                        id="selectInstrutor"
-                                        labelId="demo-simple-select-standard-label"
 
-                                    >
+                                <InputLabel id="demo-simple-select-standard-label">Instrutor:</InputLabel>
+                                <select // select de instrutores
+                                    name="instrutor" required
+                                    style={styleTextField}
+                                    className="form-control"
 
-                                        {
-                                            instrutor.map((obj) => (
-                                                <option value={obj.id} key={obj.id} selected={obj.id == idInstrutor.id}>
-                                                    {obj.nome}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
+                                    id="selectInstrutor"
+                                    labelId="demo-simple-select-standard-label"
 
-                                
+                                >
 
-                                
-                                    <InputLabel id="demo-simple-select-standard-label">Cursos:</InputLabel>
+                                    {
+                                        instrutor.map((obj) => (
+                                            <option value={obj.id} key={obj.id} selected={obj.id == idInstrutor.id}>
+                                                {obj.nome}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
 
-                                    <select // select de curso
 
-                                        labelId="demo-simple-select-standard-label"
-                                        style={styleTextField}
-                                        className="form-control"
-                                        name="curso" required
-                                       
-                                        id="selectCurso"
 
-                                    >
-                                        {
-                                            curso.map((obj) => (
-                                                <option value={obj.id} selected={obj.id == idCurso.id}>
-                                                    {obj.nome}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
 
-                               
+                                <InputLabel id="demo-simple-select-standard-label">Cursos:</InputLabel>
+
+                                <select // select de curso
+
+                                    labelId="demo-simple-select-standard-label"
+                                    style={styleTextField}
+                                    className="form-control"
+                                    name="curso" required
+
+                                    id="selectCurso"
+
+                                >
+                                    {
+                                        curso.map((obj) => (
+                                            <option value={obj.id} selected={obj.id == idCurso.id}>
+                                                {obj.nome}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+
+
 
 
                             </div>
@@ -973,7 +1004,9 @@ function Tarefas() {
 
                             <div className="select3">
 
+
                                 <TextField
+
                                     name="dataInicio"
                                     label="Data Inicio"
                                     sx={styleTextField}
@@ -1024,7 +1057,7 @@ function Tarefas() {
 
                             <div class="parteBotao">
                                 <Button variant="contained" color="success" type="submit" style={{ margin: 10 }} onClick={() => {
-                                    
+
                                 }} >Alterar</Button>
 
                                 <Button variant="contained" color="error" style={{ margin: 10 }} onClick={() => {
@@ -1043,7 +1076,7 @@ function Tarefas() {
             <Modal
                 show={modalCadastrar}
                 onHide={fecharModalCadastrar}
-                
+
                 size="xl"
                 aria-labelledby="example-custom-modal-styling-title"
                 scrollable={true}>
