@@ -496,6 +496,7 @@ function ListaCurso() {
             />
             <SearchIcon style={{ position: "absolute", top: 15, left: 7 }} />
           </section>
+          
         </div>
         <TableContainer
           sx={{
@@ -788,7 +789,7 @@ function ListaCurso() {
                   label="VALOR"
                   variant="outlined"
                 />
-
+                  
                 <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
                 <select id="area" style={styleSelect} className="form-control">
                   <option>Selecione:</option>
@@ -1005,6 +1006,7 @@ function ListaCurso() {
                     <option key={obj}>{obj}</option>
                   ))}
                 </select>
+                <input type={"text"} value={cursos.length} style={{backgroundColor:'red'}}/>
                     
               </section>
 
