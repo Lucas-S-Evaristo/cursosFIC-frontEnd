@@ -1,5 +1,12 @@
 .divHome{
-    background-color: aqua;
+    background-color: rgba(0, 255, 255, 0);
+    height: 100vh;
+    /*background-image: url(./FundoLogin.png);*/
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    
+
 }
 .headHome{
     background-color: black;
@@ -29,45 +36,57 @@
 .btLoginH:hover{
    
 
-    box-shadow: 0px 0px 10px 2px rgb(255, 120, 120);
+    box-shadow: 0px 0px 0.10vh 0.2vh rgb(255, 120, 120);
     
 }
 .divEstatisticas{
     position: fixed;
-    width: 99.2%;    
+    width: 100%;    
     height: 20%;
     top:7vh;
-    padding-left: 30.5vh;
-    margin: 1vh;
+    /*padding-left: 30.5vh;*/
     display: flex;
     flex-direction: row;
     
 }
 .secEst{
-    background-color: rgb(245, 245, 245);
-    width: 40%;
+    background-color: #062d4c;
+    width: 50%;
     padding: 5vh;
     font-size: 2vh;
     margin: 1vh;
-    border: 0.1 solid  rgb(196, 196, 196) ;
+    color: white;
     border-radius: 1vh;
-    box-shadow: 0px 0px 2vh 0.1vh ;
     display: flex;
-    flex-direction: row
+    flex-direction: row;
+    box-shadow: 0vh 0vh 1vh 0.12vh #000000;
 }
 .subtitleSec{
     font-size: 3vh;
-    color: rgb(255, 0, 0);
-    width: 46%;
+    color: white;
+    width: 48%;
     position: relative;
     top:30%;
-    left: -12.5%;
+    left: -7.5%;
 
-    background-color: blanchedalmond;
     text-transform: uppercase;
 
 }
 .pEST{
-    background-color: darkgray;
-
+    width: 14vh;
+    height: 18.2vh;
+    text-align: center;
+    padding-top:7vh;
+    font-size: 3vh;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 1vh;
+    color: rgb(255, 255, 255);
+    position: relative;
+    top: -5.1vh;
+    left: 30vh;
  }
+ .divEst{
+    top: 30%;
+    width: 20.2%;
+ }
+ 
