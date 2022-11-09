@@ -685,13 +685,13 @@ function ListaCurso() {
 
       <Modal
         show={modalAlterar}
-        onHide={fecharModalCadastrar}
+        onHide={fecharModalAlterar}
         size="xl"
         aria-labelledby="example-custom-modal-styling-title"
         scrollable={true}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Cadastrar</Modal.Title>
+          <Modal.Title>Alterar</Modal.Title>
         </Modal.Header>
 
         <Modal.Body style={{ height: 610 }}>
@@ -821,7 +821,7 @@ function ListaCurso() {
                 style={btnClose}
                 onClick={() => {
                   limparForm();
-                  setModalAlt(false);
+                  fecharModalAlterar()
                 }}
               >
                 <CancelPresentationIcon sx={{ marginRight: "10px" }} />
@@ -862,7 +862,7 @@ function ListaCurso() {
                   type="text"
                   label="Nome"
                   variant="outlined"
-                  value={nome}
+               
                 />
 
                 <TextField
@@ -874,7 +874,7 @@ function ListaCurso() {
                   type="text"
                   label="Objetivo"
                   variant="outlined"
-                  value={objetivo}
+                 
                 />
               </section>
 
@@ -888,7 +888,7 @@ function ListaCurso() {
                   type="text"
                   label="Pré requisito"
                   variant="outlined"
-                  value={preRequisito}
+                
                 />
                 <TextField
                   autoFocus
@@ -899,7 +899,7 @@ function ListaCurso() {
                   type="text"
                   label="Conteúdo Programático"
                   variant="outlined"
-                  value={conteudoProgramatico}
+                 
                 />
               </section>
 
@@ -933,7 +933,7 @@ function ListaCurso() {
                   name="area"
                   required
                   className="form-control"
-                  value={area}
+                 
                 >
                   <option>Selecione:</option>
 
@@ -959,26 +959,8 @@ function ListaCurso() {
                 </select>
               </section>
 
-              <section className="sectionComponents">
-                <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
-                <select
-                  id="nivelCad"
-                  style={styleSelect}
-                  name="nivel"
-                  required
-                  className="form-control"
-                >
-                  <option>Selecione:</option>
 
-                  {niveis.map((obj) => (
-                    <option key={obj}>{obj}</option>
-                  ))}
-                </select>
-                <input type={"text"} value={cursos.length} style={{backgroundColor:'red'}}/>
-                    
-              </section>
-
-              <div class="parteBotao" style={{ left: 330, top: 535 }}>
+              <div class="parteBotao" style={{ left: -10, top: 600 ,marginTop:10,marginBottom:5 }}>
                 <Button
                   variant="contained"
                   color="success"
