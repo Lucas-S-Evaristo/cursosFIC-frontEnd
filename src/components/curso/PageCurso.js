@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Modal from "react-bootstrap/Modal";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
@@ -147,43 +146,35 @@ function ListaCurso() {
       },
     });
 
-    if (resultado.status === 200) {
+    if (resultado) {
       // atualiza a lista com o curso alterado
       atualizaLista();
       // fecha a modal de alterar
-      setModalAlt(false);
+      setShow(false);
       // exibe a msg de alteração concluida
       msgAlteracao();
     }
   };
 
   // metodo que efetua o cadastro do curso
-  const cadastrar = () => {
-    let id = document.getElementById("nomeCad").value;
-    let objetivo = document.getElementById("objetivoCad").value;
-    let nome = document.getElementById("nomeCad").value;
-    let preRequisito = document.getElementById("preRequisitoCad").value;
-    let conteudoProgramatico = document.getElementById(
-      "conteudoProgramaticoCad"
-    ).value;
-    let tipoAtendimento = document.getElementById("tipoAtendimentoCad").value;
-    let nivel = document.getElementById("nivelCad").value;
-    let cargaHoraria = document.getElementById("cargaHorariaCad").value;
-    let area = document.getElementById("areaCad").value;
-    let valor = document.getElementById("valorCad").value;
-    
+  const cadastrar = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
 
     const cursoCad = {
-      objetivo: objetivo,
-      nome: nome,
-      preRequisito: preRequisito,
-      conteudoProgramatico: conteudoProgramatico,
-      tipoAtendimento: tipoAtendimento,
-      nivel: nivel,
-      cargaHoraria: cargaHoraria,
-      area: { id: area },
-      valor: valor,
+      objetivo: data.objetivo,
+      nome: data.nome,
+      preRequisito: data.preRequisito,
+      conteudoProgramatico: data.conteudoProgramatico,
+      tipoAtendimento: data.tipoAtendimento,
+      nivel: data.nivel,
+      cargaHoraria: data.cargaHoraria,
+      area: { id: data.area },
+      valor: data.valor,
     };
+    console.log(" cursoCad: " + cursoCad);
 
     fetch("http://localhost:8080/api/curso", {
       method: "post",
@@ -203,7 +194,7 @@ function ListaCurso() {
           msgCadastro();
           atualizaLista();
           //atualiza a página depois de um tempo
-          setOpenModal(false);
+          setShowCadastrar(false);
         });
       }
     });
@@ -380,7 +371,7 @@ function ListaCurso() {
     <>
       <MenuLateral />
 
-      <Box 
+      <Box
         component="main"
         sx={{
           backgroundColor: (theme) =>
@@ -464,7 +455,6 @@ function ListaCurso() {
             />
             <SearchIcon style={{ position: "absolute", top: 15, left: 7 }} />
           </section>
-          
         </div>
         <TableContainer
           sx={{
@@ -701,14 +691,26 @@ function ListaCurso() {
               src={require("./imagemModal.png")}
             ></img>
           </div>
-          <div className="modalCad">
-            <form>
-              <div>
+          <div>
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "nowrap",
+                justifyContent: "center",
+                width: "60%",
+                height: "80%",
+                position: "absolute",
+                alignItems: "baseline",
+              }}
+            >
+              <div >
                 <h2 style={titleModal}>ALTERAR CURSO</h2>
                 <TextField
+                  style={{margin: 10}}
                   id="nome"
-                  className="textField"
                   defaultValue={nome}
+                  className="textField"
                   label="NOME"
                   variant="outlined"
                 />
@@ -757,7 +759,7 @@ function ListaCurso() {
                   label="VALOR"
                   variant="outlined"
                 />
-                  
+
                 <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
                 <select id="area" style={styleSelect} className="form-control">
                   <option>Selecione:</option>
@@ -797,36 +799,38 @@ function ListaCurso() {
                   ))}
                 </select>
               </div>
-              <Button
-                variant="contained"
-                style={btnCad}
-                onClick={() => {
-                  alterar(id);
-                }}
-              >
-                <CreateIcon
-                  sx={{
-                    color: "#ffff",
-                    width: "100",
-                    border: "none",
-                    marginRight: "10px",
+              <div>
+                <Button
+                  variant="contained"
+                  style={btnCad}
+                  onClick={() => {
+                    alterar(id);
                   }}
-                />
-                Alterar
-              </Button>
+                >
+                  <CreateIcon
+                    sx={{
+                      color: "#ffff",
+                      width: "100",
+                      border: "none",
+                      marginRight: "10px",
+                    }}
+                  />
+                  Alterar
+                </Button>
 
-              <Button
-                variant="contained"
-                color="error"
-                style={btnClose}
-                onClick={() => {
-                  limparForm();
-                  fecharModalAlterar()
-                }}
-              >
-                <CancelPresentationIcon sx={{ marginRight: "10px" }} />
-                Fechar
-              </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  style={btnClose}
+                  onClick={() => {
+                    limparForm();
+                    fecharModalAlterar();
+                  }}
+                >
+                  <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+                  Fechar
+                </Button>
+              </div>
             </form>
           </div>
         </Modal.Body>
@@ -850,8 +854,19 @@ function ListaCurso() {
               src={require("./imagemModal.png")}
             ></img>
           </div>
-          <div className="modalCad">
-            <form className="formModalCad" onSubmit={cadastrar}>
+          <div>
+            <form
+              onSubmit={cadastrar}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "nowrap",
+                justifyContent: "center",
+                width: "60%",
+                height: "80%",
+                position: "absolute",
+              }}
+            >
               <section className="sectionComponents">
                 <TextField
                   autoFocus
@@ -862,7 +877,6 @@ function ListaCurso() {
                   type="text"
                   label="Nome"
                   variant="outlined"
-               
                 />
 
                 <TextField
@@ -874,7 +888,6 @@ function ListaCurso() {
                   type="text"
                   label="Objetivo"
                   variant="outlined"
-                 
                 />
               </section>
 
@@ -888,7 +901,6 @@ function ListaCurso() {
                   type="text"
                   label="Pré requisito"
                   variant="outlined"
-                
                 />
                 <TextField
                   autoFocus
@@ -899,7 +911,6 @@ function ListaCurso() {
                   type="text"
                   label="Conteúdo Programático"
                   variant="outlined"
-                 
                 />
               </section>
 
@@ -919,7 +930,7 @@ function ListaCurso() {
                   id="valorCad"
                   sx={styleTextField}
                   className="textField"
-                  name="nome"
+                  name="valor"
                   type="number"
                   label="Valor"
                   variant="outlined"
@@ -933,7 +944,6 @@ function ListaCurso() {
                   name="area"
                   required
                   className="form-control"
-                 
                 >
                   <option>Selecione:</option>
 
@@ -958,9 +968,25 @@ function ListaCurso() {
                   ))}
                 </select>
               </section>
+              <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
 
+              <select
+                id="nivelCad"
+                style={styleSelect}
+                name="nivel"
+                required
+                className="form-control"
+              >
+                <option>Selecione:</option>
 
-              <div class="parteBotao" style={{ left: -10, top: 600 ,marginTop:10,marginBottom:5 }}>
+                {niveis.map((obj) => (
+                  <option key={obj}>{obj}</option>
+                ))}
+              </select>
+
+              <div
+                style={{ left: -10, top: 600, marginTop: 10, marginBottom: 5 }}
+              >
                 <Button
                   variant="contained"
                   color="success"

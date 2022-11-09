@@ -1548,7 +1548,7 @@ function CadTurma() {
                 </div>
               </div>
 
-              <div class="parteBotao" style={{ left: 330, top: 535 }}>
+              <div class="parteBotao" style={{ left: 600, top: 535 }}>
                 <Button
                   variant="contained"
                   color="success"

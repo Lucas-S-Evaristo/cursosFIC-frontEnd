@@ -323,7 +323,7 @@ function Formulario({ post, cadastrar, sucesso, erroCad, curso, erroServ, manter
                     required
                     name="valor" className="valor_cursos"
                     type="number" placeholder="valor"
-                    value={valor}
+                    
                     onChange={(e) => {
 
                       setValor(e.target.value)
