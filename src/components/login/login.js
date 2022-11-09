@@ -54,6 +54,28 @@ const msgSucessoSenha = () => {
   });
 };
 
+const msgErroSenhaNaoIgual = () => {
+  toast.error("As senhas não são iguais! ", {
+    position: "top-right",
+
+    autoClose: 2000,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
+
 const msgMinimoSenha = () => {
   toast.error("Sua senha precisa ter no minimo 4 caracteres! ", {
     position: "top-right",
@@ -77,8 +99,10 @@ const msgMinimoSenha = () => {
 };
 
 
+
 function Login() {
- 
+  
+  const [usuario2 , setusuario] = useState([]);
   const [modalSenha, setShowSenha] = useState(false);
 
   const abrirModalSenha = () => setShowSenha(true);
@@ -113,14 +137,19 @@ function Login() {
             msgErroLogin()
 
         }else if(result.status === 307){
+          result = await result.json();
+          console.log(result)
           
+          setusuario(result)
           abrirModalSenha()
           
 
         } else if (result) {
           result = await result.json();
      
-          const {  token  } =  result;
+          const { token } =  result;
+
+          console.log("EEEEEEEEEEEEEE")
 
           
         
@@ -166,10 +195,41 @@ function Login() {
         const formData = new FormData(event.target);
         /*formata em um objeto em  json */
         const data = Object.fromEntries(formData);
+
+        if(data.senha === data.senha2){
+            if(data.senha.length >= 4){
+       
+
+        console.log(usuario2)
+   
         console.log(data);
-        let result = await fetch(`http://localhost:8080/api/usuario/redefinirSenha`, {
-          method: "post",
-          body: JSON.stringify(data),
+
+        let obj ={
+
+          id:usuario2.id,
+
+          nome:usuario2.nome,
+
+          email:usuario2.email,
+
+          nif:usuario2.nif,
+
+          tipoUsuario: usuario2.tipoUsuario,
+
+          senha:data.senha
+
+          
+        }
+
+      
+
+       
+
+        console.log(obj)
+
+        let result = await fetch(`http://localhost:8080/api/usuario/redefinirSenha/${usuario2.id}`   , {
+          method: "PUT",
+          body: JSON.stringify(obj),
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
@@ -179,14 +239,26 @@ function Login() {
             msgMinimoSenha()
 
       
-        }else{
-      
-          msgSucessoSenha()
+        }else if(result){
+
           fecharModalSenha()
-          setInterval(function () {window.location.reload();  }, 1500);
+
+          setInterval(function () {window.location.reload();}, 1500);
+
+          msgSucessoSenha()
+
+          console.log(result)
       
         }
-      };
+      
+      }else{
+        msgMinimoSenha()
+        
+      }
+    }else{
+      msgErroSenhaNaoIgual()
+    }
+    };
 
 
     return(
@@ -233,16 +305,35 @@ function Login() {
             </div>
             
             <Modal
+
+            
                 show={modalSenha}
                 onHide={fecharModalSenha}
                 backdrop="static"
                 keyboard={false}>
                
                 <Modal.Body className="redefinirSenha">
+
+                <ToastContainer
+          position="top-right"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
                    <form className="redefinirSenha" onSubmit={redefinirSenha}>
 
                     <h5 className="tituloRedefinir">Por favor, Redefina sua senha!</h5>
+
                    <input className="inputRedefinir" name="senha" type="password"/>
+
+                   <h5 className="tituloRedefinir2">Por favor, Confirme sua senha!</h5>
+
+                   <input className="inputRedefinir2" name="senha2" type="password"/>
 
                    <div class="parteBotaoRedefinirSenha">
                                 <Button variant="contained" color="success" type="submit">Redefinir</Button>

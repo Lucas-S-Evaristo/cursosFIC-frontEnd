@@ -214,11 +214,33 @@
     
 }
 
+.tituloRedefinir2{
+    position: absolute;
+    top: 6em;
+    left: 5.3em;
+    color: white;
+    text-align: center;
+    
+}
+
 .inputRedefinir{
     margin: auto;
     position: absolute;
     left: 9em;
     top: 4em;
+    background-color: transparent;
+    color: white;
+    border:0px;
+    border-bottom: 0.1em solid white;
+    outline: 0px;
+
+}
+
+.inputRedefinir2{
+    margin: auto;
+    position: absolute;
+    left: 9em;
+    margin-top: 7em;
     background-color: transparent;
     color: white;
     border:0px;
@@ -233,10 +255,18 @@
 
 }
 
+.inputRedefinir2:focus{
+    box-shadow: 0 0 0 0;
+    outline: 0;
+
+}
+
 .parteBotaoRedefinirSenha{
     display: flex;
     position: relative;
     right: 2em;
-    margin-top: 4.5em;
+    margin-top: 11em;
     left: 10em;
 }
+
+
