@@ -32,7 +32,7 @@ import PgHorario from "./components/horario/PgHorario";
 
 import ListaArea from "./components/area/paginaArea";
 
-import ListaCursos from "./components/curso/listaCursos";
+import ListaCursos from "./components/curso/PageCurso";
 import Folder from "./components/folders/Folder";
 import Senha from "./components/login/redefinirSenha";
 

@@ -1,4 +1,4 @@
-/* .lista{    
+.lista{    
     text-align: center;
     
 }
@@ -19,6 +19,8 @@ table{
     text-align: center;
 }
 
+
+
 .textoExcluir{
     color: red;
     text-align: center;
@@ -26,7 +28,7 @@ table{
 }
 
 .bodyExcluir{
-    background-color: red;
+    background-color: rgb(165, 165, 165);
 }
 
 .tituloExcluir{
@@ -36,7 +38,7 @@ table{
 .painel{
     display: block;
     float: left;
-    background-color: #14213d;
+    background-color: #0051ff;
     height: 100vh;
     position: fixed;
     width: 15%;
@@ -131,7 +133,7 @@ table{
 }
 
 .divAlterar{
-    background-color: #ffc107;
+    background-color: #807554;
     
    
 }
@@ -142,7 +144,7 @@ table{
 }
 
 .botaoAlterar{
-    background-color: #ffc107;
+    background-color: #fcfcfc;
     margin-left: 1em;
     
 }
@@ -156,4 +158,4 @@ table{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-} */
+}
