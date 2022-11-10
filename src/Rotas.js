@@ -35,7 +35,7 @@ import ListaArea from "./components/area/paginaArea";
 import ListaCursos from "./components/curso/PageCurso";
 import Folder from "./components/folders/Folder";
 import Senha from "./components/login/redefinirSenha";
-
+import Home from "./components/home/home";
 function Rotas() {
 
   useEffect(() => {
@@ -219,7 +219,7 @@ function Rotas() {
 
         <Route path="listaCurso" element={<ListaCursos/>}/>
         <Route path="folders" element={<Folder/>}/>
-          
+        <Route path="/home" element={<Home/>}/>
       </Routes>
     );
   
