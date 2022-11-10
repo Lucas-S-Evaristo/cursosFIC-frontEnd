@@ -24,6 +24,27 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuLateral from "../menu/MenuLateral";
+const msgDeletadoerror = () => {
+  toast.warning(" Não e possível deletar Curso porque ele está associado a uma Turma ", {
+    position: "top-right",
+
+    autoClose: 4500,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
 
 function ListaCurso() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
@@ -252,7 +273,10 @@ function ListaCurso() {
       method: "DELETE",
     });
     // caso exista um curso a ser deletado, ele atualiza a lista assim removendo o curso deletado
-    if (result) {
+    if(result.status === 409){
+      msgDeletadoerror();
+       
+    } else if (result) {
       atualizaLista();
       msgExclusao();
     }
