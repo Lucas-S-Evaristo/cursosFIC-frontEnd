@@ -251,6 +251,12 @@ const abrirModalCadastrar = () => setShowCadastrar(true);
 
 const fecharModalCadastrar = () => setShowCadastrar(false);
 
+const [modalExcluir, setShowExcluir] = useState(false);
+
+   const abrirModalExcluir = () => setShowExcluir(true);
+
+    const fecharModalExcluir = () => setShowExcluir(false);
+
  //quando handleShow é chamado ele da um true no show e abre a modal
 const abrirModalAlterar = () => setShow(true);
 
@@ -314,11 +320,40 @@ const fecharModalAlterar = () => setShow(false);
                       <ModeEditOutlinedIcon /></button>
 
                   </StyledTableCell>
-                  <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                  <StyledTableCell><button className="botaoDeleteTurma" onClick={abrirModalExcluir}><DeleteForeverOutlinedIcon /></button>
+                  
+                  
+                  <Modal 
+              show={modalExcluir} 
+              onHide={fecharModalExcluir}
+              backdrop="static"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered>
+
+
+                  <Modal.Header closeButton className="bodyExcluir">
+                    <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
+
+                  <Modal.Footer className="botaoModalExcluir">
+                    <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                      Não
+                    </Button>
+                    <Button variant="contained" color="success" onClick={() => { 
+                //excluir curso pelo id
+                deletar(id)
+                fecharModalExcluir()}}>
+                      Sim
+                    </Button>
+                  </Modal.Footer>
+
+                </Modal></StyledTableCell>
                 </StyledTableRow>
               ))
               }
             </TableBody>
+            
           </Table>
           <TablePagination
 

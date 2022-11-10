@@ -103,7 +103,7 @@ header{
 
 .parte2{
     position: absolute;
-    left: 17em;
+    left: 16em;
     top:0em;
     width: 20%;
    
@@ -112,7 +112,7 @@ header{
 .parte3{
     position: absolute;
     left: 1em;
-    top:10em;
+    top:9em;
     width: 20%;
     
 }
@@ -120,7 +120,7 @@ header{
 .select1{
     position: absolute;
     left: 16em;
-    top: 10em;
+    top: 9em;
     width: 20%;
   
 }
@@ -128,15 +128,15 @@ header{
 .select2{
     position: absolute;
     left: 1em;
-    top:20em;
+    top:14em;
     width: 20%;
   
 }
 
 .select3{
     position: absolute;
-    left: 17em;
-    top:20em;
+    left: 16em;
+    top:14em;
     width: 20%;
   
 }
@@ -153,7 +153,7 @@ header{
 .horarioInicio{
     position: absolute;
     left: 1em;
-    top:28.5em;
+    top:24em;
     width: 20%;
     
 }
@@ -161,7 +161,7 @@ header{
 .horarioFinal{
     position: absolute;
     left: 16em;
-    top:28.5em;
+    top:24em;
     width: 20%;
     
 }
@@ -188,13 +188,10 @@ header{
     transform: translate(-90%, -60%);
 }
 
-
-
-
 .parteBotao{
-    position: absolute;
-    top:33em;
-    top: 600px;
+    position: absolute !important;
+    top:33em !important;
+    left: 7em !important;
 }
 
 .parteBotao Button{
@@ -202,12 +199,41 @@ header{
 }
 .parteBotao2{
     position: absolute;
-    top:33em;
+    top:34em;
     top: 600px;
 }
 
 .parteBotao2 Button{
     margin-left: 2em;
+}
+
+.diaSemana{
+    position: absolute !important;
+    top: 28em !important;
+    left: 4em !important;
+}
+
+.diaSemanaLabel{
+    position: absolute !important;
+    top: -6em !important;
+
+}
+.textoExcluir{
+    color: red;
+    text-align: center;
+
+}
+
+.bodyExcluir{
+    background-color: red;
+}
+
+.tituloExcluir{
+    color: white;
+}
+
+.botaoModalSim{
+    margin-right: 1em !important;
 }
 
 

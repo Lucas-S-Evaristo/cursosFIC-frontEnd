@@ -174,11 +174,13 @@ function CadTurma() {
   const handleClose = () => setOpen(false);
 
   const handleClose2 = () => setOpen(false);
-  const values = {
-    someDate: "2022-09-19",
-  };
 
+  const [modalExcluir, setShowExcluir] = useState(false);
 
+   const abrirModalExcluir = () => setShowExcluir(true);
+
+    const fecharModalExcluir = () => setShowExcluir(false);
+ 
   // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
   useEffect(() => {
     fetch("http://localhost:8080/api/turma")
@@ -236,7 +238,7 @@ function CadTurma() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       draggable: true,
       progress: undefined,
     });
@@ -249,7 +251,7 @@ function CadTurma() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       draggable: true,
       progress: undefined,
     });
@@ -262,7 +264,7 @@ function CadTurma() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       draggable: true,
       progress: undefined,
     });
@@ -275,7 +277,7 @@ function CadTurma() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       draggable: true,
       progress: undefined,
     });
@@ -288,7 +290,7 @@ function CadTurma() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       draggable: true,
       progress: undefined,
     });
@@ -301,7 +303,7 @@ function CadTurma() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       draggable: true,
       progress: undefined,
     });
@@ -321,17 +323,17 @@ function CadTurma() {
 
     const turmas = {
       id: 0,
-      qtdMatriculas: qtdMatriculas,
+      qtdMatriculas: data.qtdMatriculas,
       instrutor: { id: idInstrutor },
       curso: { id: idCurso },
       periodo: ValuePeriodo,
-      dataInicio: dataInicioFormatada,
-      dataTermino: dataTerminoFormatada,
-      valor: valor,
+      dataInicio: data.dataInicio,
+      dataTermino: data.dataTermino,
+      valor: data.valor,
       status: ValueStatus,
       ambiente: { id: idAmbiente },
-      numMaxVagas: numMaxVagas,
-      numMinVagas: numMinVagas,
+      numMaxVagas: data.numMaxVagas,
+      numMinVagas: data.numMinVagas,
       simEnao: simEnao,
       diaSemana: valuediaSemana,
       horarioInicio: { id: horarioInicioValue },
@@ -381,6 +383,9 @@ function CadTurma() {
               setShowCadastrar(false)
               // exibindo a msg de aviso de cadastro
               msgCadastro();
+              setInterval(function () {
+                window.location.reload();
+              }, 1500);
             });
         }
       });
@@ -390,6 +395,8 @@ function CadTurma() {
 
   // função que espera receber um id
   const alterar = async (event) => {
+
+    event.preventDefault()
 
     /* pegar todos  os valores do evento */
 
@@ -442,10 +449,14 @@ function CadTurma() {
 
       alert("OII")
     }
-    if (result.status === 200) {
-      setOpen(false);
+    if (result) {
+      setInterval(function () {
+        window.location.reload();
+      }, 1500);
+
+      fecharModalAlterar()
       atualizaLista();
-      msgExclusao();
+      msgAlteracao();
 
     }
   };
@@ -513,9 +524,7 @@ function CadTurma() {
   };
 
   // metodo que limpa os inputs do form
-  const limparForm = () => {
-    setObjTurma("");
-  };
+
 
   // metodo que busca uma turma
   const buscaTurma = async (event) => {
@@ -568,16 +577,7 @@ function CadTurma() {
     }
   };
 
-  // toda vez que a modal é chamada, ela sera limpa e fechada
-  const clearClose = () => {
-    handleClose();
-    limparForm();
-  };
 
-  const clearClose2 = () => {
-    handleClose2();
-    limparForm();
-  };
 
   const [modalAlterar, setShow] = useState(false);
 
@@ -600,7 +600,7 @@ function CadTurma() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -609,13 +609,13 @@ function CadTurma() {
 
   // metodo de msg de exclusão feita com sucesso
   const msgExclusao = () => {
-    toast.error("Turma Removido com Sucesso", {
+    toast.success("Turma Removido com Sucesso", {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -624,13 +624,13 @@ function CadTurma() {
 
   // metodo de msg de alteração feita com sucesso
   const msgAlteracao = () => {
-    toast.warn("Turma Alterado com Sucesso", {
+    toast.success("Turma Alterado com Sucesso", {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "light",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -687,8 +687,6 @@ function CadTurma() {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
-  console.log(p)
 
   return (
     <>
@@ -809,7 +807,7 @@ function CadTurma() {
                     horarioInicio,
                     horarioTermino,
                     diasDaTurma,
-                   
+
                   }) => (
                     <StyledTableRow>
                       <StyledTableCell>{id}</StyledTableCell>
@@ -875,15 +873,43 @@ function CadTurma() {
                         <button
 
                           className="botaoDeleteTurma"
-                          onClick={() => deletar(id)}
+                          onClick={abrirModalExcluir}
                         >
                           <DeleteForeverOutlinedIcon />
                         </button>
+
+                        <Modal 
+              show={modalExcluir} 
+              onHide={fecharModalExcluir}
+              backdrop="static"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered>
+
+
+                  <Modal.Header closeButton className="bodyExcluir">
+                    <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
+
+                  <Modal.Footer className="botaoModalExcluir">
+                    <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                      Não
+                    </Button>
+                    <Button variant="contained" color="success" onClick={() => { 
+                //excluir curso pelo id
+                deletar(id)
+                fecharModalExcluir()}}>
+                      Sim
+                    </Button>
+                  </Modal.Footer>
+
+                </Modal>
                       </StyledTableCell>
                     </StyledTableRow>
                   )
                 )}
             </TableBody>
+            
           </Table>
           <TablePagination
             sx={{
@@ -915,6 +941,7 @@ function CadTurma() {
         draggable
         pauseOnHover
       />
+      
 
       <Modal
         show={modalAlterar}
@@ -935,7 +962,7 @@ function CadTurma() {
             ></img>
           </div>
           <div className="modalCad">
-            <form className="formModalCad" onSubmit={alterar}   >
+            <form className="formModalCad" onSubmit={alterar}>
               {/*  input de quantidade de mátriculas */}
               {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
@@ -970,21 +997,6 @@ function CadTurma() {
               </div>
 
               <div className="parte2">
-                <TextField
-                  value={valor}
-                  sx={styleTextField}
-                  className="textField"
-                  onChange={(e) => {
-                    {
-                      setValor(e.target.value);
-                      capturarDados(e);
-                    }
-                  }}
-                  name="valor"
-                  type="text"
-                  label="VALOR"
-                  variant="standard"
-                />
 
                 <TextField
                   value={numMinVagas}
@@ -999,9 +1011,7 @@ function CadTurma() {
                   label="Minimo de vagas"
                   variant="standard"
                 />
-              </div>
 
-              <div className="parte3">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Ambiente
@@ -1021,6 +1031,10 @@ function CadTurma() {
                     ))}
                   </Select>
                 </FormControl>
+              </div>
+
+              <div className="parte3">
+
 
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
@@ -1160,7 +1174,7 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }}>
+              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }}  className="diaSemana">
                 <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
                 <Select
                   labelId="demo-multiple-checkbox-label"
@@ -1217,9 +1231,11 @@ function CadTurma() {
                 </div>
               </div>
 
-              <div class="parteBotao2" style={{ left: 330, top: 535 }}>
+              <div class="parteBotao" style={{ left: 330, top: 535 }}>
                 <Button
-
+                  variant="contained"
+                  color="success"
+                 
                   type="submit"
                 >
                   Alterar
@@ -1257,13 +1273,10 @@ function CadTurma() {
 
               <div className="parte1">
                 <TextField
-                  value={qtdMatriculas}
+
                   sx={styleTextField}
                   className="textField"
-                  onChange={(e) => {
-                    setqtdMatriculas(e.target.value);
-                    capturarDados(e);
-                  }}
+
                   name="qtdMatriculas"
                   type="number"
                   label="qtd de Matriculas"
@@ -1271,13 +1284,10 @@ function CadTurma() {
                 />
 
                 <TextField
-                  value={numMaxVagas}
+
                   sx={styleTextField}
                   className="textField"
-                  onChange={(e) => {
-                    setnumMaxVagas(e.target.value);
-                    capturarDados(e);
-                  }}
+
                   name="numMaxVagas"
                   type="number"
                   label="Máximo de vagas:"
@@ -1286,38 +1296,18 @@ function CadTurma() {
               </div>
 
               <div className="parte2">
-                <TextField
-                  value={valor}
-                  sx={styleTextField}
-                  className="textField"
-                  onChange={(e) => {
-                    {
-                      setValor(e.target.value);
-                      capturarDados(e);
-                    }
-                  }}
-                  name="valor"
-                  type="text"
-                  label="VALOR"
-                  variant="standard"
-                />
 
                 <TextField
-                  value={numMinVagas}
+
                   sx={styleTextField}
                   className="textField"
-                  onChange={(e) => {
-                    setnumMinVagas(e.target.value);
-                    capturarDados(e);
-                  }}
+
                   name="numMinVagas"
                   type="number"
                   label="Minimo de vagas"
                   variant="standard"
                 />
-              </div>
 
-              <div className="parte3">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Ambiente
@@ -1340,6 +1330,10 @@ function CadTurma() {
                     ))}
                   </Select>
                 </FormControl>
+              </div>
+
+              <div className="parte3">
+
 
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
@@ -1494,7 +1488,7 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }}>
+              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
                 <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
                 <Select
                   labelId="demo-multiple-checkbox-label"
@@ -1521,14 +1515,12 @@ function CadTurma() {
                   <TextField
                     sx={estiloData}
                     label="Data inicio"
-                    onChange={(e) => {
-                      setDataInicio(e.target.value);
-                      capturarDados(e);
-                    }}
+                    name="dataInicio"
+
                     InputLabelProps={{ shrink: true, required: true }}
                     type="date"
                     variant="standard"
-                    value={dataInicioFormatada}
+
                   />
                 </div>
 
@@ -1536,23 +1528,21 @@ function CadTurma() {
                   <TextField
                     sx={estiloData}
                     variant="standard"
+                    name="dataTermino"
                     label="Data Terminio"
-                    onChange={(e) => {
-                      setDataTermino(e.target.value);
-                      capturarDados(e);
-                    }}
+
                     InputLabelProps={{ shrink: true, required: true }}
                     type="date"
-                    value={dataTerminoFormatada}
+
                   />
                 </div>
               </div>
 
-              <div class="parteBotao" style={{ left: 600, top: 535 }}>
+              <div class="parteBotao" style={{ left: 330, top: 535 }}>
                 <Button
                   variant="contained"
                   color="success"
-                  //onClick={() => cadastrar(objTurma.id)}
+                 
                   type="submit"
                 >
                   cadastrar
@@ -1580,39 +1570,7 @@ const estiloData = {
   marginBottom: "2em",
 };
 
-const styleTitle = {
-  textAlign: "center",
-  marginBottom: "30px",
-  color: "blue",
-};
 
-const styletSearch = {
-  border: "2px solid blue",
-  alignItems: "center",
-  marginLeft: "500px",
-  padding: "10px",
-  borderRadius: "6px",
-  marginBottom: "30px",
-  boxShadow: 24,
-};
-
-const snackStyle = {
-  float: "right",
-};
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  display: "flex",
-  flexDirection: "row",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 
 export default CadTurma;

@@ -32,6 +32,9 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { height } from "@mui/system";
 import { ListItem } from "@mui/material";
 import MenuLateral from "../menu/MenuLateral";
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 function PageUsuario() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
@@ -530,13 +533,9 @@ function PageUsuario() {
               <Grid item>
                 <Button
                   onClick={handleOpen}
-                  variant="contained"
-                  style={{ backgroundColor: "#a2d2ff" }}
-                  sx={{ mr: 1 }}
+                  variant="contained" color="primary"
                 >
-                  <AddCircleIcon sx={{ marginRight: "12px", color: "#ffff" }} />{" "}
-                  ADICIONAR USUÁRIO
-                </Button>
+                  <AddOutlinedIcon />Novo</Button>
               </Grid>
             </Grid>
           </Toolbar>
@@ -568,27 +567,19 @@ function PageUsuario() {
                   <th scope="row">{obj.nif}</th>
                   <th scope="row">{obj.tipoUsuario}</th>
                   <th scope="row">
-                    <Button
-                      variant="contained"
-                      style={btnAlterar}
+                  <button className="botaoAlterarTurma"
                       onClick={() => {
                         selecionarUsuario(indice);
                         setModalAlt(true);
                       }}
                     >
-                      <CreateIcon sx={{ marginRight: "10px" }} />
-                      Alterar
-                    </Button>
+                      <ModeEditOutlinedIcon /></button>
                   </th>
                   <th scope="row">
-                    <Button
-                      variant="contained"
-                      style={btnExcluir}
+                  <button className="botaoDeleteTurma"
                       onClick={() => deletar(obj.id)}
                     >
-                      <DeleteIcon sx={{ marginRight: "10px" }} />
-                      Remover
-                    </Button>
+                    <DeleteForeverOutlinedIcon /></button>
                   </th>
                 </tr>
               ))}
