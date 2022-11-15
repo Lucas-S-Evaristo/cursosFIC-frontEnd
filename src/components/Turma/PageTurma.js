@@ -309,6 +309,19 @@ function CadTurma() {
     });
   };
 
+  const erroMinVagasMaior = () => {
+    toast.error("O número minimo de vagas não pode ser maior que o número máximo!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   // metodo que efetua o cadastro da turma
   const cadastrar = async (event) => {
 
@@ -371,6 +384,9 @@ function CadTurma() {
 
         } else if (retorno.status === 406) {
           erroHorariosIguais();
+
+        }else if (retorno.status === 451) {
+          erroMinVagasMaior();
 
         } else {
           retorno

@@ -221,12 +221,6 @@ function Login() {
           
         }
 
-      
-
-       
-
-        console.log(obj)
-
         let result = await fetch(`http://localhost:8080/api/usuario/redefinirSenha/${usuario2.id}`   , {
           method: "PUT",
           body: JSON.stringify(obj),

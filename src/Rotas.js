@@ -36,6 +36,18 @@ import ListaCursos from "./components/curso/PageCurso";
 import Folder from "./components/folders/Folder";
 import Senha from "./components/login/redefinirSenha";
 import Home from "./components/home/home";
+import PaginaLog from "./components/log/paginaLog";
+
+import LogArea from "./components/log/logArea/logArea";
+import LogCurso from "./components/log/logCurso/LogCurso";
+
+import LogHorario from "./components/log/logHorario/LogHorario";
+
+import LogInstrutor from "./components/log/logInstrutor/LogInstrutor";
+
+import LogTurma from "./components/log/logTurma/LogTurma";
+
+import LogUsuario from "./components/log/logUsuario/LogUsuario";
 function Rotas() {
 
   useEffect(() => {
@@ -46,8 +58,7 @@ function Rotas() {
 
 
   const token = sessionStorage.getItem("token");
-  {console.log(token)}
-
+ 
 
 
 
@@ -218,8 +229,24 @@ function Rotas() {
         }/>
 
         <Route path="listaCurso" element={<ListaCursos/>}/>
+
         <Route path="folders" element={<Folder/>}/>
+
         <Route path="/home" element={<Home/>}/>
+
+        <Route path="/logs" element={<PaginaLog/>} />
+
+        <Route path="/logArea" element={<LogArea/>} />
+
+        <Route path="/logCurso" element={<LogCurso/>} />
+
+        <Route path="/logHorario" element={<LogHorario/>} />
+
+        <Route path="/logInstrutor" element={<LogInstrutor/>} />
+
+        <Route path="/logTurma" element={<LogTurma/>} />
+
+        <Route path="/logUsuario" element={<LogUsuario/>} />
       </Routes>
     );
   

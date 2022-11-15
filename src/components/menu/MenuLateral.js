@@ -11,6 +11,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ImportContactsTwoToneIcon from '@mui/icons-material/ImportContactsTwoTone';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import LockIcon from '@mui/icons-material/Lock';
 import CadTurma, { esconder } from "../Turma/PageTurma";
 
 
@@ -32,7 +33,6 @@ let token = sessionStorage.getItem("token")
 
 function MenuLateral() {
 
-  console.log(p)
 
   return (
     <>
@@ -123,6 +123,18 @@ function MenuLateral() {
               <Nav.Link className="navLink" href="/listaArea">
                 <ImportContactsTwoToneIcon sx={{ marginRight: "30px" }} />
                 Área
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
+              <Nav.Link className="navLink" href="/logs">
+                <LockIcon  sx={{ marginRight: "30px" }} />
+                Logs
               </Nav.Link>
             </Nav.Item>
 

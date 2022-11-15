@@ -81,7 +81,7 @@ const excluirSucesso = () => {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: 'colored',
+      theme: 'dark',
       draggable: true,
       progress: undefined,
   })
@@ -196,7 +196,7 @@ const msgDeletadoerror = () => {
     let result = await fetch(`http://localhost:8080/api/area/${id}`, {
         method: "DELETE"
     })
-    // caso já exista uma turma a ser deletado, ele atualiza a lista assim removendo a turma deletado
+    // caso já exista uma area a ser deletado, ele atualiza a lista assim removendo a area deletada
     if(result.status === 409){
       msgDeletadoerror();
 
@@ -243,6 +243,34 @@ const msgDeletadoerror = () => {
     setPage(0);
 };
 
+// metodo que busca uma area
+const buscarArea = async (event) => {
+  // valor que esta sendo digitado no input de pesquisa
+  let key = event.target.value;
+  console.log(key);
+
+  // verifica se existe 'valor'
+  if (key) {
+    // fazendo uma requisição na api de buscar e passando a key
+    let result = await fetch(
+      "http://localhost:8080/api/area/buscar/" + key
+    );
+    // tranformando a promessa em json
+    result = await result.json();
+    console.log(result);
+
+    // verifica se existe algum resultado
+    if (result) {
+      // setando as areas que a api retornou de sua resposta de busca
+      setArea(result);
+    }
+
+    // caso não exista chave, atualiza a lista
+  } else {
+    getArea();
+  }
+};
+
 const [modalCadastrar, setShowCadastrar] = useState(false);
 
 const [modalAlterar, setShow] = useState(false);
@@ -275,6 +303,7 @@ const fecharModalAlterar = () => setShow(false);
         <TextField
         id="input-with-icon-textfield"
         label="TextField"
+        onChange={buscarArea}
         className="areaPesquisa"
         InputProps={{
           startAdornment: (

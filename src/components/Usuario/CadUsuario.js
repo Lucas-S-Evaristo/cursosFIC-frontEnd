@@ -35,18 +35,34 @@ import MenuLateral from "../menu/MenuLateral";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import "../Usuario/usuario.css"
+
+let payload = sessionStorage.getItem("payload")
+
+payload = JSON.parse(payload)
 
 function PageUsuario() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
   // estado da modal
   const [open, setOpen] = useState(false);
   const [modalAlt, setModalAlt] = useState(false);
+
+  const [modalConfirmar, setModalConfirmar] = useState(false);
+
+  const [modalExcluir, setModalExcluir] = useState(false);
+
   // estado do obj do ususario
   const [objUsuario, setObjUsuario] = useState(usuario);
   // metodo que abre a modal
   const handleOpen = () => setOpen(true);
   // metodo que fecha a modal
   const handleClose = () => setOpen(false);
+
+
+  const fecharConfirmar = () => setModalConfirmar(false);
+
+  const fecharExcluir = () => setModalExcluir(false);
+
   // variavel que tem acesso a um array com todos os usuarios
   const [usuarios, setUsuario] = useState([]);
   // variavel que tem acesso a um array com todos os tipos de usuarios
@@ -143,6 +159,8 @@ function PageUsuario() {
 
   // metodo que deleta o usuario
   const deletar = async (id) => {
+
+
     let result = await fetch(`http://localhost:8080/api/usuario/${id}`, {
       method: "DELETE",
     });
@@ -497,6 +515,8 @@ function PageUsuario() {
           </Paper>
         </Box>
       </Modal>
+
+      
       <Paper
         sx={{
           maxWidth: 12000,
@@ -577,9 +597,94 @@ function PageUsuario() {
                   </th>
                   <th scope="row">
                   <button className="botaoDeleteTurma"
-                      onClick={() => deletar(obj.id)}
+                      onClick={() => {
+
+                        console.log(payload)
+
+                        console.log("obj.id: ", obj.id)
+
+                        console.log("payload.id_usuario: ", payload.id_usuario)
+
+                        if(payload.id_usuario === obj.id){
+                            setModalConfirmar(true)
+
+                        }else{
+
+                          setModalExcluir(true)
+                        }
+
+                      }}
                     >
                     <DeleteForeverOutlinedIcon /></button>
+
+                    <Modal
+                      open={modalConfirmar}
+                      onClose={clearClose}
+                      aria-labelledby="modal-title"
+                      aria-describedby="modal-description"
+                    >
+                       <Box sx={style2}>
+                          
+                        <header className="headerConfirmar">
+                          <h5 className="tituloAlertaConfirm">ALERTA!</h5>
+                          </header>
+
+                      <section>
+                        <h4 className="h4Confirmar">Tem certeza que deseja se deletar? Você perderá sua sessão e será redirecionado para a tela de login.</h4>
+                        </section>
+
+                        <div className="botaoModalConfirmar">
+
+                          <Button  variant="contained" color="error" className="ConfirmarNao" onClick={() => fecharConfirmar()}>Não</Button>
+
+                          <Button Button variant="contained" color="success" onClick={ () => {
+
+                          deletar(obj.id)
+                          sessionStorage.removeItem("payload")
+                          sessionStorage.removeItem("token")
+                          window.location.href = 'http://localhost:3000/login' 
+
+
+                          } }> Sim</Button>
+
+                        </div>
+
+                        </Box>
+                      
+                      </Modal>
+
+
+                      <Modal
+                      open={modalExcluir}
+                      onClose={clearClose}
+                      aria-labelledby="modal-title"
+                      aria-describedby="modal-description"
+                    >
+                       <Box sx={style2}>
+                          
+                        <header className="headerConfirmar">
+                          <h5 className="tituloAlertaConfirm">ALERTA!</h5>
+                          </header>
+
+                      <section>
+                        <h4 className="h4Confirmar">Tem certeza que deseja excluir este usuário?</h4>
+                        </section>
+
+                        <div className="botaoModalConfirmar">
+
+                          <Button  variant="contained" color="error" className="ConfirmarNao" onClick={() => fecharExcluir()}>Não</Button>
+
+                          <Button Button variant="contained" color="success" onClick={ () => {
+
+                          deletar(obj.id)
+                          
+                          } }> Sim</Button>
+
+                        </div>
+
+                        </Box>
+                      
+                      </Modal>
                   </th>
                 </tr>
               ))}
@@ -671,6 +776,21 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "37px",
   border: "3px solid #a2d2ff",
+  boxShadow: 240,
+  p: 4,
+};
+
+const style2 = {
+  position: "absolute",
+  top: "50%",
+  display: "flex",
+  flexDirection: "row",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  
+  border: "3px solid red",
   boxShadow: 240,
   p: 4,
 };
