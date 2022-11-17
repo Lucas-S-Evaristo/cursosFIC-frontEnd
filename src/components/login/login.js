@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button, TextField } from "@mui/material";
 import { AlterarSenha, redefinirSenha, verificarEmail } from "./redefinirSenha";
 
+  let tokenUsuario = sessionStorage.getItem("token")
 
 const msgErroLogin = () => {
 
@@ -22,7 +23,7 @@ const msgErroLogin = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -44,7 +45,7 @@ const msgSucessoSenha = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -66,7 +67,7 @@ const msgErroSenhaNaoIgual = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -88,7 +89,7 @@ const msgMinimoSenha = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -128,6 +129,7 @@ function Login() {
           headers: {
             "Content-type": "application/json",
             Accept: "application/json",
+            
           },
         });
        

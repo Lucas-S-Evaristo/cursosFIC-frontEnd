@@ -136,9 +136,9 @@ export default function LogArea() {
                         <TableBody>
 
                             {logArea.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
-                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id }) => (
+                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro }) => (
                                     <StyledTableRow>
-                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma área</StyledTableCell>
+                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma área chamada {informacaoCadastro} </StyledTableCell>
                                         <StyledTableCell>{nifUsuario}</StyledTableCell>
                                         <StyledTableCell>{data}</StyledTableCell>
                                         <StyledTableCell>{hora}</StyledTableCell>

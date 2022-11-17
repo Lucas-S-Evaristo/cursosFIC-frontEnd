@@ -46,6 +46,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
+let token = sessionStorage.getItem("token")
+
 function ListaArea() {
 
   const cadastroSucesso = () => {
@@ -55,7 +57,7 @@ function ListaArea() {
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
-        theme: 'colored',
+        theme: 'dark',
         draggable: true,
         progress: undefined,
     })
@@ -68,7 +70,7 @@ const camposVazios = () => {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: 'colored',
+      theme: 'dark',
       draggable: true,
       progress: undefined,
   })
@@ -94,16 +96,16 @@ const alterarSucesso = () => {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: 'colored',
+      theme: 'dark',
       draggable: true,
       progress: undefined,
   })
 }
 const msgDeletadoerror = () => {
   toast.warning(
-    " Não e possível deletar Àrea porque ele está associado a uma Curso ",
+    " Não e possível deletar a área porque ela está associada á um Curso ",
     {
-      position: "top-right",
+      position: "top-center",
 
       autoClose: 4500,
 
@@ -113,7 +115,7 @@ const msgDeletadoerror = () => {
 
       pauseOnHover: true,
 
-      theme: "colored",
+      theme: "dark",
 
       // faz com que seja possivel arrastar
 
@@ -147,7 +149,8 @@ const msgDeletadoerror = () => {
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        "Authorization": token
       }
     })
     if (result.status === 409) {      
@@ -181,7 +184,8 @@ const msgDeletadoerror = () => {
       body: JSON.stringify(obgj),
       headers: {
         'Content-type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        "Authorization": token
       }
     })
 
@@ -194,7 +198,11 @@ const msgDeletadoerror = () => {
 
   const deletar = async (id) => {
     let result = await fetch(`http://localhost:8080/api/area/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          "Authorization": token
+        }
+
     })
     // caso já exista uma area a ser deletado, ele atualiza a lista assim removendo a area deletada
     if(result.status === 409){

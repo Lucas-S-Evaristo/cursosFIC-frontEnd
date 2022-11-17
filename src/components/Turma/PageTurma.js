@@ -335,7 +335,7 @@ function CadTurma() {
 
 
     const turmas = {
-      id: 0,
+     
       qtdMatriculas: data.qtdMatriculas,
       instrutor: { id: idInstrutor },
       curso: { id: idCurso },
@@ -363,6 +363,7 @@ function CadTurma() {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        "Authorization": token
       },
     })
       // convertendo a resposta da promessa em json
@@ -455,6 +456,8 @@ function CadTurma() {
           "Content-type": "application/json",
 
           Accept: "application/json",
+
+          "Authorization": token
         },
       }
     );
@@ -527,6 +530,9 @@ function CadTurma() {
   const deletar = async (id) => {
     let result = await fetch(`http://localhost:8080/api/turma/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": token
+      }
     });
     // caso já exista uma turma a ser deletado, ele atualiza a lista assim removendo a turma deletado
     if (result) {
@@ -774,7 +780,6 @@ function CadTurma() {
                 <StyledTableCell>Instrutor</StyledTableCell>
                 <StyledTableCell>Quantidade de matricula</StyledTableCell>
                 <StyledTableCell>Período</StyledTableCell>
-                <StyledTableCell>Valor</StyledTableCell>
                 <StyledTableCell>Status</StyledTableCell>
                 <StyledTableCell>Ambiente</StyledTableCell>
                 <StyledTableCell>Nº Máximo de vagas</StyledTableCell>
@@ -832,7 +837,6 @@ function CadTurma() {
                       <StyledTableCell>{instrutor.nome}</StyledTableCell>
                       <StyledTableCell>{qtdMatriculas}</StyledTableCell>
                       <StyledTableCell>{periodo}</StyledTableCell>
-                      <StyledTableCell>{valor}</StyledTableCell>
                       <StyledTableCell>{status}</StyledTableCell>
                       <StyledTableCell>{ambiente.nome}</StyledTableCell>
                       <StyledTableCell>{numMaxVagas}</StyledTableCell>

@@ -150,16 +150,163 @@ function Rotas() {
         }
     }
 
-    function PrivadaRotasTurma() {
+    function PrivadaRotasCursos() {
       
       let p = sessionStorage.getItem("payload");
       p = JSON.parse(p);
       
         if(token != null){
 
-          if ( p.tipo_usuario === "Master" || p.tipo_usuario === "Opp") {
+          if ( p.tipo_usuario === "Master" || p.tipo_usuario === "Opp" || p.tipo_usuario === "Secretária" ) {
           
-            return <CadTurma/>
+            return <ListaCursos/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
+    function PrivadaRotasLogs() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" ) {
+          
+            return <PaginaLog/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
+    function PrivadaRotasLogArea() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" ) {
+          
+            return <LogArea/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
+    function PrivadaRotasLogCurso() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" ) {
+          
+            return <LogCurso/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
+    function PrivadaRotasLogHorario() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" ) {
+          
+            return <LogHorario/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
+    function PrivadaRotasLogInstrutor() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" ) {
+          
+            return <LogInstrutor/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
+    function PrivadaRotasLogTurma() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" ) {
+          
+            return <LogTurma/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
+    function PrivadaRotasLogUsuario() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" ) {
+          
+            return <LogUsuario/>
           } else {
     
             return <Navigate to="/login" />
@@ -228,25 +375,88 @@ function Rotas() {
 
         }/>
 
-        <Route path="listaCurso" element={<ListaCursos/>}/>
+        <Route path="listaCurso" element={
+
+          <PrivadaRotasCursos>      
+
+          <ListaCursos/>
+
+        </PrivadaRotasCursos>
+
+        }/>
 
         <Route path="folders" element={<Folder/>}/>
 
         <Route path="/home" element={<Home/>}/>
 
-        <Route path="/logs" element={<PaginaLog/>} />
+        <Route path="/logs" element={
+        
+        <PrivadaRotasLogs>
+        
+        <PaginaLog/>
+        
+        </PrivadaRotasLogs>
+        } />
 
-        <Route path="/logArea" element={<LogArea/>} />
+        <Route path="/logArea" element={
 
-        <Route path="/logCurso" element={<LogCurso/>} />
+          <PrivadaRotasLogArea>
+        
+        <LogArea/>
 
-        <Route path="/logHorario" element={<LogHorario/>} />
+        </PrivadaRotasLogArea>
+        
+        } />
 
-        <Route path="/logInstrutor" element={<LogInstrutor/>} />
+        <Route path="/logCurso" element={
 
-        <Route path="/logTurma" element={<LogTurma/>} />
+          <PrivadaRotasLogCurso>
+        
+        <LogCurso/>
 
-        <Route path="/logUsuario" element={<LogUsuario/>} />
+        </PrivadaRotasLogCurso>
+        
+        } />
+
+        <Route path="/logHorario" element={
+        
+        <PrivadaRotasLogHorario>
+
+        <LogHorario/>
+
+        </PrivadaRotasLogHorario>
+        
+        } />
+
+        <Route path="/logInstrutor" element={
+
+          <PrivadaRotasLogInstrutor>
+        
+        <LogInstrutor/>
+
+        </PrivadaRotasLogInstrutor>
+        
+        } />
+
+        <Route path="/logTurma" element={
+
+          <PrivadaRotasLogTurma>
+        
+        <LogTurma/>
+
+        </PrivadaRotasLogTurma>
+        
+        } />
+
+        <Route path="/logUsuario" element={
+
+          <PrivadaRotasLogUsuario>
+        
+        <LogUsuario/>
+
+        </PrivadaRotasLogUsuario>
+        
+        } />
       </Routes>
     );
   

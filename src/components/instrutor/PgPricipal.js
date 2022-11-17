@@ -75,10 +75,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 /* faz  uma requisição get do back end e renderizar página  */
 const msgAlteracao = () => {
-  console.log("entrei");
+
 
   toast.success("Instrutor Alterado com Sucesso", {
-    position: "top-right",
+    position: "top-center",
 
     autoClose: 1500,
 
@@ -88,7 +88,7 @@ const msgAlteracao = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -99,7 +99,7 @@ const msgAlteracao = () => {
 };
 const msgDeletado = () => {
   toast.success("Instrutor deletado com Sucesso", {
-    position: "top-right",
+    position: "top-center",
 
     autoClose: 1500,
 
@@ -109,7 +109,7 @@ const msgDeletado = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -120,7 +120,7 @@ const msgDeletado = () => {
 };
 const msgDeletadoerror = () => {
   toast.warning(" Não e possível deletar Instrutor porque ele está associado a uma Área ", {
-    position: "top-right",
+    position: "top-center",
 
     autoClose: 4500,
 
@@ -130,7 +130,7 @@ const msgDeletadoerror = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -140,10 +140,10 @@ const msgDeletadoerror = () => {
   });
 };
 const msgCadastrando = () => {
-  console.log("entrei");
+
 
   toast.success("Instrutor Cadastrado  com Sucesso", {
-    position: "top-right",
+    position: "top-center",
 
     autoClose: 1500,
 
@@ -153,7 +153,7 @@ const msgCadastrando = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -165,9 +165,9 @@ const msgCadastrando = () => {
 
 const erroCad = () => {
   toast.warn("Preencha os campos corretamente!", {
-    position: "top-right",
+    position: "top-center",
 
-    autoClose: 1500,
+    autoClose: 1500,  
 
     hideProgressBar: false,
 
@@ -175,7 +175,7 @@ const erroCad = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -189,7 +189,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-
+let token = sessionStorage.getItem("token")
 
 function PgPricipal(props) {
   /* lista de instrutor */
@@ -236,9 +236,7 @@ function PgPricipal(props) {
   };
   /* pegando numero de pagina */
   const handleChangePage = (event, newPage) => {
-    console.log("EVENTO" + event);
 
-    console.log("PAGINA" + newPage);
 
     setPage(newPage);
   };
@@ -248,56 +246,6 @@ function PgPricipal(props) {
 
     setPage(0);
   };
-
-  /*   // metodo de msg de alteração feita com sucesso
-  const handleCheckBox = (e) => {
-    const { value, checked } = e.target;
-
-    if (checked) {
-      ids.push(value);
-      console.log("lista de ids " + ids.length);
-    }
-
-    // Case 2  : The user unchecks the box
-    else {
-      ids = ids.filter((e) => e !== value);
-      console.log("lista de ids " + ids.length);
-    }
-
-    console.warn("ids", ids.length);
-    console.log(ids);
-  };
-
-  function marcarTodos(e) {
-    const { value, checked } = e.target;
-
-    listid = document.querySelectorAll('input[name="id"]');
-    let i = 0;
-    console.warn("input" + listid);
-    if (checked) {
-      for (i = 0; i < listid.length; i++) {
-        ids.push(listid[i].value);
-        listid[i].checked = checked;
-      }
-    } else {
-      for (i = 0; i < listid.length; i++) {
-        listid[i].checked = false;
-        ids = ids.filter((e) => e !== listid[i].value);
-      }
-      listid = [];
-    }
-
-    console.log(ids);
-  }
-
-  /*  */
-
-  /*   const deletar = async () => {
-    deleteinstrutor(ids);
-
-    ids = [];
-  }; */
-  /* renderizar página  e faz requisição  */
  
   useEffect(() => {
     getiInstrutor();
@@ -307,7 +255,6 @@ function PgPricipal(props) {
   /* fazendo uma requisição get  */
   const getiInstrutor = async () => {
    
-    console.log("passou");
     let result = await fetch(`http://localhost:8080/api/instrutor`);
     /* pegando json da requisição get */
     result = await result.json();
@@ -315,7 +262,7 @@ function PgPricipal(props) {
     setInstrutor(result);
    
   };
-  console.log(instrutor);
+
 
   /* css  da tabela */
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -363,6 +310,9 @@ function PgPricipal(props) {
   const deleteinstrutor = async (id) => {
     let result = await fetch(`http://localhost:8080/api/instrutor/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": token
+      },
     });
     if(result.status === 409){
       msgDeletadoerror() 
@@ -385,14 +335,6 @@ function PgPricipal(props) {
     /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
 
-    console.warn("teste", data);
-    console.log("oi brasil", data.nome);
-    console.warn("EVENTO", event.target);
-
-    /* let obgj = {
-      nome: data,
-    }; */
-    console.warn(data);
     /* verificar se  requisição foi feita com sucesso */
     let result = await fetch(`http://localhost:8080/api/instrutor`, {
       method: "post",
@@ -400,6 +342,7 @@ function PgPricipal(props) {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        "Authorization": token
       },
     });
     /* verificar se a requisição Retornou um erro 409*/
@@ -407,7 +350,7 @@ function PgPricipal(props) {
       erroCad();
       /* verificar se  requisição foi feita com sucesso */
     } else if (result) {
-      console.warn("oi");
+     
       /* mensagem de cadastrar com sucesso */
       msgCadastrando();
       /*fecha modal  de cadastrar */
@@ -420,19 +363,18 @@ function PgPricipal(props) {
   const alterainstrutor = async (event) => {
     /* tiras as características de evento evitando Recarregar  a pagina */
     event.preventDefault();
-    console.warn(event.target);
+  
     /* pegar todos  os valores do evento */
     const formData = new FormData(event.target);
     /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
-    console.warn("data = formaData", data);
+   
     /*formata em um objeto em json com id */
     let obgj = {
       id: idinstrutor,
       nome: data.nome,
     };
-    console.warn("obj altera instrutor", obgj);
-    console.warn("id do instrutor ", idinstrutor);
+
     let result = await fetch(
       `http://localhost:8080/api/instrutor/${idinstrutor}`,
       {
@@ -441,6 +383,7 @@ function PgPricipal(props) {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
+          "Authorization": token
         },
       }
     );
@@ -449,7 +392,7 @@ function PgPricipal(props) {
       erroCad();
       /* verificar se  requisição foi feita com sucesso */
     } else if (result) {
-      console.warn("ENTREEEEI");
+    
       // fecha a modal alterar
       setOpen2(false);
       /* mensagem alterar com sucesso */
@@ -459,14 +402,6 @@ function PgPricipal(props) {
     }
   };
 
-  /* const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false); */
-
-  /*  const handleDrawerToggle = () => {
-     setMobileOpen(!mobileOpen);
-   }; */
-
-  //const container = window !== undefined ? () => window().document.body : undefined;
   let p = localStorage.getItem("payload");
 p = JSON.parse(p);
 
@@ -476,7 +411,7 @@ p = JSON.parse(p);
 
       <Box sx={{ display: "flex", marginLeft: "40px" }}>
         <ToastContainer
-          position="top-right"
+          position="top-center"
           autoClose={1500}
           hideProgressBar={false}
           newestOnTop={false}

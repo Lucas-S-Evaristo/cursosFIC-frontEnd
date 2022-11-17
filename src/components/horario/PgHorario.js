@@ -34,7 +34,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Alert from "@material-ui/lab/Alert";
-import { toast, ToastContainer, cssTransition } from "react-toastify";
+
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -44,6 +44,7 @@ import AddSharpIcon from "@material-ui/icons/AddSharp";
 import TablePagination from "@material-ui/core/TablePagination";
 import MenuLateral from "../menu/MenuLateral";
 import Slide from "@mui/material/Slide";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const drawerWidth = 240;
@@ -65,11 +66,39 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
 }));
-const msgAlteracao = () => {
-  console.log("entrei");
 
-  toast.success("Usuário Alterado com Sucesso", {
-    position: "top-right",
+
+const cadastroSucesso = () => {
+  toast.success("Cadastrado com sucesso!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'dark',
+      draggable: true,
+      progress: undefined,
+  })
+}
+
+const excluirSucesso = () => {
+  toast.success("Excluido com sucesso!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'dark',
+      draggable: true,
+      progress: undefined,
+  })
+}
+
+
+const msgAlteracao = () => {
+
+  toast.success("Horário alterado com Sucesso", {
+    position: "top-center",
 
     autoClose: 1500,
 
@@ -79,7 +108,7 @@ const msgAlteracao = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -90,9 +119,9 @@ const msgAlteracao = () => {
 };
 const msgDeletadoerror = () => {
   toast.warning(
-    " Não e possível deletar Horario porque ele está associado a uma Turma ",
+    " Não é possível deletar o horário porque ele está associado a uma turma ",
     {
-      position: "top-right",
+      position: "top-center",
 
       autoClose: 4500,
 
@@ -102,7 +131,7 @@ const msgDeletadoerror = () => {
 
       pauseOnHover: true,
 
-      theme: "colored",
+      theme: "dark",
 
       // faz com que seja possivel arrastar
 
@@ -112,6 +141,8 @@ const msgDeletadoerror = () => {
     }
   );
 };
+
+let token = sessionStorage.getItem("token")
 
 const PgHorario = () => {
   const [horario, setHorario] = useState([]);
@@ -138,9 +169,6 @@ const PgHorario = () => {
 
   /* pegando numero de pagina */
   const handleChangePage = (event, newPage) => {
-    console.log("EVENTO" + event);
-
-    console.log("PAGINA" + newPage);
 
     setPage(newPage);
   };
@@ -200,24 +228,28 @@ const PgHorario = () => {
   const deletetarHorario = async (id) => {
     let result = await fetch(`http://localhost:8080/api/horario/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": token
+      }
     });
     if (result.status === 409) {
       msgDeletadoerror();
     } else if (result) {
       getiHorario();
+      excluirSucesso()
     }
   };
   const cadastroHorario = async (event) => {
+
+    event.preventDefault()
+
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    console.warn("teste", data);
-    console.log("oi brasil", data.nome);
-    console.warn("EVENTO", event.target);
 
     let obgj = {
       nome: data,
     };
-    console.warn(data);
+
 
     let result = await fetch(`http://localhost:8080/api/horario`, {
       method: "post",
@@ -225,24 +257,30 @@ const PgHorario = () => {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        "Authorization": token
       },
     });
 
     if (result) {
+      setOpen(false)
+      cadastroSucesso()
+   
       getiHorario();
+     
     }
   };
   const alteraHorario = async (event) => {
-    console.warn(event.target);
+   
+    event.preventDefault()
 
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    console.warn("teste", data);
+
     let obgj = {
       id: idiHorario,
       horario: data.horario,
     };
-    console.warn(obgj);
+   
     let result = await fetch(
       `http://localhost:8080/api/horario/${idiHorario}`,
       {
@@ -251,64 +289,33 @@ const PgHorario = () => {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
+          "Authorization": token
         },
       }
     );
 
     if (result) {
-      console.warn("ENTREEEEI");
+      setOpen2(false)
+      msgAlteracao()
       getiHorario();
     }
   };
 
-  /* const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false); */
-
-  /*  const handleDrawerToggle = () => {
-     setMobileOpen(!mobileOpen);
-   }; */
-
-  /*const drawer = (
-
-
-    <div>
-
-
-      <Toolbar />
-      <a href="/">
-        <img style={{ width: 150, margin: 20, position: 'relative', bottom: 72, left: 20 }} src="https://upload.wikimedia.org/wikipedia/commons/8/8c/SENAI_S%C3%A3o_Paulo_logo.png" alt="Senai"></img>
-      </a>
-      <Divider />
-      <List>
-        <Button onClick={modalCadastroAbrindo} style={{ margin: 10 }} variant="contained">cadastrar  Horaio</Button>
-
-        <Modal
-          open={open}
-          onClose={modalCadastroFechando}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-
-        >
-          <Box sx={style}>
-            <h2 id="transition-modal-title">cadastro de horario</h2>
-            <form onSubmit={cadastroHorario} >
-              <TextField name="horario" type="time" defaultValue="00:00:00" label="horario" variant="outlined" 
-           />
-              <Button variant="contained" style={{ margin: 10 }} type="submit" >cadastrar</Button>
-            </form>
-          </Box>
-        </Modal>
-      </List>
-      
-      
-    </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;*/
 
   return (
     <>
       <MenuLateral />
+
+      <ToastContainer position="top-center"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
 
       <Box sx={{ display: "flex", marginLeft: "80px" }}>
         <ToastContainer
@@ -397,7 +404,7 @@ const PgHorario = () => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center">
-                    Horario cadastrado
+                    Horário cadastrado
                   </StyledTableCell>
                   <StyledTableCell align="center">DELETAR</StyledTableCell>
                   <StyledTableCell align="center">ALTERAR</StyledTableCell>
@@ -490,6 +497,8 @@ const PgHorario = () => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
+
+       
         </Box>
       </Box>
     </>

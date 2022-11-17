@@ -35,11 +35,14 @@ import MenuLateral from "../menu/MenuLateral";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+
 import "../Usuario/usuario.css"
 
-let payload = sessionStorage.getItem("payload")
+  const token = sessionStorage.getItem("token")
 
-payload = JSON.parse(payload)
+  let payload = sessionStorage.getItem("payload")
+
+  payload = JSON.parse(payload)
 
 function PageUsuario() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
@@ -49,6 +52,10 @@ function PageUsuario() {
 
   const [modalConfirmar, setModalConfirmar] = useState(false);
 
+
+  const fecharConfirmar = () => setModalConfirmar(false);
+
+
   const [modalExcluir, setModalExcluir] = useState(false);
 
   // estado do obj do ususario
@@ -57,12 +64,6 @@ function PageUsuario() {
   const handleOpen = () => setOpen(true);
   // metodo que fecha a modal
   const handleClose = () => setOpen(false);
-
-
-  const fecharConfirmar = () => setModalConfirmar(false);
-
-  const fecharExcluir = () => setModalExcluir(false);
-
   // variavel que tem acesso a um array com todos os usuarios
   const [usuarios, setUsuario] = useState([]);
   // variavel que tem acesso a um array com todos os tipos de usuarios
@@ -97,6 +98,8 @@ function PageUsuario() {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        "Authorization": token
+        
       },
     });
 
@@ -119,6 +122,7 @@ function PageUsuario() {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        "Authorization": token
       },
     }).then((retorno) => {
       //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
@@ -159,10 +163,11 @@ function PageUsuario() {
 
   // metodo que deleta o usuario
   const deletar = async (id) => {
-
-
     let result = await fetch(`http://localhost:8080/api/usuario/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": token
+      }
     });
     // caso exista um usuario a ser deletado, ele atualiza a lista assim removendo o usuario deletado
     if (result) {
@@ -218,7 +223,7 @@ function PageUsuario() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -233,7 +238,7 @@ function PageUsuario() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -247,7 +252,7 @@ function PageUsuario() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -255,13 +260,13 @@ function PageUsuario() {
   };
 
   const msgCamposVazio = () => {
-    toast.warn("Preencha os Campos Corretamente", {
+    toast.error("Preencha os Campos Corretamente", {
       position: "top-right",
       autoClose: 2500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -270,13 +275,13 @@ function PageUsuario() {
 
   // metodo de msg de exclusão feita com sucesso
   const msgExclusao = () => {
-    toast.error("Usuário Removido com Sucesso", {
+    toast.success("Usuário Removido com Sucesso", {
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -291,7 +296,7 @@ function PageUsuario() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -515,8 +520,6 @@ function PageUsuario() {
           </Paper>
         </Box>
       </Modal>
-
-      
       <Paper
         sx={{
           maxWidth: 12000,
@@ -597,24 +600,27 @@ function PageUsuario() {
                   </th>
                   <th scope="row">
                   <button className="botaoDeleteTurma"
-                      onClick={() => {
+                     onClick={() => {
 
-                        console.log(payload)
+                      console.log(payload)
 
-                        console.log("obj.id: ", obj.id)
+                      console.log("obj.id: ", obj.id)
 
-                        console.log("payload.id_usuario: ", payload.id_usuario)
+                      console.log("payload.id_usuario: ", payload.id_usuario)
 
-                        if(payload.id_usuario === obj.id){
-                            setModalConfirmar(true)
+                      if(payload.id_usuario === obj.id){
+                          setModalConfirmar(true)
 
-                        }else{
+                      }else{
 
-                          setModalExcluir(true)
-                        }
+                        setModalExcluir(true)
+                      }
 
-                      }}
+                    }}
+
                     >
+
+                  
                     <DeleteForeverOutlinedIcon /></button>
 
                     <Modal
@@ -653,38 +659,32 @@ function PageUsuario() {
                       
                       </Modal>
 
+                    <Modal
+                          open={modalExcluir}
+                          onClose={clearClose}
+                          aria-labelledby="modal-title"
+                          aria-describedby="modal-description"
+                        >
+                          <Box sx={style2}>
 
-                      <Modal
-                      open={modalExcluir}
-                      onClose={clearClose}
-                      aria-labelledby="modal-title"
-                      aria-describedby="modal-description"
-                    >
-                       <Box sx={style2}>
-                          
-                        <header className="headerConfirmar">
-                          <h5 className="tituloAlertaConfirm">ALERTA!</h5>
-                          </header>
+                            <header className="headerModalExcluirUsuario">
+                            <h4 className="textoExcluir2">ALERTA!</h4>
 
-                      <section>
-                        <h4 className="h4Confirmar">Tem certeza que deseja excluir este usuário?</h4>
-                        </section>
+                            <section><h4 className="textoExcluirSection">Tem Certeza que deseja excluir?</h4></section>
 
-                        <div className="botaoModalConfirmar">
+                            <div className="botaoModalExcluir2">
+                              <Button variant="contained" color="error" className="botaoModalSim" onClick={() => setModalExcluir()}> Não </Button>
+                              <Button variant="contained" color="success" onClick={() => {
+                                deletar(obj.id)
+                                setModalExcluir()
 
-                          <Button  variant="contained" color="error" className="ConfirmarNao" onClick={() => fecharExcluir()}>Não</Button>
+                              } }>Sim</Button></div>
 
-                          <Button Button variant="contained" color="success" onClick={ () => {
+                            </header>
 
-                          deletar(obj.id)
-                          
-                          } }> Sim</Button>
 
-                        </div>
-
-                        </Box>
-                      
-                      </Modal>
+                          </Box>
+                        </Modal>
                   </th>
                 </tr>
               ))}
@@ -789,7 +789,8 @@ const style2 = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  
+  height: 200,
+
   border: "3px solid red",
   boxShadow: 240,
   p: 4,

@@ -24,14 +24,55 @@
 .botaoModalConfirmar{
     display: flex;
     flex-direction: row;
-    position: relative;
-    left: 19em;
-    top: 1em;
-    padding-top: 7em;
+    position: absolute;
+    left: 21em;
+    top: 9.5em;
+   
 
 }
 
 .ConfirmarNao{
     margin-right: 1em !important;
 }
+
+.headerModalExcluirUsuario{
+    background-color: red;
+    width: 100%;
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    height: 3.8em;
+
+}
+
+.textoExcluir2{
+    color: white;
+    margin: 0.5em;
+}
+
+.textoExcluirSection{
+    color: red;
+    text-align: center;
+    position: relative;
+    top: 1em;
+}
+
+.botaoModalExcluir2{
+    position: absolute;
+    top: 9em;
+    left: 21em;
+
+}
+
+.imagemModalUsuario{
+    display: flex;
+    float: right;
+    position: relative;
+    left: 1em;
+    width: 70%;
+    height: 30em;
+    
+}
+
+
 

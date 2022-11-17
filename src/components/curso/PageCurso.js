@@ -26,7 +26,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuLateral from "../menu/MenuLateral";
 const msgDeletadoerror = () => {
   toast.warning(" Não e possível deletar Curso porque ele está associado a uma Turma ", {
-    position: "top-right",
+    position: "top-center",
 
     autoClose: 4500,
 
@@ -36,7 +36,7 @@ const msgDeletadoerror = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -45,6 +45,8 @@ const msgDeletadoerror = () => {
     progress: undefined,
   });
 };
+
+let token = sessionStorage.getItem("token")
 
 function ListaCurso() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
@@ -95,8 +97,7 @@ function ListaCurso() {
   };
 
   const handleChangePage = (event, newPage) => {
-    console.log("EVENTO" + event);
-    console.log("PAGINA" + newPage);
+
     setPage(newPage);
   };
 
@@ -164,6 +165,7 @@ function ListaCurso() {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        "Authorization": token
       },
     });
 
@@ -195,7 +197,7 @@ function ListaCurso() {
       area: { id: data.area },
       valor: data.valor,
     };
-    console.log(" cursoCad: " + cursoCad);
+  
 
     fetch("http://localhost:8080/api/curso", {
       method: "post",
@@ -203,6 +205,7 @@ function ListaCurso() {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        "Authorization": token
       },
     }).then((retorno) => {
       //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
@@ -271,6 +274,9 @@ function ListaCurso() {
   const deletar = async (id) => {
     let result = await fetch(`http://localhost:8080/api/curso/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": token
+      }
     });
     // caso exista um curso a ser deletado, ele atualiza a lista assim removendo o curso deletado
     if(result.status === 409){
@@ -303,7 +309,7 @@ function ListaCurso() {
   const buscaCurso = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
     let key = event.target.value;
-    console.log(key);
+
 
     // verifica se existe 'valor'
     if (key) {
@@ -313,7 +319,7 @@ function ListaCurso() {
       );
       // tranformando a promessa em json
       result = await result.json();
-      console.log(result);
+      
 
       // verifica se existe algum resultado
       if (result) {
@@ -336,12 +342,12 @@ function ListaCurso() {
   // metodo de msg de cadastro efetuado com sucesso
   const msgCadastro = () => {
     toast.success("Curso Cadastrado com Sucesso", {
-      position: "top-right",
+      position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -350,12 +356,12 @@ function ListaCurso() {
 
   const msgCamposVazio = () => {
     toast.warn("Preencha os Campos Corretamente", {
-      position: "top-right",
+      position: "top-center",
       autoClose: 2500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "colored",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -364,8 +370,8 @@ function ListaCurso() {
 
   // metodo de msg de exclusão feita com sucesso
   const msgExclusao = () => {
-    toast.error("Curso Removido com Sucesso", {
-      position: "top-right",
+    toast.success("Curso Removido com Sucesso", {
+      position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
@@ -379,13 +385,13 @@ function ListaCurso() {
 
   // metodo de msg de alteração feita com sucesso
   const msgAlteracao = () => {
-    toast.info("Curso Alterado com Sucesso", {
-      position: "top-right",
+    toast.success("Curso Alterado com Sucesso", {
+      position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "light",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -686,7 +692,7 @@ function ListaCurso() {
       </Box>
 
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={1500}
         hideProgressBar={false}
         newestOnTop={false}
