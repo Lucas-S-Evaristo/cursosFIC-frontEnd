@@ -348,7 +348,7 @@ function CadTurma() {
       numMaxVagas: data.numMaxVagas,
       numMinVagas: data.numMinVagas,
       simEnao: simEnao,
-      diaSemana: valuediaSemana,
+      parametro: data.parametro,
       horarioInicio: { id: horarioInicioValue },
       horarioTermino: { id: horarioFinalValue },
       diasDaTurma: data.diasDaTurma
@@ -789,6 +789,7 @@ function CadTurma() {
                 <StyledTableCell>Data de Término</StyledTableCell>
                 <StyledTableCell>Horario de Inicio</StyledTableCell>
                 <StyledTableCell>Horario de término</StyledTableCell>
+                <StyledTableCell>Turma pode ser lançada</StyledTableCell>
                 <StyledTableCell id="alterar"
                   style={token === null || p.tipo_usuario === "Secretária" || p === null
                     ?
@@ -828,6 +829,7 @@ function CadTurma() {
                     horarioInicio,
                     horarioTermino,
                     diasDaTurma,
+                    podeSerLancado
 
                   }) => (
                     <StyledTableRow>
@@ -846,6 +848,7 @@ function CadTurma() {
                       <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
+                      <StyledTableCell><div style={podeSerLancado === false ? {backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em"} : {backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em"}}></div></StyledTableCell>
 
                       <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
                         ?
@@ -1292,16 +1295,6 @@ function CadTurma() {
               {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
               <div className="parte1">
-                <TextField
-
-                  sx={styleTextField}
-                  className="textField"
-
-                  name="qtdMatriculas"
-                  type="number"
-                  label="qtd de Matriculas"
-                  variant="standard"
-                />
 
                 <TextField
 

@@ -48,6 +48,7 @@ import LogInstrutor from "./components/log/logInstrutor/LogInstrutor";
 import LogTurma from "./components/log/logTurma/LogTurma";
 
 import LogUsuario from "./components/log/logUsuario/LogUsuario";
+import ListaParametro from "./components/parametros/Parametro";
 function Rotas() {
 
   useEffect(() => {
@@ -455,8 +456,14 @@ function Rotas() {
         <LogUsuario/>
 
         </PrivadaRotasLogUsuario>
-        
+
         } />
+
+        <Route path="/listaParametros" element={
+          <ListaParametro/>
+                  
+        }/>
+
       </Routes>
     );
   
