@@ -24,6 +24,10 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuLateral from "../menu/MenuLateral";
+import { width } from "@mui/system";
+
+
+
 const msgDeletadoerror = () => {
   toast.warning(" Não e possível deletar Curso porque ele está associado a uma Turma ", {
     position: "top-center",
@@ -197,7 +201,7 @@ function ListaCurso() {
       area: { id: data.area },
       valor: data.valor,
     };
-  
+
 
     fetch("http://localhost:8080/api/curso", {
       method: "post",
@@ -279,9 +283,9 @@ function ListaCurso() {
       }
     });
     // caso exista um curso a ser deletado, ele atualiza a lista assim removendo o curso deletado
-    if(result.status === 409){
+    if (result.status === 409) {
       msgDeletadoerror();
-       
+
     } else if (result) {
       atualizaLista();
       msgExclusao();
@@ -319,7 +323,7 @@ function ListaCurso() {
       );
       // tranformando a promessa em json
       result = await result.json();
-      
+
 
       // verifica se existe algum resultado
       if (result) {
@@ -510,7 +514,7 @@ function ListaCurso() {
                   Pré Requisito
                 </TableCell>
                 <TableCell sx={{ color: "#fff" }} align="left">
-                  Conteudo Programático
+                  Conteúdo Programático
                 </TableCell>
                 <TableCell sx={{ color: "#fff" }} align="center">
                   Sigla
@@ -737,7 +741,7 @@ function ListaCurso() {
               <div >
                 <h2 style={titleModal}>ALTERAR CURSO</h2>
                 <TextField
-                  style={{margin: 10}}
+                  style={{ margin: 10 }}
                   id="nome"
                   defaultValue={nome}
                   className="textField"
@@ -895,6 +899,7 @@ function ListaCurso() {
                 width: "60%",
                 height: "80%",
                 position: "absolute",
+                top: "-6em"
               }}
             >
               <section className="sectionComponents">
@@ -934,14 +939,15 @@ function ListaCurso() {
                 />
                 <TextField
                   autoFocus
-                  id="conteudoProgramaticoCad"
+                  id="valorCad"
                   sx={styleTextField}
                   className="textField"
-                  name="conteudoProgramatico"
-                  type="text"
-                  label="Conteúdo Programático"
+                  name="valor"
+                  type="number"
+                  label="Valor"
                   variant="outlined"
                 />
+
               </section>
 
               <section className="sectionComponents">
@@ -955,18 +961,26 @@ function ListaCurso() {
                   label="Carga Horaria"
                   variant="outlined"
                 />
+
+
                 <TextField
-                  autoFocus
-                  id="valorCad"
-                  sx={styleTextField}
-                  className="textField"
-                  name="valor"
-                  type="number"
-                  label="Valor"
-                  variant="outlined"
+                  id="outlined-multiline-static"
+                  label="Conteúdo programático"
+                  multiline
+                  sx={styleTextFieldConteudoProg}
+                  rows={4}
+
                 />
               </section>
-              <section className="sectionComponents">
+              
+              <section className="sectionComponentsSelect" style={{
+                position: "absolute",
+                top: "21em",
+                left: "0.5em",
+               
+              }}>
+
+
                 <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
                 <select
                   id="areaCad"
@@ -997,7 +1011,7 @@ function ListaCurso() {
                     <option key={obj}>{obj}</option>
                   ))}
                 </select>
-              </section>
+
               <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
 
               <select
@@ -1014,8 +1028,10 @@ function ListaCurso() {
                 ))}
               </select>
 
+              </section>
+
               <div
-                style={{ left: -10, top: 600, marginTop: 10, marginBottom: 5 }}
+                style={{ position: "absolute", top: "39em" }}
               >
                 <Button
                   variant="contained"
@@ -1047,9 +1063,16 @@ const styleTextField = {
   backgroundColor: "trans",
 };
 
+const styleTextFieldConteudoProg = {
+  margin: 1,
+  backgroundColor: "trans",
+  width: 227
+
+}
+
 const styleSelect = {
-  width: "235px",
-  height: "40px",
+  width: "123.5%",
+  height: "3em",
   marginBottom: "30px",
 };
 
