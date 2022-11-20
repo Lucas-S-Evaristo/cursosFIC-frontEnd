@@ -125,6 +125,7 @@ export default function LogCurso() {
 
                                 <StyledTableCell>Mensagem</StyledTableCell>
                                 <StyledTableCell>Sigla do Curso</StyledTableCell>
+                                <StyledTableCell>Justificativa</StyledTableCell>
                                 <StyledTableCell>Nif</StyledTableCell>
                                 <StyledTableCell>Data</StyledTableCell>
                                 <StyledTableCell>Hora</StyledTableCell>
@@ -136,10 +137,11 @@ export default function LogCurso() {
                         <TableBody>
 
                             {logCurso.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
-                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro, informacaoCadastroDois }) => (
+                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro, siglaCurso, justificativa }) => (
                                     <StyledTableRow>
                                         <StyledTableCell>O usuário {nomeUsuario} {logsEnum} um Curso chamado {informacaoCadastro}</StyledTableCell>
-                                        <StyledTableCell>{informacaoCadastroDois}</StyledTableCell>
+                                        <StyledTableCell>{siglaCurso}</StyledTableCell>
+                                        <StyledTableCell>{justificativa}</StyledTableCell>
                                         <StyledTableCell>{nifUsuario}</StyledTableCell>
                                         <StyledTableCell>{data}</StyledTableCell>
                                         <StyledTableCell>{hora}</StyledTableCell>

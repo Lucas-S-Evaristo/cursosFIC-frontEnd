@@ -125,6 +125,7 @@ export default function LogTurma() {
 
                                 <StyledTableCell>Mensagem</StyledTableCell>
                                 <StyledTableCell>Código da Turma</StyledTableCell>
+                                <StyledTableCell>Justificativa</StyledTableCell>
                                 <StyledTableCell>Nif</StyledTableCell>
                                 <StyledTableCell>Data</StyledTableCell>
                                 <StyledTableCell>Hora</StyledTableCell>
@@ -136,17 +137,12 @@ export default function LogTurma() {
                         <TableBody>
 
                             {logTurma.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
-                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro }) => (
+                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, codigoTurma, justificativa }) => (
                                     <StyledTableRow>
-                                        {
-                                            logsEnum === "DELETOU"
-                                            ?
-                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
-                                            :
-                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
-                                        }
-                                       
-                                        <StyledTableCell>{informacaoCadastro}</StyledTableCell>
+                                      
+                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
+                                        <StyledTableCell>{codigoTurma}</StyledTableCell>
+                                        <StyledTableCell>{justificativa}</StyledTableCell>
                                         <StyledTableCell>{nifUsuario}</StyledTableCell>
                                         <StyledTableCell>{data}</StyledTableCell>
                                         <StyledTableCell>{hora}</StyledTableCell>

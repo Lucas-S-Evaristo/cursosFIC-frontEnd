@@ -289,7 +289,10 @@ const fecharModalCadastrar = () => setShowCadastrar(false);
 
 const [modalExcluir, setShowExcluir] = useState(false);
 
-   const abrirModalExcluir = () => setShowExcluir(true);
+   const abrirModalExcluir = (id) => {
+    setShowExcluir(true)
+    setIdArea(id)
+  };
 
     const fecharModalExcluir = () => setShowExcluir(false);
 
@@ -342,7 +345,7 @@ const fecharModalAlterar = () => setShow(false);
             <TableBody>
               {area.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
                 { id, nome }) => (
-                <StyledTableRow>
+                <StyledTableRow key={id}>
 
                   <StyledTableCell>{id}</StyledTableCell>
                   <StyledTableCell>{nome}</StyledTableCell>
@@ -357,7 +360,9 @@ const fecharModalAlterar = () => setShow(false);
                       <ModeEditOutlinedIcon /></button>
 
                   </StyledTableCell>
-                  <StyledTableCell><button className="botaoDeleteTurma" onClick={abrirModalExcluir}><DeleteForeverOutlinedIcon /></button>
+                  <StyledTableCell><button className="botaoDeleteTurma" onClick={() => {
+                   abrirModalExcluir(id)
+                  }}><DeleteForeverOutlinedIcon /></button>
                   
                   
                   <Modal 
@@ -371,7 +376,11 @@ const fecharModalAlterar = () => setShow(false);
                   <Modal.Header closeButton className="bodyExcluir">
                     <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
+                  <Modal.Body>
+
+                    <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
+                    
+                    </Modal.Body>
 
                   <Modal.Footer className="botaoModalExcluir">
                     <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
@@ -379,7 +388,7 @@ const fecharModalAlterar = () => setShow(false);
                     </Button>
                     <Button variant="contained" color="success" onClick={() => { 
                 //excluir curso pelo id
-                deletar(id)
+                deletar(idArea)
                 fecharModalExcluir()}}>
                       Sim
                     </Button>

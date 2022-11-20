@@ -81,14 +81,28 @@ function ListaCurso() {
   const [area, setArea] = useState();
   const [valor, setValor] = useState();
 
+  const [idCurso, setIdCurso] = useState()
+
   const [modalAlterar, setShow] = useState(false);
 
   const [modalCadastrar, setShowCadastrar] = useState(false);
+
+  const [modalExcluir, setShowExcluir] = useState(false);
+
+  const abrirModalExcluir = (id) => {
+    setShowExcluir(true)
+    setIdCurso(id)
+  
+
+  } ;
+
+  const fecharModalExcluir = () => setShowExcluir(false);
 
   //quando handleClose é chamado ele da um false no show e fecha a modal
   const fecharModalAlterar = () => setShow(false);
   //quando handleShow é chamado ele da um true no show e abre a modal
   const abrirModalAlterar = () => setShow(true);
+  
 
   const abrirModalCadastrar = () => setShowCadastrar(true);
 
@@ -274,10 +288,22 @@ function ListaCurso() {
     setCursos(resultado);
   };
 
+  const [descricaoLog, setDescricaoLog] = useState()
+
   // metodo que deleta o curso
   const deletar = async (id) => {
+
+    if(descricaoLog === undefined){
+
+      motivoExclusao()
+
+  }else{
+
+
+
     let result = await fetch(`http://localhost:8080/api/curso/${id}`, {
       method: "DELETE",
+      body: JSON.stringify(descricaoLog),
       headers: {
         "Authorization": token
       }
@@ -290,6 +316,7 @@ function ListaCurso() {
       atualizaLista();
       msgExclusao();
     }
+  }
   };
 
   // metodo que limpa os inputs do form
@@ -380,7 +407,7 @@ function ListaCurso() {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      theme: "light",
+      theme: "dark",
       // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
@@ -397,6 +424,19 @@ function ListaCurso() {
       pauseOnHover: true,
       theme: "dark",
       // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const motivoExclusao = () => {
+    toast.error("Por favor, informe o motivo da exclusão.", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
       draggable: true,
       progress: undefined,
     });
@@ -443,17 +483,17 @@ function ListaCurso() {
               }}
               onClick={() => abrirModalCadastrar()}
             >
-              <i class="bi bi-plus-lg">
+              <i className="bi bi-plus-lg">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-plus-lg"
+                  className="bi bi-plus-lg"
                   viewBox="0 0 16 16"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
                   />
                 </svg>
@@ -652,7 +692,7 @@ function ListaCurso() {
                             }}
                             variant="circular"
                             onClick={() => {
-                              deletar(id);
+                              abrirModalExcluir(id)
                             }}
                             size="small"
                             color="error"
@@ -661,6 +701,56 @@ function ListaCurso() {
                             <DeleteIcon />
                           </Fab>
                         </Tooltip>
+                        <Modal
+                          show={modalExcluir}
+                          onHide={fecharModalExcluir}
+                          backdrop="static"
+                          aria-labelledby="contained-modal-title-vcenter"
+                          centered>
+
+
+                          <Modal.Header closeButton className="bodyExcluir">
+                            <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                          </Modal.Header>
+                          <form>
+                          <Modal.Body>
+                            <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
+                            
+                         
+                            <TextField
+                              id="outlined-multiline-static"
+                             
+                              label="Justificativa:"
+                              hiddenLabel
+                              required
+                              className="textAreaExcluir"
+                              multiline
+                              rows={4}
+                              value={descricaoLog}
+                              onChange={(e) => {
+                                setDescricaoLog(e.target.value)
+                              }}
+                              
+                            />
+                          </Modal.Body>
+
+
+                          <Modal.Footer className="botaoModalExcluir">
+                            <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                              Não
+                            </Button>
+                            <Button variant="contained" color="success" onClick={() => {
+                              //excluir a turma pelo id
+                              deletar(idCurso)
+                              
+                            }}>
+                              Sim
+                            </Button>
+                          </Modal.Footer>
+                          </form>
+
+                        </Modal>
+
                       </TableCell>
                     </TableRow>
                   )
@@ -965,6 +1055,7 @@ function ListaCurso() {
 
                 <TextField
                   id="outlined-multiline-static"
+                  name="conteudoProgramatico"
                   label="Conteúdo programático"
                   multiline
                   sx={styleTextFieldConteudoProg}

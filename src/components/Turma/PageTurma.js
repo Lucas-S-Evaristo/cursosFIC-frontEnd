@@ -177,10 +177,14 @@ function CadTurma() {
 
   const [modalExcluir, setShowExcluir] = useState(false);
 
-   const abrirModalExcluir = () => setShowExcluir(true);
+  const abrirModalExcluir = (id) => {
+    setShowExcluir(true)
+    setidTurma(id)
 
-    const fecharModalExcluir = () => setShowExcluir(false);
- 
+  } ;
+
+  const fecharModalExcluir = () => setShowExcluir(false);
+
   // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
   useEffect(() => {
     fetch("http://localhost:8080/api/turma")
@@ -322,6 +326,19 @@ function CadTurma() {
     });
   };
 
+  const motivoExclusao = () => {
+    toast.error("Por favor, informe o motivo da exclusão.", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   // metodo que efetua o cadastro da turma
   const cadastrar = async (event) => {
 
@@ -335,7 +352,7 @@ function CadTurma() {
 
 
     const turmas = {
-     
+
       qtdMatriculas: data.qtdMatriculas,
       instrutor: { id: idInstrutor },
       curso: { id: idCurso },
@@ -386,7 +403,7 @@ function CadTurma() {
         } else if (retorno.status === 406) {
           erroHorariosIguais();
 
-        }else if (retorno.status === 451) {
+        } else if (retorno.status === 451) {
           erroMinVagasMaior();
 
         } else {
@@ -526,18 +543,32 @@ function CadTurma() {
     setTurma(resultado);
   };
 
+  const [descricaoLog, setDescricaoLog] = useState()
+
+  
   // metodo que deleta a turma
   const deletar = async (id) => {
+
+    if(descricaoLog === undefined){
+
+        motivoExclusao()
+
+    }else{
+
+
     let result = await fetch(`http://localhost:8080/api/turma/${id}`, {
       method: "DELETE",
+      body: JSON.stringify(descricaoLog),
       headers: {
         "Authorization": token
       }
     });
     // caso já exista uma turma a ser deletado, ele atualiza a lista assim removendo a turma deletado
     if (result) {
+      
       atualizaLista();
       msgExclusao();
+    }
     }
   };
 
@@ -774,7 +805,7 @@ function CadTurma() {
           >
             <TableHead className="theadTurma">
               <TableRow>
-                <StyledTableCell s>Id</StyledTableCell>
+                <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Código de turma</StyledTableCell>
                 <StyledTableCell>Curso</StyledTableCell>
                 <StyledTableCell>Instrutor</StyledTableCell>
@@ -848,7 +879,7 @@ function CadTurma() {
                       <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
-                      <StyledTableCell><div style={podeSerLancado === false ? {backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em"} : {backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em"}}></div></StyledTableCell>
+                      <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
 
                       <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
                         ?
@@ -856,9 +887,8 @@ function CadTurma() {
                         :
                         { visibility: "visible" }
                       }>
+
                         <button
-
-
                           className="botaoAlterarTurma"
                           onClick={() => {
                             selecionarTurma(
@@ -885,6 +915,7 @@ function CadTurma() {
                           }}
                         >
                           <ModeEditOutlinedIcon />
+
                         </button>
                       </StyledTableCell>
                       <StyledTableCell style={token === null || p.tipo_usuario === "Secretária" || p === null
@@ -896,43 +927,69 @@ function CadTurma() {
                         <button
 
                           className="botaoDeleteTurma"
-                          onClick={abrirModalExcluir}
-                        >
+                          onClick={() => {
+                            abrirModalExcluir(id)
+
+                           
+                          }}>
                           <DeleteForeverOutlinedIcon />
                         </button>
 
-                        <Modal 
-              show={modalExcluir} 
-              onHide={fecharModalExcluir}
-              backdrop="static"
-              aria-labelledby="contained-modal-title-vcenter"
-              centered>
+                        <Modal
+                          show={modalExcluir}
+                          onHide={fecharModalExcluir}
+                          backdrop="static"
+                          aria-labelledby="contained-modal-title-vcenter"
+                          centered>
 
 
-                  <Modal.Header closeButton className="bodyExcluir">
-                    <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
+                          <Modal.Header closeButton className="bodyExcluir">
+                            <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                          </Modal.Header>
+                          <form>
+                          <Modal.Body>
+                            <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
+                            
+                         
+                            <TextField
+                              id="outlined-multiline-static"
+                              value={descricaoLog}
+                              label="Justificativa:"
+                              hiddenLabel
+                              required
+                              className="textAreaExcluir"
+                              multiline
+                              rows={4}
+                              onChange={(e) => {
+                                setDescricaoLog(e.target.value)
+                              }}
 
-                  <Modal.Footer className="botaoModalExcluir">
-                    <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
-                      Não
-                    </Button>
-                    <Button variant="contained" color="success" onClick={() => { 
-                //excluir curso pelo id
-                deletar(id)
-                fecharModalExcluir()}}>
-                      Sim
-                    </Button>
-                  </Modal.Footer>
+                            />
+                          </Modal.Body>
 
-                </Modal>
+
+                          <Modal.Footer className="botaoModalExcluir">
+                            <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                              Não
+                            </Button>
+                            <Button variant="contained" color="success" onClick={() => {
+                              //excluir a turma pelo id
+                              deletar(idTurma)
+                              
+                            }}>
+                              Sim
+                            </Button>
+                          </Modal.Footer>
+                          </form>
+
+                        </Modal>
+
                       </StyledTableCell>
                     </StyledTableRow>
                   )
                 )}
             </TableBody>
-            
+
           </Table>
           <TablePagination
             sx={{
@@ -964,7 +1021,7 @@ function CadTurma() {
         draggable
         pauseOnHover
       />
-      
+
 
       <Modal
         show={modalAlterar}
@@ -1197,7 +1254,7 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }}  className="diaSemana">
+              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
                 <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
                 <Select
                   labelId="demo-multiple-checkbox-label"
@@ -1258,7 +1315,7 @@ function CadTurma() {
                 <Button
                   variant="contained"
                   color="success"
-                 
+
                   type="submit"
                 >
                   Alterar
@@ -1555,7 +1612,7 @@ function CadTurma() {
                 <Button
                   variant="contained"
                   color="success"
-                 
+
                   type="submit"
                 >
                   cadastrar
@@ -1570,6 +1627,7 @@ function CadTurma() {
     </>
   );
 }
+
 
 const styleTextField = {
   display: "flex",

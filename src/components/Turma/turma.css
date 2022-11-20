@@ -42,6 +42,12 @@
     
 }
 
+.textAreaExcluir{
+
+    margin: auto !important;
+    width: 100% !important;
+}
+
 header{
     top: 0px;
     width: 85%;
