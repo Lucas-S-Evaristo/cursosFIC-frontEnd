@@ -99,6 +99,28 @@ export default function LogCurso() {
         }
     }
 
+    const [cad, setCad] = useState(false)
+
+
+    const [alt, setAlt] = useState(false)
+
+    const [del, setDel] = useState(false)
+
+    const ativarCad = () => {
+        setCad(true)
+    }
+
+    const ativarAlt = () => {
+        setAlt(true)
+    }
+
+    const ativarDelete = () => {
+        setDel(true)
+    }
+
+
+    console.log("del: ", del)
+
     return (
 
         <div>
@@ -109,11 +131,42 @@ export default function LogCurso() {
                 <div className="divBotaoAdd">
                     <Button className="botaoAdd" variant="contained" color="primary" onClick={() => {
                         window.location.href = 'http://localhost:3000/logs'
-                        
+
                     }}><ArrowBackIcon /></Button>
                 </div>
 
+
+
             </header>
+
+            <div className="botoesLogCondicional">
+                <Button type="button" onClick={() => {
+
+                    ativarCad()
+                    setDel(false)
+                    setAlt(false)
+
+                }}>Cadastrados</Button>
+
+                <Button type="button" onClick={() => {
+
+                    ativarAlt()
+                    setCad(false)
+                    setDel(false)
+
+
+
+                }}>Alterados</Button>
+
+                <Button type="button" onClick={() => {
+
+                    ativarDelete()
+                    setCad(false)
+                    setAlt(false)
+
+                }}>Excluidos</Button>
+
+            </div>
 
             <div className="conteudoTabela">
                 <TableContainer className="tabelaContainer">
@@ -123,13 +176,41 @@ export default function LogCurso() {
 
                             <TableRow>
 
-                                <StyledTableCell>Mensagem</StyledTableCell>
-                                <StyledTableCell>Sigla do Curso</StyledTableCell>
-                                <StyledTableCell>Justificativa</StyledTableCell>
-                                <StyledTableCell>Nif</StyledTableCell>
-                                <StyledTableCell>Data</StyledTableCell>
-                                <StyledTableCell>Hora</StyledTableCell>
-                                <StyledTableCell>Excluir</StyledTableCell>
+                                {
+
+                                    cad === true || alt === true
+                                        ?
+                                        <>
+                                            <StyledTableCell>Mensagem</StyledTableCell>
+                                            <StyledTableCell>Nif</StyledTableCell>
+                                            <StyledTableCell>Data</StyledTableCell>
+                                            <StyledTableCell>Hora</StyledTableCell>
+                                            <StyledTableCell>Excluir</StyledTableCell>
+                                        </>
+                                        :
+                                        del === true
+                                        ?
+                                        <>
+                                            <StyledTableCell>Mensagem</StyledTableCell>
+                                            <StyledTableCell>Nif</StyledTableCell>
+                                            <StyledTableCell>Justificativa</StyledTableCell>
+                                            <StyledTableCell>Data</StyledTableCell>
+                                            <StyledTableCell>Hora</StyledTableCell>
+                                            <StyledTableCell>Excluir</StyledTableCell>
+                                            </>
+                                        :
+                                        <>
+                                            <StyledTableCell>Mensagem</StyledTableCell>
+                                            <StyledTableCell>Nif</StyledTableCell>
+                                            <StyledTableCell>Data</StyledTableCell>
+                                            <StyledTableCell>Hora</StyledTableCell>
+                                            <StyledTableCell>Excluir</StyledTableCell>
+                                            </>
+
+
+                                }
+
+
 
 
                             </TableRow>
@@ -137,19 +218,87 @@ export default function LogCurso() {
                         <TableBody>
 
                             {logCurso.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
-                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro, siglaCurso, justificativa }) => (
+                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro, justificativa }) => (
+
                                     <StyledTableRow>
-                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnum} um Curso chamado {informacaoCadastro}</StyledTableCell>
-                                        <StyledTableCell>{siglaCurso}</StyledTableCell>
-                                        <StyledTableCell>{justificativa}</StyledTableCell>
-                                        <StyledTableCell>{nifUsuario}</StyledTableCell>
-                                        <StyledTableCell>{data}</StyledTableCell>
-                                        <StyledTableCell>{hora}</StyledTableCell>
-                                        <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+
+                                        {
+
+                                            cad === true
+
+                                                ?
+                                                <>
+
+                                                    {
+                                                        logsEnum === "CADASTROU"
+                                                            ?
+                                                            <>
+                                                                <StyledTableCell>O usuário {nomeUsuario} cadastrou um curso chamado {informacaoCadastro} </StyledTableCell>
+                                                                <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                                <StyledTableCell>{data}</StyledTableCell>
+                                                                <StyledTableCell>{hora}</StyledTableCell>
+                                                                <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                                            </>
+                                                            :
+                                                            <></>
+                                                    }
+
+
+                                                </>
+                                                :
+
+                                                alt === true
+                                                    ?
+                                                    <>
+                                                        {
+                                                            logsEnum === "ALTEROU"
+                                                                ?
+                                                                <>
+                                                                    <StyledTableCell>O usuário {nomeUsuario} alterou um curso chamado {informacaoCadastro} </StyledTableCell>
+                                                                    <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                                    <StyledTableCell>{data}</StyledTableCell>
+                                                                    <StyledTableCell>{hora}</StyledTableCell>
+                                                                    <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                                                </>
+                                                                :
+                                                                <></>
+                                                        }
+                                                    </>
+                                                    :
+
+                                                    del === true
+                                                        ?
+                                                        <>
+                                                            {
+                                                                logsEnum === "DELETOU"
+                                                                    ?
+                                                                    <>
+                                                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                        <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                                        <StyledTableCell>{justificativa}</StyledTableCell>
+                                                                        <StyledTableCell>{data}</StyledTableCell>
+                                                                        <StyledTableCell>{hora}</StyledTableCell>
+                                                                        <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                                                    </>
+                                                                    :
+                                                                    <></>
+                                                            }
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnum} um curso chamado {informacaoCadastro} </StyledTableCell>
+                                                            <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                            <StyledTableCell>{data}</StyledTableCell>
+                                                            <StyledTableCell>{hora}</StyledTableCell>
+                                                            <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                                        </>
+                                        }
+
+
+
 
                                     </StyledTableRow>
-                                )
-                            )}
+                                ))}
 
                         </TableBody>
 
