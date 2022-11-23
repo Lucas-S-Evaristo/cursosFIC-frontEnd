@@ -352,6 +352,19 @@ function CadTurma() {
     });
   };
 
+  const motivoAlteracao = () => {
+    toast.error("Por favor, informe o motivo da Alteração.", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   // metodo que efetua o cadastro da turma
   const cadastrar = async (event) => {
 
@@ -444,13 +457,21 @@ function CadTurma() {
 
     event.preventDefault()
 
+    let justificativa = document.getElementById("justificativa").value
+
+    if(justificativa === ""){
+
+      motivoAlteracao()
+
+    }else{
+
     /* pegar todos  os valores do evento */
 
     const formData = new FormData(event.target);
     /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
 
-
+   
 
     const turmasA = {
       id: idTurma,
@@ -471,6 +492,7 @@ function CadTurma() {
       horarioTermino: { id: data.horarioFinal },
       diasDaTurma: data.diasDaTurma,
       simEnao: data.simEnao,
+      justificativa: justificativa
     };
 
 
@@ -508,6 +530,7 @@ function CadTurma() {
       msgAlteracao();
 
     }
+  }
   };
 
   // metodo que capta a turma que foi selecionado
@@ -605,7 +628,7 @@ function CadTurma() {
     if (key) {
       // fazendo uma requisição na api de busca e passando a key
       let result = await fetch(
-        "http://localhost:8080/api/turma/buscarTurma/" + key
+        "http://localhost:8080/api/turma/buscarTurmaAno/" + key
       );
       // tranformando a promessa em json
       result = await result.json();
@@ -630,7 +653,13 @@ function CadTurma() {
     if (key) {
       // fazendo uma requisição na api de busca e passando a key
       let result = await fetch(
-        "http://localhost:8080/api/turma/buscarTurmaAno/" + key
+        "http://localhost:8080/api/turma/buscarTurmaAno/",{
+          method: "post",
+          body: JSON.stringify(key),
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+          }}  
       );
       // tranformando a promessa em json
       result = await result.json();
@@ -808,7 +837,7 @@ function CadTurma() {
             name="parametro"
             required="required"
             className="buscarInput"
-            type="date"
+            type="text"
           />
         </form>
       </header>
@@ -880,7 +909,7 @@ function CadTurma() {
                     horarioTermino,
                     diasDaTurma,
                     podeSerLancado,
-                   
+
 
                   }) => (
                     <StyledTableRow>
@@ -1059,7 +1088,7 @@ function CadTurma() {
         <Modal.Body style={{ height: 610 }}>
           <div>
             <img
-              className="imagemModal"
+              className="imagemModalAlt"
               src={require("./imagemModal.png")}
             ></img>
           </div>
@@ -1270,37 +1299,37 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <div className="select4">
+              <div className="select4Alt">
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
 
-              <InputLabel id="demo-simple-select-standard-label">
+                    A turma vai para o site?
 
-                  A turma vai para o site?
+                  </InputLabel>
 
-                </InputLabel>
+                  <Select
 
-              <select
+                    defaultValue={valuesimEnao}
 
-                  defaultValue={valuesimEnao}
+                    style={styleTextField}
 
-                  style={styleTextField}
+                    labelId="demo-simple-select-standard-label"
 
-                  labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
 
-                  name="simEnao"
+                    name="simEnao"
 
-                  className="form-control"
 
-                  required
+                    required
+                  >
+                    {simEnao.map((obj, indice) => (
 
-                  id="demo-simple-select-standard"
-                >
-                  {simEnao.map((obj) => (
+                      <MenuItem value={obj} selected={indice === ValueStatus} key={indice}>{obj}</MenuItem>
 
-                    <option key={obj}>{obj}</option>
+                    ))}
 
-                  ))}
-
-                </select>
+                  </Select>
+                </FormControl>
 
               </div>
 
@@ -1359,6 +1388,17 @@ function CadTurma() {
                     value={dataTerminoFormatada}
                   />
                 </div>
+
+                  <div className="justificativaAltTurma">
+                <TextField
+                  id="justificativa"
+                  name="justificativa"
+                  label="justifique sua alteração"
+                  multiline
+                  rows={4}
+                />
+                </div>
+
               </div>
 
               <div class="parteBotao" style={{ left: 330, top: 535 }}>
@@ -1408,27 +1448,28 @@ function CadTurma() {
                   sx={styleTextField}
                   className="textField"
 
-                  name="numMaxVagas"
+                  name="numMinVagas"
                   type="number"
-                  label="Máximo de vagas:"
+                  label="Minimo de vagas"
                   variant="standard"
                 />
               </div>
 
               <div className="parte2">
 
+
                 <TextField
 
                   sx={styleTextField}
                   className="textField"
 
-                  name="numMinVagas"
+                  name="numMaxVagas"
                   type="number"
-                  label="Minimo de vagas"
+                  label="Máximo de vagas:"
                   variant="standard"
                 />
 
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "3.3em" }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Ambiente
                   </InputLabel>
@@ -1452,7 +1493,7 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <div className="parte3">
+              <div className="parte3Cad">
 
 
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
@@ -1480,7 +1521,7 @@ function CadTurma() {
 
 
               <div className="select1">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "-1em" }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Instrutor:
                   </InputLabel>
@@ -1509,7 +1550,7 @@ function CadTurma() {
 
 
 
-              <div className="select2">
+              <div className="select2Cad">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Periodo:
@@ -1559,32 +1600,8 @@ function CadTurma() {
               </div>
 
               <div className="select3">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Status:
-                  </InputLabel>
-                  <Select //select de status
-                    value={ValueStatus}
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="status"
-                    required
-                    onChange={(e) => {
-                      setvalueStatus(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {status.map((obj, indice) => (
-                      <MenuItem value={indice} key={indice}>
-                        {obj}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
 
-
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "-1.8em" }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Horario Término:
                   </InputLabel>
@@ -1610,7 +1627,7 @@ function CadTurma() {
 
               <div className="select4">
 
-              <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
 
                   <InputLabel id="demo-simple-select-standard-label">
 
@@ -1654,7 +1671,30 @@ function CadTurma() {
 
                 </FormControl>
 
-                </div>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", left: "15em" }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Status:
+                  </InputLabel>
+                  <Select //select de status
+                    value={ValueStatus}
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name="status"
+                    required
+                    onChange={(e) => {
+                      setvalueStatus(e.target.value);
+                      capturarDados(e);
+                    }}
+                  >
+                    {status.map((obj, indice) => (
+                      <MenuItem value={indice} key={indice}>
+                        {obj}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+              </div>
 
               <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
                 <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
@@ -1679,7 +1719,7 @@ function CadTurma() {
               </FormControl>
 
               <div>
-                <div className="horarioInicio" style={{ left: 30 }}>
+                <div className="horarioInicioCad" style={{ left: 30 }}>
                   <TextField
                     sx={estiloData}
                     label="Data inicio"
@@ -1692,7 +1732,7 @@ function CadTurma() {
                   />
                 </div>
 
-                <div className="horarioFinal" style={{ left: 285 }}>
+                <div className="horarioFinalCad" style={{ left: 270 }}>
                   <TextField
                     sx={estiloData}
                     variant="standard"

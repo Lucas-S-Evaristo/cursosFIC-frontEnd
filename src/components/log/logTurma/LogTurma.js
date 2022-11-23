@@ -98,6 +98,9 @@ export default function LogTurma() {
 
         }
     }
+
+
+    
     const [cad, setCad] = useState(false)
 
     const [alt, setAlt] = useState(false)
@@ -175,7 +178,7 @@ export default function LogTurma() {
                             <TableRow>
                                 {
 
-                                    cad === true || alt === true
+                                    cad === true 
                                         ?
                                         <>
                                             <StyledTableCell>Mensagem</StyledTableCell>
@@ -186,7 +189,7 @@ export default function LogTurma() {
                                             <StyledTableCell>Excluir</StyledTableCell>
                                         </>
                                         :
-                                        del === true
+                                        del === true || alt === true
                                             ?
                                             <>
                                                 <StyledTableCell>Mensagem</StyledTableCell>
@@ -254,6 +257,7 @@ export default function LogTurma() {
                                                                     <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
                                                                     <StyledTableCell>{codigoTurma}</StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                                    <StyledTableCell>{justificativa}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
                                                                     <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>

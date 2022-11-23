@@ -169,7 +169,7 @@ function ListaCurso() {
 
     if(justificativa === ""){
 
-      motivoExclusao()
+      motivoAlteracao()
 
     }else{
 
@@ -455,6 +455,19 @@ function ListaCurso() {
 
   const motivoExclusao = () => {
     toast.error("Por favor, informe o motivo da exclusão.", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const motivoAlteracao = () => {
+    toast.error("Por favor, informe o motivo da alteração.", {
       position: "top-center",
       autoClose: 2000,
       hideProgressBar: false,
@@ -936,8 +949,8 @@ function ListaCurso() {
                   multiline
                   sx={styleTextFieldConteudoProgAlt}
                   rows={4}
-                 
                 />
+
               </section>
               
               <section className="sectionComponentsSelect" style={{

@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { AccountCircle } from "@mui/icons-material";
 import "../area/listaArea.css"
+import "../parametros/parametro.css"
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import Modal from 'react-bootstrap/Modal';
 import { useEffect } from "react";
@@ -140,6 +141,10 @@ function ListaParametro() {
 
     const [endereco, setEndereco] = useState([])
 
+    const [logo, setlogo] = useState()
+
+    const [imagem, setImagem] = useState()
+
     const cadastrarParametro = async (event) => {
 
         event.preventDefault()
@@ -152,15 +157,18 @@ function ListaParametro() {
             telefone: data.telefone,
             endereco: data.endereco,
             parcelaBoleto: data.parcelaBoleto,
-            parcelaCartao: data.parcelaCartao
+            parcelaCartao: data.parcelaCartao,
+            logo: imagem
 
         }
-        console.warn(data)
-        console.log(parametro)
+
+        console.log("imagem: ", imagem)
+
+        console.log("parametro: ", parametro)
 
         let result = await fetch(`http://localhost:8080/api/parametro`, {
             method: 'post',
-            body: JSON.stringify(data),
+            body: JSON.stringify(parametro),
             headers: {
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
@@ -193,9 +201,12 @@ function ListaParametro() {
             telefone: data.telefone,
             endereco: data.endereco,
             parcelaBoleto: data.parcelaBoleto,
-            parcelaCartao: data.parcelaCartao
+            parcelaCartao: data.parcelaCartao,
+            logo: imagem
 
         }
+
+        console.log(imagem)
 
         let result = await fetch(`http://localhost:8080/api/parametro/${idParametro}`, {
             method: 'PUT',
@@ -246,7 +257,7 @@ function ListaParametro() {
 
     }, []);
 
-    const selecionarParametro = (id, pontoEquilibrio, parcelaBoleto, parcelaCartao, telefone, endereco) => {
+    const selecionarParametro = (id, pontoEquilibrio, parcelaBoleto, parcelaCartao, telefone, endereco, logo) => {
 
         setIdParametro(id)
         setParcelaBoleto(parcelaBoleto)
@@ -254,6 +265,7 @@ function ListaParametro() {
         setPontoEquilibrio(pontoEquilibrio)
         setTelefone(telefone)
         setEndereco(endereco)
+        setlogo(logo)
 
     }
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -301,6 +313,56 @@ function ListaParametro() {
         }
     };
 
+    let base64StringProduto;
+    const uploadImageProduto = async (e) => {
+        console.log(e.target.files);
+
+        const file = e.target.files[0]; 
+        const teste = await base64Produto(file);
+        base64StringProduto = teste;
+
+        var receberArquivo = document.getElementById("imagem").files;
+
+        if (receberArquivo.length > 0) {
+            var carregarImagem = receberArquivo[0];
+
+            //console.log(carregarImagem);
+            var lerArquivo = new FileReader();
+
+            lerArquivo.onload = function (arquivoCarregado) {
+                var imagemBase64 = arquivoCarregado.target.result;
+
+                console.log(imagemBase64);
+
+                var novaImagem = document.createElement("img");
+
+             novaImagem.src = imagemBase64;
+                
+             document.getElementById("verImagem").innerHTML = novaImagem.outerHTML;
+
+            };
+            lerArquivo.readAsDataURL(carregarImagem);
+        }
+
+      setImagem(base64StringProduto)
+    };
+
+    const base64Produto = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+
     const [modalCadastrar, setShowCadastrar] = useState(false);
 
     const [modalAlterar, setShow] = useState(false);
@@ -326,7 +388,7 @@ function ListaParametro() {
             <MenuLateral />
             <header>
                 <div className="divBotaoAdd">
-                    <Button style={parametro.length >= 1 ? {display: "none"} : {}} className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
+                    <Button style={parametro.length >= 1 ? { display: "none" } : {}} className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
                 </div>
 
                 <form className="formBusca">
@@ -345,6 +407,7 @@ function ListaParametro() {
                         variant="standard"
                     />
                 </form>
+                
 
             </header>
 
@@ -360,13 +423,14 @@ function ListaParametro() {
                                 <StyledTableCell>Parcelas Cartão</StyledTableCell>
                                 <StyledTableCell>Telefone</StyledTableCell>
                                 <StyledTableCell>Endereço</StyledTableCell>
+                                <StyledTableCell>Logo</StyledTableCell>
                                 <StyledTableCell>Alterar</StyledTableCell>
 
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {parametro.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
-                                { id, pontoEquilibrio, parcelaBoleto, parcelaCartao, telefone, endereco }) => (
+                                { id, pontoEquilibrio, parcelaBoleto, parcelaCartao, telefone, endereco, logo }) => (
                                 <StyledTableRow>
 
                                     <StyledTableCell>{id}</StyledTableCell>
@@ -375,17 +439,20 @@ function ListaParametro() {
                                     <StyledTableCell>{parcelaCartao}</StyledTableCell>
                                     <StyledTableCell>{telefone}</StyledTableCell>
                                     <StyledTableCell>{endereco}</StyledTableCell>
+                                    <StyledTableCell><img src={logo}></img></StyledTableCell>
 
                                     <StyledTableCell>
                                         <button className="botaoAlterarTurma" onClick={() => {
-                                            selecionarParametro(id, pontoEquilibrio, parcelaBoleto, parcelaCartao, telefone, endereco)
+                                            selecionarParametro(id, pontoEquilibrio, parcelaBoleto, parcelaCartao, telefone, endereco, logo)
+
+                                            console.log(logo)
                                             abrirModalAlterar()
                                         }}
                                         >
                                             <ModeEditOutlinedIcon /></button>
 
                                     </StyledTableCell>
-                                  
+
                                 </StyledTableRow>
                             ))
                             }
@@ -432,15 +499,24 @@ function ListaParametro() {
 
                     <Modal.Body>
                         <form onSubmit={cadastrarParametro} className="formArea">
-                            <TextField className="textField" name="pontoEquilibrio" type="text" label="Ponto de equilibrio:" variant="standard" />
 
-                            <TextField className="textField" name="parcelaBoleto" type="text" label="Parcelas Boleto:" variant="standard" />
+                            <div className="divParametro">
 
-                            <TextField className="textField" name="parcelaCartao" type="text" label="Parcelas Cartão:" variant="standard" />
+                                <TextField className="textField" name="pontoEquilibrio" type="text" label="Ponto de equilibrio:" variant="standard" />
 
-                            <TextField className="textField" name="telefone" type="text" label="Telefone:" variant="standard" />
+                                <TextField className="textField" name="parcelaBoleto" type="text" label="Parcelas Boleto:" variant="standard" />
 
-                            <TextField className="textField" name="endereco" type="text" label="Endereço:" variant="standard" />
+                                <TextField className="textField" name="parcelaCartao" type="text" label="Parcelas Cartão:" variant="standard" />
+
+                                <TextField className="textField" name="telefone" type="text" label="Telefone:" variant="standard" />
+
+                                <TextField className="textField" name="endereco" type="text" label="Endereço:" variant="standard" />
+
+                            </div>
+
+                            <div id="verImagem"></div>
+
+                            <TextField className="arquivoParametro" name="logo" type="file" id="imagem" onChange={uploadImageProduto} variant="standard" />
 
                             <div class="parteBotaoArea">
                                 <Button variant="contained" color="success" type="submit" >cadastrar</Button>
@@ -468,15 +544,23 @@ function ListaParametro() {
                     <Modal.Body>
                         <form onSubmit={alterarParametro} className="formArea">
 
-                            <TextField className="textField" name="pontoEquilibrio" defaultValue={pontoEquilibrio} type="text" label="Ponto de equilibrio:" variant="standard" />
+                            <div className="divParametro">
 
-                            <TextField className="textField" name="parcelaBoleto" defaultValue={parcelaBoleto} type="text" label="Parcelas Boleto:" variant="standard" />
+                                <TextField className="textField" name="pontoEquilibrio" defaultValue={pontoEquilibrio} type="number" label="Ponto de equilibrio:" variant="standard" />
 
-                            <TextField className="textField" name="parcelaCartao" defaultValue={parcelaCartao} type="text" label="Parcelas Cartão:" variant="standard" />
+                                <TextField className="textField" name="parcelaBoleto" defaultValue={parcelaBoleto} type="number" label="Parcelas Boleto:" variant="standard" />
 
-                            <TextField className="textField" name="telefone" defaultValue={telefone} type="text" label="Telefone:" variant="standard" />
+                                <TextField className="textField" name="parcelaCartao" defaultValue={parcelaCartao} type="number" label="Parcelas Cartão:" variant="standard" />
 
-                            <TextField className="textField" name="endereco" defaultValue={endereco} type="text" label="Endereço:" variant="standard" />
+                                <TextField className="textField" name="telefone" defaultValue={telefone} type="number" label="Telefone:" variant="standard" />
+
+                                <TextField className="textField" name="endereco" defaultValue={endereco} type="number" label="Endereço:" variant="standard" />
+
+                            </div>
+
+                            <div id="verImagem"><img src={logo}></img></div>
+
+                            <TextField className="arquivoParametro" name="logo" id="imagem" accept="image/*" type="file" onChange={uploadImageProduto} variant="standard"/>
 
                             <div class="parteBotaoArea">
                                 <Button variant="contained" color="success" type="submit" >Alterar</Button>

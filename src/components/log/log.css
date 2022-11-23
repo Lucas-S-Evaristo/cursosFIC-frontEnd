@@ -40,11 +40,22 @@ a{
 }
 
 .botoesLogCondicional{
-    margin-left: 10em;
+    position: relative;
+    left: 20em;
+  
 }
 
 .botoesLogCondicional button{
     margin-left: 20em;
+    color: black;
+    font-weight: bold;
+}
+
+.botoesLogCondicional button:hover{
+    margin-left: 20em;
+    background-color: black;
+    color: white;
+    font-weight: bold;
 }
 
 
