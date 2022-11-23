@@ -285,26 +285,65 @@ function PgPricipal(props) {
     },
   }));
   /* buscar instrutor  */
+
   const buscarInstrutor = async (event) => {
+
     /* key rescebe um evento que e gerado quando usuario clicar no iput de buscar */
+
     let key = event.target.value;
+
     /* verifica se o usuario digitou algo se não digitou nada ele faz   requisição get  para atulizar lista */
+
     if (key) {
+
+      console.log("keyyy",  key)
+
+       let jsonNome = {
+
+        nome:key
+
+       }
+
       /* faz uma requisição get  que faz uma busca de instrutor  */
-      let result = await fetch(
-        `http://localhost:8080/api/instrutor/buscar/${key}`
-      );
+
+      let result = await fetch(`http://localhost:8080/api/instrutor/buscar/`,{
+
+          method: "post",
+
+          body: JSON.stringify(key),
+
+          headers: {
+
+            "Content-type": "application/json",
+
+            Accept: "application/json",
+
+          }});
+
       /* pega o json da requição  */
+
       result = await result.json();
+
+      console.log("result: ", result)
+
       /* verificar se  requição foi feita com sucesso */
+
       if (result) {
+
         /* coloca  o json na variavel instrutor */
+
         setInstrutor(result);
+
       }
+
     } else {
+
       /* faz  uma requisição get do back end e renderização da página  */
+
       getiInstrutor();
+
     }
+
   };
   /* metodo deletar instrutor recebe um id de instrutor para deletar */
   const deleteinstrutor = async (id) => {

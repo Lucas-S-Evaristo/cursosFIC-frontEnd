@@ -163,6 +163,17 @@ function ListaCurso() {
     let cargaHoraria = document.getElementById("cargaHoraria").value;
     let area = document.getElementById("area").value;
     let valor = document.getElementById("valor").value;
+    let justificativa = document.getElementById("justificativa").value
+
+    console.log(justificativa)
+
+    if(justificativa === ""){
+
+      motivoExclusao()
+
+    }else{
+
+    
 
     const cursoAlt = {
       id: id,
@@ -175,7 +186,9 @@ function ListaCurso() {
       cargaHoraria: cargaHoraria,
       area: { id: area },
       valor: valor,
+      justificativa: justificativa
     };
+
     // requisição ao back-end
     let resultado = await fetch("http://localhost:8080/api/curso/" + id, {
       method: "PUT",
@@ -188,13 +201,14 @@ function ListaCurso() {
     });
 
     if (resultado) {
-      // atualiza a lista com o curso alterado
-      atualizaLista();
-      // fecha a modal de alterar
-      setShow(false);
-      // exibe a msg de alteração concluida
-      msgAlteracao();
+       // atualiza a lista com o curso alterado
+       atualizaLista();
+       // fecha a modal de alterar
+       setShow(false);
+       // exibe a msg de alteração concluida
+       msgAlteracao();
     }
+  }
   };
 
   // metodo que efetua o cadastro do curso
@@ -293,13 +307,11 @@ function ListaCurso() {
   // metodo que deleta o curso
   const deletar = async (id) => {
 
-    if(descricaoLog === undefined){
+    if(descricaoLog.length === 0 || descricaoLog === undefined){
 
       motivoExclusao()
 
   }else{
-
-
 
     let result = await fetch(`http://localhost:8080/api/curso/${id}`, {
       method: "DELETE",
@@ -346,7 +358,19 @@ function ListaCurso() {
     if (key) {
       // fazendo uma requisição na api de buscar e passando a key
       let result = await fetch(
-        "http://localhost:8080/api/curso/buscarCurso/" + key
+        "http://localhost:8080/api/curso/buscarCurso/", {
+          
+          method: "post",
+
+          body: JSON.stringify(key),
+
+          headers: {
+
+            "Content-type": "application/json",
+
+            Accept: "application/json",
+        }
+      }
       );
       // tranformando a promessa em json
       result = await result.json();
@@ -815,8 +839,9 @@ function ListaCurso() {
               src={require("./imagemModal.png")}
             ></img>
           </div>
+          
           <div>
-            <form
+          <form
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -825,64 +850,102 @@ function ListaCurso() {
                 width: "60%",
                 height: "80%",
                 position: "absolute",
-                alignItems: "baseline",
+                top: "-1em"
               }}
             >
-              <div >
-                <h2 style={titleModal}>ALTERAR CURSO</h2>
+              <section className="sectionComponents">
                 <TextField
-                  style={{ margin: 10 }}
+                  autoFocus
                   id="nome"
+                  sx={styleTextField}
                   defaultValue={nome}
                   className="textField"
-                  label="NOME"
+                  name="nome"
+                  type="text"
+                  label="Nome"
                   variant="outlined"
                 />
+
                 <TextField
                   autoFocus
                   id="objetivo"
-                  sx={styleTextField}
                   defaultValue={objetivo}
-                  label="OBJETIVO"
+                  sx={styleTextField}
+                  className="textField"
+                  name="objetivo"
+                  type="text"
+                  label="Objetivo"
                   variant="outlined"
                 />
+              </section>
+
+              <section className="sectionComponents">
                 <TextField
                   autoFocus
                   id="preRequisito"
                   defaultValue={preRequisito}
                   sx={styleTextField}
                   className="textField"
-                  label="PRÉ REQUISITO"
+                  name="preRequisito"
+                  type="text"
+                  label="Pré requisito"
                   variant="outlined"
                 />
                 <TextField
                   autoFocus
-                  defaultValue={conteudoProgramatico}
-                  id="conteudoProgramatico"
-                  sx={styleTextField}
-                  label="CONTEUDO PROGRAMATICO"
-                  variant="outlined"
-                />
-
-                <TextField
-                  autoFocus
-                  defaultValue={cargaHoraria}
-                  id="cargaHoraria"
-                  type="number"
-                  sx={styleTextField}
-                  label="CARGA HORARIA"
-                  variant="outlined"
-                />
-
-                <TextField
-                  autoFocus
-                  defaultValue={valor}
                   id="valor"
-                  type="number"
                   sx={styleTextField}
-                  label="VALOR"
+                  defaultValue={valor}
+                  className="textField"
+                  name="valor"
+                  type="number"
+                  label="Valor"
                   variant="outlined"
                 />
+
+              </section>
+
+              <section className="sectionComponents">
+                <TextField
+                  autoFocus
+                  id="cargaHoraria"
+                  defaultValue={cargaHoraria}
+                  sx={styleTextField}
+                  className="textField"
+                  name="cargaHoraria"
+                  type="number"
+                  label="Carga Horaria"
+                  variant="outlined"
+                />
+
+
+                <TextField
+                  name="conteudoProgramatico"
+                  id="conteudoProgramatico"
+                  label="Conteúdo programático"
+                  multiline
+                  defaultValue={conteudoProgramatico}
+                  sx={styleTextFieldConteudoProg}
+                  rows={4}
+                />
+
+                <TextField
+                  id="justificativa"
+                  name="justificativa"
+                  label="justifique sua alteração"
+                  multiline
+                  sx={styleTextFieldConteudoProgAlt}
+                  rows={4}
+                 
+                />
+              </section>
+              
+              <section className="sectionComponentsSelect" style={{
+                position: "absolute",
+                top: "15.5em",
+                left: "0.5em",
+               
+              }}>
 
                 <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
                 <select id="area" style={styleSelect} className="form-control">
@@ -894,9 +957,11 @@ function ListaCurso() {
                     </option>
                   ))}
                 </select>
+
                 <InputLabel id="demo-simple-select-label">
                   Tipo Atendimento
                 </InputLabel>
+
                 <select
                   defaultValue={tipoAtendimento}
                   id="tipoAtendimento"
@@ -909,8 +974,10 @@ function ListaCurso() {
                     <option key={obj}>{obj}</option>
                   ))}
                 </select>
-                <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
-                <select
+
+              <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
+
+              <select
                   id="nivel"
                   style={styleSelect}
                   className="form-control"
@@ -922,8 +989,12 @@ function ListaCurso() {
                     <option key={obj}>{obj}</option>
                   ))}
                 </select>
-              </div>
-              <div>
+
+              </section>
+
+              <div
+                style={{ position: "absolute", top: "33em" }}
+              >
                 <Button
                   variant="contained"
                   style={btnCad}
@@ -941,6 +1012,7 @@ function ListaCurso() {
                   />
                   Alterar
                 </Button>
+
 
                 <Button
                   variant="contained"
@@ -1071,7 +1143,6 @@ function ListaCurso() {
                
               }}>
 
-
                 <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
                 <select
                   id="areaCad"
@@ -1161,8 +1232,21 @@ const styleTextFieldConteudoProg = {
 
 }
 
+const styleTextFieldConteudoProgAlt = {
+  margin: 1,
+  backgroundColor: "trans",
+  width: 227,
+  marginLeft: "15.5em"
+}
+
 const styleSelect = {
   width: "123.5%",
+  height: "3em",
+  marginBottom: "30px",
+};
+
+const styleSelect2 = {
+  width: "34.3%",
   height: "3em",
   marginBottom: "30px",
 };

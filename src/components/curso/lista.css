@@ -159,3 +159,9 @@ table{
     flex-direction: row;
     justify-content: space-between;
 }
+
+.botoesModalAltCurso{
+    position: absolute;
+    top: 20em;
+    background-color: red;
+}

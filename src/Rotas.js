@@ -319,6 +319,27 @@ function Rotas() {
         }
     }
 
+    function PrivadaRotasParametro() {
+      
+      let p = sessionStorage.getItem("payload");
+      p = JSON.parse(p);
+      
+        if(token != null){
+
+          if ( p.tipo_usuario === "Master" || p.tipo_usuario === "Opp" ) {
+          
+            return <ListaParametro/>
+          } else {
+    
+            return <Navigate to="/login" />
+          }
+
+        }else{
+
+          return <Navigate to="/login" />
+        }
+    }
+
     return (
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -460,7 +481,12 @@ function Rotas() {
         } />
 
         <Route path="/listaParametros" element={
+
+          <PrivadaRotasParametro>
+
           <ListaParametro/>
+
+          </PrivadaRotasParametro>
                   
         }/>
 

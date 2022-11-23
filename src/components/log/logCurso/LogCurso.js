@@ -178,7 +178,7 @@ export default function LogCurso() {
 
                                 {
 
-                                    cad === true || alt === true
+                                    cad === true
                                         ?
                                         <>
                                             <StyledTableCell>Mensagem</StyledTableCell>
@@ -188,7 +188,7 @@ export default function LogCurso() {
                                             <StyledTableCell>Excluir</StyledTableCell>
                                         </>
                                         :
-                                        del === true
+                                        del === true || alt === true
                                         ?
                                         <>
                                             <StyledTableCell>Mensagem</StyledTableCell>
@@ -209,9 +209,6 @@ export default function LogCurso() {
 
 
                                 }
-
-
-
 
                             </TableRow>
                         </TableHead>
@@ -256,6 +253,7 @@ export default function LogCurso() {
                                                                 <>
                                                                     <StyledTableCell>O usuário {nomeUsuario} alterou um curso chamado {informacaoCadastro} </StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                                    <StyledTableCell>{justificativa}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
                                                                     <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>

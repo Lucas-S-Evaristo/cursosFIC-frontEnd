@@ -93,7 +93,7 @@ function CadTurma() {
   const [curso, setCurso] = useState([]);
   const [dataInicio, setDataInicio] = useState();
   const [dataTermino, setDataTermino] = useState();
-  const [simEnao, setsimEnao] = useState();
+
   // variavel que tem acesso a um array com os cursos
   const [idCurso, setidCurso] = useState([]);
   // variavel que tem acesso a um array com os cursos setnumMaxVagas
@@ -128,6 +128,12 @@ function CadTurma() {
 
   const [idTurma, setidTurma] = useState([]);
 
+  const [simEnao, setsimEnao] = useState([]);
+
+  const [valuesimEnao, setvaluesimEnao] = useState([]);
+
+
+
   const dataInicioFormatada = dataInicio;
   const dataTerminoFormatada = dataTermino;
 
@@ -160,6 +166,7 @@ function CadTurma() {
     diaSemana: valuediaSemana,
     horarioInicio: { id: horarioInicioValue },
     horarioTermino: { id: horarioFinalValue },
+    simEnao: valuesimEnao,
     //diasDaTurma: setDiasDaSemana
   };
 
@@ -181,7 +188,7 @@ function CadTurma() {
     setShowExcluir(true)
     setidTurma(id)
 
-  } ;
+  };
 
   const fecharModalExcluir = () => setShowExcluir(false);
 
@@ -233,6 +240,12 @@ function CadTurma() {
     fetch("http://localhost:8080/api/enum/diasSemana")
       .then((resp) => resp.json())
       .then((retorno_convertido) => setDiaSemana(retorno_convertido)); //lista de dia da semana
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/enum/simEnao")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setsimEnao(retorno_convertido)); //lista de sim e não
   }, []);
 
   const erroDataIgual = () => {
@@ -349,8 +362,6 @@ function CadTurma() {
     /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
 
-
-
     const turmas = {
 
       qtdMatriculas: data.qtdMatriculas,
@@ -368,7 +379,8 @@ function CadTurma() {
       parametro: data.parametro,
       horarioInicio: { id: horarioInicioValue },
       horarioTermino: { id: horarioFinalValue },
-      diasDaTurma: data.diasDaTurma
+      diasDaTurma: data.diasDaTurma,
+      simEnao: data.simEnao,
 
     };
 
@@ -457,7 +469,8 @@ function CadTurma() {
       diaSemana: data.diasDaTurma,
       horarioInicio: { id: data.horarioInicio },
       horarioTermino: { id: data.horarioFinal },
-      diasDaTurma: data.diasDaTurma
+      diasDaTurma: data.diasDaTurma,
+      simEnao: data.simEnao,
     };
 
 
@@ -512,6 +525,7 @@ function CadTurma() {
     numMinVagas,
     diaSemana,
     dataInicio,
+    simEnao,
     dataTermino,
     horarioInicio,
     horarioTermino,
@@ -530,6 +544,7 @@ function CadTurma() {
     setnumMinVagas(numMinVagas);
     setvalueDiaSemana(diaSemana);
     setDataInicio(dataInicio);
+    setvaluesimEnao(simEnao);
     setDataTermino(dataTermino);
     setHorarioInicioValue(horarioInicio);
     setHorarioFinalValue(horarioTermino);
@@ -545,30 +560,32 @@ function CadTurma() {
 
   const [descricaoLog, setDescricaoLog] = useState()
 
-  
+
   // metodo que deleta a turma
   const deletar = async (id) => {
 
-    if(descricaoLog === undefined){
+    if (descricaoLog === undefined) {
 
-        motivoExclusao()
+      motivoExclusao()
 
-    }else{
+    } else {
 
 
-    let result = await fetch(`http://localhost:8080/api/turma/${id}`, {
-      method: "DELETE",
-      body: JSON.stringify(descricaoLog),
-      headers: {
-        "Authorization": token
+      let result = await fetch(`http://localhost:8080/api/turma/${id}`, {
+        method: "DELETE",
+        body: JSON.stringify(descricaoLog),
+        headers: {
+          "Authorization": token
+        }
+      });
+      // caso já exista uma turma a ser deletado, ele atualiza a lista assim removendo a turma deletado
+      if (result) {
+
+        atualizaLista();
+        msgExclusao();
+        fecharModalExcluir()
+        setDescricaoLog("")
       }
-    });
-    // caso já exista uma turma a ser deletado, ele atualiza a lista assim removendo a turma deletado
-    if (result) {
-      
-      atualizaLista();
-      msgExclusao();
-    }
     }
   };
 
@@ -820,6 +837,7 @@ function CadTurma() {
                 <StyledTableCell>Data de Término</StyledTableCell>
                 <StyledTableCell>Horario de Inicio</StyledTableCell>
                 <StyledTableCell>Horario de término</StyledTableCell>
+                <StyledTableCell>A turma vai para o site?</StyledTableCell>
                 <StyledTableCell>Turma pode ser lançada</StyledTableCell>
                 <StyledTableCell id="alterar"
                   style={token === null || p.tipo_usuario === "Secretária" || p === null
@@ -856,11 +874,13 @@ function CadTurma() {
                     numMinVagas,
                     diaSemana,
                     dataInicio,
+                    simEnao,
                     dataTermino,
                     horarioInicio,
                     horarioTermino,
                     diasDaTurma,
-                    podeSerLancado
+                    podeSerLancado,
+                   
 
                   }) => (
                     <StyledTableRow>
@@ -879,6 +899,7 @@ function CadTurma() {
                       <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
+                      <StyledTableCell>{simEnao}</StyledTableCell>
                       <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
 
                       <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
@@ -905,6 +926,7 @@ function CadTurma() {
                               numMinVagas,
                               diaSemana,
                               dataInicio,
+                              simEnao,
                               dataTermino,
                               horarioInicio,
                               horarioTermino,
@@ -930,7 +952,7 @@ function CadTurma() {
                           onClick={() => {
                             abrirModalExcluir(id)
 
-                           
+
                           }}>
                           <DeleteForeverOutlinedIcon />
                         </button>
@@ -947,39 +969,39 @@ function CadTurma() {
                             <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
                           </Modal.Header>
                           <form>
-                          <Modal.Body>
-                            <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
-                            
-                         
-                            <TextField
-                              id="outlined-multiline-static"
-                              value={descricaoLog}
-                              label="Justificativa:"
-                              hiddenLabel
-                              required
-                              className="textAreaExcluir"
-                              multiline
-                              rows={4}
-                              onChange={(e) => {
-                                setDescricaoLog(e.target.value)
-                              }}
-
-                            />
-                          </Modal.Body>
+                            <Modal.Body>
+                              <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
 
 
-                          <Modal.Footer className="botaoModalExcluir">
-                            <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
-                              Não
-                            </Button>
-                            <Button variant="contained" color="success" onClick={() => {
-                              //excluir a turma pelo id
-                              deletar(idTurma)
-                              
-                            }}>
-                              Sim
-                            </Button>
-                          </Modal.Footer>
+                              <TextField
+                                id="outlined-multiline-static"
+                                value={descricaoLog}
+                                label="Justificativa:"
+                                hiddenLabel
+                                required
+                                className="textAreaExcluir"
+                                multiline
+                                rows={4}
+                                onChange={(e) => {
+                                  setDescricaoLog(e.target.value)
+                                }}
+
+                              />
+                            </Modal.Body>
+
+
+                            <Modal.Footer className="botaoModalExcluir">
+                              <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                                Não
+                              </Button>
+                              <Button variant="contained" color="success" onClick={() => {
+                                //excluir a turma pelo id
+                                deletar(idTurma)
+
+                              }}>
+                                Sim
+                              </Button>
+                            </Modal.Footer>
                           </form>
 
                         </Modal>
@@ -1156,13 +1178,7 @@ function CadTurma() {
                   </Select>
                 </FormControl>
 
-
-
-
-
               </div>
-
-
 
               <div className="select2">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
@@ -1252,6 +1268,40 @@ function CadTurma() {
                     ))}
                   </Select>
                 </FormControl>
+              </div>
+
+              <div className="select4">
+
+              <InputLabel id="demo-simple-select-standard-label">
+
+                  A turma vai para o site?
+
+                </InputLabel>
+
+              <select
+
+                  defaultValue={valuesimEnao}
+
+                  style={styleTextField}
+
+                  labelId="demo-simple-select-standard-label"
+
+                  name="simEnao"
+
+                  className="form-control"
+
+                  required
+
+                  id="demo-simple-select-standard"
+                >
+                  {simEnao.map((obj) => (
+
+                    <option key={obj}>{obj}</option>
+
+                  ))}
+
+                </select>
+
               </div>
 
               <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
@@ -1557,6 +1607,54 @@ function CadTurma() {
                   </Select>
                 </FormControl>
               </div>
+
+              <div className="select4">
+
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+
+                  <InputLabel id="demo-simple-select-standard-label">
+
+                    A turma vai para o site?
+
+                  </InputLabel>
+
+                  <Select //select de turmas
+
+                    value={valuesimEnao}
+
+                    labelId="demo-simple-select-standard-label"
+
+                    id="demo-simple-select-standard"
+
+                    name="simEnao"
+
+                    required
+
+                    onChange={(e) => {
+
+                      setvaluesimEnao(e.target.value);
+
+                      capturarDados(e);
+
+                    }}
+
+                  >
+
+                    {simEnao.map((obj, indice) => (
+
+                      <MenuItem value={indice} key={indice}>
+
+                        {obj}
+
+                      </MenuItem>
+
+                    ))}
+
+                  </Select>
+
+                </FormControl>
+
+                </div>
 
               <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
                 <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>

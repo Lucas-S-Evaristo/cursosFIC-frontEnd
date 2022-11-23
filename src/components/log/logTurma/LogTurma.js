@@ -99,7 +99,7 @@ export default function LogTurma() {
         }
     }
     const [cad, setCad] = useState(false)
- 
+
     const [alt, setAlt] = useState(false)
 
     const [del, setDel] = useState(false)
@@ -151,7 +151,7 @@ export default function LogTurma() {
 
                     ativarAlt()
                     setCad(false)
-                   
+
 
 
                 }}>Alterados</Button>
@@ -173,22 +173,48 @@ export default function LogTurma() {
                         <TableHead className="theadTurma">
 
                             <TableRow>
+                                {
 
-                                <StyledTableCell>Mensagem</StyledTableCell>
-                                <StyledTableCell>Código da turma</StyledTableCell>
-                                <StyledTableCell>Nif</StyledTableCell>
-                                <StyledTableCell>justificativa</StyledTableCell>
-                                <StyledTableCell>Data</StyledTableCell>
-                                <StyledTableCell>Hora</StyledTableCell>
-                                <StyledTableCell>Excluir</StyledTableCell>
+                                    cad === true || alt === true
+                                        ?
+                                        <>
+                                            <StyledTableCell>Mensagem</StyledTableCell>
+                                            <StyledTableCell>CodigoTurma</StyledTableCell>
+                                            <StyledTableCell>Nif</StyledTableCell>
+                                            <StyledTableCell>Data</StyledTableCell>
+                                            <StyledTableCell>Hora</StyledTableCell>
+                                            <StyledTableCell>Excluir</StyledTableCell>
+                                        </>
+                                        :
+                                        del === true
+                                            ?
+                                            <>
+                                                <StyledTableCell>Mensagem</StyledTableCell>
+                                                <StyledTableCell>CodigoTurma</StyledTableCell>
+                                                <StyledTableCell>Nif</StyledTableCell>
+                                                <StyledTableCell>Justificativa</StyledTableCell>
+                                                <StyledTableCell>Data</StyledTableCell>
+                                                <StyledTableCell>Hora</StyledTableCell>
+                                                <StyledTableCell>Excluir</StyledTableCell>
+                                            </>
+                                            :
+                                            <>
+                                                <StyledTableCell>Mensagem</StyledTableCell>
+                                                <StyledTableCell>CodigoTurma</StyledTableCell>
+                                                <StyledTableCell>Nif</StyledTableCell>
+                                                <StyledTableCell>Data</StyledTableCell>
+                                                <StyledTableCell>Hora</StyledTableCell>
+                                                <StyledTableCell>Excluir</StyledTableCell>
+                                            </>
 
 
+                                }
                             </TableRow>
                         </TableHead>
                         <TableBody>
 
                             {logTurma.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
-                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, justificativa, codigoTurma}) => (
+                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, justificativa, codigoTurma }) => (
 
                                     <StyledTableRow>
 
@@ -239,38 +265,38 @@ export default function LogTurma() {
                                                     :
 
                                                     del === true
-                                                    ?
-                                                    <>
-                                                        {
-                                                            logsEnum === "DELETOU"
-                                                                ?
-                                                                <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
-                                                                    <StyledTableCell>{codigoTurma}</StyledTableCell>
-                                                                    <StyledTableCell>{nifUsuario}</StyledTableCell>
-                                                                    <StyledTableCell>{justificativa}</StyledTableCell>
-                                                                    <StyledTableCell>{data}</StyledTableCell>
-                                                                    <StyledTableCell>{hora}</StyledTableCell>
-                                                                    <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
-                                                                </>
-                                                                :
-                                                                <></>
-                                                        }
-                                                    </>
-                                                    :
+                                                        ?
                                                         <>
-                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
-                                                    <StyledTableCell>{codigoTurma}</StyledTableCell>
-                                                    <StyledTableCell>{nifUsuario}</StyledTableCell>
-                                                    <StyledTableCell>{data}</StyledTableCell>
-                                                    <StyledTableCell>{hora}</StyledTableCell>
-                                                    <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
-                                                    </>
+                                                            {
+                                                                logsEnum === "DELETOU"
+                                                                    ?
+                                                                    <>
+                                                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
+                                                                        <StyledTableCell>{codigoTurma}</StyledTableCell>
+                                                                        <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                                        <StyledTableCell>{justificativa}</StyledTableCell>
+                                                                        <StyledTableCell>{data}</StyledTableCell>
+                                                                        <StyledTableCell>{hora}</StyledTableCell>
+                                                                        <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                                                    </>
+                                                                    :
+                                                                    <></>
+                                                            }
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma turma</StyledTableCell>
+                                                            <StyledTableCell>{codigoTurma}</StyledTableCell>
+                                                            <StyledTableCell>{nifUsuario}</StyledTableCell>
+                                                            <StyledTableCell>{data}</StyledTableCell>
+                                                            <StyledTableCell>{hora}</StyledTableCell>
+                                                            <StyledTableCell><button className="botaoDeleteTurma" onClick={() => deletar(id)}><DeleteForeverOutlinedIcon /></button></StyledTableCell>
+                                                        </>
                                         }
 
                                     </StyledTableRow>
                                 ))}
- 
+
                         </TableBody>
 
                     </Table>

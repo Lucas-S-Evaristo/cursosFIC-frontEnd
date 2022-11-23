@@ -13,6 +13,7 @@ import ImportContactsTwoToneIcon from '@mui/icons-material/ImportContactsTwoTone
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import LockIcon from '@mui/icons-material/Lock';
 import CadTurma, { esconder } from "../Turma/PageTurma";
+import PostAddIcon from '@mui/icons-material/PostAdd';
 
 
 export function deslogar() {
@@ -136,6 +137,18 @@ function MenuLateral() {
               <Nav.Link className="navLink" href="/logs">
                 <LockIcon  sx={{ marginRight: "30px" }} />
                 Logs
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
+              <Nav.Link className="navLink" href="/listaParametros">
+                <PostAddIcon  sx={{ marginRight: "30px" }} />
+                Parâmetros
               </Nav.Link>
             </Nav.Item>
 
