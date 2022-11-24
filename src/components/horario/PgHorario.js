@@ -46,6 +46,7 @@ import MenuLateral from "../menu/MenuLateral";
 import Slide from "@mui/material/Slide";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import '../horario/hs.css'
 
 const drawerWidth = 240;
 //modal css
@@ -56,7 +57,6 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -336,14 +336,15 @@ const PgHorario = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
+          <Box sx={style} className="modalCadH">
             <h2 id="transition-modal-title">cadastro de horario</h2>
             <form onSubmit={cadastroHorario}>
               <TextField
                 name="horario"
                 type="time"
-                label="horario"
+                label="           horario"
                 variant="outlined"
+                style={{ width:"20vh"}}
                 required
               />
               <Button variant="contained" style={{ margin: 10 }} type="submit">

@@ -48,6 +48,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import MenuLateral from "../menu/MenuLateral";
 import Slide from "@mui/material/Slide";
 import api from "../api/api"
+import './intrutor.css'
 
 const secondary = red[500];
 
@@ -63,7 +64,6 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  border: "2px solid #000",
   boxShadow: 10,
   p: 4,
 };
@@ -466,7 +466,7 @@ p = JSON.parse(p);
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
+          <Box sx={style} className="modaC">
             <h2 id="transition-modal-title">cadastro de instrutor</h2>
             <form onSubmit={cadastroInstrutor}>
               <TextField

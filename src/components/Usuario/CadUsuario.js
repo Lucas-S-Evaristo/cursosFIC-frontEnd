@@ -349,7 +349,7 @@ function PageUsuario() {
                 className="form-control"
                 onChange={capturarDados}
               >
-                <Box></Box>
+                
 
                 <option>Selecione:</option>
 
@@ -380,12 +380,13 @@ function PageUsuario() {
             </div>
             <Button
               variant="contained"
-              style={btnCad}
+              style={{color:"white", marginTop:20}}
+              color={"success"}
               onClick={() => {
                 cadastrar();
               }}
             >
-              <SaveIcon sx={{ marginRight: "10px" }} />
+              
               Cadastrar
             </Button>
 
@@ -398,7 +399,7 @@ function PageUsuario() {
                 handleClose();
               }}
             >
-              <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+              
               Fechar
             </Button>
           </form>
@@ -420,14 +421,6 @@ function PageUsuario() {
           <form>
             <div>
               <h2 style={titleModal}>
-                <CreateIcon
-                  sx={{
-                    color: "#a2d2ff",
-                    width: "100",
-                    border: "none",
-                    marginRight: 2,
-                  }}
-                />{" "}
                 ALTERAR USUÁRIO
               </h2>
               <TextField
@@ -491,14 +484,7 @@ function PageUsuario() {
                 alterar(objUsuario.id);
               }}
             >
-              <CreateIcon
-                sx={{
-                  color: "#ffff",
-                  width: "100",
-                  border: "none",
-                  marginRight: "10px",
-                }}
-              />
+       
               Alterar
             </Button>
 
@@ -511,12 +497,12 @@ function PageUsuario() {
                 setModalAlt(false);
               }}
             >
-              <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+              
               Fechar
             </Button>
           </form>
           <Paper elevation={0}>
-            <img style={imgStyle} src="/img/img1.png" />
+            <img style={imgStyle} src={require('../../imagens/usuario.png')} />
           </Paper>
         </Box>
       </Modal>
@@ -563,7 +549,7 @@ function PageUsuario() {
             </Grid>
           </Toolbar>
         </AppBar>
-        <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
+        <Typography sx={{ my: 5, mx: 2}} color="text.secondary" align="center">
           <table
             style={{ width: "100%" }}
             className="table  table-lg  table-hover"
@@ -626,6 +612,7 @@ function PageUsuario() {
                     <Modal
                       open={modalConfirmar}
                       onClose={clearClose}
+                      
                       aria-labelledby="modal-title"
                       aria-describedby="modal-description"
                     >
@@ -741,23 +728,21 @@ const styleTitle = {
 };
 
 const titleModal = {
-  color: "#a2d2ff",
-  marginBottom: "65px",
-  boxShadow: 24,
+  marginBottom:30
 };
 const btnCad = {
   marginTop: "20px",
-  borderRadius: "10px",
-  color: "#ffff",
-  backgroundColor: "#a2d2ff",
+  borderRadius: "0.5vh",
+  color: "#000",
+  backgroundColor: "yellow",
 };
 
 const btnClose = {
   marginTop: "20px",
   marginLeft: "20px",
-  borderRadius: "10px",
+  borderRadius: "0.5vh",
   color: "#ffff",
-  backgroundColor: "#f08080",
+  backgroundColor: "red",
 };
 
 const imgLogo = {
@@ -774,8 +759,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 900,
   bgcolor: "background.paper",
-  borderRadius: "37px",
-  border: "3px solid #a2d2ff",
+  borderRadius: "1vh",
   boxShadow: 240,
   p: 4,
 };
@@ -790,8 +774,7 @@ const style2 = {
   width: 500,
   bgcolor: "background.paper",
   height: 200,
-
-  border: "3px solid red",
+  borderRadius:"1vh",
   boxShadow: 240,
   p: 4,
 };

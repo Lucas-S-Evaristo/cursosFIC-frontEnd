@@ -1,8 +1,24 @@
+import { Box } from "@material-ui/core";
+import { Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Chart } from "react-google-charts";
-
+import Chart from "react-google-charts";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import MenuLateral from "../menu/MenuLateral";
 import "./hm.css";
-function Home() {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "46vh",
+  height:"17.9vh",
+  bgcolor: 'background.paper',
+  boxShadow: 0,
+  borderRadius:10,
+  p: 4,
+};
+function HomeG() {
   // variavel que tem acesso a um array com todos os cursos
   const [cursos, setCursos] = useState([]);
   // variavel que tem acesso a um array com todas as turmas
@@ -15,6 +31,34 @@ function Home() {
   const [iniciado, setIniciado] = useState([]);
   const [ofertada, setOfertada] = useState([]);
   const [adiada, setAdiada] = useState([]);
+  const data = [
+    ["Task", "Hours per Day"],
+    ["Adiada", adiada.length],
+    ["Concluidas", concluido.length],
+    ["Canceladas", cancelada.length],
+    ["Abertas", aberto.length],
+    ["Ofertadas", ofertada.length],
+    ["Fechadas", fechada.length], // CSS-style declaration]
+    ["Iniciados", iniciado.length], // CSS-style declaration]
+  ];
+  const options = {
+    pieHole: 0.5,
+    is3D: false,
+  };
+
+  const msgWarning = () => {
+    toast.warning("Selecione um curso existente", {
+      position: "top-center",
+      autoClose: 7500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
   useEffect(() => {
     fetch("http://localhost:8080/api/curso")
@@ -66,104 +110,148 @@ function Home() {
       .then((retorno_convertido) => setAdiada(retorno_convertido)); //lista de turmas
   }, []);
 
-  const data = [
-    ["Task", "Hours per Day"],
-    ["abertas", aberto.length],
-    ["fechadas", fechada.length],
-    ["concluidas",concluido.length],
-    ["canceladas", cancelada.length],
-    ["iniciadas", iniciado.length],
-    ["ofertadas", ofertada.length],
-    ["adiadas",adiada.length]
-  ];
-  
+  function gerarFolderTurma() {
+    window.location.href = "http://localhost:8080/api/folder/turma";
+  }
+
+  function gerarFolderCurso() {
+    let id = document.getElementById("selectFolderC").value;
+
+    console.log(id)
+
+    if(id === "selecione"){
+       
+       msgWarning();
+    }else{
+
+       window.location.href = "http://localhost:8080/api/folder/curso/" + id;
+    }
+    
+
+     
+
+    
+  }
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+ 
 
   return (
     <div className="divHome">
-      <header className="headHome">
-        <img src={require("./logoSenaiOrigin.png")} className="logoHome" />
-        <button className="btLoginH">LOGIN</button>
-      </header>
+      <MenuLateral />
+      <ToastContainer position="top-center"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+
       <div className="divEstatisticas">
-        <section className="secC">
-          <h1 className="titleC">Cursos disponiveis</h1>
-          <h1 className="estCursos">{cursos.length}</h1>
-        </section>
-        <section className="secT">
-          <h1 className="titleT">Turmas Existentes</h1>
-          <h1 className="estTurmas">{turmas.length}</h1>
-          <article className="artStatus">
-            <div>
-              <section className="secStatus">
-                
+        <section className="secGrafico">
+          <h1 className="TitleHome">Estatísticas</h1>
 
-                <h1 className="status">Abertas</h1>
-
-                <h2 className="estStatus">{aberto.length}</h2>
-              </section>
-
-              <section className="secStatus">
-                
-
-                <h1 className="status">Fechadas</h1>
-
-                <h2 className="estStatus">{fechada.length}</h2>
-              </section>
-
-              <section className="secStatus">
-                
-
-                <h1 className="status">Concluidas</h1>
-
-                <h2 className="estStatus">{concluido.length}</h2>
-              </section>
-
-              <section className="secStatus">
-                
-                <h1 className="status">Canceladas</h1>
-
-                <h2 className="estStatus">{cancelada.length}</h2>
-              </section>
-
-              <section className="secStatus">
-                
-
-                <h1 className="status">Iniciadas</h1>
-
-                <h2 className="estStatus">{iniciado.length}</h2>
-              </section>
-
-              <section className="secStatus">
-                
-
-                <h1 className="status">Ofertadas</h1>
-
-                <h2 className="estStatus">{ofertada.length}</h2>
-              </section>
-
-              <section className="secStatus">
-               
-                <h1 className="status">Adiadas</h1>
-
-                <h2 className="estStatus">{adiada.length}</h2>
-              </section>
-            </div>
-          </article>
           <Chart
             chartType="PieChart"
+            width="200vh"
+            height="70vh"
             data={data}
-            width={"110vh"}
-            height={"70vh"}
-            rows={100}
-            className="grafico"
+            style={{
+              position: "relative",
+              left: "6vh",
+              top: "3.8vh",
+            }}
+            options={options}
           />
         </section>
-        <section className="secF">
-          section dos botoes de exportações de folders.
+
+        <section className="secEst">
+          <div
+            style={{
+              paddingLeft: 10,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div className="divE">
+              <h1 className="pest h1">Turmas existentes</h1>
+              <p className="pest pClass">{turmas.length}</p>
+            </div>
+            <div className="divE">
+              <h1 className="pest h1 h1c">Cursos cadastrados</h1>
+              <p className="pest pc">{cursos.length}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="secButtons">
+          <button
+            style={{ borderRadius: "0.5vh ", backgroundColor: "black" }}
+            className="botaoFolderT "
+            onClick={gerarFolderTurma}
+            variant="contained"
+          >
+            folder de turmas
+          </button>
+
+          <section>
+            <button
+              style={{ borderRadius: "0.5vh ", backgroundColor: "black" }}
+              className="botaoFolderC "
+              onClick={handleOpen}
+              variant="contained"
+            >
+              folder de curso
+            </button>
+          </section>
+
+          <section>
+            <a href="/">  
+            <button
+              style={{ borderRadius: "0.5vh ", backgroundColor: "black" }}
+              className="botaoT "
+              variant="contained"
+            >
+              
+              lista de turmas
+              
+              
+            </button>
+            </a>
+          </section>
         </section>
       </div>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        <section className="sectFolderC">
+          <h1 className="h1Modal">Gerador de folder de Curso</h1>
+          <select
+        id="selectFolderC"
+        >
+              <option>selecione</option>
+                    {cursos.map((obj) => (
+                      <option value={obj.id}>{obj.nome}</option>
+                    ))}
+         </select>
+
+        <button onClick={gerarFolderCurso} className="btnfolderC"> GERAR </button>
+          </section>
+        </Box>
+      </Modal>
     </div>
   );
 }
 
-export default Home;
+export default HomeG;

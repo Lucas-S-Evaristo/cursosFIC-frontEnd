@@ -434,12 +434,16 @@ const fecharModalAlterar = () => setShow(false);
                 show={modalCadastrar}
                 onHide={fecharModalCadastrar}
                 backdrop="static"
-                keyboard={false}>
+                keyboard={false}
+                className="modaH"
+                
+                >
+                  
                 <Modal.Header closeButton>
                     <Modal.Title>Cadastrar</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>
+                <Modal.Body  className="modaH">
                    <form onSubmit={cadastrarArea} className="formArea">
                    <TextField className="textField" required name="nome" type="text" label="Área:" variant="standard" />
 

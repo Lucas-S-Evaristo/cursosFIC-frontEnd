@@ -31,11 +31,9 @@ import Tarefas from "./components/Turma/tarefas"
 import PgHorario from "./components/horario/PgHorario";
 
 import ListaArea from "./components/area/paginaArea";
-
 import ListaCursos from "./components/curso/PageCurso";
 import Folder from "./components/folders/Folder";
 import Senha from "./components/login/redefinirSenha";
-import Home from "./components/home/home";
 import PaginaLog from "./components/log/paginaLog";
 
 import LogArea from "./components/log/logArea/logArea";
@@ -44,11 +42,12 @@ import LogCurso from "./components/log/logCurso/LogCurso";
 import LogHorario from "./components/log/logHorario/LogHorario";
 
 import LogInstrutor from "./components/log/logInstrutor/LogInstrutor";
-
+import HomeG from "./components/home/home";
 import LogTurma from "./components/log/logTurma/LogTurma";
 
 import LogUsuario from "./components/log/logUsuario/LogUsuario";
 import ListaParametro from "./components/parametros/Parametro";
+
 function Rotas() {
 
   useEffect(() => {
@@ -355,7 +354,7 @@ function Rotas() {
 
 
         <Route path="/redefinirSenha" element={<Senha />} />
-
+        <Route path="/home" element={<HomeG/>}/>
         <Route path="/listaInstrutores" element={
 
           <PrivadaRotasInstrutores>
@@ -409,7 +408,6 @@ function Rotas() {
 
         <Route path="folders" element={<Folder/>}/>
 
-        <Route path="/home" element={<Home/>}/>
 
         <Route path="/logs" element={
         

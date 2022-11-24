@@ -1,23 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap');
+
 .headerConfirmar{
     background-color: red;
     position: absolute;
     left: 0em;
     width: 100%;
+    
     height: 3em;
+    border-top-left-radius:1vh !important;
+    border-top-right-radius: 1vh !important;
 }
 
+*{
+    font-family: 'Nunito', sans-serif !important;
+
+}
 .tituloAlertaConfirm{
-    color: white;
+    color: rgb(255, 255, 255);
     padding-top: 0.5em;
     padding-left: 1em;
-}
+} 
 
 .h4Confirmar{
-    color: red;
+    color: rgb(255, 0, 0);
     position: absolute;
     left:2em;
+    text-align: justify;
+    
+
     padding-top: 1em;
     padding-right: 2em;
+    
   
 }
 
@@ -51,7 +64,7 @@
 }
 
 .textoExcluirSection{
-    color: red;
+    color: rgb(0, 47, 255);
     text-align: center;
     position: relative;
     top: 1em;
@@ -72,6 +85,21 @@
     width: 70%;
     height: 30em;
     
+}
+#email{
+    width: 30vh;
+}
+#nif{
+    width: 30vh;
+}
+#tipoUsuario{
+    width: 33vh !important;
+    border-radius: 0.5VH;
+    height: 6vh !important;
+}
+#nome{
+    width: 30vh;
+    position: relative;
 }
 
 
