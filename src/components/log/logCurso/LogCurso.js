@@ -44,7 +44,7 @@ export default function LogCurso() {
 
     const [logCurso, setLogCurso] = useState([])
 
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [page, setPage] = useState(0);
 

@@ -322,7 +322,11 @@ header{
     left: 30em;
 }
 
-
+.botaoAdicionarQtdMatricula{
+   margin-left: 1.2em;
+   background-color: rgb(101, 101, 218);
+   
+}
 
 
 

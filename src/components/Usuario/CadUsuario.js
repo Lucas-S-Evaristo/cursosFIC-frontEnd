@@ -588,12 +588,6 @@ function PageUsuario() {
                   <button className="botaoDeleteTurma"
                      onClick={() => {
 
-                      console.log(payload)
-
-                      console.log("obj.id: ", obj.id)
-
-                      console.log("payload.id_usuario: ", payload.id_usuario)
-
                       if(payload.id_usuario === obj.id){
                           setModalConfirmar(true)
 

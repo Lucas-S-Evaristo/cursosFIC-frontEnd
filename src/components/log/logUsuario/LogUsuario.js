@@ -44,7 +44,7 @@ export default function LogUsuario() {
 
     const [logUsuario, setLogUsuario] = useState([])
 
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [page, setPage] = useState(0);
 
@@ -121,7 +121,7 @@ export default function LogUsuario() {
 
     return (
 
-        <div>
+        <div className="tirarOverflow">
 
             <MenuLateral />
 

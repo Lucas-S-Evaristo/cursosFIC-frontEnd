@@ -335,7 +335,6 @@ const fecharModalAlterar = () => setShow(false);
           <Table sx={{ minWidth: 1500 }} aria-label="customized table" className="tabelaTurma">
             <TableHead className="theadTurma">
               <TableRow>
-                <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Nome</StyledTableCell>
                 <StyledTableCell>Alterar</StyledTableCell>
                 <StyledTableCell>Excluir</StyledTableCell>
@@ -346,8 +345,6 @@ const fecharModalAlterar = () => setShow(false);
               {area.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
                 { id, nome }) => (
                 <StyledTableRow key={id}>
-
-                  <StyledTableCell>{id}</StyledTableCell>
                   <StyledTableCell>{nome}</StyledTableCell>
                   
 

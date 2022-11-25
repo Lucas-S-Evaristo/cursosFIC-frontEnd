@@ -425,6 +425,7 @@ function ListaParametro() {
                                 <StyledTableCell>Endereço</StyledTableCell>
                                 <StyledTableCell>Logo</StyledTableCell>
                                 <StyledTableCell>Alterar</StyledTableCell>
+                                <StyledTableCell>Excluir</StyledTableCell>
 
                             </TableRow>
                         </TableHead>
@@ -450,6 +451,15 @@ function ListaParametro() {
                                         }}
                                         >
                                             <ModeEditOutlinedIcon /></button>
+
+                                    </StyledTableCell>
+
+                                    <StyledTableCell>
+                                        <button className="botaoDeleteTurma" onClick={() => {
+                                           deletar(id)
+                                        }}
+                                        >
+                                            <DeleteForeverOutlinedIcon /></button>
 
                                     </StyledTableCell>
 

@@ -30,11 +30,12 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 import TablePagination from "@mui/material/TablePagination";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MenuItem from "@mui/material/MenuItem";
-
+import AddIcon from '@mui/icons-material/Add';
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import { yellow } from "@mui/material/colors";
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -450,6 +451,49 @@ function CadTurma() {
       });
   };
 
+  const addQtdMatricula = async (id) => {
+
+
+    let result = await fetch(
+      "http://localhost:8080/api/turma/qtdMatricula/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        "Authorization": token
+      },
+
+      }
+    )
+
+    if(result){
+      result = await result.json();
+
+      atualizaLista()
+    }
+  }
+
+  const diminuirQtdMatricula = async (id) => {
+
+
+    let result = await fetch(
+      "http://localhost:8080/api/turma/diminuirQtdMatricula/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        "Authorization": token
+      },
+
+      }
+    )
+
+    if(result){
+      result = await result.json();
+
+      atualizaLista()
+    }
+  }
 
 
   // função que espera receber um id
@@ -644,6 +688,7 @@ function CadTurma() {
       atualizaLista();
     }
   };
+  
 
   const buscaTurmaAno = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
@@ -736,7 +781,7 @@ function CadTurma() {
     });
   };
 
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [page, setPage] = React.useState(0);
 
@@ -842,6 +887,7 @@ function CadTurma() {
         </form>
       </header>
 
+
       <div className="conteudoTabela">
         <TableContainer className="tabelaContainer">
           <Table
@@ -851,7 +897,6 @@ function CadTurma() {
           >
             <TableHead className="theadTurma">
               <TableRow>
-                <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell>Código de turma</StyledTableCell>
                 <StyledTableCell>Curso</StyledTableCell>
                 <StyledTableCell>Instrutor</StyledTableCell>
@@ -913,11 +958,21 @@ function CadTurma() {
 
                   }) => (
                     <StyledTableRow>
-                      <StyledTableCell>{id}</StyledTableCell>
                       <StyledTableCell>{codigo}</StyledTableCell>
                       <StyledTableCell>{curso.nome}</StyledTableCell>
                       <StyledTableCell>{instrutor.nome}</StyledTableCell>
-                      <StyledTableCell>{qtdMatriculas}</StyledTableCell>
+
+                      <StyledTableCell>
+
+                        <RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible" }}
+                     onClick={() => diminuirQtdMatricula(id)}/>
+
+                     {qtdMatriculas} 
+
+                     <AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible" }}
+                       onClick={() => addQtdMatricula(id)}/>
+                       
+                       </StyledTableCell>
                       <StyledTableCell>{periodo}</StyledTableCell>
                       <StyledTableCell>{status}</StyledTableCell>
                       <StyledTableCell>{ambiente.nome}</StyledTableCell>
@@ -929,6 +984,7 @@ function CadTurma() {
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
                       <StyledTableCell>{simEnao}</StyledTableCell>
+                      
                       <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
 
                       <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"

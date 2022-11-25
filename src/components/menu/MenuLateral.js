@@ -43,12 +43,7 @@ function MenuLateral() {
 
         <div className="navegacao">
           <Nav variant="tabs" >
-            <Nav.Item className="navItem" style={ p === null || token === null || p.tipo_usuario === "Secretária"  
-                     ? 
-                     {display: "none"} 
-                    :
-                     {visibility: "visible"}
-                     }>
+            <Nav.Item className="navItem">
               <Nav.Link className="navLink" href="/home">
                 <HomeOutlinedIcon sx={{ marginRight: "30px" }} />
                 Home
@@ -89,13 +84,6 @@ function MenuLateral() {
               <Nav.Link className="navLink" href="/listaCurso">
                 <CardMembershipOutlinedIcon sx={{ marginRight: "30px" }} />
                 Cursos
-              </Nav.Link>
-            </Nav.Item>
-
-            <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/folders">
-                <ImportContactsTwoToneIcon sx={{ marginRight: "30px" }} />
-                Folders
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="navItem">

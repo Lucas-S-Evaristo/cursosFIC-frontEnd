@@ -46,7 +46,7 @@ export default function LogArea() {
 
     const [logArea, setLogArea] = useState([])
 
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [page, setPage] = useState(0);
 
