@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
-import Chip from '@mui/material/Chip';
+import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Grid from "@mui/material/Grid";
@@ -20,8 +20,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Container from "@mui/material/Container";
-import HomeIcon from '@mui/icons-material/Home';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import HomeIcon from "@mui/icons-material/Home";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
 import TextField from "@mui/material/TextField";
@@ -32,17 +32,17 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { height } from "@mui/system";
 import { ListItem } from "@mui/material";
 import MenuLateral from "../menu/MenuLateral";
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
-import "../Usuario/usuario.css"
+import "../Usuario/usuario.css";
 
-  const token = sessionStorage.getItem("token")
+const token = sessionStorage.getItem("token");
 
-  let payload = sessionStorage.getItem("payload")
+let payload = sessionStorage.getItem("payload");
 
-  payload = JSON.parse(payload)
+payload = JSON.parse(payload);
 
 function PageUsuario() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
@@ -52,9 +52,7 @@ function PageUsuario() {
 
   const [modalConfirmar, setModalConfirmar] = useState(false);
 
-
   const fecharConfirmar = () => setModalConfirmar(false);
-
 
   const [modalExcluir, setModalExcluir] = useState(false);
 
@@ -98,8 +96,7 @@ function PageUsuario() {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
-        "Authorization": token
-        
+        Authorization: token,
       },
     });
 
@@ -122,7 +119,7 @@ function PageUsuario() {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
-        "Authorization": token
+        Authorization: token,
       },
     }).then((retorno) => {
       //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
@@ -166,8 +163,8 @@ function PageUsuario() {
     let result = await fetch(`http://localhost:8080/api/usuario/${id}`, {
       method: "DELETE",
       headers: {
-        "Authorization": token
-      }
+        Authorization: token,
+      },
     });
     // caso exista um usuario a ser deletado, ele atualiza a lista assim removendo o usuario deletado
     if (result) {
@@ -190,9 +187,17 @@ function PageUsuario() {
     // verifica se existe 'valor'
     if (key) {
       // fazendo uma requisição na api de buscar e passando a key
-      let result = await fetch(
-        "http://localhost:8080/api/usuario/buscar/" + key
-      );
+      let result = await fetch("http://localhost:8080/api/usuario/buscar/", {
+        method: "post",
+
+        body: JSON.stringify(key),
+
+        headers: {
+          "Content-type": "application/json",
+
+          Accept: "application/json",
+        },
+      });
       // tranformando a promessa em json
       result = await result.json();
       console.log(result);
@@ -305,8 +310,8 @@ function PageUsuario() {
 
   return (
     <>
-      <MenuLateral/>
-      
+      <MenuLateral />
+
       <ToastContainer
         position="top-right"
         autoClose={1500}
@@ -349,8 +354,6 @@ function PageUsuario() {
                 className="form-control"
                 onChange={capturarDados}
               >
-                
-
                 <option>Selecione:</option>
 
                 {tipoUsuario.map((obj, indice) => (
@@ -380,13 +383,12 @@ function PageUsuario() {
             </div>
             <Button
               variant="contained"
-              style={{color:"white", marginTop:20}}
+              style={{ color: "white", marginTop: 20 }}
               color={"success"}
               onClick={() => {
                 cadastrar();
               }}
             >
-              
               Cadastrar
             </Button>
 
@@ -399,7 +401,6 @@ function PageUsuario() {
                 handleClose();
               }}
             >
-              
               Fechar
             </Button>
           </form>
@@ -420,9 +421,7 @@ function PageUsuario() {
         <Box sx={style}>
           <form>
             <div>
-              <h2 style={titleModal}>
-                ALTERAR USUÁRIO
-              </h2>
+              <h2 style={titleModal}>ALTERAR USUÁRIO</h2>
               <TextField
                 id="nome"
                 defaultValue={objUsuario.nome}
@@ -484,7 +483,6 @@ function PageUsuario() {
                 alterar(objUsuario.id);
               }}
             >
-       
               Alterar
             </Button>
 
@@ -497,12 +495,11 @@ function PageUsuario() {
                 setModalAlt(false);
               }}
             >
-              
               Fechar
             </Button>
           </form>
           <Paper elevation={0}>
-            <img style={imgStyle} src={require('../../imagens/usuario.png')} />
+            <img style={imgStyle} src={require("../../imagens/usuario.png")} />
           </Paper>
         </Box>
       </Modal>
@@ -512,17 +509,16 @@ function PageUsuario() {
           marginTop: "0px",
           marginLeft: "20em",
           overflow: "hidden",
-
         }}
       >
         <AppBar
           position="static"
           color="default"
           elevation={0}
-          style={{marginTop: 100}}
+          style={{ marginTop: 100 }}
           sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
         >
-          <Toolbar style={{marginBottom:20}}>
+          <Toolbar style={{ marginBottom: 20 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item>
                 <SearchIcon sx={{ display: "block", color: "#01161e" }} />
@@ -542,14 +538,17 @@ function PageUsuario() {
               <Grid item>
                 <Button
                   onClick={handleOpen}
-                  variant="contained" color="primary"
+                  variant="contained"
+                  color="primary"
                 >
-                  <AddOutlinedIcon />Novo</Button>
+                  <AddOutlinedIcon />
+                  Novo
+                </Button>
               </Grid>
             </Grid>
           </Toolbar>
         </AppBar>
-        <Typography sx={{ my: 5, mx: 2}} color="text.secondary" align="center">
+        <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
           <table
             style={{ width: "100%" }}
             className="table  table-lg  table-hover"
@@ -576,96 +575,117 @@ function PageUsuario() {
                   <th scope="row">{obj.nif}</th>
                   <th scope="row">{obj.tipoUsuario}</th>
                   <th scope="row">
-                  <button className="botaoAlterarTurma"
+                    <button
+                      className="botaoAlterarTurma"
                       onClick={() => {
                         selecionarUsuario(indice);
                         setModalAlt(true);
                       }}
                     >
-                      <ModeEditOutlinedIcon /></button>
+                      <ModeEditOutlinedIcon />
+                    </button>
                   </th>
                   <th scope="row">
-                  <button className="botaoDeleteTurma"
-                     onClick={() => {
-
-                      if(payload.id_usuario === obj.id){
-                          setModalConfirmar(true)
-
-                      }else{
-
-                        setModalExcluir(true)
-                      }
-
-                    }}
-
+                    <button
+                      className="botaoDeleteTurma"
+                      onClick={() => {
+                        if (payload.id_usuario === obj.id) {
+                          setModalConfirmar(true);
+                        } else {
+                          setModalExcluir(true);
+                        }
+                      }}
                     >
-
-                  
-                    <DeleteForeverOutlinedIcon /></button>
+                      <DeleteForeverOutlinedIcon />
+                    </button>
 
                     <Modal
                       open={modalConfirmar}
                       onClose={clearClose}
-                      
                       aria-labelledby="modal-title"
                       aria-describedby="modal-description"
                     >
-                       <Box sx={style2}>
-                          
+                      <Box sx={style2}>
                         <header className="headerConfirmar">
                           <h5 className="tituloAlertaConfirm">ALERTA!</h5>
-                          </header>
+                        </header>
 
-                      <section>
-                        <h4 className="h4Confirmar">Tem certeza que deseja se deletar? Você perderá sua sessão e será redirecionado para a tela de login.</h4>
+                        <section>
+                          <h4 className="h4Confirmar">
+                            Tem certeza que deseja se deletar? Você perderá sua
+                            sessão e será redirecionado para a tela de login.
+                          </h4>
                         </section>
 
                         <div className="botaoModalConfirmar">
+                          <Button
+                            variant="contained"
+                            color="error"
+                            className="ConfirmarNao"
+                            onClick={() => fecharConfirmar()}
+                          >
+                            Não
+                          </Button>
 
-                          <Button  variant="contained" color="error" className="ConfirmarNao" onClick={() => fecharConfirmar()}>Não</Button>
-
-                          <Button Button variant="contained" color="success" onClick={ () => {
-
-                          deletar(obj.id)
-                          sessionStorage.removeItem("payload")
-                          sessionStorage.removeItem("token")
-                          window.location.href = 'http://localhost:3000/login' 
-
-
-                          } }> Sim</Button>
-
+                          <Button
+                            Button
+                            variant="contained"
+                            color="success"
+                            onClick={() => {
+                              deletar(obj.id);
+                              sessionStorage.removeItem("payload");
+                              sessionStorage.removeItem("token");
+                              window.location.href =
+                                "http://localhost:3000/login";
+                            }}
+                          >
+                            {" "}
+                            Sim
+                          </Button>
                         </div>
-
-                        </Box>
-                      
-                      </Modal>
+                      </Box>
+                    </Modal>
 
                     <Modal
-                          open={modalExcluir}
-                          onClose={clearClose}
-                          aria-labelledby="modal-title"
-                          aria-describedby="modal-description"
-                        >
-                          <Box sx={style2}>
+                      open={modalExcluir}
+                      onClose={clearClose}
+                      aria-labelledby="modal-title"
+                      aria-describedby="modal-description"
+                    >
+                      <Box sx={style2}>
+                        <header className="headerModalExcluirUsuario">
+                          <h4 className="textoExcluir2">ALERTA!</h4>
 
-                            <header className="headerModalExcluirUsuario">
-                            <h4 className="textoExcluir2">ALERTA!</h4>
+                          <section>
+                            <h4 className="textoExcluirSection">
+                              Tem Certeza que deseja excluir?
+                            </h4>
+                          </section>
 
-                            <section><h4 className="textoExcluirSection">Tem Certeza que deseja excluir?</h4></section>
-
-                            <div className="botaoModalExcluir2">
-                              <Button variant="contained" color="error" className="botaoModalSim" onClick={() => setModalExcluir()}> Não </Button>
-                              <Button variant="contained" color="success" onClick={() => {
-                                deletar(obj.id)
-                                setModalExcluir()
-
-                              } }>Sim</Button></div>
-
-                            </header>
-
-
-                          </Box>
-                        </Modal>
+                          <div className="botaoModalExcluir2">
+                            <Button
+                              variant="contained"
+                              color="error"
+                              className="botaoModalSim"
+                              onClick={() => setModalExcluir()}
+                            >
+                              {" "}
+                              Não{" "}
+                            </Button>
+                            <Button
+                              variant="contained"
+                              color="success"
+                              onClick={() => {
+                                deletar(obj.id);
+                                setModalExcluir();
+                              }}
+                            >
+                              Sim
+                            </Button>
+                          </div>
+                        </header>
+                      </Box>
+                    </Modal>
                   </th>
                 </tr>
               ))}
@@ -722,7 +742,7 @@ const styleTitle = {
 };
 
 const titleModal = {
-  marginBottom:30
+  marginBottom: 30,
 };
 const btnCad = {
   marginTop: "20px",
@@ -768,7 +788,7 @@ const style2 = {
   width: 500,
   bgcolor: "background.paper",
   height: 200,
-  borderRadius:"1vh",
+  borderRadius: "1vh",
   boxShadow: 240,
   p: 4,
 };

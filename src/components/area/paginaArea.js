@@ -261,8 +261,17 @@ const buscarArea = async (event) => {
   if (key) {
     // fazendo uma requisição na api de buscar e passando a key
     let result = await fetch(
-      "http://localhost:8080/api/area/buscar/" + key
-    );
+      "http://localhost:8080/api/area/buscar/", {
+        method: "post",
+
+        body: JSON.stringify(key),
+
+        headers: {
+          "Content-type": "application/json",
+
+          Accept: "application/json",
+        },
+      });
     // tranformando a promessa em json
     result = await result.json();
     console.log(result);
