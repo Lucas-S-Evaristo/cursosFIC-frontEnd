@@ -141,6 +141,30 @@ const msgDeletadoerror = () => {
     }
   );
 };
+const msgCadastraerror = () => {
+  toast.warning(
+    " Não é possível cadastrar um Horário que já existe    ",
+    {
+      position: "top-center",
+
+      autoClose: 4500,
+
+      hideProgressBar: false,
+
+      closeOnClick: true,
+
+      pauseOnHover: true,
+
+      theme: "dark",
+
+      // faz com que seja possivel arrastar
+
+      draggable: true,
+
+      progress: undefined,
+    }
+  );
+};
 
 let token = sessionStorage.getItem("token")
 
@@ -261,12 +285,14 @@ const PgHorario = () => {
       },
     });
 
-    if (result) {
+     if (result.status == 200) {
       setOpen(false)
       cadastroSucesso()
    
       getiHorario();
      
+    } else if(result.status === 409){
+      msgCadastraerror()
     }
   };
   const alteraHorario = async (event) => {
