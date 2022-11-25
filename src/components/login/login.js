@@ -256,7 +256,6 @@ function Login() {
     }
     };
 
-
     return(
       
         <div className="divLogin">

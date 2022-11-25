@@ -80,6 +80,7 @@ function ListaCurso() {
   const [cargaHoraria, setCargaHoraria] = useState();
   const [area, setArea] = useState();
   const [valor, setValor] = useState();
+  const [tipoAtendOrdinal, setTipoAtendOrdinal] = useState();
 
   const [idCurso, setIdCurso] = useState()
 
@@ -92,9 +93,9 @@ function ListaCurso() {
   const abrirModalExcluir = (id) => {
     setShowExcluir(true)
     setIdCurso(id)
-  
 
-  } ;
+
+  };
 
   const fecharModalExcluir = () => setShowExcluir(false);
 
@@ -102,7 +103,7 @@ function ListaCurso() {
   const fecharModalAlterar = () => setShow(false);
   //quando handleShow é chamado ele da um true no show e abre a modal
   const abrirModalAlterar = () => setShow(true);
-  
+
 
   const abrirModalCadastrar = () => setShowCadastrar(true);
 
@@ -167,48 +168,48 @@ function ListaCurso() {
 
     console.log(justificativa)
 
-    if(justificativa === ""){
+    if (justificativa === "") {
 
       motivoAlteracao()
 
-    }else{
+    } else {
 
-    
 
-    const cursoAlt = {
-      id: id,
-      objetivo: objetivo,
-      nome: nome,
-      preRequisito: preRequisito,
-      conteudoProgramatico: conteudoProgramatico,
-      tipoAtendimento: tipoAtendimento,
-      nivel: nivel,
-      cargaHoraria: cargaHoraria,
-      area: { id: area },
-      valor: valor,
-      justificativa: justificativa
-    };
 
-    // requisição ao back-end
-    let resultado = await fetch("http://localhost:8080/api/curso/" + id, {
-      method: "PUT",
-      body: JSON.stringify(cursoAlt),
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-        "Authorization": token
-      },
-    });
+      const cursoAlt = {
+        id: id,
+        objetivo: objetivo,
+        nome: nome,
+        preRequisito: preRequisito,
+        conteudoProgramatico: conteudoProgramatico,
+        tipoAtendimento: tipoAtendimento,
+        nivel: nivel,
+        cargaHoraria: cargaHoraria,
+        area: { id: area },
+        valor: valor,
+        justificativa: justificativa
+      };
 
-    if (resultado) {
-       // atualiza a lista com o curso alterado
-       atualizaLista();
-       // fecha a modal de alterar
-       setShow(false);
-       // exibe a msg de alteração concluida
-       msgAlteracao();
+      // requisição ao back-end
+      let resultado = await fetch("http://localhost:8080/api/curso/" + id, {
+        method: "PUT",
+        body: JSON.stringify(cursoAlt),
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          "Authorization": token
+        },
+      });
+
+      if (resultado) {
+        // atualiza a lista com o curso alterado
+        atualizaLista();
+        // fecha a modal de alterar
+        setShow(false);
+        // exibe a msg de alteração concluida
+        msgAlteracao();
+      }
     }
-  }
   };
 
   // metodo que efetua o cadastro do curso
@@ -267,7 +268,8 @@ function ListaCurso() {
     tipoAtendimento,
     nivel,
     cargaHoraria,
-    area
+    area,
+    tipoAtendOrdinal
   ) => {
     //setando os valores, que serão chamados na modal de alterar
     setId(id);
@@ -279,8 +281,10 @@ function ListaCurso() {
     setSigla(sigla);
     setTipoAtendimento(tipoAtendimento);
     setNivel(nivel);
-    setArea(area.id);
     setCargaHoraria(cargaHoraria);
+    setArea(area.id);
+    setTipoAtendOrdinal(tipoAtendOrdinal)
+
   };
 
   const btnAlterar = {
@@ -307,28 +311,28 @@ function ListaCurso() {
   // metodo que deleta o curso
   const deletar = async (id) => {
 
-    if(descricaoLog.length === 0 || descricaoLog === undefined){
+    if (descricaoLog.length === 0 || descricaoLog === undefined) {
 
       motivoExclusao()
 
-  }else{
+    } else {
 
-    let result = await fetch(`http://localhost:8080/api/curso/${id}`, {
-      method: "DELETE",
-      body: JSON.stringify(descricaoLog),
-      headers: {
-        "Authorization": token
+      let result = await fetch(`http://localhost:8080/api/curso/${id}`, {
+        method: "DELETE",
+        body: JSON.stringify(descricaoLog),
+        headers: {
+          "Authorization": token
+        }
+      });
+      // caso exista um curso a ser deletado, ele atualiza a lista assim removendo o curso deletado
+      if (result.status === 409) {
+        msgDeletadoerror();
+
+      } else if (result) {
+        atualizaLista();
+        msgExclusao();
       }
-    });
-    // caso exista um curso a ser deletado, ele atualiza a lista assim removendo o curso deletado
-    if (result.status === 409) {
-      msgDeletadoerror();
-
-    } else if (result) {
-      atualizaLista();
-      msgExclusao();
     }
-  }
   };
 
   // metodo que limpa os inputs do form
@@ -359,16 +363,16 @@ function ListaCurso() {
       // fazendo uma requisição na api de buscar e passando a key
       let result = await fetch(
         "http://localhost:8080/api/curso/buscarCurso/", {
-          
-          method: "post",
 
-          body: JSON.stringify(key),
+        method: "post",
 
-          headers: {
+        body: JSON.stringify(key),
 
-            "Content-type": "application/json",
+        headers: {
 
-            Accept: "application/json",
+          "Content-type": "application/json",
+
+          Accept: "application/json",
         }
       }
       );
@@ -478,13 +482,6 @@ function ListaCurso() {
       progress: undefined,
     });
   };
-
-
-  function gerarFolderCurso() {
-    let id = document.getElementById("selectFolder").value;
-
-    window.location.href = "http://localhost:8080/api/folder/curso/" + id;
-  }
   return (
     <>
       <MenuLateral />
@@ -573,19 +570,6 @@ function ListaCurso() {
             />
             <SearchIcon style={{ position: "absolute", top: 15, left: 7 }} />
           </section>
-          <section className="sectFolder" style={{position:"relative", left:"10vh"}}>
-          <select
-        id="selectFolder"
-        >
-              <option>Selecione um curso para gerar o folder</option>
-                    {cursos.map((obj) => (
-                      <option value={obj.id}>{obj.nome}</option>
-                    ))}
-         </select>
-
-        <button onClick={gerarFolderCurso} className="btnfolder"> GERAR </button>
-          </section>
-          
         </div>
         <TableContainer
           sx={{
@@ -645,9 +629,9 @@ function ListaCurso() {
                 .map(
                   ({
                     id,
+                    valor,
                     nome,
                     objetivo,
-                    valor,
                     preRequisito,
                     conteudoProgramatico,
                     sigla,
@@ -655,6 +639,9 @@ function ListaCurso() {
                     nivel,
                     cargaHoraria,
                     area,
+                    tipoAtendString,
+                    tipoAtendOrdinal
+
                   }) => (
                     <TableRow
                       hover
@@ -686,7 +673,7 @@ function ListaCurso() {
                         {sigla}
                       </TableCell>
                       <TableCell align="left" component="th" scope="row">
-                        {tipoAtendimento}
+                        {tipoAtendString}
                       </TableCell>
                       <TableCell align="left" component="th" scope="row">
                         {nivel}
@@ -727,7 +714,10 @@ function ListaCurso() {
                               tipoAtendimento,
                               nivel,
                               cargaHoraria,
-                              area
+                              area,
+                              tipoAtendString,
+                              tipoAtendOrdinal
+                              
                             );
                             abrirModalAlterar();
                           }}
@@ -770,40 +760,53 @@ function ListaCurso() {
                             <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
                           </Modal.Header>
                           <form>
-                          <Modal.Body>
-                            <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
-                            
-                         
-                            <TextField
-                              id="outlined-multiline-static"
-                             
-                              label="Justificativa:"
-                              hiddenLabel
-                              required
-                              className="textAreaExcluir"
-                              multiline
-                              rows={4}
-                              value={descricaoLog}
-                              onChange={(e) => {
-                                setDescricaoLog(e.target.value)
-                              }}
-                              
+                            <Modal.Body>
+                              <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
+
+
+                              <TextField
+                                id="outlined-multiline-static"
+
+                                label="Justificativa:"
+                                hiddenLabel
+                                required
+                                className="textAreaExcluir"
+                                multiline
+                                rows={4}
+                                value={descricaoLog}
+                                onChange={(e) => {
+                                  setDescricaoLog(e.target.value)
+                                }}
+
+                              />
+                            </Modal.Body>
+
+                            <ToastContainer
+                              position="top-center"
+                              autoClose={1500}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
                             />
-                          </Modal.Body>
 
 
-                          <Modal.Footer className="botaoModalExcluir">
-                            <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
-                              Não
-                            </Button>
-                            <Button variant="contained" color="success" onClick={() => {
-                              //excluir a turma pelo id
-                              deletar(idCurso)
-                              
-                            }}>
-                              Sim
-                            </Button>
-                          </Modal.Footer>
+
+                            <Modal.Footer className="botaoModalExcluir">
+                              <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                                Não
+                              </Button>
+                              <Button variant="contained" color="success" onClick={() => {
+                                //excluir a turma pelo id
+                                deletar(idCurso)
+
+                              }}>
+                                Sim
+                              </Button>
+                            </Modal.Footer>
                           </form>
 
                         </Modal>
@@ -872,9 +875,9 @@ function ListaCurso() {
               src={require("./imagemModal.png")}
             ></img>
           </div>
-          
+
           <div>
-          <form
+            <form
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -972,12 +975,12 @@ function ListaCurso() {
                 />
 
               </section>
-              
+
               <section className="sectionComponentsSelect" style={{
                 position: "absolute",
                 top: "15.5em",
                 left: "0.5em",
-               
+
               }}>
 
                 <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
@@ -996,21 +999,20 @@ function ListaCurso() {
                 </InputLabel>
 
                 <select
-                  defaultValue={tipoAtendimento}
                   id="tipoAtendimento"
                   style={styleSelect}
                   className="form-control"
                 >
                   <option>Selecione:</option>
 
-                  {tipoAtendimentos.map((obj) => (
-                    <option key={obj}>{obj}</option>
+                  {tipoAtendimentos.map((obj, indice) => (
+                    <option selected={tipoAtendOrdinal} value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 
-              <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
+                <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
 
-              <select
+                <select
                   id="nivel"
                   style={styleSelect}
                   className="form-control"
@@ -1168,12 +1170,12 @@ function ListaCurso() {
 
                 />
               </section>
-              
+
               <section className="sectionComponentsSelect" style={{
                 position: "absolute",
                 top: "21em",
                 left: "0.5em",
-               
+
               }}>
 
                 <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
@@ -1202,26 +1204,26 @@ function ListaCurso() {
                 >
                   <option>Selecione:</option>
 
-                  {tipoAtendimentos.map((obj) => (
-                    <option key={obj}>{obj}</option>
+                  {tipoAtendimentos.map((obj, indice) => (
+                    <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 
-              <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
+                <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
 
-              <select
-                id="nivelCad"
-                style={styleSelect}
-                name="nivel"
-                required
-                className="form-control"
-              >
-                <option>Selecione:</option>
+                <select
+                  id="nivelCad"
+                  style={styleSelect}
+                  name="nivel"
+                  required
+                  className="form-control"
+                >
+                  <option>Selecione:</option>
 
-                {niveis.map((obj) => (
-                  <option key={obj}>{obj}</option>
-                ))}
-              </select>
+                  {niveis.map((obj) => (
+                    <option key={obj}>{obj}</option>
+                  ))}
+                </select>
 
               </section>
 

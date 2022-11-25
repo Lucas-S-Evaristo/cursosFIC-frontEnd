@@ -140,7 +140,6 @@
 }
 .afolder{
     position: relative;
-    
     text-decoration: none;
     width: 144.5px;
     text-align: center;
@@ -163,10 +162,9 @@
 
 
 .aTurmas{
-    position: absolute;
-    left: -15em;
+    position: fixed;
     text-decoration: none;
-    width:12%;
+    width: 10%;
     text-align: center;
     border-bottom-left-radius: 100px;
     margin:0%;
@@ -174,8 +172,9 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 20px;
     padding: 5px;
+    left: 0em;
     color: rgb(255, 255, 255);
-    float: right;
+    float: left;
     background-color: red;
     box-shadow: 0px 0px 0px 0px black;
     transition:  background-color 10s;
