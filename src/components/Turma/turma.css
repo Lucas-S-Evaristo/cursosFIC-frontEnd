@@ -328,15 +328,20 @@ header{
    
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+.buscarInput{
+    background-color: transparent;
+    border:none;
+    border-bottom: 0.1vh solid black;
+    width: 20vh;
+    
+}
+.buscaData{
+    background-color: transparent;
+    border:none;
+    border-bottom: 0.1vh solid black;
+    width: 20vh;
+    position: relative;
+    left: 30vh;
+    top: -3.1vh;
+    
+}

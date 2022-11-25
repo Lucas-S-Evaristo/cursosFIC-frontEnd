@@ -663,63 +663,82 @@ function CadTurma() {
   // metodo que limpa os inputs do form
 
 
-  // metodo que busca uma turma
-  const buscaTurma = async (event) => {
-    // valor que esta sendo digitado no input de pesquisa
-    let key = event.target.value;
+ // metodo que busca uma turma
+ const buscaTurma = async (event) => {
+  // valor que esta sendo digitado no input de pesquisa
+  let key = event.target.value;
 
-    // verifica se existe 'valor'
-    if (key) {
-      // fazendo uma requisição na api de busca e passando a key
-      let result = await fetch(
-        "http://localhost:8080/api/turma/buscarTurmaAno/" + key
-      );
-      // tranformando a promessa em json
-      result = await result.json();
+  // verifica se existe 'valor'
+  if (key) {
+    // fazendo uma requisição na api de busca e passando a key
+    console.log("oiiiiiiiiiiiiii", key);
+    let result = await fetch(
+      `http://localhost:8080/api/turma/buscarTurmaAno/`,
+      {
+        method: "post",
 
-      // verifica se existe algum resultado
-      if (result) {
-        // setando as turmas que a api retornou de sua resposta de busca
-        setTurma(result);
+        body: JSON.stringify(key),
+
+        headers: {
+          "Content-type": "application/json",
+
+          Accept: "application/json",
+        },
       }
+    );
+    // tranformando a promessa em json
+    result = await result.json();
 
-      // caso não exista chave, atualiza a lista
-    } else {
-      atualizaLista();
+    // verifica se existe algum resultado
+    if (result) {
+      // setando as turmas que a api retornou de sua resposta de busca
+      setTurma(result);
     }
-  };
+
+    // caso não exista chave, atualiza a lista
+  } else {
+    atualizaLista();
+  }
+};
   
 
-  const buscaTurmaAno = async (event) => {
-    // valor que esta sendo digitado no input de pesquisa
-    let key = event.target.value;
-    console.log(key)
-    // verifica se existe 'valor'
-    if (key) {
-      // fazendo uma requisição na api de busca e passando a key
-      let result = await fetch(
-        "http://localhost:8080/api/turma/buscarTurmaAno/",{
-          method: "post",
-          body: JSON.stringify(key),
-          headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-          }}  
-      );
-      // tranformando a promessa em json
-      result = await result.json();
+ // metodo que busca uma turma
+const buscaDate = async (event) => {
+  // valor que esta sendo digitado no input de pesquisa
+  let key = event.target.value;
 
-      // verifica se existe algum resultado
-      if (result) {
-        // setando as turmas que a api retornou de sua resposta de busca
-        setTurma(result);
+  // verifica se existe 'valor'
+  if (key) {
+    // fazendo uma requisição na api de busca e passando a key
+    console.log("oiiiiiiiiiiiiii", key);
+    let result = await fetch(
+      `http://localhost:8080/api/turma/buscarData/`,
+      {
+        method: "post",
+
+        body: JSON.stringify(key),
+
+        headers: {
+          "Content-type": "application/json",
+
+          Accept: "application/json",
+        },
       }
+    );
+    // tranformando a promessa em json
+    result = await result.json();
 
-      // caso não exista chave, atualiza a lista
-    } else {
-      atualizaLista();
+    // verifica se existe algum resultado
+    if (result) {
+      // setando as turmas que a api retornou de sua resposta de busca
+      setTurma(result);
     }
-  };
+
+    // caso não exista chave, atualiza a lista
+  } else {
+    atualizaLista();
+  }
+};
 
 
 
@@ -876,13 +895,24 @@ function CadTurma() {
         </div>
 
         <form className="formBusca">
-          <input
+        <input
             //faz a busca
-            onChange={buscaTurmaAno}
+            onChange={buscaTurma}
             name="parametro"
             required="required"
+            placeholder="Buscar uma turma"
             className="buscarInput"
             type="text"
+          />
+          <input
+            //faz a busca
+            onChange={buscaDate}
+            name="parametro2"
+            className="buscaData"
+            required="required"
+            
+            style={{position:"relative", marginTop:"10px",marginLeft:"15%"}}
+            type="date"
           />
         </form>
       </header>
