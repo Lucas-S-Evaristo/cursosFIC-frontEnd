@@ -76,6 +76,7 @@ p = JSON.parse(p)
 
 let token = sessionStorage.getItem("token")
 
+
 function CadTurma() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
 
@@ -132,8 +133,6 @@ function CadTurma() {
   const [simEnao, setsimEnao] = useState([]);
 
   const [valuesimEnao, setvaluesimEnao] = useState([]);
-
-
 
   const dataInicioFormatada = dataInicio;
   const dataTerminoFormatada = dataTermino;
@@ -463,10 +462,10 @@ function CadTurma() {
         "Authorization": token
       },
 
-      }
+    }
     )
 
-    if(result){
+    if (result) {
       result = await result.json();
 
       atualizaLista()
@@ -485,10 +484,10 @@ function CadTurma() {
         "Authorization": token
       },
 
-      }
+    }
     )
 
-    if(result){
+    if (result) {
       result = await result.json();
 
       atualizaLista()
@@ -503,78 +502,78 @@ function CadTurma() {
 
     let justificativa = document.getElementById("justificativa").value
 
-    if(justificativa === ""){
+    if (justificativa === "") {
 
       motivoAlteracao()
 
-    }else{
+    } else {
 
-    /* pegar todos  os valores do evento */
+      /* pegar todos  os valores do evento */
 
-    const formData = new FormData(event.target);
-    /*formata em um objeto em  json */
-    const data = Object.fromEntries(formData);
-
-   
-
-    const turmasA = {
-      id: idTurma,
-      qtdMatriculas: data.qtdMatriculas,
-      instrutor: { id: data.instrutor },
-      curso: { id: data.curso },
-      periodo: data.periodo,
-      dataInicio: data.dataInicio,
-      dataTermino: data.dataTermino,
-      valor: data.valor,
-      status: data.status,
-      ambiente: { id: data.ambiente },
-      numMaxVagas: data.numMaxVagas,
-      numMinVagas: data.numMinVagas,
-      simEnao: simEnao,
-      diaSemana: data.diasDaTurma,
-      horarioInicio: { id: data.horarioInicio },
-      horarioTermino: { id: data.horarioFinal },
-      diasDaTurma: data.diasDaTurma,
-      simEnao: data.simEnao,
-      justificativa: justificativa
-    };
+      const formData = new FormData(event.target);
+      /*formata em um objeto em  json */
+      const data = Object.fromEntries(formData);
 
 
-    let result = await fetch(
-      "http://localhost:8080/api/turma/" + idTurma,
 
-      {
-        method: "PUT",
+      const turmasA = {
+        id: idTurma,
+        qtdMatriculas: data.qtdMatriculas,
+        instrutor: { id: data.instrutor },
+        curso: { id: data.curso },
+        periodo: data.periodo,
+        dataInicio: data.dataInicio,
+        dataTermino: data.dataTermino,
+        valor: data.valor,
+        status: data.status,
+        ambiente: { id: data.ambiente },
+        numMaxVagas: data.numMaxVagas,
+        numMinVagas: data.numMinVagas,
+        simEnao: simEnao,
+        diaSemana: data.diasDaTurma,
+        horarioInicio: { id: data.horarioInicio },
+        horarioTermino: { id: data.horarioFinal },
+        diasDaTurma: data.diasDaTurma,
+        simEnao: data.simEnao,
+        justificativa: justificativa
+      };
 
-        body: JSON.stringify(turmasA),
 
-        headers: {
-          "Content-type": "application/json",
+      let result = await fetch(
+        "http://localhost:8080/api/turma/" + idTurma,
 
-          Accept: "application/json",
+        {
+          method: "PUT",
 
-          "Authorization": token
-        },
+          body: JSON.stringify(turmasA),
+
+          headers: {
+            "Content-type": "application/json",
+
+            Accept: "application/json",
+
+            "Authorization": token
+          },
+        }
+      );
+
+
+
+      if (result.status === 402) {
+
+        alert("OII")
       }
-    );
+      if (result) {
+        setInterval(function () {
+          window.location.reload();
+        }, 1500);
 
+        fecharModalAlterar()
+        atualizaLista();
+        msgAlteracao();
 
-
-    if (result.status === 402) {
-
-      alert("OII")
+      }
     }
-    if (result) {
-      setInterval(function () {
-        window.location.reload();
-      }, 1500);
-
-      fecharModalAlterar()
-      atualizaLista();
-      msgAlteracao();
-
-    }
-  }
   };
 
   // metodo que capta a turma que foi selecionado
@@ -663,82 +662,82 @@ function CadTurma() {
   // metodo que limpa os inputs do form
 
 
- // metodo que busca uma turma
- const buscaTurma = async (event) => {
-  // valor que esta sendo digitado no input de pesquisa
-  let key = event.target.value;
+  // metodo que busca uma turma
+  const buscaTurma = async (event) => {
+    // valor que esta sendo digitado no input de pesquisa
+    let key = event.target.value;
 
-  // verifica se existe 'valor'
-  if (key) {
-    // fazendo uma requisição na api de busca e passando a key
-    console.log("oiiiiiiiiiiiiii", key);
-    let result = await fetch(
-      `http://localhost:8080/api/turma/buscarTurmaAno/`,
-      {
-        method: "post",
+    // verifica se existe 'valor'
+    if (key) {
+      // fazendo uma requisição na api de busca e passando a key
+      console.log("oiiiiiiiiiiiiii", key);
+      let result = await fetch(
+        `http://localhost:8080/api/turma/buscarTurmaAno/`,
+        {
+          method: "post",
 
-        body: JSON.stringify(key),
+          body: JSON.stringify(key),
 
-        headers: {
-          "Content-type": "application/json",
+          headers: {
+            "Content-type": "application/json",
 
-          Accept: "application/json",
-        },
+            Accept: "application/json",
+          },
+        }
+      );
+      // tranformando a promessa em json
+      result = await result.json();
+
+      // verifica se existe algum resultado
+      if (result) {
+        // setando as turmas que a api retornou de sua resposta de busca
+        setTurma(result);
       }
-    );
-    // tranformando a promessa em json
-    result = await result.json();
 
-    // verifica se existe algum resultado
-    if (result) {
-      // setando as turmas que a api retornou de sua resposta de busca
-      setTurma(result);
+      // caso não exista chave, atualiza a lista
+    } else {
+      atualizaLista();
     }
+  };
 
-    // caso não exista chave, atualiza a lista
-  } else {
-    atualizaLista();
-  }
-};
-  
 
- // metodo que busca uma turma
-const buscaDate = async (event) => {
-  // valor que esta sendo digitado no input de pesquisa
-  let key = event.target.value;
+  // metodo que busca uma turma
+  const buscaDate = async (event) => {
+    // valor que esta sendo digitado no input de pesquisa
+    let key = event.target.value;
 
-  // verifica se existe 'valor'
-  if (key) {
-    // fazendo uma requisição na api de busca e passando a key
-    console.log("oiiiiiiiiiiiiii", key);
-    let result = await fetch(
-      `http://localhost:8080/api/turma/buscarData/`,
-      {
-        method: "post",
+    // verifica se existe 'valor'
+    if (key) {
+      // fazendo uma requisição na api de busca e passando a key
+      console.log("oiiiiiiiiiiiiii", key);
+      let result = await fetch(
+        `http://localhost:8080/api/turma/buscarData/`,
+        {
+          method: "post",
 
-        body: JSON.stringify(key),
+          body: JSON.stringify(key),
 
-        headers: {
-          "Content-type": "application/json",
+          headers: {
+            "Content-type": "application/json",
 
-          Accept: "application/json",
-        },
+            Accept: "application/json",
+          },
+        }
+      );
+      // tranformando a promessa em json
+      result = await result.json();
+
+      // verifica se existe algum resultado
+      if (result) {
+        // setando as turmas que a api retornou de sua resposta de busca
+        setTurma(result);
       }
-    );
-    // tranformando a promessa em json
-    result = await result.json();
 
-    // verifica se existe algum resultado
-    if (result) {
-      // setando as turmas que a api retornou de sua resposta de busca
-      setTurma(result);
+      // caso não exista chave, atualiza a lista
+    } else {
+      atualizaLista();
     }
-
-    // caso não exista chave, atualiza a lista
-  } else {
-    atualizaLista();
-  }
-};
+  };
 
 
 
@@ -851,6 +850,11 @@ const buscaDate = async (event) => {
     );
   };
 
+  function gerarFolderTurma() {
+
+    window.location.href = 'http://localhost:8080/api/folder/turma'
+  }
+
   return (
     <>
       <MenuLateral />
@@ -882,6 +886,20 @@ const buscaDate = async (event) => {
           </Button>
         </div>
 
+        <div className="divFolder" style={{position:"relative", left:"110vh"}}>
+
+          <Button
+            style={{ borderRadius: 0, borderTopLeftRadius: "1vh", backgroundColor: "black" }}
+            className="botaoFolder"
+            onClick={gerarFolderTurma}
+            variant="contained"
+
+          >
+
+            gerar folder
+          </Button>
+        </div>
+
         <div className="divTarefas">
           <Button
             className="botaotarefas"
@@ -895,7 +913,7 @@ const buscaDate = async (event) => {
         </div>
 
         <form className="formBusca">
-        <input
+          <input
             //faz a busca
             onChange={buscaTurma}
             name="parametro"
@@ -910,8 +928,8 @@ const buscaDate = async (event) => {
             name="parametro2"
             className="buscaData"
             required="required"
-            
-            style={{position:"relative", marginTop:"10px",marginLeft:"15%"}}
+
+            style={{ position: "relative", marginTop: "10px", marginLeft: "15%" }}
             type="date"
           />
         </form>
@@ -919,7 +937,7 @@ const buscaDate = async (event) => {
 
 
       <div className="conteudoTabela">
-        <TableContainer className="tabelaContainer">
+        <TableContainer className="tabelaContainer" >
           <Table
             sx={{ minWidth: 1500 }}
             aria-label="customized table"
@@ -984,6 +1002,7 @@ const buscaDate = async (event) => {
                     horarioTermino,
                     diasDaTurma,
                     podeSerLancado,
+                    pontoEquilibrio
 
 
                   }) => (
@@ -995,14 +1014,14 @@ const buscaDate = async (event) => {
                       <StyledTableCell>
 
                         <RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible" }}
-                     onClick={() => diminuirQtdMatricula(id)}/>
+                          onClick={() => diminuirQtdMatricula(id)} />
 
-                     {qtdMatriculas} 
+                        {qtdMatriculas}
 
-                     <AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible" }}
-                       onClick={() => addQtdMatricula(id)}/>
-                       
-                       </StyledTableCell>
+                        <AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible" }}
+                          onClick={() => addQtdMatricula(id)} />
+
+                      </StyledTableCell>
                       <StyledTableCell>{periodo}</StyledTableCell>
                       <StyledTableCell>{status}</StyledTableCell>
                       <StyledTableCell>{ambiente.nome}</StyledTableCell>
@@ -1014,8 +1033,11 @@ const buscaDate = async (event) => {
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
                       <StyledTableCell>{simEnao}</StyledTableCell>
-                      
-                      <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
+                      <StyledTableCell><div style={podeSerLancado === false || pontoEquilibrio > qtdMatriculas
+                        ?
+
+
+                        { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
 
                       <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
                         ?
@@ -1045,13 +1067,13 @@ const buscaDate = async (event) => {
                               dataTermino,
                               horarioInicio,
                               horarioTermino,
-                              diasDaTurma
+                              diasDaTurma,
                             );
 
                             abrirModalAlterar();
                           }}
                         >
-                          <ModeEditOutlinedIcon />
+                          <ModeEditOutlinedIcon  />
 
                         </button>
                       </StyledTableCell>
@@ -1475,14 +1497,14 @@ const buscaDate = async (event) => {
                   />
                 </div>
 
-                  <div className="justificativaAltTurma">
-                <TextField
-                  id="justificativa"
-                  name="justificativa"
-                  label="justifique sua alteração"
-                  multiline
-                  rows={4}
-                />
+                <div className="justificativaAltTurma">
+                  <TextField
+                    id="justificativa"
+                    name="justificativa"
+                    label="justifique sua alteração"
+                    multiline
+                    rows={4}
+                  />
                 </div>
 
               </div>

@@ -478,6 +478,13 @@ function ListaCurso() {
       progress: undefined,
     });
   };
+
+
+  function gerarFolderCurso() {
+    let id = document.getElementById("selectFolder").value;
+
+    window.location.href = "http://localhost:8080/api/folder/curso/" + id;
+  }
   return (
     <>
       <MenuLateral />
@@ -566,6 +573,19 @@ function ListaCurso() {
             />
             <SearchIcon style={{ position: "absolute", top: 15, left: 7 }} />
           </section>
+          <section className="sectFolder" style={{position:"relative", left:"10vh"}}>
+          <select
+        id="selectFolder"
+        >
+              <option>Selecione um curso para gerar o folder</option>
+                    {cursos.map((obj) => (
+                      <option value={obj.id}>{obj.nome}</option>
+                    ))}
+         </select>
+
+        <button onClick={gerarFolderCurso} className="btnfolder"> GERAR </button>
+          </section>
+          
         </div>
         <TableContainer
           sx={{
