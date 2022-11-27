@@ -45,6 +45,7 @@ let payload = sessionStorage.getItem("payload");
 payload = JSON.parse(payload);
 
 function PageUsuario() {
+
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
   // estado da modal
   const [open, setOpen] = useState(false);
@@ -57,7 +58,7 @@ function PageUsuario() {
   const [modalExcluir, setModalExcluir] = useState(false);
 
   // estado do obj do ususario
-  const [objUsuario, setObjUsuario] = useState(usuario);
+  const [objUsuario, setObjUsuario] = useState();
   // metodo que abre a modal
   const handleOpen = () => setOpen(true);
   // metodo que fecha a modal
@@ -88,11 +89,26 @@ function PageUsuario() {
   }, []);
 
   // função que espera receber um id
-  const alterar = async (id) => {
+  const alterar = async (event) => {
+
+    event.preventDefault()
+    
+    const formData = new FormData(event.target)
+
+    const data = Object.fromEntries(formData);
+
+    const usuario = {
+      id: idUsuario,
+      nome: data.nome,
+      nif: data.nif,
+      tipoUsuario: data.tipoUsuario,
+      email: data.email,
+
+    };
     // requisição ao back-end
-    let resultado = await fetch("http://localhost:8080/api/usuario/" + id, {
+    let resultado = await fetch("http://localhost:8080/api/usuario/" + idUsuario, {
       method: "PUT",
-      body: JSON.stringify(objUsuario),
+      body: JSON.stringify(usuario),
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
@@ -111,11 +127,39 @@ function PageUsuario() {
     }
   };
 
+  const [idUsuario, setIdUsuario] = useState([])
+
+  const [nome, setNome] = useState()
+
+  const [nif, setNif] = useState()
+
+  const [email, setEmail] = useState()
+
+  const [tipoUsuarioOrdinal, setTipoUsuarioOrdinal] = useState()
+
+  console.log(tipoUsuarioOrdinal)
+
   // metodo que efetua o cadastro do usuario
-  const cadastrar = () => {
+  const cadastrar = async (event) => {
+
+    event.preventDefault()
+    
+    const formData = new FormData(event.target)
+
+    const data = Object.fromEntries(formData);
+
+    const usuario = {
+
+      nome: data.nome,
+      nif: data.nif,
+      tipoUsuario: data.tipoUsuario,
+      email: data.email,
+
+    };
+    
     fetch("http://localhost:8080/api/usuario", {
       method: "post",
-      body: JSON.stringify(objUsuario),
+      body: JSON.stringify(usuario),
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
@@ -147,8 +191,12 @@ function PageUsuario() {
     });
   };
   // metodo que capta o usuario que foi selecionado
-  const selecionarUsuario = (indice) => {
-    setObjUsuario(usuarios[indice]);
+  const selecionarUsuario = (id, nome, nif, email, tipoUsuarioOrdinal) => {
+    setIdUsuario(id)
+    setNome(nome);
+    setNif(nif);
+    setEmail(email)
+    setTipoUsuarioOrdinal(tipoUsuarioOrdinal)
   };
 
   // metodo que atualiza a lista, puxando todos os usuarios da rest api
@@ -330,7 +378,7 @@ function PageUsuario() {
         aria-describedby="modal-description"
       >
         <Box sx={style}>
-          <form>
+          <form onSubmit={cadastrar}>
             <div>
               <h2 style={titleModal}>ADICIONAR USUÁRIO</h2>
               <TextField
@@ -357,7 +405,7 @@ function PageUsuario() {
                 <option>Selecione:</option>
 
                 {tipoUsuario.map((obj, indice) => (
-                  <option key={indice}>{obj}</option>
+                  <option value={indice} key={indice}>{obj}</option>
                 ))}
               </select>
               <TextField
@@ -385,9 +433,7 @@ function PageUsuario() {
               variant="contained"
               style={{ color: "white", marginTop: 20 }}
               color={"success"}
-              onClick={() => {
-                cadastrar();
-              }}
+              type="submit"
             >
               Cadastrar
             </Button>
@@ -419,12 +465,12 @@ function PageUsuario() {
         aria-describedby="modal-description"
       >
         <Box sx={style}>
-          <form>
+          <form onSubmit={alterar}>
             <div>
               <h2 style={titleModal}>ALTERAR USUÁRIO</h2>
               <TextField
                 id="nome"
-                defaultValue={objUsuario.nome}
+                defaultValue={nome}
                 sx={styleTextField}
                 className="textField"
                 onChange={capturarDados}
@@ -437,24 +483,24 @@ function PageUsuario() {
                 Tipo Usuario
               </InputLabel>
               <select
-                defaultValue={objUsuario.tipoUsuario}
                 id="tipoUsuario"
                 style={styleSelect}
                 name="tipoUsuario"
                 required
                 className="form-control"
                 onChange={capturarDados}
+                defaultValue={tipoUsuarioOrdinal}
               >
                 <Box></Box>
 
                 <option>Selecione:</option>
 
                 {tipoUsuario.map((obj, indice) => (
-                  <option key={indice}>{obj}</option>
+                  <option value={indice}  key={obj}>{obj}</option>
                 ))}
               </select>
               <TextField
-                defaultValue={objUsuario.nif}
+                defaultValue={nif}
                 required
                 sx={styleTextField}
                 id="nif"
@@ -465,7 +511,7 @@ function PageUsuario() {
                 variant="outlined"
               ></TextField>
               <TextField
-                defaultValue={objUsuario.email}
+                defaultValue={email}
                 autoComplete="email"
                 sx={styleTextField}
                 id="email"
@@ -479,9 +525,7 @@ function PageUsuario() {
             <Button
               variant="contained"
               style={btnCad}
-              onClick={() => {
-                alterar(objUsuario.id);
-              }}
+              type="submit"
             >
               Alterar
             </Button>
@@ -568,17 +612,18 @@ function PageUsuario() {
             </thead>
 
             <tbody>
-              {usuarios.map((obj, indice) => (
-                <tr key={indice}>
-                  <th scope="row">{obj.nome}</th>
-                  <th scope="row">{obj.email}</th>
-                  <th scope="row">{obj.nif}</th>
-                  <th scope="row">{obj.tipoUsuario}</th>
+              {usuarios.map(({id, nome, nif, email, tipoUsuarioString, tipoUsuarioOrdinal} ) => (
+                <tr key={id}>
+                  <th scope="row">{nome}</th>
+                  <th scope="row">{email}</th>
+                  <th scope="row">{nif}</th>
+                  <th scope="row">{tipoUsuarioString}</th>
                   <th scope="row">
                     <button
                       className="botaoAlterarTurma"
                       onClick={() => {
-                        selecionarUsuario(indice);
+                        console.log(tipoUsuarioOrdinal)
+                        selecionarUsuario(id, nome, nif, email, tipoUsuarioOrdinal);
                         setModalAlt(true);
                       }}
                     >
@@ -589,7 +634,7 @@ function PageUsuario() {
                     <button
                       className="botaoDeleteTurma"
                       onClick={() => {
-                        if (payload.id_usuario === obj.id) {
+                        if (payload.id_usuario === id) {
                           setModalConfirmar(true);
                         } else {
                           setModalExcluir(true);
@@ -632,14 +677,13 @@ function PageUsuario() {
                             variant="contained"
                             color="success"
                             onClick={() => {
-                              deletar(obj.id);
+                              deletar(id);
                               sessionStorage.removeItem("payload");
                               sessionStorage.removeItem("token");
                               window.location.href =
                                 "http://localhost:3000/login";
                             }}
                           >
-                            {" "}
                             Sim
                           </Button>
                         </div>
@@ -676,7 +720,7 @@ function PageUsuario() {
                               variant="contained"
                               color="success"
                               onClick={() => {
-                                deletar(obj.id);
+                                deletar(id);
                                 setModalExcluir();
                               }}
                             >
@@ -696,15 +740,6 @@ function PageUsuario() {
     </>
   );
 }
-
-const usuario = {
-  id: "",
-  nome: "",
-  nif: "",
-  tipoUsuario: "",
-  email: "",
-  senha: "",
-};
 
 const imgStyle = {
   border: "none",

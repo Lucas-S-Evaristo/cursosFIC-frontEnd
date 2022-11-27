@@ -285,7 +285,7 @@ const PgHorario = () => {
       },
     });
 
-     if (result.status == 200) {
+     if (result.status == 201) {
       setOpen(false)
       cadastroSucesso()
    

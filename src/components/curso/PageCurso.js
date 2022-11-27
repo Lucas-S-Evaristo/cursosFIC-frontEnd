@@ -80,7 +80,12 @@ function ListaCurso() {
   const [cargaHoraria, setCargaHoraria] = useState();
   const [area, setArea] = useState();
   const [valor, setValor] = useState();
+
   const [tipoAtendOrdinal, setTipoAtendOrdinal] = useState();
+  const [nivelOrdinal, setNivelOrdinal] = useState();
+
+  console.log("tipoAtendOrdinal ", tipoAtendOrdinal)
+  console.log("nivelOrdinal ", nivelOrdinal)
 
   const [idCurso, setIdCurso] = useState()
 
@@ -94,9 +99,8 @@ function ListaCurso() {
     setShowExcluir(true)
     setIdCurso(id)
 
-
   };
-
+  
   const fecharModalExcluir = () => setShowExcluir(false);
 
   //quando handleClose é chamado ele da um false no show e fecha a modal
@@ -165,8 +169,6 @@ function ListaCurso() {
     let area = document.getElementById("area").value;
     let valor = document.getElementById("valor").value;
     let justificativa = document.getElementById("justificativa").value
-
-    console.log(justificativa)
 
     if (justificativa === "") {
 
@@ -269,7 +271,8 @@ function ListaCurso() {
     nivel,
     cargaHoraria,
     area,
-    tipoAtendOrdinal
+    tipoAtendOrdinal,
+    nivelOrdinal
   ) => {
     //setando os valores, que serão chamados na modal de alterar
     setId(id);
@@ -284,6 +287,7 @@ function ListaCurso() {
     setCargaHoraria(cargaHoraria);
     setArea(area.id);
     setTipoAtendOrdinal(tipoAtendOrdinal)
+    setNivelOrdinal(nivelOrdinal)
 
   };
 
@@ -639,8 +643,11 @@ function ListaCurso() {
                     nivel,
                     cargaHoraria,
                     area,
+                    tipoAtendOrdinal,
+                    nivelOrdinal,
                     tipoAtendString,
-                    tipoAtendOrdinal
+                    nivelString,
+                    
 
                   }) => (
                     <TableRow
@@ -676,7 +683,7 @@ function ListaCurso() {
                         {tipoAtendString}
                       </TableCell>
                       <TableCell align="left" component="th" scope="row">
-                        {nivel}
+                        {nivelString}
                       </TableCell>
                       <TableCell align="left" component="th" scope="row">
                         {cargaHoraria}
@@ -715,8 +722,8 @@ function ListaCurso() {
                               nivel,
                               cargaHoraria,
                               area,
-                              tipoAtendString,
-                              tipoAtendOrdinal
+                              tipoAtendOrdinal,
+                              nivelOrdinal
                               
                             );
                             abrirModalAlterar();
@@ -1002,11 +1009,13 @@ function ListaCurso() {
                   id="tipoAtendimento"
                   style={styleSelect}
                   className="form-control"
+                  defaultValue={tipoAtendOrdinal}
                 >
                   <option>Selecione:</option>
 
                   {tipoAtendimentos.map((obj, indice) => (
-                    <option selected={tipoAtendOrdinal} value={indice} key={obj}>{obj}</option>
+                    
+                    <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 
@@ -1016,12 +1025,12 @@ function ListaCurso() {
                   id="nivel"
                   style={styleSelect}
                   className="form-control"
-                  defaultValue={nivel}
+                  defaultValue={nivelOrdinal}
                 >
                   <option>Selecione:</option>
 
-                  {niveis.map((obj) => (
-                    <option key={obj}>{obj}</option>
+                  {niveis.map((obj, indice) => (
+                    <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 
@@ -1220,8 +1229,8 @@ function ListaCurso() {
                 >
                   <option>Selecione:</option>
 
-                  {niveis.map((obj) => (
-                    <option key={obj}>{obj}</option>
+                  {niveis.map((obj, indice) => (
+                    <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 

@@ -190,7 +190,7 @@ export default function LogArea() {
                         <TableBody>
 
                             {logArea.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
-                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro }) => (
+                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro, logsEnumString }) => (
 
                                     <StyledTableRow>
 
@@ -245,7 +245,7 @@ export default function LogArea() {
                                                             logsEnum === "DELETOU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString}x uma área chamada {informacaoCadastro} </StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
@@ -257,7 +257,7 @@ export default function LogArea() {
                                                     </>
                                                     :
                                                         <>
-                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                     <StyledTableCell>{data}</StyledTableCell>
                                                     <StyledTableCell>{hora}</StyledTableCell>

@@ -73,8 +73,6 @@ let p = sessionStorage.getItem("payload")
 
 p = JSON.parse(p)
 
-
-
 let token = sessionStorage.getItem("token")
 
 function CadTurma() {
@@ -577,6 +575,12 @@ function CadTurma() {
   }
   };
 
+  const [statusOrdinal, setStatusOrdinal] = useState()
+
+  const [periodoOrdinal, setPeriodoOrdinal] = useState()
+
+  const [simNaoOrdinal, setSimNaoOrdinal] = useState()
+
   // metodo que capta a turma que foi selecionado
   const selecionarTurma = (
     id,
@@ -596,7 +600,11 @@ function CadTurma() {
     dataTermino,
     horarioInicio,
     horarioTermino,
-    diasDaTurma
+    diasDaTurma,
+    statusOrdinal,
+    periodoOrdinal,
+    simNaoOrdinal
+
   ) => {
     setidTurma(id);
     setCodigo(codigo);
@@ -616,6 +624,9 @@ function CadTurma() {
     setHorarioInicioValue(horarioInicio);
     setHorarioFinalValue(horarioTermino);
     setDiasDaTurma(diasDaTurma.split(','));
+    setStatusOrdinal(statusOrdinal);
+    setPeriodoOrdinal(periodoOrdinal);
+    setSimNaoOrdinal(simNaoOrdinal)
   };
 
   // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api
@@ -984,6 +995,13 @@ const buscaDate = async (event) => {
                     horarioTermino,
                     diasDaTurma,
                     podeSerLancado,
+                    statusString,
+                    periodoString,
+                    simNaoString,
+                    statusOrdinal,
+                    periodoOrdinal,
+                    simNaoOrdinal
+
 
 
                   }) => (
@@ -994,17 +1012,17 @@ const buscaDate = async (event) => {
 
                       <StyledTableCell>
 
-                        <RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible" }}
+                        <RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#9d0208" }}
                      onClick={() => diminuirQtdMatricula(id)}/>
 
                      {qtdMatriculas} 
 
-                     <AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible" }}
+                     <AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#2AFF00" }}
                        onClick={() => addQtdMatricula(id)}/>
                        
                        </StyledTableCell>
-                      <StyledTableCell>{periodo}</StyledTableCell>
-                      <StyledTableCell>{status}</StyledTableCell>
+                      <StyledTableCell>{periodoString}</StyledTableCell>
+                      <StyledTableCell>{statusString}</StyledTableCell>
                       <StyledTableCell>{ambiente.nome}</StyledTableCell>
                       <StyledTableCell>{numMaxVagas}</StyledTableCell>
                       <StyledTableCell>{numMinVagas}</StyledTableCell>
@@ -1013,9 +1031,9 @@ const buscaDate = async (event) => {
                       <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
                       <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
                       <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
-                      <StyledTableCell>{simEnao}</StyledTableCell>
+                      <StyledTableCell>{simNaoString}</StyledTableCell>
                       
-                      <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "green", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
+                      <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "#2AFF00", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
 
                       <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
                         ?
@@ -1045,7 +1063,10 @@ const buscaDate = async (event) => {
                               dataTermino,
                               horarioInicio,
                               horarioTermino,
-                              diasDaTurma
+                              diasDaTurma,
+                              statusOrdinal,
+                              periodoOrdinal,
+                              simNaoOrdinal
                             );
 
                             abrirModalAlterar();
@@ -1301,7 +1322,7 @@ const buscaDate = async (event) => {
                     Periodo:
                   </InputLabel>
                   <Select //select de período
-                    defaultValue={ValuePeriodo}
+                    defaultValue={periodoOrdinal}
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     name="periodo"
@@ -1310,7 +1331,7 @@ const buscaDate = async (event) => {
 
                   >
                     {periodo.map((obj, indice) => (
-                      <MenuItem value={obj} selected={obj === ValuePeriodo} key={indice}>
+                      <MenuItem value={indice} key={indice}>
                         {obj}
                       </MenuItem>
                     ))}
@@ -1344,7 +1365,7 @@ const buscaDate = async (event) => {
                     Status:
                   </InputLabel>
                   <Select //select de status
-                    defaultValue={ValueStatus}
+                    defaultValue={statusOrdinal}
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     name="status"
@@ -1352,7 +1373,7 @@ const buscaDate = async (event) => {
 
                   >
                     {status.map((obj, indice) => (
-                      <MenuItem value={obj} selected={indice === ValueStatus} key={indice}>
+                      <MenuItem value={indice} key={indice}>
                         {obj}
                       </MenuItem>
                     ))}
@@ -1395,7 +1416,7 @@ const buscaDate = async (event) => {
 
                   <Select
 
-                    defaultValue={valuesimEnao}
+                    defaultValue={simNaoOrdinal}
 
                     style={styleTextField}
 
@@ -1410,7 +1431,7 @@ const buscaDate = async (event) => {
                   >
                     {simEnao.map((obj, indice) => (
 
-                      <MenuItem value={obj} selected={indice === ValueStatus} key={indice}>{obj}</MenuItem>
+                      <MenuItem value={indice} key={indice}>{obj}</MenuItem>
 
                     ))}
 

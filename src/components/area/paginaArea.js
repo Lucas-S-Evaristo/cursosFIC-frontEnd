@@ -103,7 +103,31 @@ const alterarSucesso = () => {
 }
 const msgDeletadoerror = () => {
   toast.warning(
-    " Não e possível deletar a área porque ela está associada á um Curso ",
+    " Não e possível deletar a área porque ela está associada á um Curso! ",
+    {
+      position: "top-center",
+
+      autoClose: 4500,
+
+      hideProgressBar: false,
+
+      closeOnClick: true,
+
+      pauseOnHover: true,
+
+      theme: "dark",
+
+      // faz com que seja possivel arrastar
+
+      draggable: true,
+
+      progress: undefined,
+    }
+  );
+};
+
+const msgNomesIguais = () => {
+  toast.warning("Esse nome já existe!",
     {
       position: "top-center",
 
@@ -158,6 +182,10 @@ const msgDeletadoerror = () => {
         camposVazios()
         
       
+    }else if(result.status === 406){
+
+      msgNomesIguais()
+
     }else{
       cadastroSucesso()
       setShowCadastrar(false)
@@ -437,6 +465,8 @@ const fecharModalAlterar = () => setShow(false);
         </TableContainer>
 
         <Modal
+
+        
                 show={modalCadastrar}
                 onHide={fecharModalCadastrar}
                 backdrop="static"
@@ -444,7 +474,17 @@ const fecharModalAlterar = () => setShow(false);
                 className="modaH"
                 
                 >
-                  
+                   <ToastContainer position="top-center"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+
                 <Modal.Header closeButton>
                     <Modal.Title>Cadastrar</Modal.Title>
                 </Modal.Header>

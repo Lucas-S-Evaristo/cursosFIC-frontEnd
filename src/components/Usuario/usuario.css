@@ -64,7 +64,7 @@
 }
 
 .textoExcluirSection{
-    color: rgb(0, 47, 255);
+    color: red;
     text-align: center;
     position: relative;
     top: 1em;

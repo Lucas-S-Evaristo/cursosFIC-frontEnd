@@ -215,7 +215,7 @@ export default function LogCurso() {
                         <TableBody>
 
                             {logCurso.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
-                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro, justificativa }) => (
+                                ({ nomeUsuario, hora, data, logsEnum, nifUsuario, id, informacaoCadastro, justificativa, logsEnumString }) => (
 
                                     <StyledTableRow>
 
@@ -271,7 +271,7 @@ export default function LogCurso() {
                                                                 logsEnum === "DELETOU"
                                                                     ?
                                                                     <>
-                                                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnum} uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
                                                                         <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                         <StyledTableCell>{justificativa}</StyledTableCell>
                                                                         <StyledTableCell>{data}</StyledTableCell>
@@ -284,7 +284,7 @@ export default function LogCurso() {
                                                         </>
                                                         :
                                                         <>
-                                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnum} um curso chamado {informacaoCadastro} </StyledTableCell>
+                                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} um curso chamado {informacaoCadastro} </StyledTableCell>
                                                             <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                             <StyledTableCell>{data}</StyledTableCell>
                                                             <StyledTableCell>{hora}</StyledTableCell>
