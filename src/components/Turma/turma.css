@@ -28,12 +28,8 @@
     width: 84%;
     margin-top: 12vh;
     position: fixed;
-    left: 17em;
-    
-    
+    left: 17em;    
 }
-
-  
 
 .botaoAdd{
     display: flex;
@@ -56,7 +52,6 @@ header{
     position: fixed;
     left: 16%;
    
-
 }
 
 .divBotaoAdd{

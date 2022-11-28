@@ -124,7 +124,7 @@ export default function LogTurma() {
 
     return (
 
-        <div>
+        <div className="tirarOverflow">
 
             <MenuLateral />
 

@@ -121,7 +121,7 @@ export default function LogHorario() {
 
     return (
 
-        <div>
+        <div className="tirarOverflow">
 
             <MenuLateral />
 

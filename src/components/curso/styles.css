@@ -1,75 +1,48 @@
-.body{
-    text-align: center;
-    background-image: url(/src/components/cursos/image1.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 100vw;
-    height: 100vh;
+.sectionModalAltCurso1{
+ display: flex;
+ flex-direction: column;
+ position: relative;
+ top:-2em;
 }
 
-.formulario{
-  
+.imagemModalAltCurso{
     display: flex;
-    flex-direction: column;
-    border: 0.3em solid white;
-    padding: 2em;
-    background-color: transparent;
-    color: white;
-
-}
-
-.formulario input{
-    border: 0px;
-    border-bottom: 0.1em solid white;
-    margin-top: 0.5em;
-    background-color: transparent;
-    color: white;
-    text-align: center;
-}
-
-label{
-
-    border: 0px;
-    padding:0.8em;
-    font-weight: bold
-    
-
-}
-
-.formulario ::placeholder{
-    text-align: center;
+    float: right;
+    position: relative;
+    left: 1em;
+    width: 60%;
+    height: 30em;
     
 }
 
-input:focus {
-    box-shadow: 0 0 0 0;
-    outline: 0;
-
+.inputAlterarCurso{
+    margin-top: 2em !important;
 }
 
-.botao{
-   
-    background-color: white;
-    color: black;
-    width: 50%;
-    margin:1em auto;
 
-
-}
-
-.botao:hover{
-   
-    background-color: red;
-    color: white;
-    
-}
-
-option {
-    text-align: center;
-}
-.sectionComponents{
+.divGlobalFormAltCurso{
     display: flex;
     flex-direction: row;
-    width: 70vh;
 }
 
+
+.sectionModalAltCurso2{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 3vh;
+}
+
+.textAreaCurso{
+    margin-top: 2em !important;
+    width: 150%;
+}
+
+
+.sectionModalAltCurso1 select{
+    margin-top: 0.5em;
+}
+
+.labelInput{
+    margin-top: 0.5em;
+}

@@ -501,7 +501,6 @@ function ListaParametro() {
                 <Modal
                     show={modalCadastrar}
                     onHide={fecharModalCadastrar}
-                    backdrop="static"
                     keyboard={false}>
                     <Modal.Header closeButton>
                         <Modal.Title>Cadastrar</Modal.Title>
@@ -512,13 +511,13 @@ function ListaParametro() {
 
                             <div className="divParametro">
 
-                                <TextField className="textField" name="pontoEquilibrio" type="text" label="Ponto de equilibrio:" variant="standard" />
+                                <TextField className="textField" name="pontoEquilibrio" type="number" label="Ponto de equilibrio:" variant="standard" />
 
-                                <TextField className="textField" name="parcelaBoleto" type="text" label="Parcelas Boleto:" variant="standard" />
+                                <TextField className="textField" name="parcelaBoleto" type="number" label="Parcelas Boleto:" variant="standard" />
 
-                                <TextField className="textField" name="parcelaCartao" type="text" label="Parcelas Cartão:" variant="standard" />
+                                <TextField className="textField" name="parcelaCartao" type="number" label="Parcelas Cartão:" variant="standard" />
 
-                                <TextField className="textField" name="telefone" type="text" label="Telefone:" variant="standard" />
+                                <TextField className="textField" name="telefone" type="number" label="Telefone:" variant="standard" />
 
                                 <TextField className="textField" name="endereco" type="text" label="Endereço:" variant="standard" />
 
@@ -526,7 +525,7 @@ function ListaParametro() {
 
                             <div id="verImagem"></div>
 
-                            <TextField className="arquivoParametro" name="logo" type="file" id="imagem" onChange={uploadImageProduto} variant="standard" />
+                            <input className="arquivoParametro" name="logo" accept="image/*" type="file" id="imagem" onChange={uploadImageProduto} variant="standard" />
 
                             <div class="parteBotaoArea">
                                 <Button variant="contained" color="success" type="submit" >cadastrar</Button>
@@ -564,13 +563,13 @@ function ListaParametro() {
 
                                 <TextField className="textField" name="telefone" defaultValue={telefone} type="number" label="Telefone:" variant="standard" />
 
-                                <TextField className="textField" name="endereco" defaultValue={endereco} type="number" label="Endereço:" variant="standard" />
+                                <TextField className="textField" name="endereco" defaultValue={endereco} type="text" label="Endereço:" variant="standard" />
 
                             </div>
 
                             <div id="verImagem"><img src={logo}></img></div>
 
-                            <TextField className="arquivoParametro" name="logo" id="imagem" accept="image/*" type="file" onChange={uploadImageProduto} variant="standard"/>
+                            <input className="arquivoParametro" name="logo" id="imagem" accept="image/*" type="file" onChange={uploadImageProduto} variant="standard"/>
 
                             <div class="parteBotaoArea">
                                 <Button variant="contained" color="success" type="submit" >Alterar</Button>

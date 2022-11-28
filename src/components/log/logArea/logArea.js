@@ -125,7 +125,7 @@ export default function LogArea() {
 
     return (
 
-        <div>
+        <div className="tirarOverflow">
 
             <MenuLateral />
 
@@ -245,7 +245,7 @@ export default function LogArea() {
                                                             logsEnum === "DELETOU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString}x uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>

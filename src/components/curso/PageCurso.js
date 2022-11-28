@@ -25,6 +25,7 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuLateral from "../menu/MenuLateral";
 import { width } from "@mui/system";
+import "./styles.css"
 
 
 
@@ -100,7 +101,7 @@ function ListaCurso() {
     setIdCurso(id)
 
   };
-  
+
   const fecharModalExcluir = () => setShowExcluir(false);
 
   //quando handleClose é chamado ele da um false no show e fecha a modal
@@ -647,7 +648,7 @@ function ListaCurso() {
                     nivelOrdinal,
                     tipoAtendString,
                     nivelString,
-                    
+
 
                   }) => (
                     <TableRow
@@ -703,9 +704,9 @@ function ListaCurso() {
                           sx={{
                             marginLeft: "7px",
                             marginTop: "1.2em",
-                            borderRadius: 2,
-                            width: 60,
-                            height: 10,
+                            borderRadius: 80,
+                            width: 50,
+                            height: 30,
                             backgroundColor: "yellow",
                           }}
                           variant="circular"
@@ -724,7 +725,7 @@ function ListaCurso() {
                               area,
                               tipoAtendOrdinal,
                               nivelOrdinal
-                              
+
                             );
                             abrirModalAlterar();
                           }}
@@ -740,9 +741,10 @@ function ListaCurso() {
                           <Fab
                             sx={{
                               marginLeft: "7px",
-                              borderRadius: 2,
-                              width: 60,
-                              height: 10,
+                              borderRadius: 80,
+                              width: 50,
+                              backgroundColor: "red",
+                              height: 30,
                             }}
                             variant="circular"
                             onClick={() => {
@@ -868,6 +870,7 @@ function ListaCurso() {
         show={modalAlterar}
         onHide={fecharModalAlterar}
         size="xl"
+
         aria-labelledby="example-custom-modal-styling-title"
         scrollable={true}
       >
@@ -875,34 +878,23 @@ function ListaCurso() {
           <Modal.Title>Alterar</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{ height: 610 }}>
+        <Modal.Body>
           <div>
             <img
-              className="imagemModal"
-              src={require("./imagemModal.png")}
+              className="imagemModalAltCurso"
+              src={require("../../imagens/altCurso.png")}
             ></img>
           </div>
 
-          <div>
-            <form
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                flexWrap: "nowrap",
-                justifyContent: "center",
-                width: "60%",
-                height: "80%",
-                position: "absolute",
-                top: "-1em"
-              }}
-            >
-              <section className="sectionComponents">
+            <form>
+                <div className="divGlobalFormAltCurso">
+              <div className="sectionModalAltCurso1">
                 <TextField
                   autoFocus
+                  required
                   id="nome"
-                  sx={styleTextField}
                   defaultValue={nome}
-                  className="textField"
+                  className="inputAlterarCurso"
                   name="nome"
                   type="text"
                   label="Nome"
@@ -911,87 +903,42 @@ function ListaCurso() {
 
                 <TextField
                   autoFocus
+                  required
                   id="objetivo"
+                  className="inputAlterarCurso"
                   defaultValue={objetivo}
-                  sx={styleTextField}
-                  className="textField"
                   name="objetivo"
                   type="text"
                   label="Objetivo"
                   variant="outlined"
                 />
-              </section>
 
-              <section className="sectionComponents">
                 <TextField
                   autoFocus
-                  id="preRequisito"
-                  defaultValue={preRequisito}
-                  sx={styleTextField}
-                  className="textField"
-                  name="preRequisito"
-                  type="text"
-                  label="Pré requisito"
-                  variant="outlined"
-                />
-                <TextField
-                  autoFocus
+                  required
                   id="valor"
-                  sx={styleTextField}
                   defaultValue={valor}
-                  className="textField"
                   name="valor"
                   type="number"
                   label="Valor"
                   variant="outlined"
+                  className="inputAlterarCurso"
                 />
 
-              </section>
-
-              <section className="sectionComponents">
                 <TextField
                   autoFocus
+                  required
+                  className="inputAlterarCurso"
                   id="cargaHoraria"
                   defaultValue={cargaHoraria}
-                  sx={styleTextField}
-                  className="textField"
                   name="cargaHoraria"
                   type="number"
                   label="Carga Horaria"
                   variant="outlined"
                 />
 
-
-                <TextField
-                  name="conteudoProgramatico"
-                  id="conteudoProgramatico"
-                  label="Conteúdo programático"
-                  multiline
-                  defaultValue={conteudoProgramatico}
-                  sx={styleTextFieldConteudoProg}
-                  rows={4}
-                />
-
-                <TextField
-                  id="justificativa"
-                  name="justificativa"
-                  label="justifique sua alteração"
-                  multiline
-                  sx={styleTextFieldConteudoProgAlt}
-                  rows={4}
-                />
-
-              </section>
-
-              <section className="sectionComponentsSelect" style={{
-                position: "absolute",
-                top: "15.5em",
-                left: "0.5em",
-
-              }}>
-
-                <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
-                <select id="area" style={styleSelect} className="form-control">
+                <InputLabel className="labelInput" id="demo-simple-select-label">Tipo Área</InputLabel>
+                <select required id="area" className="form-control">
                   <option>Selecione:</option>
 
                   {tipoArea.map((obj) => (
@@ -1001,29 +948,30 @@ function ListaCurso() {
                   ))}
                 </select>
 
-                <InputLabel id="demo-simple-select-label">
+                
+                <InputLabel className="labelInput" id="demo-simple-select-label">
                   Tipo Atendimento
                 </InputLabel>
 
                 <select
+                  required
                   id="tipoAtendimento"
-                  style={styleSelect}
                   className="form-control"
                   defaultValue={tipoAtendOrdinal}
                 >
                   <option>Selecione:</option>
 
                   {tipoAtendimentos.map((obj, indice) => (
-                    
+
                     <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 
-                <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
+                <InputLabel className="labelInput" id="demo-simple-select-label">Nivel</InputLabel>
 
                 <select
+                  required
                   id="nivel"
-                  style={styleSelect}
                   className="form-control"
                   defaultValue={nivelOrdinal}
                 >
@@ -1034,12 +982,50 @@ function ListaCurso() {
                   ))}
                 </select>
 
-              </section>
+                </div>
+                
+                <div className="sectionModalAltCurso2">
 
-              <div
-                style={{ position: "absolute", top: "33em" }}
-              >
+                <TextField
+                  name="conteudoProgramatico"
+                  id="conteudoProgramatico"
+                  defaultValue={conteudoProgramatico}
+                  label="Conteúdo programático"
+                  required
+                  multiline
+                  style={{width: "150%"}}
+                  rows={4}
+                />
+
+                <TextField
+                  id="justificativa"
+                  className="textAreaCurso"
+                  name="justificativa"
+                  label="justifique sua alteração"
+                  multiline
+                  rows={4}
+                />
+
+                <TextField
+                  autoFocus
+                  required
+                  id="preRequisito"
+                  defaultValue={preRequisito}
+                  multiline
+                  rows={4}
+                  className="textAreaCurso"
+                  name="preRequisito"
+                  type="text"
+                  label="Pré requisito"
+                  variant="outlined"
+                />
+
+              </div>
+                </div>
+
+              <div>
                 <Button
+
                   variant="contained"
                   style={btnCad}
                   onClick={() => {
@@ -1072,7 +1058,7 @@ function ListaCurso() {
                 </Button>
               </div>
             </form>
-          </div>
+
         </Modal.Body>
       </Modal>
 
@@ -1091,7 +1077,7 @@ function ListaCurso() {
           <div>
             <img
               className="imagemModal"
-              src={require("./imagemModal.png")}
+              src={require("../../imagens/cadCurso.png")}
             ></img>
           </div>
           <div>
@@ -1105,12 +1091,13 @@ function ListaCurso() {
                 width: "60%",
                 height: "80%",
                 position: "absolute",
-                top: "-6em"
+                top: "-4.5em"
               }}
             >
               <section className="sectionComponents">
                 <TextField
                   autoFocus
+                  required
                   id="nomeCad"
                   sx={styleTextField}
                   className="textField"
@@ -1122,6 +1109,7 @@ function ListaCurso() {
 
                 <TextField
                   autoFocus
+                  required
                   id="objetivoCad"
                   sx={styleTextField}
                   className="textField"
@@ -1134,17 +1122,17 @@ function ListaCurso() {
 
               <section className="sectionComponents">
                 <TextField
-                  autoFocus
+                  multiline
+                  required
+                  sx={styleTextFieldPreReq}
+                  rows={4}
                   id="preRequisitoCad"
-                  sx={styleTextField}
-                  className="textField"
                   name="preRequisito"
-                  type="text"
                   label="Pré requisito"
-                  variant="outlined"
                 />
                 <TextField
                   autoFocus
+                  required
                   id="valorCad"
                   sx={styleTextField}
                   className="textField"
@@ -1162,6 +1150,7 @@ function ListaCurso() {
                   id="cargaHorariaCad"
                   sx={styleTextField}
                   className="textField"
+                  required
                   name="cargaHoraria"
                   type="number"
                   label="Carga Horaria"
@@ -1174,6 +1163,7 @@ function ListaCurso() {
                   name="conteudoProgramatico"
                   label="Conteúdo programático"
                   multiline
+                  required
                   sx={styleTextFieldConteudoProg}
                   rows={4}
 
@@ -1182,20 +1172,19 @@ function ListaCurso() {
 
               <section className="sectionComponentsSelect" style={{
                 position: "absolute",
-                top: "21em",
+                top: "22em",
                 left: "0.5em",
 
               }}>
 
-                <InputLabel id="demo-simple-select-label">Tipo Área</InputLabel>
+                <InputLabel id="demo-simple-select-label">Área</InputLabel>
                 <select
                   id="areaCad"
                   style={styleSelect}
                   name="area"
-                  required
+                  required="required"
                   className="form-control"
                 >
-                  <option>Selecione:</option>
 
                   {tipoArea.map((obj) => (
                     <option value={obj.id}>{obj.nome}</option>
@@ -1210,8 +1199,7 @@ function ListaCurso() {
                   name="tipoAtendimento"
                   required
                   className="form-control"
-                >
-                  <option>Selecione:</option>
+                >-
 
                   {tipoAtendimentos.map((obj, indice) => (
                     <option value={indice} key={obj}>{obj}</option>
@@ -1227,7 +1215,6 @@ function ListaCurso() {
                   required
                   className="form-control"
                 >
-                  <option>Selecione:</option>
 
                   {niveis.map((obj, indice) => (
                     <option value={indice} key={obj}>{obj}</option>
@@ -1237,15 +1224,28 @@ function ListaCurso() {
               </section>
 
               <div
-                style={{ position: "absolute", top: "39em" }}
+                style={{ position: "absolute", top: "40em" }}
               >
                 <Button
                   variant="contained"
                   color="success"
-                  //onClick={() => cadastrar(objTurma.id)}
+                  style={btnCad2}
                   type="submit"
                 >
                   cadastrar
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="error"
+                  style={btnClose2}
+                  onClick={() => {
+                    limparForm();
+                    fecharModalAlterar();
+                  }}
+                >
+                  <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+                  Fechar
                 </Button>
               </div>
             </form>
@@ -1272,11 +1272,28 @@ const styleTextField = {
 const styleTextFieldConteudoProg = {
   margin: 1,
   backgroundColor: "trans",
-  width: 227
+  width: 227,
+  position: "relative",
+  top: "-4em",
 
 }
 
+
+
+
+const styleTextFieldPreReq = {
+  margin: 1,
+  backgroundColor: "trans",
+  width: 220,
+}
+
 const styleTextFieldConteudoProgAlt = {
+  margin: 1,
+  backgroundColor: "trans",
+  width: 220,
+}
+
+const styleTextFieldJustificativa = {
   margin: 1,
   backgroundColor: "trans",
   width: 227,
@@ -1284,7 +1301,7 @@ const styleTextFieldConteudoProgAlt = {
 }
 
 const styleSelect = {
-  width: "123.5%",
+  width: "146.8%",
   height: "3em",
   marginBottom: "30px",
 };
@@ -1313,8 +1330,21 @@ const btnCad = {
   backgroundColor: "#000814",
 };
 
+const btnCad2 = {
+  borderRadius: "10px",
+  color: "#ffff",
+  backgroundColor: "#000814",
+};
+
 const btnClose = {
   marginTop: "20px",
+  marginLeft: "20px",
+  borderRadius: "10px",
+  color: "#ffff",
+  backgroundColor: "#f25c54",
+};
+
+const btnClose2 = {
   marginLeft: "20px",
   borderRadius: "10px",
   color: "#ffff",

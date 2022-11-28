@@ -326,7 +326,7 @@ function Login() {
 
                    <input className="inputRedefinir" name="senha" type="password"/>
 
-                   <h5 className="tituloRedefinir2">Por favor, Confirme sua senha!</h5>
+                   <h5 className="tituloRedefinir2"> Confirme sua senha!</h5>
 
                    <input className="inputRedefinir2" name="senha2" type="password"/>
 

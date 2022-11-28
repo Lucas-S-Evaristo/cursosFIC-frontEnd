@@ -419,9 +419,6 @@ function CadTurma() {
         } else if (retorno.status === 401) {
           erroDataInicioMaiorHoje();
 
-        } else if (retorno.status === 408) {
-          erroCamposVazios();
-
         } else if (retorno.status === 402) {
           erroHorariosDepois();
 
@@ -432,8 +429,7 @@ function CadTurma() {
           erroMinVagasMaior();
 
         } else {
-          retorno
-            .json()
+          retorno.json()
             // pegando o retorno convertido
             .then((retorno_convertido) => {
               // metodo que atualiza a lista, que faz com que ao clicar seja adicionado "automaticamente"
@@ -1215,6 +1211,7 @@ const buscaDate = async (event) => {
                   }}
                   name="qtdMatriculas"
                   type="number"
+                  required
                   label="qtd de Matriculas"
                   variant="standard"
                 />
@@ -1229,6 +1226,7 @@ const buscaDate = async (event) => {
                   }}
                   name="numMaxVagas"
                   type="number"
+                  required
                   label="Máximo de vagas:"
                   variant="standard"
                 />
@@ -1246,6 +1244,7 @@ const buscaDate = async (event) => {
                   }}
                   name="numMinVagas"
                   type="number"
+                  required
                   label="Minimo de vagas"
                   variant="standard"
                 />
@@ -1447,6 +1446,7 @@ const buscaDate = async (event) => {
                   id="demo-multiple-checkbox"
                   name="diasDaTurma"
                   multiple
+                  required
                   defaultValue={diasDaTurma}
                   onChange={handleChange2}
                   input={<OutlinedInput label="Dias da Semana" />}
@@ -1475,6 +1475,7 @@ const buscaDate = async (event) => {
                     }}
                     InputLabelProps={{ shrink: true, required: true }}
                     type="date"
+                    required
                     variant="standard"
                     value={dataInicioFormatada}
                   />
@@ -1486,6 +1487,7 @@ const buscaDate = async (event) => {
                     variant="standard"
                     label="Data Terminio"
                     name="dataTermino"
+                    required
                     onChange={(e) => {
                       setDataTermino(e.target.value);
                       capturarDados(e);
@@ -1540,11 +1542,11 @@ const buscaDate = async (event) => {
           <div>
             <img
               className="imagemModal"
-              src={require("./imagemModal.png")}
+              src={require("../../imagens/cadTurma.png")}
             ></img>
           </div>
           <div className="modalCad">
-            <form className="formModalCad" onSubmit={cadastrar}   >
+            <form className="formModalCad" onSubmit={cadastrar}>
               {/*  input de quantidade de mátriculas */}
               {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
@@ -1554,7 +1556,7 @@ const buscaDate = async (event) => {
 
                   sx={styleTextField}
                   className="textField"
-
+                  required="required"
                   name="numMinVagas"
                   type="number"
                   label="Minimo de vagas"
@@ -1569,7 +1571,7 @@ const buscaDate = async (event) => {
 
                   sx={styleTextField}
                   className="textField"
-
+                  required="required"
                   name="numMaxVagas"
                   type="number"
                   label="Máximo de vagas:"
@@ -1648,15 +1650,8 @@ const buscaDate = async (event) => {
                     ))}
                   </Select>
                 </FormControl>
-
-
-
-
-
               </div>
-
-
-
+              
               <div className="select2Cad">
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-standard-label">
@@ -1810,6 +1805,7 @@ const buscaDate = async (event) => {
                   id="demo-multiple-checkbox"
                   name="diasDaTurma"
                   multiple
+                  required="required"
                   defaultValue={diasDaSemana}
                   onChange={handleChange}
                   input={<OutlinedInput label="Dias da Semana" />}
@@ -1831,7 +1827,7 @@ const buscaDate = async (event) => {
                     sx={estiloData}
                     label="Data inicio"
                     name="dataInicio"
-
+                    required="required"
                     InputLabelProps={{ shrink: true, required: true }}
                     type="date"
                     variant="standard"
@@ -1845,7 +1841,7 @@ const buscaDate = async (event) => {
                     variant="standard"
                     name="dataTermino"
                     label="Data Terminio"
-
+                    required="required"
                     InputLabelProps={{ shrink: true, required: true }}
                     type="date"
 

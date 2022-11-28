@@ -62,7 +62,11 @@ function PageUsuario() {
   // metodo que abre a modal
   const handleOpen = () => setOpen(true);
   // metodo que fecha a modal
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    
+    setOpen(false);
+    setModalAlt(false)
+  }
   // variavel que tem acesso a um array com todos os usuarios
   const [usuarios, setUsuario] = useState([]);
   // variavel que tem acesso a um array com todos os tipos de usuarios
@@ -137,7 +141,6 @@ function PageUsuario() {
 
   const [tipoUsuarioOrdinal, setTipoUsuarioOrdinal] = useState()
 
-  console.log(tipoUsuarioOrdinal)
 
   // metodo que efetua o cadastro do usuario
   const cadastrar = async (event) => {
@@ -154,6 +157,7 @@ function PageUsuario() {
       nif: data.nif,
       tipoUsuario: data.tipoUsuario,
       email: data.email,
+      senha: data.senha
 
     };
     
@@ -453,7 +457,7 @@ function PageUsuario() {
           <Paper elevation={0}>
             <img
               style={imgStyle}
-              src="https://img.freepik.com/vetores-gratis/ilustracao-em-vetor-conceito-abstrato-de-visualizacao-de-design-interativo-visualizacao-interativa-arquitetura-de-virtualidade-experiencia-do-usuario-de-realidade-virtual-metafora-abstrata-de-design-de-interacao_335657-2298.jpg"
+              src={require('../../imagens/imgAltUsu.png')}
             />
           </Paper>
         </Box>

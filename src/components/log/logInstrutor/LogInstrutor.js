@@ -121,7 +121,7 @@ export default function LogInstrutor() {
 
     return (
 
-        <div>
+        <div className="tirarOverflow">
 
             <MenuLateral />
 

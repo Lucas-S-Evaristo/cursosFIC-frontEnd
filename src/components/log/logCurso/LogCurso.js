@@ -123,7 +123,7 @@ export default function LogCurso() {
 
     return (
 
-        <div>
+        <div className="tirarOverflow">
 
             <MenuLateral />
 
