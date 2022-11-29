@@ -406,7 +406,6 @@ function PageUsuario() {
                 className="form-control"
                 onChange={capturarDados}
               >
-                <option>Selecione:</option>
 
                 {tipoUsuario.map((obj, indice) => (
                   <option value={indice} key={indice}>{obj}</option>
@@ -416,8 +415,11 @@ function PageUsuario() {
                 required
                 sx={styleTextField}
                 id="nif"
+                
                 onChange={capturarDados}
                 name="nif"
+                minlength="7"
+                maxlength="9"
                 type="text"
                 label="NIF"
                 variant="outlined"

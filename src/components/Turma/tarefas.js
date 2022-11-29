@@ -129,27 +129,41 @@ function Tarefas() {
     const buscarTarefa = async (event) => {
         // valor que esta sendo digitado no input de pesquisa
         let key = event.target.value;
-        console.log(key)
+      
         // verifica se existe 'valor'
         if (key) {
-            // fazendo uma requisição na api de busca e passando a key
-            let result = await fetch(
-                "http://localhost:8080/api/turma/buscarTarefa/" + key
-            );
-            // tranformando a promessa em json
-            result = await result.json();
-
-            // verifica se existe algum resultado
-            if (result) {
-                // setando as turmas que a api retornou de sua resposta de busca
-                setTurma(result);
+          // fazendo uma requisição na api de busca e passando a key
+          console.log("oiiiiiiiiiiiiii", key);
+          let result = await fetch(
+            `http://localhost:8080/api/turma/buscarDataTarefa/`,
+            {
+              method: "post",
+      
+              body: JSON.stringify(key),
+      
+              headers: {
+                "Content-type": "application/json",
+      
+                Accept: "application/json",
+              },
             }
-
-            // caso não exista chave, atualiza a lista
+          );
+          // tranformando a promessa em json
+          result = await result.json();
+      
+          // verifica se existe algum resultado
+          if (result) {
+            // setando as turmas que a api retornou de sua resposta de busca
+            setTurma(result);
+          }
+      
+          // caso não exista chave, atualiza a lista
         } else {
-            atualizaLista();
+          atualizaLista();
         }
-    };
+      };
+      
+      
 
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
