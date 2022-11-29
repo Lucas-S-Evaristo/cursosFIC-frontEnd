@@ -35,6 +35,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import { yellow } from "@mui/material/colors";
+import { Navigate } from "react-router-dom";
+import LinhaTempo from "../LinhaDoTempo/LinhaDoTempo/PageLinhaTempo";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -177,10 +179,10 @@ function CadTurma() {
 
   const [modalExcluir, setShowExcluir] = useState(false);
 
-   const abrirModalExcluir = () => setShowExcluir(true);
+  const abrirModalExcluir = () => setShowExcluir(true);
 
-    const fecharModalExcluir = () => setShowExcluir(false);
- 
+  const fecharModalExcluir = () => setShowExcluir(false);
+
   // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
   useEffect(() => {
     fetch("http://localhost:8080/api/turma")
@@ -322,7 +324,7 @@ function CadTurma() {
 
 
     const turmas = {
-      id: 0,
+      id: "",
       qtdMatriculas: data.qtdMatriculas,
       instrutor: { id: idInstrutor },
       curso: { id: idCurso },
@@ -519,6 +521,14 @@ function CadTurma() {
     }
   };
 
+
+  const actionLinhaDoTempo = async (id) => {
+
+    localStorage.setItem("idLT", id)
+
+    window.location.href = "http://localhost:3000/linhatempo"
+  };
+
   const capturarDados = (e) => {
     setObjTurma({ ...objTurma, [e.target.name]: e.target.value });
   };
@@ -527,7 +537,7 @@ function CadTurma() {
 
 
   // metodo que busca uma turma
-  const buscaTurma = async (event) => {
+  const buscaTurmaString = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
     let key = event.target.value;
 
@@ -535,7 +545,7 @@ function CadTurma() {
     if (key) {
       // fazendo uma requisição na api de busca e passando a key
       let result = await fetch(
-        "http://localhost:8080/api/turma/buscarTurma/" + key
+        "http://localhost:8080/api/turma/buscarString/" + key
       );
       // tranformando a promessa em json
       result = await result.json();
@@ -552,6 +562,7 @@ function CadTurma() {
     }
   };
 
+  // metodo que faz a busca da turma a partir de uma data de inicio ou termino
   const buscaTurmaAno = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
     let key = event.target.value;
@@ -560,7 +571,7 @@ function CadTurma() {
     if (key) {
       // fazendo uma requisição na api de busca e passando a key
       let result = await fetch(
-        "http://localhost:8080/api/turma/buscarTurmaAno/" + key
+        "http://localhost:8080/api/turma/buscarData/" + key
       );
       // tranformando a promessa em json
       result = await result.json();
@@ -731,16 +742,10 @@ function CadTurma() {
           </Button>
         </div>
 
-        <form className="formBusca">
-          <input
-            //faz a busca
-            onChange={buscaTurmaAno}
-            name="parametro"
-            required="required"
-            className="buscarInput"
-            type="date"
-          />
-        </form>
+
+
+       
+
       </header>
 
       <div className="conteudoTabela">
@@ -783,6 +788,13 @@ function CadTurma() {
                   :
                   { visibility: "visible" }
                 }>Excluir</StyledTableCell>
+
+                <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
+                  ?
+                  { display: "none" }
+                  :
+                  { visibility: "visible" }
+                }>LinhaTempo</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -833,6 +845,7 @@ function CadTurma() {
                         :
                         { visibility: "visible" }
                       }>
+
                         <button
 
 
@@ -878,38 +891,49 @@ function CadTurma() {
                           <DeleteForeverOutlinedIcon />
                         </button>
 
-                        <Modal 
-              show={modalExcluir} 
-              onHide={fecharModalExcluir}
-              backdrop="static"
-              aria-labelledby="contained-modal-title-vcenter"
-              centered>
 
 
-                  <Modal.Header closeButton className="bodyExcluir">
-                    <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
 
-                  <Modal.Footer className="botaoModalExcluir">
-                    <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
-                      Não
-                    </Button>
-                    <Button variant="contained" color="success" onClick={() => { 
-                //excluir curso pelo id
-                deletar(id)
-                fecharModalExcluir()}}>
-                      Sim
-                    </Button>
-                  </Modal.Footer>
+                        <Modal
+                          show={modalExcluir}
+                          onHide={fecharModalExcluir}
+                          backdrop="static"
+                          aria-labelledby="contained-modal-title-vcenter"
+                          centered>
 
-                </Modal>
+
+                          <Modal.Header closeButton className="bodyExcluir">
+                            <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body><h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4></Modal.Body>
+
+                          <Modal.Footer className="botaoModalExcluir">
+                            <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                              Não
+                            </Button>
+                            <Button variant="contained" color="success" onClick={() => {
+                              //excluir curso pelo id
+                              deletar(id)
+                              fecharModalExcluir()
+                            }}>
+                              Sim
+                            </Button>
+                          </Modal.Footer>
+
+                        </Modal>
+                      </StyledTableCell>
+                      <StyledTableCell>
+
+                        <button onClick={() => {
+                        actionLinhaDoTempo(id)
+
+                        }}>VER LINHA TEMPO</button>
                       </StyledTableCell>
                     </StyledTableRow>
                   )
                 )}
             </TableBody>
-            
+
           </Table>
           <TablePagination
             sx={{
@@ -928,8 +952,28 @@ function CadTurma() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </TableContainer>
-      </div>
+        <form className="formBusca">
+          <input
+            //faz a busca
+            onChange={buscaTurmaAno}
+            name="parametro"
+            required="required"
+            className="buscarInput"
+            type="date"
+          />
+        </form>
 
+      </div>
+      <form style={{ marginLeft: "100px" }}>
+        <input
+          //faz a busca
+          onChange={buscaTurmaString}
+          name="parametro"
+          required="required"
+          className="buscarInput"
+          type="text"
+        />
+      </form>
       <ToastContainer
         position="top-center"
         autoClose={1500}
@@ -941,7 +985,7 @@ function CadTurma() {
         draggable
         pauseOnHover
       />
-      
+
 
       <Modal
         show={modalAlterar}
@@ -1174,7 +1218,7 @@ function CadTurma() {
                 </FormControl>
               </div>
 
-              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }}  className="diaSemana">
+              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
                 <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
                 <Select
                   labelId="demo-multiple-checkbox-label"
@@ -1235,7 +1279,7 @@ function CadTurma() {
                 <Button
                   variant="contained"
                   color="success"
-                 
+
                   type="submit"
                 >
                   Alterar
@@ -1542,7 +1586,7 @@ function CadTurma() {
                 <Button
                   variant="contained"
                   color="success"
-                 
+
                   type="submit"
                 >
                   cadastrar

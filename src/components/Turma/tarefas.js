@@ -660,19 +660,19 @@ function Tarefas() {
 
             <header>
 
-                <div className="divTarefas">
-                    <Button className="botaoVoltar" href="/" variant="contained" color="primary" ><ArrowBack />   <i class="bi bi-plus-lg"></i>Voltar</Button>
-                </div>
-                <form className="formBusca">
+                <form style={{ marginTop: "120px" }}>
                     <input
                         //faz a busca
                         onChange={buscarTarefa}
-                        name="parametro"
-                        required="required"
                         className="buscarInput"
                         type="date"
                     />
                 </form>
+
+                <div className="divTarefas">
+                    <Button className="botaoVoltar" href="/" variant="contained" color="primary" ><ArrowBack />   <i class="bi bi-plus-lg"></i>Voltar</Button>
+                </div>
+
 
             </header>
 
@@ -682,22 +682,7 @@ function Tarefas() {
                     <Table sx={{ minWidth: 1500, backgroundColor: "transparent" }} aria-label="customized table" className="tabelaTurma">
 
                         <TableHead className="theadTurma">
-                            {/*
-                            private Calendar dataLimInscricao;	
-                            private Calendar confirmarTurma;
-                            private Calendar retiradaSite;
-                            private Calendar cobrarEntregaDocum;
-                            private Calendar verificarPCDs;
-                            private Calendar gerarDiarioEletr;
-                            private Calendar montarKitTurma;
-                            private Calendar verifQuemFaltouPrimDia;
-                            private Calendar iniciarTurma;
-                            private Calendar matriculaDefinitiva;
-                            private Calendar encerrarTurma;
-                            private Calendar escanearDocum;
-                            private boolean simEnao;
-                            
-*/}
+
                             <TableRow sx={{}} className="STC">
                                 <StyledTableCell sx={maxWidth}>Turma</StyledTableCell>
                                 <StyledTableCell>Data lim. para insc.</StyledTableCell>
@@ -717,23 +702,12 @@ function Tarefas() {
 
 
 
+
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {turmas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                /*dataLimInscricao: "",
-                                confirmarTurma: "",
-                                retiradaSite: "",
-                                cobrarEntregaDocum: "",
-                                verificarPCDs: "",
-                                gerarDiarioEletr: "",
-                                montarKitTurma: "",
-                                verifQuemFaltouPrimDia: "",
-                                iniciarTurma: "",
-                                matriculaDefinitiva: "",
-                                encerrarTurma: "",
-                                escanearDocum: "",
-                                simEnao: false*/
+
                                 .map(({ codigo, dataLimInscricao, confirmarTurma, retiradaSite, cobrarEntregaDocum,
                                     verificarPCDs, gerarDiarioEletr, montarKitTurma, verifQuemFaltouPrimDia, iniciarTurma, matriculaDefinitiva, encerrarTurma, escanearDocum }) => (
                                     <StyledTableRow >
@@ -788,6 +762,7 @@ function Tarefas() {
                     />
                 </TableContainer>
             </div>
+
 
 
 

@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import Chip from '@mui/material/Chip';
+import InputAdornment from '@mui/material/InputAdornment';
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Grid from "@mui/material/Grid";
@@ -153,6 +155,8 @@ function PageUsuario() {
     }
   };
 
+
+
   // metodo que limpa os inputs do form
   const limparForm = () => {
     setObjUsuario("");
@@ -282,8 +286,8 @@ function PageUsuario() {
 
   return (
     <>
-      <MenuLateral/>
-      
+      <MenuLateral />
+
       <ToastContainer
         position="top-right"
         autoClose={1500}
@@ -335,6 +339,11 @@ function PageUsuario() {
                 ))}
               </select>
               <TextField
+                startAdornment={
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                }
                 required
                 sx={styleTextField}
                 id="nif"
@@ -510,10 +519,10 @@ function PageUsuario() {
           position="static"
           color="default"
           elevation={0}
-          style={{marginTop: 100}}
+          style={{ marginTop: 100 }}
           sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
         >
-          <Toolbar style={{marginBottom:20}}>
+          <Toolbar style={{ marginBottom: 20 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item>
                 <SearchIcon sx={{ display: "block", color: "#01161e" }} />
@@ -567,7 +576,7 @@ function PageUsuario() {
                   <th scope="row">{obj.nif}</th>
                   <th scope="row">{obj.tipoUsuario}</th>
                   <th scope="row">
-                  <button className="botaoAlterarTurma"
+                    <button className="botaoAlterarTurma"
                       onClick={() => {
                         selecionarUsuario(indice);
                         setModalAlt(true);
@@ -576,10 +585,10 @@ function PageUsuario() {
                       <ModeEditOutlinedIcon /></button>
                   </th>
                   <th scope="row">
-                  <button className="botaoDeleteTurma"
+                    <button className="botaoDeleteTurma"
                       onClick={() => deletar(obj.id)}
                     >
-                    <DeleteForeverOutlinedIcon /></button>
+                      <DeleteForeverOutlinedIcon /></button>
                   </th>
                 </tr>
               ))}

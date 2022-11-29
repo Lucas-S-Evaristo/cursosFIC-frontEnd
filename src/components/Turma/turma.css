@@ -61,7 +61,8 @@ header{
     width: 50%;
     display: flex;
     left: 15em;
-    top:1em;    
+    top:2em;    
+    margin-bottom: 200px;
 }
 
 .tabelaTurma{

@@ -10,6 +10,8 @@ import react, { useEffect, useState } from "react";
 
 import Instrutor from "./components/instrutor/PgPricipal";
 
+import LinhaDoTempo from "./components/LinhaDoTempo/LinhaDoTempo/PageLinhaTempo"
+
 import Teste from "./components/menu/MenuLateral";
 
 import Teste1 from "./components/instrutor/teste1";
@@ -220,6 +222,7 @@ function Rotas() {
         <Route path="listaCurso" element={<ListaCursos/>}/>
         <Route path="folders" element={<Folder/>}/>
         <Route path="/home" element={<Home/>}/>
+        <Route path="/linhaTempo" element={<LinhaDoTempo/>}/>
       </Routes>
     );
   
