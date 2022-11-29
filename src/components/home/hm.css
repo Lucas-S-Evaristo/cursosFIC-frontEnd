@@ -21,6 +21,13 @@ body{
     position: fixed;
     width: 100%;
 }
+@media (min-width: 600px){}   
+.css-1o5pq7n {
+   display: none;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
 .logoHome{
     float: left;
     margin: 1.5vh;
