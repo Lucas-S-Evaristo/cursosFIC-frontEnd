@@ -201,7 +201,7 @@ export default function LogInstrutor() {
                                                         logsEnum === "CADASTROU"
                                                             ?
                                                             <>
-                                                                <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
+                                                                <StyledTableCell>{nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
                                                                 <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                 <StyledTableCell>{data}</StyledTableCell>
                                                                 <StyledTableCell>{hora}</StyledTableCell>
@@ -222,7 +222,7 @@ export default function LogInstrutor() {
                                                             logsEnum === "ALTEROU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
@@ -241,7 +241,7 @@ export default function LogInstrutor() {
                                                             logsEnum === "DELETOU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
@@ -253,7 +253,7 @@ export default function LogInstrutor() {
                                                     </>
                                                     :
                                                         <>
-                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
+                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} um instrutor com o seguinte nome: {informacaoCadastro}</StyledTableCell>
                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                     <StyledTableCell>{data}</StyledTableCell>
                                                     <StyledTableCell>{hora}</StyledTableCell>

@@ -1008,13 +1008,13 @@ const buscaDate = async (event) => {
 
                       <StyledTableCell>
 
-                        <RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#9d0208" }}
-                     onClick={() => diminuirQtdMatricula(id)}/>
+                      <a href="#"><RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#9d0208" }}
+                     onClick={() => diminuirQtdMatricula(id)}/></a>
 
                      {qtdMatriculas} 
 
-                     <AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#2AFF00" }}
-                       onClick={() => addQtdMatricula(id)}/>
+                     <a href="#"><AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#2AFF00" }}
+                       onClick={() => addQtdMatricula(id)}></AddIcon></a>
                        
                        </StyledTableCell>
                       <StyledTableCell>{periodoString}</StyledTableCell>

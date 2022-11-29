@@ -204,55 +204,12 @@
 
 
 .redefinirSenha{
-    background-image: linear-gradient(to right, black, black, #001d3d);
-}
-
-.tituloRedefinir{
-    color: white;
-    text-align: center;
+    background-color: white;
     
 }
 
-.tituloRedefinir2{
-    position: absolute;
-    top: 6em;
-    left: 7.5em;
-    color: white;
-    text-align: center;
-    
-}
 
-.inputRedefinir{
-    margin: auto;
-    position: absolute;
-    left: 9em;
-    top: 4em;
-    background-color: transparent;
-    color: white;
-    border:0px;
-    border-bottom: 0.1em solid white;
-    outline: 0px;
 
-}
-
-.inputRedefinir2{
-    margin: auto;
-    position: absolute;
-    left: 9em;
-    margin-top: 7em;
-    background-color: transparent;
-    color: white;
-    border:0px;
-    border-bottom: 0.1em solid white;
-    outline: 0px;
-
-}
-
-.inputRedefinir:focus{
-    box-shadow: 0 0 0 0;
-    outline: 0;
-
-}
 
 .inputRedefinir2:focus{
     box-shadow: 0 0 0 0;
@@ -262,10 +219,20 @@
 
 .parteBotaoRedefinirSenha{
     display: flex;
-    position: relative;
-    right: 2em;
-    margin-top: 11em;
-    left: 10em;
-}
 
+   
+}
+.btnRedefinir{
+    background-color: #062d4c !important;
+    margin-top: 1vh !important;
+    
+}
+.btnRedefinir:hover{
+    border: none !important;
+    background-color: #011627 !important;
+}
+.divForm{
+    text-align: center;
+    
+}
 

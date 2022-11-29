@@ -232,7 +232,7 @@ export default function LogTurma() {
                                                         logsEnum === "CADASTROU"
                                                             ?
                                                             <>
-                                                                <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
+                                                                <StyledTableCell>{nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
                                                                 <StyledTableCell>{codigoTurma}</StyledTableCell>
                                                                 <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                 <StyledTableCell>{data}</StyledTableCell>
@@ -254,7 +254,7 @@ export default function LogTurma() {
                                                             logsEnum === "ALTEROU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
                                                                     <StyledTableCell>{codigoTurma}</StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{justificativa}</StyledTableCell>
@@ -275,7 +275,7 @@ export default function LogTurma() {
                                                                 logsEnum === "DELETOU"
                                                                     ?
                                                                     <>
-                                                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
+                                                                        <StyledTableCell>{nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
                                                                         <StyledTableCell>{codigoTurma}</StyledTableCell>
                                                                         <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                         <StyledTableCell>{justificativa}</StyledTableCell>
@@ -289,7 +289,7 @@ export default function LogTurma() {
                                                         </>
                                                         :
                                                         <>
-                                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
+                                                            <StyledTableCell>{nomeUsuario} {logsEnumString} uma turma</StyledTableCell>
                                                             <StyledTableCell>{codigoTurma}</StyledTableCell>
                                                             <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                             <StyledTableCell>{data}</StyledTableCell>

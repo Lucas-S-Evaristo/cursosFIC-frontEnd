@@ -230,7 +230,7 @@ export default function LogCurso() {
                                                         logsEnum === "CADASTROU"
                                                             ?
                                                             <>
-                                                                <StyledTableCell>O usuário {nomeUsuario} cadastrou um curso chamado {informacaoCadastro} </StyledTableCell>
+                                                                <StyledTableCell>{nomeUsuario} cadastrou um curso chamado {informacaoCadastro} </StyledTableCell>
                                                                 <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                 <StyledTableCell>{data}</StyledTableCell>
                                                                 <StyledTableCell>{hora}</StyledTableCell>
@@ -251,7 +251,7 @@ export default function LogCurso() {
                                                             logsEnum === "ALTEROU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} alterou um curso chamado {informacaoCadastro} </StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} alterou um curso chamado {informacaoCadastro} </StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{justificativa}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
@@ -271,7 +271,7 @@ export default function LogCurso() {
                                                                 logsEnum === "DELETOU"
                                                                     ?
                                                                     <>
-                                                                        <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                        <StyledTableCell>{nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
                                                                         <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                         <StyledTableCell>{justificativa}</StyledTableCell>
                                                                         <StyledTableCell>{data}</StyledTableCell>
@@ -284,7 +284,7 @@ export default function LogCurso() {
                                                         </>
                                                         :
                                                         <>
-                                                            <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} um curso chamado {informacaoCadastro} </StyledTableCell>
+                                                            <StyledTableCell>{nomeUsuario} {logsEnumString} um curso chamado {informacaoCadastro} </StyledTableCell>
                                                             <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                             <StyledTableCell>{data}</StyledTableCell>
                                                             <StyledTableCell>{hora}</StyledTableCell>

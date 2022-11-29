@@ -201,7 +201,7 @@ export default function LogHorario() {
                                                         logsEnum === "CADASTROU"
                                                             ?
                                                             <>
-                                                                <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro}</StyledTableCell>
+                                                                <StyledTableCell>{nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro}</StyledTableCell>
                                                                 <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                 <StyledTableCell>{data}</StyledTableCell>
                                                                 <StyledTableCell>{hora}</StyledTableCell>
@@ -222,7 +222,7 @@ export default function LogHorario() {
                                                             logsEnum === "ALTEROU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro}</StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro}</StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
@@ -241,7 +241,7 @@ export default function LogHorario() {
                                                             logsEnum === "DELETOU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro} </StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro} </StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
@@ -253,7 +253,7 @@ export default function LogHorario() {
                                                     </>
                                                     :
                                                         <>
-                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro}</StyledTableCell>
+                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} o seguinte horário: {informacaoCadastro}</StyledTableCell>
                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                     <StyledTableCell>{data}</StyledTableCell>
                                                     <StyledTableCell>{hora}</StyledTableCell>

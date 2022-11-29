@@ -205,7 +205,7 @@ export default function LogArea() {
                                                         logsEnum === "CADASTROU"
                                                             ?
                                                             <>
-                                                                <StyledTableCell>O usuário {nomeUsuario} cadastrou uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                <StyledTableCell>{nomeUsuario} cadastrou uma área chamada {informacaoCadastro} </StyledTableCell>
                                                                 <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                 <StyledTableCell>{data}</StyledTableCell>
                                                                 <StyledTableCell>{hora}</StyledTableCell>
@@ -226,7 +226,7 @@ export default function LogArea() {
                                                             logsEnum === "ALTEROU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} alterou uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} alterou uma área chamada {informacaoCadastro} </StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
@@ -245,7 +245,7 @@ export default function LogArea() {
                                                             logsEnum === "DELETOU"
                                                                 ?
                                                                 <>
-                                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
                                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                                     <StyledTableCell>{data}</StyledTableCell>
                                                                     <StyledTableCell>{hora}</StyledTableCell>
@@ -257,7 +257,7 @@ export default function LogArea() {
                                                     </>
                                                     :
                                                         <>
-                                                    <StyledTableCell>O usuário {nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
+                                                    <StyledTableCell>{nomeUsuario} {logsEnumString} uma área chamada {informacaoCadastro} </StyledTableCell>
                                                     <StyledTableCell>{nifUsuario}</StyledTableCell>
                                                     <StyledTableCell>{data}</StyledTableCell>
                                                     <StyledTableCell>{hora}</StyledTableCell>

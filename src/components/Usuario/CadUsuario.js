@@ -101,6 +101,8 @@ function PageUsuario() {
 
     const data = Object.fromEntries(formData);
 
+    if(data.nif.length >= 5 && data.nif.length <= 7){
+
     const usuario = {
       id: idUsuario,
       nome: data.nome,
@@ -129,7 +131,13 @@ function PageUsuario() {
       // exibe a msg de alteração concluida
       msgAlteracao();
     }
+  }else{
+
+    nifValidacao()
+
+  } 
   };
+  
 
   const [idUsuario, setIdUsuario] = useState([])
 
@@ -151,6 +159,8 @@ function PageUsuario() {
 
     const data = Object.fromEntries(formData);
 
+    if(data.nif.length >= 5 && data.nif.length <= 7){
+      
     const usuario = {
 
       nome: data.nome,
@@ -193,6 +203,11 @@ function PageUsuario() {
         });
       }
     });
+      }else{
+
+        nifValidacao()
+
+      }
   };
   // metodo que capta o usuario que foi selecionado
   const selecionarUsuario = (id, nome, nif, email, tipoUsuarioOrdinal) => {
@@ -290,6 +305,20 @@ function PageUsuario() {
   // registros duplicados
   const msgEmailDuplicados = () => {
     toast.error("Email ja esta associado a um usuario", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const nifValidacao = () => {
+    toast.error("Nif precisa ter de 5 a 7 caracteres!", {
       position: "top-right",
       autoClose: 2500,
       hideProgressBar: false,

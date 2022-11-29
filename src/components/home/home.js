@@ -60,6 +60,20 @@ function HomeG() {
     });
   };
 
+  const msgErro = () => {
+    toast.error("Não existe turma aberta!", {
+      position: "top-center",
+      autoClose: 7500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   useEffect(() => {
     fetch("http://localhost:8080/api/curso")
       .then((resp) => resp.json())
@@ -110,8 +124,18 @@ function HomeG() {
       .then((retorno_convertido) => setAdiada(retorno_convertido)); //lista de turmas
   }, []);
 
-  function gerarFolderTurma() {
-    window.location.href = "http://localhost:8080/api/folder/turma";
+  const gerarFolderTurma = async () =>  {
+  let result = await fetch("http://localhost:8080/api/folder/turma")
+   
+   if(result.status === 409){
+
+    msgErro()
+
+  }else{
+
+    window.location.href = "http://localhost:8080/api/folder/turma"
+    
+  }
   }
 
   function gerarFolderCurso() {
