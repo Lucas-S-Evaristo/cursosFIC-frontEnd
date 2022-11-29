@@ -858,6 +858,11 @@ const buscaDate = async (event) => {
     );
   };
 
+  
+  function gerarFolderTurma() {
+    window.location.href = "http://localhost:8080/api/folder/turma";
+  }
+
   return (
     <>
       <MenuLateral />
@@ -898,6 +903,16 @@ const buscaDate = async (event) => {
           >
             <AssignmentIcon />
             <i class="bi bi-plus-lg"></i>Tarefas
+          </Button>
+          <Button
+            className="divFolder"
+            onClick={gerarFolderTurma}
+          
+            variant="contained"
+            color="primary"
+          >
+            <AssignmentIcon />
+            <i class="bi bi-plus-lg"></i>folder de turma
           </Button>
         </div>
 
