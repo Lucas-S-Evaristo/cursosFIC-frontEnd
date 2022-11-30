@@ -1,10 +1,9 @@
 .divLogin{
     background-color: aqua;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    margin: -8px;
     position: fixed;
-    width: 200vh;
-    height: 100vh;
+    width: 2010vh;
+    height: 110vh !important;
     background-image: url(.//FundoLogin.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -12,6 +11,8 @@
 .logo{
     margin: 3vh;
     width: 15vh;
+    position: relative;
+    left: -34vh;
 }
 .formLogin{
     background-color: white;
@@ -162,43 +163,44 @@
 
 
 .aTurmas{
-    position: fixed;
+    position: relative;
     text-decoration: none;
-    width: 10%;
+    width: 13%;
     text-align: center;
-    border-bottom-left-radius: 100px;
+    border-bottom-left-radius: 100vh;
     margin:0%;
     text-transform: uppercase;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 20px;
-    padding: 5px;
-    left: 0em;
+    font-size: 1.5vh;
+    padding: 0.5vh;
+    border: none;
+    left: 0vh;
     color: rgb(255, 255, 255);
-    float: left;
+    float: right;
     background-color: red;
-    box-shadow: 0px 0px 0px 0px black;
+    box-shadow: 0vh 0vh 0vh 0vh black;
     transition:  background-color 10s;
     transition: color 10s;
     transition: right 3s;
-    transition: padding 1s;
+    transition: padding 0.65s;
     
 }
 
 .afolder:hover{
 
-    padding: 15px;
+    padding: 1.5vh;
     background-color: #062d4c;
     color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 30px 3px black;
+    box-shadow: 0vh 0vh 30vh vh black;
     
 }
 
 .aTurmas:hover{
 
-    padding: 15px;
+    padding: 1.5vh;
     background-color: #062d4c;
     color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 30px 3px black;
+    box-shadow: 0vh 0vh 30vh vh black;
     
 }
 

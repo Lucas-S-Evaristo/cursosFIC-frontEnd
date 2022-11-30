@@ -358,12 +358,12 @@ function Login() {
       />
       <header style={{ color: "white" }}>
         <img src={require("../login/LogoSenaiOriginal.png")} className="logo" />
-        <a href="folders" className="afolder">Folders</a>
+        
 
         <a href="/" className="aTurmas">Lista de Turmas</a>
       </header>
       <div className="divs">
-        <div className="div1">
+        <div className="div1" >
 
           <form className="formLogin" onSubmit={loginToken}>
             <h1 className="title">Login</h1>
@@ -396,7 +396,7 @@ function Login() {
               <a href="/redefinirSenha" className="aEscSennha">Esqueceu a senha?</a>
               <div className="divBtn">
                 <button className="btnEntrar" type="submit">
-                  <p className="pEntrar">Entrar</p>
+                  <p className="pEntrar" style={{position:"relative", top:'-0.4vh'}}>Entrar</p>
                 </button>
               </div>
             </div>
