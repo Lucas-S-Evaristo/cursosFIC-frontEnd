@@ -26,8 +26,33 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuLateral from "../menu/MenuLateral";
 import { width } from "@mui/system";
 import "./styles.css"
+import Folder from "./folder";
 
 
+const styles = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+const msgWarning = () => {
+  toast.warning("Selecione um curso existente", {
+    position: "top-center",
+    autoClose: 7500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    theme: "dark",
+    // faz com que seja possivel arrastar
+    draggable: true,
+    progress: undefined,
+  });
+};
 
 const msgDeletadoerror = () => {
   toast.warning(" Não e possível deletar Curso porque ele está associado a uma Turma ", {
@@ -487,6 +512,29 @@ function ListaCurso() {
       progress: undefined,
     });
   };
+
+  function gerarFolderCurso() {
+    let id = document.getElementById("selectFolderC").value;
+
+    console.log(id)
+
+    if(id === "selecione"){
+       
+       msgWarning();
+    }else{
+
+       window.location.href = "http://localhost:8080/api/folder/curso/" + id;
+    }
+    
+
+     
+
+    
+  }
+
+  const [openfol, setOpenFol] = React.useState(false);
+  const handleOpenFol = () => setOpenFol(true);
+  const handleCloseFol = () => setOpenFol(false);
   return (
     <>
       <MenuLateral />
@@ -512,7 +560,7 @@ function ListaCurso() {
             margin: 0,
             position: "fixed",
             top: 0,
-            left: "15%",
+            left: "25.7vh",
             width: "100%",
             height: "65px",
             backgroundColor: "rgb(0,0,0,0.0)",
@@ -553,9 +601,9 @@ function ListaCurso() {
               display: "flex",
               flexDirection: "row",
               // backgroundColor:"cyan",
-              width: 220,
+              width: 520,
               position: "absolute",
-              left: "38%",
+              left: "19.6vh",
               float: "left",
               top: 6,
               padding: 10,
@@ -566,7 +614,7 @@ function ListaCurso() {
               placeholder="Busque por um curso"
               onChange={buscaCurso}
               style={{
-                width: 195,
+                width: 250,
                 border: "none",
                 borderBottom: "1px solid black",
                 backgroundColor: "transparent",
@@ -575,13 +623,15 @@ function ListaCurso() {
             />
             <SearchIcon style={{ position: "absolute", top: 15, left: 7 }} />
           </section>
+          <Folder/>
+          
         </div>
         <TableContainer
           sx={{
             width: "85%",
             textAlign: "center",
             position: "fixed",
-            left: "31.7vh",
+            left: "27.8vh",
             //backgroundColor:"gray",
             boxShadow: 0,
           }}
@@ -1252,6 +1302,19 @@ function ListaCurso() {
           </div>
         </Modal.Body>
       </Modal>
+
+      
+      <Modal
+        open={openfol}
+        onClose={handleCloseFol}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styles}>
+          teste de mmodal
+        </Box>
+      </Modal>         
+
     </>
   );
 }
