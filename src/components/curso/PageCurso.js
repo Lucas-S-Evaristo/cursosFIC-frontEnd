@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableFooter from "@mui/material/TableFooter";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import Fab from "@mui/material/Fab";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -43,6 +43,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   // hide last border
   '&:last-child td, &:last-child th': {
       border: 0,
+  },
+}));
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
   },
 }));
 
@@ -99,7 +109,7 @@ function ListaCurso() {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
   // estado da modal
   const [openModal, setOpenModal] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const [modalAlt, setModalAlt] = useState(false);
   const [niveis, setNiveis] = useState([]);
@@ -656,7 +666,7 @@ function ListaCurso() {
         >
           <Table size="medium" style={{ width: "100%" }}>
             <TableHead sx={{ backgroundColor: "#000814", height: "80px" }}>
-              <StyledTableRow>
+              <TableRow>
                 <TableCell sx={{ color: "#fff" }} align="left">
                   Nome
                 </TableCell>
@@ -693,7 +703,7 @@ function ListaCurso() {
                 <TableCell sx={{ color: "#fff" }} align="left">
                   Excluir
                 </TableCell>
-              </StyledTableRow>
+              </TableRow>
             </TableHead>
             <TableBody style={{}}>
               {cursos
@@ -893,31 +903,23 @@ function ListaCurso() {
                 )}
             </TableBody>
           </Table>
-          <TableFooter>
-            <StyledTableRow>
-              <TablePagination
-                SelectProps={{
-                  inputProps: {
-                    "aria-label": "Linhas Por Páginas",
-                  },
-                  native: true,
-                }}
-                sx={{
-                  marginTop: "40px",
-                  alignItems: "center",
-                  textAlign: "center",
-                }}
-                rowsPerPageOptions={[3, 5, 10, 15]}
-                component="div"
-                colSpan={3}
-                count={cursos.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </StyledTableRow>
-          </TableFooter>
+          <TablePagination
+            sx={{
+              marginTop: "40px",
+
+              alignItems: "center",
+
+              textAlign: "center",
+            }}
+            rowsPerPageOptions={[3, 5, 10, 15]}
+            component="div"
+            count={cursos.length}
+            labelRowsPerPage='Linhas por páginas'
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Box>
 
@@ -1308,7 +1310,7 @@ function ListaCurso() {
                   style={btnClose2}
                   onClick={() => {
                     limparForm();
-                    fecharModalAlterar();
+                    fecharModalCadastrar();
                   }}
                 >
                   <CancelPresentationIcon sx={{ marginRight: "10px" }} />

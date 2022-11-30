@@ -129,17 +129,14 @@ export default function LogArea() {
 
             <MenuLateral />
 
-            <header>
+           
                 <div className="divBotaoAdd">
-                    <Button className="botaoAdd" variant="contained" color="primary" onClick={() => {
+                    <Button className="botaoAdd4" variant="contained" color="primary" onClick={() => {
                         window.location.href = 'http://localhost:3000/logs'
 
                     }}><ArrowBackIcon /></Button>
                 </div>
 
-
-
-            </header>
 
             <div className="botoesLogCondicional">
                 <Button type="button" onClick={() => {
@@ -294,6 +291,8 @@ export default function LogArea() {
                         count={logArea.length}
 
                         rowsPerPage={rowsPerPage}
+
+                        labelRowsPerPage='Linhas por páginas'
 
                         page={page}
 

@@ -29,7 +29,7 @@ const MenuProps = {
 const tema = createTheme({
   palette: {
     primary: {
-      main: "#DADADA"
+      main: "#ECECEC"
     }
   }
 })
@@ -352,13 +352,13 @@ const fecharModalAlterar = () => setShow(false);
       <MenuLateral />
       <header>
         <div className="divBotaoAdd">
-          <Button className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
+          <Button className="botaoAdd2" onClick={abrirModalCadastrar} variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
         </div>
 
         <form className="formBusca">
         <TextField
         id="input-with-icon-textfield"
-        label="TextField"
+        label="Buscar área"
         onChange={buscarArea}
         className="areaPesquisa"
         InputProps={{
@@ -464,6 +464,8 @@ const fecharModalAlterar = () => setShow(false);
             rowsPerPage={rowsPerPage}
 
             page={page}
+
+            labelRowsPerPage='Linhas por páginas'
 
             onPageChange={handleChangePage}
 

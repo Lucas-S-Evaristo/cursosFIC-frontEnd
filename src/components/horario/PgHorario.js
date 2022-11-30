@@ -521,6 +521,7 @@ const PgHorario = () => {
             count={horario.length}
             rowsPerPage={rowsPerPage}
             page={page}
+            labelRowsPerPage='Linhas por páginas'
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />

@@ -62,4 +62,12 @@ a{
     overflow-x: hidden;
 }
 
+.botaoAdd4{
+    display: flex;
+    position: absolute;
+    left: 2em;
+    top:2.5em;
+}
+
+
 

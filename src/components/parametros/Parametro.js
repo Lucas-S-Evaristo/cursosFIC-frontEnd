@@ -389,7 +389,7 @@ function ListaParametro() {
             <MenuLateral />
             <header>
                 <div className="divBotaoAdd">
-                    <Button style={parametro.length >= 1 ? { display: "none" } : {}} className="botaoAdd" onClick={abrirModalCadastrar} variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
+                    <Button style={parametro.length >= 1 ? { display: "none" } : {}} className="botaoAdd3" onClick={abrirModalCadastrar} variant="contained" color="primary"><AddOutlinedIcon />Novo</Button>
                 </div>
 
                 <form className="formBusca">
@@ -491,6 +491,8 @@ function ListaParametro() {
                         rowsPerPage={rowsPerPage}
 
                         page={page}
+
+                        labelRowsPerPage='Linhas por páginas'
 
                         onPageChange={handleChangePage}
 

@@ -653,6 +653,7 @@ p = JSON.parse(p);
             count={instrutor.length}
             rowsPerPage={rowsPerPage}
             page={page}
+            labelRowsPerPage='Linhas por páginas'
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />

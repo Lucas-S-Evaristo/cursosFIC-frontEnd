@@ -24,5 +24,13 @@
   
 }
 
+.botaoAdd2{
+    display: flex;
+    position: absolute;
+    left: 1em;
+    top:1em;
+    
+}
+
 
 

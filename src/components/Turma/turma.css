@@ -34,7 +34,7 @@
 .botaoAdd{
     display: flex;
     position: absolute;
-    left: 1em;
+    left: 16em;
     top:1em;
     
 }
@@ -62,12 +62,12 @@ header{
     position: absolute;
     width: 50%;
     display: flex;
-    left: 15em;
+    left: 30em;
     top:1em;    
 }
 
 .tabelaTurma{
-    width: 100%;
+   overflow-x: scroll;
 }
 
 .modalCad{

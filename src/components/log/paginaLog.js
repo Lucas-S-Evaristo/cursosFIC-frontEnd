@@ -9,7 +9,7 @@ export default function PaginaLog() {
 
 
         <div className="geralLog">
-            <MenuLateral />
+            <MenuLateral className= "novoMenu"/>
 
             <h1 className="tituloLog">Visualizar ações:</h1>
 

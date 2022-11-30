@@ -827,9 +827,7 @@ function CadTurma() {
   const [page, setPage] = React.useState(0);
 
   const handleChangePage = (event, newPage) => {
-    console.log("EVENTO" + event);
-
-    console.log("PAGINA" + newPage);
+   
 
     setPage(newPage);
   };
@@ -1224,6 +1222,7 @@ function CadTurma() {
             rowsPerPageOptions={[3, 5, 10, 15]}
             component="div"
             count={turmas.length}
+            labelRowsPerPage='Linhas por páginas'
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
