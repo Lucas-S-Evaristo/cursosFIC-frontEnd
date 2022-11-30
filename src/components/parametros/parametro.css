@@ -1,0 +1,24 @@
+.divParametro{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 50%;
+}
+
+.divParametro input{
+    padding-top: 1em;
+    text-align: center;
+    margin-top: 1em;
+}
+
+.arquivoParametro{
+    margin-top: 2em !important;
+    position: relative;
+    left: -4em;
+}
+
+#verImagem{
+    margin-top: 1em;
+    position: relative;
+    left: 3em;
+}
