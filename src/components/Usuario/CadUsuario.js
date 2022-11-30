@@ -30,7 +30,7 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { height } from "@mui/system";
-import { ListItem } from "@mui/material";
+import { createTheme, ListItem } from "@mui/material";
 import MenuLateral from "../menu/MenuLateral";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
@@ -43,6 +43,15 @@ const token = sessionStorage.getItem("token");
 let payload = sessionStorage.getItem("payload");
 
 payload = JSON.parse(payload);
+
+
+const tema = createTheme({
+  palette: {
+    primary: {
+      main: "#C2C2C2"
+    }
+  }
+})
 
 function PageUsuario() {
 

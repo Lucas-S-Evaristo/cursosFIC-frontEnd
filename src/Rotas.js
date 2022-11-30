@@ -48,6 +48,8 @@ import LogTurma from "./components/log/logTurma/LogTurma";
 import LogUsuario from "./components/log/logUsuario/LogUsuario";
 import ListaParametro from "./components/parametros/Parametro";
 
+import LinhaDoTempo from "./components/LinhaDoTempo/PageLinhaTempo"
+
 function Rotas() {
 
   useEffect(() => {
@@ -355,6 +357,7 @@ function Rotas() {
 
         <Route path="/redefinirSenha" element={<Senha />} />
         <Route path="/home" element={<HomeG/>}/>
+        <Route path="/linhaTempo" element={<LinhaDoTempo/>}/>
         <Route path="/listaInstrutores" element={
 
           <PrivadaRotasInstrutores>
