@@ -52,7 +52,7 @@ const MenuProps = {
 const tema = createTheme({
   palette: {
     primary: {
-      main: "#C2C2C2"
+      main: "#ECECEC"
     }
   }
 })

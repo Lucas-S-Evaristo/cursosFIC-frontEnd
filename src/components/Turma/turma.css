@@ -34,7 +34,7 @@
 .botaoAdd{
     display: flex;
     position: absolute;
-    left: 0.5em;
+    left: 1em;
     top:1em;
     
 }
@@ -347,4 +347,8 @@ header{
     height: 36px;
     float: left;
     transform: translate(-90%, -60%);
+}
+
+@media screen and (min-width:1200px){
+    
 }

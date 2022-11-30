@@ -28,6 +28,23 @@ import { width } from "@mui/system";
 import "./styles.css"
 import Folder from "./folder";
 
+const tema = createTheme({
+  palette: {
+    primary: {
+      main: "#DADADA"
+    }
+  }
+})
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+      backgroundColor: tema.palette.primary.main,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+      border: 0,
+  },
+}));
 
 const styles = {
   position: 'absolute',
@@ -639,7 +656,7 @@ function ListaCurso() {
         >
           <Table size="medium" style={{ width: "100%" }}>
             <TableHead sx={{ backgroundColor: "#000814", height: "80px" }}>
-              <TableRow>
+              <StyledTableRow>
                 <TableCell sx={{ color: "#fff" }} align="left">
                   Nome
                 </TableCell>
@@ -676,7 +693,7 @@ function ListaCurso() {
                 <TableCell sx={{ color: "#fff" }} align="left">
                   Excluir
                 </TableCell>
-              </TableRow>
+              </StyledTableRow>
             </TableHead>
             <TableBody style={{}}>
               {cursos
@@ -701,7 +718,7 @@ function ListaCurso() {
 
 
                   }) => (
-                    <TableRow
+                    <StyledTableRow
                       hover
                       sx={{
                         "&:last-child td, &:last-child th": {
@@ -871,13 +888,13 @@ function ListaCurso() {
                         </Modal>
 
                       </TableCell>
-                    </TableRow>
+                    </StyledTableRow>
                   )
                 )}
             </TableBody>
           </Table>
           <TableFooter>
-            <TableRow>
+            <StyledTableRow>
               <TablePagination
                 SelectProps={{
                   inputProps: {
@@ -899,7 +916,7 @@ function ListaCurso() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
-            </TableRow>
+            </StyledTableRow>
           </TableFooter>
         </TableContainer>
       </Box>

@@ -2,6 +2,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import "./linhaTempo.css";
+import { styled } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import TagFacesIcon from '@mui/icons-material/TagFaces';
+import DoneIcon from '@mui/icons-material/Done';
 
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import RadioButtonUncheckedTwoToneIcon from '@mui/icons-material/RadioButtonUncheckedTwoTone';
@@ -78,7 +83,7 @@ function LinhaTempo() {
                     </p>
                     {console.log(obj.status)}
                     {
-                      obj.status === true ? <p>Concluído</p> : <p>Não concluído</p>
+                      obj.status === true ?   <Chip sx={{position: "absolute", top: "9em", left: "4.5em"}}  label="Concluido" color="success"/> : <Chip sx={{position: "absolute", top: "9em", left: "4.5em"}} label="Não concluido" color="error"/>
                     }
                   </section>
                 </div>
