@@ -1,0 +1,101 @@
+.sec1{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin: auto;
+    margin-left: 18em;
+
+}
+
+.sec1 div{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+}
+
+.sec1 img{
+    width: 90%;
+    margin: auto;
+}
+
+.sec1 img:hover{
+    width: 90%;
+    margin: auto;
+    transition-timing-function:ease-out;
+	transition-duration:0.5s;
+	transform: translateY(-15px);
+}
+
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.tituloLog{
+    text-align: center;
+    padding-left: 7em;
+    color: white;
+    background-color: black;
+}
+
+.botoesLogCondicional{
+    position: relative;
+    left: 20em;
+  
+}
+
+.botoesLogCondicional button{
+    margin-left: 5em;
+    color: black;
+    font-weight: bold;
+}
+
+.botoesLogCondicional button:hover{
+    margin-left: 5em;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+.tirarOverflow{
+    overflow-x: hidden;
+}
+
+
+
+.divLogsCad{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 2em;
+    position: relative;
+    top: -3em;
+}
+
+.divLogsCad button{
+   background-color: black !important;
+   color: white;
+   border: 1em ridge #edf2f4;
+   width: 30%;
+   font-weight: bold;
+   border-radius: 2em;
+}
+
+.divLogsCad button:hover{
+    background-color: white !important;
+    color: black;
+    font-weight: bold;
+    border: 1em ridge #edf2f4;
+    width: 30%;
+    border-radius: 2em;
+ }
+
+ .botaoAdd4 :hover{
+    background-color: white !important;
+    color: black !important;
+    border: 0.3em ridge red !important;
+}
+
+
+

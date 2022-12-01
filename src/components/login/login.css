@@ -1,0 +1,240 @@
+.divLogin{
+    background-color: aqua;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    position: fixed;
+    width: 2010vh;
+    height: 110vh !important;
+    background-image: url(.//FundoLogin.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.logo{
+    margin: 3vh;
+    width: 15vh;
+    position: relative;
+    left: -34vh;
+}
+.formLogin{
+    background-color: white;
+    position: absolute;
+    left: 38%;
+    top: 50%;
+    width: 800px;
+    height: 600px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    box-shadow: 0px 0px 30px 3px black;
+
+
+}
+.div1{
+    background-color: aqua;
+}
+.inputLogin{
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid black;
+    font-size: 25px;
+    padding: 10px;
+    outline: none;
+}
+.divInput{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 25vh;
+    transform: translate(-50%, -40%);
+}
+
+.inputLogin::placeholder{
+    color: black;
+}
+.aEscSennha{
+    text-decoration: none;
+    width: 144.5px;
+    text-align: left;
+    padding: 5px;
+    margin:3vh;
+    margin-top: 0%;
+    margin-left:0px;
+    color: black;
+    
+}
+.aEscSennha:hover{
+    text-decoration: none;
+    text-align: left;
+    padding: 5px;
+    margin:3vh;
+    margin-top: 0%;
+    margin-left:0px;
+    color: rgb(248, 0, 0);
+}
+.title{
+    position: relative;
+    top: 3%;
+}
+.inNif{
+    margin-bottom: 6vh;
+}
+.btnEntrar{
+    background-color: rgb(255,0,0);
+    border: none;
+    width: 100%;
+    color: white;
+    height: 45px;
+    border-radius: 100px;
+    border: 4px solid white;
+    transition:  border 2s;
+    transition:  background-color 0.9s;
+    transition:  box-shadow  0.4s;
+
+}
+.btnEntrar:hover{
+    background-color: rgb(255, 0, 0);
+    border: 1px solid rgb(168, 99, 99);
+    box-shadow: 0px 0px 25px 1px rgb(255, 0, 0);
+
+}
+
+.divBtn{
+    background-color: rgb(255, 0, 0);
+    width: 50%;
+    border: 2px solid rgb(255, 0, 0) ;
+    border-radius: 100px;
+    transition:  border 0.5s;
+    transition:  background-color 0.9s;
+}
+.divBtn:hover{
+    background-color: rgb(255, 0, 0);
+    width: 50%;
+    border: 2px solid rgb(255, 0, 0) ;
+    border-radius: 100px;
+}
+.pEntrar{
+    margin: 10%;
+    padding: 0%;
+}
+.pEntrar:hover{
+    margin: 10%;
+    padding: 0%;
+
+}
+.div2{
+    background-color: #062d4c;
+    position: absolute;
+    margin-left: 72%;
+    top: 50%;
+    width: 560px;
+    height: 700px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    box-shadow: 0px 0px 30px 3px black;
+}
+.imgDiv2{
+        position: relative;
+    top:50%;
+    transform: translate(0%,-50%);
+}
+.afolder{
+    position: relative;
+    text-decoration: none;
+    width: 144.5px;
+    text-align: center;
+    border-bottom-left-radius: 100px;
+    margin:0%;
+    text-transform: uppercase;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 20px;
+    padding: 5px;
+    color: rgb(255, 255, 255);
+    float: right;
+    background-color: red;
+    box-shadow: 0px 0px 0px 0px black;
+    transition:  background-color 10s;
+    transition: color 10s;
+    transition: right 3s;
+    transition: padding 1s;
+    
+}
+
+
+.aTurmas{
+    position: relative;
+    text-decoration: none;
+    width: 13%;
+    text-align: center;
+    border-bottom-left-radius: 100vh;
+    margin:0%;
+    text-transform: uppercase;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5vh;
+    padding: 0.5vh;
+    border: none;
+    left: 0vh;
+    color: rgb(255, 255, 255);
+    float: right;
+    background-color: red;
+    box-shadow: 0vh 0vh 0vh 0vh black;
+    transition:  background-color 10s;
+    transition: color 10s;
+    transition: right 3s;
+    transition: padding 0.65s;
+    
+}
+
+.afolder:hover{
+
+    padding: 1.5vh;
+    background-color: #062d4c;
+    color: rgb(255, 255, 255);
+    box-shadow: 0vh 0vh 30vh vh black;
+    
+}
+
+.aTurmas:hover{
+
+    padding: 1.5vh;
+    background-color: #062d4c;
+    color: rgb(255, 255, 255);
+    box-shadow: 0vh 0vh 30vh vh black;
+    
+}
+
+
+.redefinirSenha{
+    background-color: white;
+    
+}
+
+
+
+
+.inputRedefinir2:focus{
+    box-shadow: 0 0 0 0;
+    outline: 0;
+
+}
+
+.parteBotaoRedefinirSenha{
+    display: flex;
+
+   
+}
+.btnRedefinir{
+    background-color: #062d4c !important;
+    margin-top: 1vh !important;
+    
+}
+.btnRedefinir:hover{
+    border: none !important;
+    background-color: #011627 !important;
+}
+.divForm{
+    text-align: center;
+    
+}
+

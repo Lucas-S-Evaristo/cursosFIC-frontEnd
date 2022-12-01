@@ -1,0 +1,137 @@
+
+
+.painelComponent {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction:column;
+  background-color: #212529;
+  height: 90em;
+  float: left;
+  overflow: hidden;
+ 
+
+}
+
+.painelComponent2 {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction:column;
+  background-color: #212529;
+  height: 100%;
+  float: left;
+  position: fixed;
+  overflow-y: scroll;
+
+}
+
+.linha {
+  position: absolute;
+  border-bottom: 0.1em solid white;
+  top: 3em;
+  left: 0em;
+  right: 0em;
+}
+
+.navegacao {
+  float: left;
+  width: 100%;
+  margin-right: 1em;
+  position: relative;
+  top: 0em;
+}
+
+.nav {
+
+  top: 3em;
+  left: 1em;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+a {
+
+  margin: auto;
+  margin-top: 1em;
+  text-decoration: none;
+  color: white;
+}
+
+.sair{
+
+  position: absolute !important;
+  top: 31em !important;
+}
+
+
+.sairP{
+  
+ 
+  bottom: 1.4em;
+  left: 2em;
+}
+
+.imagemLogo {
+  margin: 30px auto;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1em;
+  border-bottom: 0.1em solid white;
+}
+
+.linha {
+
+  padding: 10px;
+  width: 240px;
+  margin-top: 20px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #4361ee;
+}
+.link {
+  
+  bottom: 0.2em;
+  text-decoration: none;
+}
+
+.link:hover {
+
+  background-color: #ffff;
+  color: #fff;
+}
+
+.linha:hover {
+  display: flex;
+  flex-direction:column;
+  cursor: pointer;
+  background-color: #a2d2ff;
+}
+
+.i {
+ 
+  position: relative;
+  left: -10;
+}
+
+.navItem {
+
+  border-radius: 200px;
+  width: 220px;
+  text-decoration: none;
+}
+
+.navLink {
+  
+  background-color: #fff;
+  color: #fff !important;
+  text-decoration: none;
+  
+}
+
+.navLink:hover {
+  
+  background-color: #fff !important;
+  color: black !important;
+
+}
+

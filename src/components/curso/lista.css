@@ -1,0 +1,157 @@
+.lista{    
+    text-align: center;
+    
+}
+table{
+    margin-top: 10em;
+    position: relative;
+    left: -100%;
+}
+
+.titulo{
+    background-color: black;
+    color: white;
+
+}
+.inputNome{
+    border: 0px;
+    border-bottom: 0.1em solid black;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+}
+
+
+
+.textoExcluir{
+    color: red;
+    text-align: center;
+    
+}
+
+.bodyExcluir{
+    background-color: rgb(165, 165, 165);
+}
+
+.tituloExcluir{
+    color: white;
+}
+
+.conteudoFormulario{
+    display: block;
+    float: right;
+    width: 84%;
+
+}
+
+.buscar{
+    display: flex;
+    flex-direction: row;
+    padding-top: 1em;
+    width: 84%;
+
+}
+
+.inputBusca{
+    border: 0px;
+    border-bottom: 0.1em solid black;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+   
+     
+}
+
+.navegacao{
+    color: white;
+    position: relative;
+    top: 20em;
+    
+}
+
+.links{
+   padding: 1em;
+   background-color: #9d0208;
+   margin-top: 0.5em;
+}
+
+.iconePesq{
+    margin-right: 0.5em;
+
+}
+
+.divInputPesquisa{
+    display: flex;
+    flex-direction: row;
+}
+
+.addCadastro{
+    background-color: white;
+}
+
+.theadTabela{
+    background-color: #0077b6;
+    color: white;
+}
+
+
+
+.inputNomeCadastro{
+    border: 0px;
+    border-bottom: 0.1em solid black;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+    margin-top: 1.5em;
+}
+
+.inputSelect{
+    margin-top: 1.5em;
+    border: 0px;
+    border-bottom: 0.1em solid gray;
+}
+
+.conteudoCheckbox{
+    display: flex;
+    flex-direction: row;
+
+    
+}
+
+.divExcluir{
+    background-color: #dc3545;
+}
+
+.divAlterar{
+    background-color: #807554;
+    
+   
+}
+
+.botaoExcluir{
+    background-color: #dc3545;
+    
+}
+
+.botaoAlterar{
+    background-color: #fcfcfc;
+    margin-left: 1em;
+    
+}
+
+.buttonFormModal{
+    padding-left: 2em;
+}
+
+.divBotaoModal{
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.botoesModalAltCurso{
+    position: absolute;
+    top: 20em;
+    background-color: red;
+}
