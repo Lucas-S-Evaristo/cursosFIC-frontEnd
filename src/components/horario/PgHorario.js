@@ -381,19 +381,7 @@ const PgHorario = () => {
         </Modal>
 
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          sx={{
-            width: { sm: `calc(0% - ${drawerWidth}px)` },
-            ml: { sm: `${drawerWidth}px` },
-          }}
-        >
-          <Toolbar>
-            <IconButton>
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+        
         <Box
           component="nav"
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
