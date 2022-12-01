@@ -15,6 +15,7 @@ import InputLabel from "@mui/material/InputLabel";
 import { ConstructionOutlined, CurtainsOutlined } from "@mui/icons-material";
 import "./turma.css";
 import MenuLateral, { deslogar } from "../menu/MenuLateral";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -42,6 +43,7 @@ import { InputAdornment, Toolbar } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import FolderIcon from '@mui/icons-material/Folder';
 
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -65,9 +67,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
+    textAlign: "center"
+
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+
   },
 }));
 
@@ -841,7 +846,7 @@ function CadTurma() {
   const [page, setPage] = React.useState(0);
 
   const handleChangePage = (event, newPage) => {
-   
+
 
     setPage(newPage);
   };
@@ -918,7 +923,7 @@ function CadTurma() {
       <MenuLateral />
 
       <Box sx={{ display: "flex", marginLeft: "40px" }}>
-      <Box
+        <Box
           component="main"
           sx={{
             flexGrow: 1,
@@ -929,17 +934,18 @@ function CadTurma() {
           <Toolbar />
 
           <Button
-            style={token == null || p.tipo_usuario === "Secretária" || p === null ? { visibility: "hidden" } : { margin: 10, fontWeight: "bold",  borderRadius: "2em", backgroundColor: "black" }}
+            style={token == null || p.tipo_usuario === "Secretária" || p === null ? { visibility: "hidden" } : { margin: 10, fontWeight: "bold", borderRadius: "2em", backgroundColor: "black" }}
             variant="contained"
             size="large"
             onClick={abrirModalCadastrar}
-            className={classes.button,  "botaoTarefaTurma"}
+            className={classes.button, "botaoTarefaTurma"}
             startIcon={<AddSharpIcon />}
           >
             NOVO
           </Button>
 
           <TextField
+
             fullWidth
             onChange={buscaTurma}
             style={{ marginBottom: 25, width: "20em", marginLeft: "3em" }}
@@ -960,6 +966,11 @@ function CadTurma() {
           />
 
           <TextField
+            onInput={(e) => {
+
+              e.target.value = (e.target.value).toString().slice(0, 10)
+
+            }}
             fullWidth
             onChange={buscaDate}
             style={{ marginBottom: 25, width: "20em", marginLeft: "5em" }}
@@ -995,968 +1006,968 @@ function CadTurma() {
             variant="contained"
             size="large"
             onClick={gerarFolderTurma}
-            className={classes.button,  "botaoTarefaTurma"}
+            className={classes.button, "botaoTarefaTurma"}
             startIcon={<FolderIcon />}
           >
             Folder de turmas
           </Button>
 
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Código de turma</StyledTableCell>
-                <StyledTableCell>Curso</StyledTableCell>
-                <StyledTableCell>Instrutor</StyledTableCell>
-                <StyledTableCell>Quantidade de matricula</StyledTableCell>
-                <StyledTableCell>Período</StyledTableCell>
-                <StyledTableCell>Status</StyledTableCell>
-                <StyledTableCell>Ambiente</StyledTableCell>
-                <StyledTableCell>Nº Máximo de vagas</StyledTableCell>
-                <StyledTableCell>Nº Minimo de vagas</StyledTableCell>
-                <StyledTableCell>Dias da semana</StyledTableCell>
-                <StyledTableCell>Data de inicio</StyledTableCell>
-                <StyledTableCell>Data de Término</StyledTableCell>
-                <StyledTableCell>Horario de Inicio</StyledTableCell>
-                <StyledTableCell>Horario de término</StyledTableCell>
-                <StyledTableCell>A turma vai para o site?</StyledTableCell>
-                <StyledTableCell>Turma pode ser lançada</StyledTableCell>
-                <StyledTableCell id="alterar"
-                  style={token === null || p.tipo_usuario === "Secretária" || p === null
+          <TableContainer component={Paper}>
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Código de turma</StyledTableCell>
+                  <StyledTableCell>Curso</StyledTableCell>
+                  <StyledTableCell>Instrutor</StyledTableCell>
+                  <StyledTableCell>Quantidade de matricula</StyledTableCell>
+                  <StyledTableCell>Período</StyledTableCell>
+                  <StyledTableCell>Status</StyledTableCell>
+                  <StyledTableCell>Ambiente</StyledTableCell>
+                  <StyledTableCell>Nº Máximo de vagas</StyledTableCell>
+                  <StyledTableCell>Nº Minimo de vagas</StyledTableCell>
+                  <StyledTableCell>Dias da semana</StyledTableCell>
+                  <StyledTableCell>Data de inicio</StyledTableCell>
+                  <StyledTableCell>Data de Término</StyledTableCell>
+                  <StyledTableCell>Horario de Inicio</StyledTableCell>
+                  <StyledTableCell>Horario de término</StyledTableCell>
+                  <StyledTableCell>A turma vai para o site?</StyledTableCell>
+                  <StyledTableCell>Turma pode ser lançada</StyledTableCell>
+                  <StyledTableCell id="alterar"
+                    style={token === null || p.tipo_usuario === "Secretária" || p === null
+                      ?
+                      { display: "none" }
+                      :
+                      { visibility: "visible" }
+                    }
+
+                  >Alterar</StyledTableCell>
+                  <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
                     ?
                     { display: "none" }
                     :
                     { visibility: "visible" }
-                  }
+                  }>Excluir</StyledTableCell>
 
-                >Alterar</StyledTableCell>
-                <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
-                  ?
-                  { display: "none" }
-                  :
-                  { visibility: "visible" }
-                }>Excluir</StyledTableCell>
-
-                <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
-                  ?
-                  { display: "none" }
-                  :
-                  { visibility: "visible" }
-                }>LinhaTempo</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {turmas
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(
-                  ({
-                    id,
-                    codigo,
-                    curso,
-                    instrutor,
-                    qtdMatriculas,
-                    periodo,
-                    valor,
-                    status,
-                    ambiente,
-                    numMaxVagas,
-                    numMinVagas,
-                    diaSemana,
-                    dataInicio,
-                    simEnao,
-                    dataTermino,
-                    horarioInicio,
-                    horarioTermino,
-                    diasDaTurma,
-                    podeSerLancado,
-                    statusString,
-                    periodoString,
-                    simNaoString,
-                    statusOrdinal,
-                    periodoOrdinal,
-                    simNaoOrdinal
+                  <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
+                    ?
+                    { display: "none" }
+                    :
+                    { visibility: "visible" }
+                  }>LinhaTempo</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {turmas
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(
+                    ({
+                      id,
+                      codigo,
+                      curso,
+                      instrutor,
+                      qtdMatriculas,
+                      periodo,
+                      valor,
+                      status,
+                      ambiente,
+                      numMaxVagas,
+                      numMinVagas,
+                      diaSemana,
+                      dataInicio,
+                      simEnao,
+                      dataTermino,
+                      horarioInicio,
+                      horarioTermino,
+                      diasDaTurma,
+                      podeSerLancado,
+                      statusString,
+                      periodoString,
+                      simNaoString,
+                      statusOrdinal,
+                      periodoOrdinal,
+                      simNaoOrdinal
 
 
 
-                  }) => (
-                    <StyledTableRow>
-                      <StyledTableCell>{codigo}</StyledTableCell>
-                      <StyledTableCell>{curso.nome}</StyledTableCell>
-                      <StyledTableCell>{instrutor.nome}</StyledTableCell>
+                    }) => (
+                      <StyledTableRow>
+                        <StyledTableCell>{codigo}</StyledTableCell>
+                        <StyledTableCell>{curso.nome}</StyledTableCell>
+                        <StyledTableCell>{instrutor.nome}</StyledTableCell>
 
-                      <StyledTableCell>
+                        <StyledTableCell>
 
-                        <a href="#"><RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#9d0208" }}
-                          onClick={() => diminuirQtdMatricula(id)} /></a>
+                          <a href="#"><RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#9d0208" }}
+                            onClick={() => diminuirQtdMatricula(id)} /></a>
 
-                        {qtdMatriculas}
+                          {qtdMatriculas}
 
-                        <a href="#"><AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#2AFF00" }}
-                          onClick={() => addQtdMatricula(id)}></AddIcon></a>
+                          <a href="#"><AddIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#2AFF00" }}
+                            onClick={() => addQtdMatricula(id)}></AddIcon></a>
 
-                      </StyledTableCell>
-                      <StyledTableCell>{periodoString}</StyledTableCell>
-                      <StyledTableCell>{statusString}</StyledTableCell>
-                      <StyledTableCell>{ambiente.nome}</StyledTableCell>
-                      <StyledTableCell>{numMaxVagas}</StyledTableCell>
-                      <StyledTableCell>{numMinVagas}</StyledTableCell>
-                      <StyledTableCell>{diasDaTurma}</StyledTableCell>
-                      <StyledTableCell>{moment(dataInicio).format('DD/MM/YYYY')}</StyledTableCell>
-                      <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
-                      <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
-                      <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
-                      <StyledTableCell>{simNaoString}</StyledTableCell>
+                        </StyledTableCell>
+                        <StyledTableCell>{periodoString}</StyledTableCell>
+                        <StyledTableCell>{statusString}</StyledTableCell>
+                        <StyledTableCell>{ambiente.nome}</StyledTableCell>
+                        <StyledTableCell>{numMaxVagas}</StyledTableCell>
+                        <StyledTableCell>{numMinVagas}</StyledTableCell>
+                        <StyledTableCell>{diasDaTurma}</StyledTableCell>
+                        <StyledTableCell>{moment(dataInicio).format('DD/MM/YYYY')}</StyledTableCell>
+                        <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
+                        <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
+                        <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
+                        <StyledTableCell>{simNaoString}</StyledTableCell>
 
-                      <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "#2AFF00", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
+                        <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "#2AFF00", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
 
-                      <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
-                        ?
-                        { display: "none" }
-                        :
-                        { visibility: "visible" }
-                      }>
+                        <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
+                          ?
+                          { display: "none" }
+                          :
+                          { visibility: "visible" }
+                        }>
 
-                        <button
-                          className="botaoAlterarTurma"
-                          onClick={() => {
-                            selecionarTurma(
-                              id,
-                              codigo,
-                              curso,
-                              instrutor,
-                              qtdMatriculas,
-                              periodo,
-                              valor,
-                              status,
-                              ambiente,
-                              numMaxVagas,
-                              numMinVagas,
-                              diaSemana,
-                              dataInicio,
-                              simEnao,
-                              dataTermino,
-                              horarioInicio,
-                              horarioTermino,
-                              diasDaTurma,
-                              statusOrdinal,
-                              periodoOrdinal,
-                              simNaoOrdinal
-                            );
+                          <button
+                            className="botaoAlterarTurma"
+                            onClick={() => {
+                              selecionarTurma(
+                                id,
+                                codigo,
+                                curso,
+                                instrutor,
+                                qtdMatriculas,
+                                periodo,
+                                valor,
+                                status,
+                                ambiente,
+                                numMaxVagas,
+                                numMinVagas,
+                                diaSemana,
+                                dataInicio,
+                                simEnao,
+                                dataTermino,
+                                horarioInicio,
+                                horarioTermino,
+                                diasDaTurma,
+                                statusOrdinal,
+                                periodoOrdinal,
+                                simNaoOrdinal
+                              );
 
-                            abrirModalAlterar();
-                          }}
-                        >
-                          <ModeEditOutlinedIcon />
+                              abrirModalAlterar();
+                            }}
+                          >
+                            <ModeEditOutlinedIcon />
 
-                        </button>
-                      </StyledTableCell>
-                      <StyledTableCell style={token === null || p.tipo_usuario === "Secretária" || p === null
-                        ?
-                        { display: "none" }
-                        :
-                        { visibility: "visible" }
-                      }>
-                        <button
+                          </button>
+                        </StyledTableCell>
+                        <StyledTableCell style={token === null || p.tipo_usuario === "Secretária" || p === null
+                          ?
+                          { display: "none" }
+                          :
+                          { visibility: "visible" }
+                        }>
+                          <button
 
-                          className="botaoDeleteTurma"
-                          onClick={() => {
-                            abrirModalExcluir(id)
-
-
-                          }}>
-                          <DeleteForeverOutlinedIcon />
-                        </button>
-
-                        <Modal
-                          show={modalExcluir}
-                          onHide={fecharModalExcluir}
-                          backdrop="static"
-                          aria-labelledby="contained-modal-title-vcenter"
-                          centered>
+                            className="botaoDeleteTurma"
+                            onClick={() => {
+                              abrirModalExcluir(id)
 
 
-                          <Modal.Header closeButton className="bodyExcluir">
-                            <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
-                          </Modal.Header>
-                          <form>
-                            <Modal.Body>
-                              <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
+                            }}>
+                            <DeleteForeverOutlinedIcon />
+                          </button>
+
+                          <Modal
+                            show={modalExcluir}
+                            onHide={fecharModalExcluir}
+                            backdrop="static"
+                            aria-labelledby="contained-modal-title-vcenter"
+                            centered>
 
 
-                              <TextField
-                                id="outlined-multiline-static"
-                                value={descricaoLog}
-                                label="Justificativa:"
-                                hiddenLabel
-                                required
-                                className="textAreaExcluir"
-                                multiline
-                                rows={4}
-                                onChange={(e) => {
-                                  setDescricaoLog(e.target.value)
-                                }}
-
-                              />
-                            </Modal.Body>
+                            <Modal.Header closeButton className="bodyExcluir">
+                              <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                            </Modal.Header>
+                            <form>
+                              <Modal.Body>
+                                <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
 
 
-                            <Modal.Footer className="botaoModalExcluir">
-                              <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
-                                Não
-                              </Button>
-                              <Button variant="contained" color="success" onClick={() => {
-                                //excluir a turma pelo id
-                                deletar(idTurma)
+                                <TextField
+                                  id="outlined-multiline-static"
+                                  value={descricaoLog}
+                                  label="Justificativa:"
+                                  hiddenLabel
+                                  required
+                                  className="textAreaExcluir"
+                                  multiline
+                                  rows={4}
+                                  onChange={(e) => {
+                                    setDescricaoLog(e.target.value)
+                                  }}
 
-                              }}>
-                                Sim
-                              </Button>
-                            </Modal.Footer>
-                          </form>
+                                />
+                              </Modal.Body>
 
-                        </Modal>
 
-                      </StyledTableCell>
+                              <Modal.Footer className="botaoModalExcluir">
+                                <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                                  Não
+                                </Button>
+                                <Button variant="contained" color="success" onClick={() => {
+                                  //excluir a turma pelo id
+                                  deletar(idTurma)
 
-                      <StyledTableCell  style={token === null || p === null || p.tipo_usuario === "Secretária"
-                        ?
-                        { display: "none" }
-                        :
-                        { visibility: "visible" }
-                      }>
+                                }}>
+                                  Sim
+                                </Button>
+                              </Modal.Footer>
+                            </form>
 
-                        <button  onClick={() => {
-                          actionLinhaDoTempo(id)
+                          </Modal>
 
-                        }}>VER LINHA TEMPO</button>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  )
-                )}
-            </TableBody>
+                        </StyledTableCell>
 
-          </Table>
-          <TablePagination
-            sx={{
-              marginTop: "40px",
+                        <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
+                          ?
+                          { display: "none" }
+                          :
+                          { visibility: "visible" }
+                        }>
 
-              alignItems: "center",
+                          <Button className="btnLinha" onClick={() => {
+                            actionLinhaDoTempo(id)
 
-              textAlign: "center",
-            }}
-            rowsPerPageOptions={[3, 5, 10, 15]}
-            component="div"
-            count={turmas.length}
-            labelRowsPerPage='Linhas por páginas'
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+                          }}><RemoveRedEyeIcon/></Button>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )
+                  )}
+              </TableBody>
+
+            </Table>
+            <TablePagination
+              sx={{
+                marginTop: "40px",
+
+                alignItems: "center",
+
+                textAlign: "center",
+              }}
+              rowsPerPageOptions={[3, 5, 10, 15]}
+              component="div"
+              count={turmas.length}
+              labelRowsPerPage='Linhas por páginas'
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+
+          <ToastContainer
+            position="top-center"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
           />
-        </TableContainer>
-
-      <ToastContainer
-        position="top-center"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
 
 
-      <Modal
-        show={modalAlterar}
-        onHide={fecharModalAlterar}
-        size="xl"
-        aria-labelledby="example-custom-modal-styling-title"
-        scrollable={true}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Alterar</Modal.Title>
-        </Modal.Header>
+          <Modal
+            show={modalAlterar}
+            onHide={fecharModalAlterar}
+            size="xl"
+            aria-labelledby="example-custom-modal-styling-title"
+            scrollable={true}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Alterar</Modal.Title>
+            </Modal.Header>
 
-        <Modal.Body style={{ height: 610 }}>
-          <div>
-            <img
-              className="imagemModalAlt"
-              src={require("./imagemModal.png")}
-            ></img>
-          </div>
-          <div className="modalCad">
-            <form className="formModalCad" onSubmit={alterar}>
-              {/*  input de quantidade de mátriculas */}
-              {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
-
-              <div className="parte1">
-                <TextField
-                  value={qtdMatriculas}
-                  sx={styleTextField}
-                  className="textField"
-                  onChange={(e) => {
-                    setqtdMatriculas(e.target.value);
-                    capturarDados(e);
-                  }}
-                  name="qtdMatriculas"
-                  type="number"
-                  required
-                  label="qtd de Matriculas"
-                  variant="standard"
-                />
-
-                <TextField
-                  value={numMaxVagas}
-                  sx={styleTextField}
-                  className="textField"
-                  onChange={(e) => {
-                    setnumMaxVagas(e.target.value);
-                    capturarDados(e);
-                  }}
-                  name="numMaxVagas"
-                  type="number"
-                  required
-                  label="Máximo de vagas:"
-                  variant="standard"
-                />
-              </div>
-
-              <div className="parte2">
-
-                <TextField
-                  value={numMinVagas}
-                  sx={styleTextField}
-                  className="textField"
-                  onChange={(e) => {
-                    setnumMinVagas(e.target.value);
-                    capturarDados(e);
-                  }}
-                  name="numMinVagas"
-                  type="number"
-                  required
-                  label="Minimo de vagas"
-                  variant="standard"
-                />
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Ambiente
-                  </InputLabel>
-                  <Select // select de ambiente
-                    defaultValue={idAmbiente.id}
-                    name="ambiente"
-                    required
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-
-                  >
-                    {ambiente.map((obj, indice) => (
-                      <MenuItem value={obj.id} selected={obj.id == idAmbiente.id} key={indice}>
-                        {obj.nome}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="parte3">
-
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Cursos:
-                  </InputLabel>
-                  <Select // select de curso
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="curso"
-                    required
-                    defaultValue={idCurso.id}
-
-                  >
-                    {curso.map((obj) => (
-                      <MenuItem value={obj.id} selected={obj.id == idCurso.id}>{obj.nome}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-              </div>
-
-
-              <div className="select1">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Instrutor:
-                  </InputLabel>
-                  <Select // select de instrutores
-                    name="instrutor"
-                    required
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    defaultValue={idInstrutor.id}
-
-                  >
-                    {instrutor.map((obj, indice) => (
-                      <MenuItem value={obj.id} selected={obj.id == idInstrutor.id} key={indice}>  {obj.nome}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-              </div>
-
-              <div className="select2">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Periodo:
-                  </InputLabel>
-                  <Select //select de período
-                    defaultValue={periodoOrdinal}
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="periodo"
-                    required
-
-
-                  >
-                    {periodo.map((obj, indice) => (
-                      <MenuItem value={indice} key={indice}>
-                        {obj}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Horario Inicio:
-                  </InputLabel>
-                  <Select //select de período
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="horarioInicio"
-                    required
-                    defaultValue={horarioInicioValue.id}
-
-                  >
-                    {horarios.map((obj, indice) => (
-                      <MenuItem value={obj.id} selected={obj.id === horarioInicioValue.id} key={indice}>
-                        {obj.horario}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="select3">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Status:
-                  </InputLabel>
-                  <Select //select de status
-                    defaultValue={statusOrdinal}
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="status"
-                    required
-
-                  >
-                    {status.map((obj, indice) => (
-                      <MenuItem value={indice} key={indice}>
-                        {obj}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Horario Término:
-                  </InputLabel>
-                  <Select //select de período
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="horarioFinal"
-                    required
-                    defaultValue={horarioFinalValue.id}
-
-
-
-
-                  >
-                    {horarios.map((obj, indice) => (
-                      <MenuItem value={obj.id} selected={obj.id === horarioFinalValue.id} key={indice} >
-                        {obj.horario}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="select4Alt">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-
-                    A turma vai para o site?
-
-                  </InputLabel>
-
-                  <Select
-
-                    defaultValue={simNaoOrdinal}
-
-                    style={styleTextField}
-
-                    labelId="demo-simple-select-standard-label"
-
-                    id="demo-simple-select-standard"
-
-                    name="simEnao"
-
-
-                    required
-                  >
-                    {simEnao.map((obj, indice) => (
-
-                      <MenuItem value={indice} key={indice}>{obj}</MenuItem>
-
-                    ))}
-
-                  </Select>
-                </FormControl>
-
-              </div>
-
-              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
-                <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  name="diasDaTurma"
-                  multiple
-                  required
-                  defaultValue={diasDaTurma}
-                  onChange={handleChange2}
-                  input={<OutlinedInput label="Dias da Semana" />}
-                  renderValue={(selected) => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {DiasDaSemana.map((dias) => (
-                    <MenuItem key={dias} value={dias}>
-
-                      <Checkbox checked={diasDaTurma.indexOf(dias) > -1} />
-                      <ListItemText primary={dias} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
+            <Modal.Body style={{ height: 610 }}>
               <div>
-                <div className="horarioInicio" style={{ left: 30 }}>
-                  <TextField
-                    sx={estiloData}
-                    name="dataInicio"
-                    label="Data inicio"
-                    onChange={(e) => {
-                      setDataInicio(e.target.value);
-                      capturarDados(e);
-                    }}
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                    required
-                    variant="standard"
-                    value={dataInicioFormatada}
-                  />
-                </div>
-
-                <div className="horarioFinal" style={{ left: 285 }}>
-                  <TextField
-                    sx={estiloData}
-                    variant="standard"
-                    label="Data Terminio"
-                    name="dataTermino"
-                    required
-                    onChange={(e) => {
-                      setDataTermino(e.target.value);
-                      capturarDados(e);
-                    }}
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                    value={dataTerminoFormatada}
-                  />
-                </div>
-
-                <div className="justificativaAltTurma">
-                  <TextField
-                    id="justificativa"
-                    name="justificativa"
-                    label="justifique sua alteração"
-                    multiline
-                    rows={4}
-                  />
-                </div>
-
+                <img
+                  className="imagemModalAlt"
+                  src={require("./imagemModal.png")}
+                ></img>
               </div>
+              <div className="modalCad">
+                <form className="formModalCad" onSubmit={alterar}>
+                  {/*  input de quantidade de mátriculas */}
+                  {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
-              <div class="parteBotao" style={{ left: 330, top: 535 }}>
-                <Button
-                  variant="contained"
-                  color="success"
+                  <div className="parte1">
+                    <TextField
+                      value={qtdMatriculas}
+                      sx={styleTextField}
+                      className="textField"
+                      onChange={(e) => {
+                        setqtdMatriculas(e.target.value);
+                        capturarDados(e);
+                      }}
+                      name="qtdMatriculas"
+                      type="number"
+                      required
+                      label="qtd de Matriculas"
+                      variant="standard"
+                    />
 
-                  type="submit"
-                >
-                  Alterar
-                </Button>
+                    <TextField
+                      value={numMaxVagas}
+                      sx={styleTextField}
+                      className="textField"
+                      onChange={(e) => {
+                        setnumMaxVagas(e.target.value);
+                        capturarDados(e);
+                      }}
+                      name="numMaxVagas"
+                      type="number"
+                      required
+                      label="Máximo de vagas:"
+                      variant="standard"
+                    />
+                  </div>
+
+                  <div className="parte2">
+
+                    <TextField
+                      value={numMinVagas}
+                      sx={styleTextField}
+                      className="textField"
+                      onChange={(e) => {
+                        setnumMinVagas(e.target.value);
+                        capturarDados(e);
+                      }}
+                      name="numMinVagas"
+                      type="number"
+                      required
+                      label="Minimo de vagas"
+                      variant="standard"
+                    />
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Ambiente
+                      </InputLabel>
+                      <Select // select de ambiente
+                        defaultValue={idAmbiente.id}
+                        name="ambiente"
+                        required
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+
+                      >
+                        {ambiente.map((obj, indice) => (
+                          <MenuItem value={obj.id} selected={obj.id == idAmbiente.id} key={indice}>
+                            {obj.nome}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="parte3">
 
 
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Cursos:
+                      </InputLabel>
+                      <Select // select de curso
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="curso"
+                        required
+                        defaultValue={idCurso.id}
+
+                      >
+                        {curso.map((obj) => (
+                          <MenuItem value={obj.id} selected={obj.id == idCurso.id}>{obj.nome}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                  </div>
+
+
+                  <div className="select1">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Instrutor:
+                      </InputLabel>
+                      <Select // select de instrutores
+                        name="instrutor"
+                        required
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        defaultValue={idInstrutor.id}
+
+                      >
+                        {instrutor.map((obj, indice) => (
+                          <MenuItem value={obj.id} selected={obj.id == idInstrutor.id} key={indice}>  {obj.nome}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                  </div>
+
+                  <div className="select2">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Periodo:
+                      </InputLabel>
+                      <Select //select de período
+                        defaultValue={periodoOrdinal}
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="periodo"
+                        required
+
+
+                      >
+                        {periodo.map((obj, indice) => (
+                          <MenuItem value={indice} key={indice}>
+                            {obj}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Horario Inicio:
+                      </InputLabel>
+                      <Select //select de período
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="horarioInicio"
+                        required
+                        defaultValue={horarioInicioValue.id}
+
+                      >
+                        {horarios.map((obj, indice) => (
+                          <MenuItem value={obj.id} selected={obj.id === horarioInicioValue.id} key={indice}>
+                            {obj.horario}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="select3">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Status:
+                      </InputLabel>
+                      <Select //select de status
+                        defaultValue={statusOrdinal}
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="status"
+                        required
+
+                      >
+                        {status.map((obj, indice) => (
+                          <MenuItem value={indice} key={indice}>
+                            {obj}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Horario Término:
+                      </InputLabel>
+                      <Select //select de período
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="horarioFinal"
+                        required
+                        defaultValue={horarioFinalValue.id}
+
+
+
+
+                      >
+                        {horarios.map((obj, indice) => (
+                          <MenuItem value={obj.id} selected={obj.id === horarioFinalValue.id} key={indice} >
+                            {obj.horario}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="select4Alt">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+
+                        A turma vai para o site?
+
+                      </InputLabel>
+
+                      <Select
+
+                        defaultValue={simNaoOrdinal}
+
+                        style={styleTextField}
+
+                        labelId="demo-simple-select-standard-label"
+
+                        id="demo-simple-select-standard"
+
+                        name="simEnao"
+
+
+                        required
+                      >
+                        {simEnao.map((obj, indice) => (
+
+                          <MenuItem value={indice} key={indice}>{obj}</MenuItem>
+
+                        ))}
+
+                      </Select>
+                    </FormControl>
+
+                  </div>
+
+                  <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
+                    <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
+                    <Select
+                      labelId="demo-multiple-checkbox-label"
+                      id="demo-multiple-checkbox"
+                      name="diasDaTurma"
+                      multiple
+                      required
+                      defaultValue={diasDaTurma}
+                      onChange={handleChange2}
+                      input={<OutlinedInput label="Dias da Semana" />}
+                      renderValue={(selected) => selected.join(",")}
+                      MenuProps={MenuProps}
+                    >
+                      {DiasDaSemana.map((dias) => (
+                        <MenuItem key={dias} value={dias}>
+
+                          <Checkbox checked={diasDaTurma.indexOf(dias) > -1} />
+                          <ListItemText primary={dias} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  <div>
+                    <div className="horarioInicio" style={{ left: 30 }}>
+                      <TextField
+                        sx={estiloData}
+                        name="dataInicio"
+                        label="Data inicio"
+                        onChange={(e) => {
+                          setDataInicio(e.target.value);
+                          capturarDados(e);
+                        }}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        type="date"
+                        required
+                        variant="standard"
+                        value={dataInicioFormatada}
+                      />
+                    </div>
+
+                    <div className="horarioFinal" style={{ left: 285 }}>
+                      <TextField
+                        sx={estiloData}
+                        variant="standard"
+                        label="Data Terminio"
+                        name="dataTermino"
+                        required
+                        onChange={(e) => {
+                          setDataTermino(e.target.value);
+                          capturarDados(e);
+                        }}
+                        InputLabelProps={{ shrink: true, required: true }}
+                        type="date"
+                        value={dataTerminoFormatada}
+                      />
+                    </div>
+
+                    <div className="justificativaAltTurma">
+                      <TextField
+                        id="justificativa"
+                        name="justificativa"
+                        label="justifique sua alteração"
+                        multiline
+                        rows={4}
+                      />
+                    </div>
+
+                  </div>
+
+                  <div class="parteBotao" style={{ left: 330, top: 535 }}>
+                    <Button
+                      variant="contained"
+                      color="success"
+
+                      type="submit"
+                    >
+                      Alterar
+                    </Button>
+
+
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-        </Modal.Body>
-      </Modal>
+            </Modal.Body>
+          </Modal>
 
-      <Modal
-        show={modalCadastrar}
-        onHide={fecharModalCadastrar}
-        size="xl"
-        aria-labelledby="example-custom-modal-styling-title"
-        scrollable={true}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Cadastrar</Modal.Title>
-        </Modal.Header>
+          <Modal
+            show={modalCadastrar}
+            onHide={fecharModalCadastrar}
+            size="xl"
+            aria-labelledby="example-custom-modal-styling-title"
+            scrollable={true}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Cadastrar</Modal.Title>
+            </Modal.Header>
 
-        <Modal.Body style={{ height: 610 }}>
-          <div>
-            <img
-              className="imagemModal"
-              src={require("../../imagens/cadTurma.png")}
-            ></img>
-          </div>
-          <div className="modalCad">
-            <form className="formModalCad" onSubmit={cadastrar}>
-              {/*  input de quantidade de mátriculas */}
-              {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
-
-              <div className="parte1">
-
-                <TextField
-
-                  sx={styleTextField}
-                  className="textField"
-                  required="required"
-                  name="numMinVagas"
-                  type="number"
-                  label="Minimo de vagas"
-                  variant="standard"
-                />
-              </div>
-
-              <div className="parte2">
-
-
-                <TextField
-
-                  sx={styleTextField}
-                  className="textField"
-                  required="required"
-                  name="numMaxVagas"
-                  type="number"
-                  label="Máximo de vagas:"
-                  variant="standard"
-                />
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "3.3em" }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Ambiente
-                  </InputLabel>
-                  <Select // select de ambiente
-                    value={idAmbiente}
-                    name="ambiente"
-                    required
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    onChange={(e) => {
-                      setidAmbiente(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {ambiente.map((obj, indice) => (
-                      <MenuItem value={obj.id} key={indice}>
-                        {obj.nome}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="parte3Cad">
-
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Cursos:
-                  </InputLabel>
-                  <Select // select de curso
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="curso"
-                    required
-                    value={idCurso}
-                    onChange={(e) => {
-                      setidCurso(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {curso.map((obj) => (
-                      <MenuItem value={obj.id}>{obj.nome}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-              </div>
-
-
-              <div className="select1">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "-1em" }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Instrutor:
-                  </InputLabel>
-                  <Select // select de instrutores
-                    name="instrutor"
-                    required
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    value={idInstrutor}
-                    onChange={(e) => {
-                      setidInstrutor(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {instrutor.map((obj, indice) => (
-                      <MenuItem value={obj.id}>{obj.nome}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="select2Cad">
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Periodo:
-                  </InputLabel>
-                  <Select //select de período
-                    defaultValue={objTurma.periodo}
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="periodo"
-                    required
-                    value={ValuePeriodo}
-                    onChange={(e) => {
-                      setvaluePeriodo(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {periodo.map((obj, indice) => (
-                      <MenuItem value={indice} key={indice}>
-                        {obj}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Horario Inicio:
-                  </InputLabel>
-                  <Select //select de período
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="horarioInicio"
-                    required
-                    value={horarioInicioValue}
-                    onChange={(e) => {
-                      setHorarioInicioValue(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {horarios.map((obj, indice) => (
-                      <MenuItem value={obj.id} key={indice}>
-                        {obj.horario}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="select3">
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "-1.8em" }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Horario Término:
-                  </InputLabel>
-                  <Select //select de período
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="horarioFinal"
-                    required
-                    value={horarioFinalValue}
-                    onChange={(e) => {
-                      setHorarioFinalValue(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {horarios.map((obj, indice) => (
-                      <MenuItem value={obj.id} key={indice}>
-                        {obj.horario}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="select4">
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-
-                  <InputLabel id="demo-simple-select-standard-label">
-
-                    A turma vai para o site?
-
-                  </InputLabel>
-
-                  <Select //select de turmas
-
-                    value={valuesimEnao}
-
-                    labelId="demo-simple-select-standard-label"
-
-                    id="demo-simple-select-standard"
-
-                    name="simEnao"
-
-                    required
-
-                    onChange={(e) => {
-
-                      setvaluesimEnao(e.target.value);
-
-                      capturarDados(e);
-
-                    }}
-
-                  >
-
-                    {simEnao.map((obj, indice) => (
-
-                      <MenuItem value={indice} key={indice}>
-
-                        {obj}
-
-                      </MenuItem>
-
-                    ))}
-
-                  </Select>
-
-                </FormControl>
-
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", left: "15em" }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Status:
-                  </InputLabel>
-                  <Select //select de status
-                    value={ValueStatus}
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    name="status"
-                    required
-                    onChange={(e) => {
-                      setvalueStatus(e.target.value);
-                      capturarDados(e);
-                    }}
-                  >
-                    {status.map((obj, indice) => (
-                      <MenuItem value={indice} key={indice}>
-                        {obj}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-              </div>
-
-              <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
-                <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  name="diasDaTurma"
-                  multiple
-                  required="required"
-                  defaultValue={diasDaSemana}
-                  onChange={handleChange}
-                  input={<OutlinedInput label="Dias da Semana" />}
-                  renderValue={(selected) => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {DiasDaSemana.map((dias) => (
-                    <MenuItem key={dias} value={dias}>
-                      <Checkbox checked={diasDaSemana.indexOf(dias) > -1} />
-                      <ListItemText primary={dias} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
+            <Modal.Body style={{ height: 610 }}>
               <div>
-                <div className="horarioInicioCad" style={{ left: 30 }}>
-                  <TextField
-                    sx={estiloData}
-                    label="Data inicio"
-                    name="dataInicio"
-                    required="required"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-                    variant="standard"
-
-                  />
-                </div>
-
-                <div className="horarioFinalCad" style={{ left: 270 }}>
-                  <TextField
-                    sx={estiloData}
-                    variant="standard"
-                    name="dataTermino"
-                    label="Data Terminio"
-                    required="required"
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type="date"
-
-                  />
-                </div>
+                <img
+                  className="imagemModal"
+                  src={require("../../imagens/cadTurma.png")}
+                ></img>
               </div>
+              <div className="modalCad">
+                <form className="formModalCad" onSubmit={cadastrar}>
+                  {/*  input de quantidade de mátriculas */}
+                  {/*  <TextField defaultValue={objTurma.id} sx={styleTextField} className="textField" name="qtdMatriculas" variant="outlined" disabled={true} />*/}
 
-              <div class="parteBotao" style={{ left: 330, top: 535 }}>
-                <Button
-                  variant="contained"
-                  color="success"
+                  <div className="parte1">
 
-                  type="submit"
-                >
-                  cadastrar
-                </Button>
+                    <TextField
+
+                      sx={styleTextField}
+                      className="textField"
+                      required="required"
+                      name="numMinVagas"
+                      type="number"
+                      label="Minimo de vagas"
+                      variant="standard"
+                    />
+                  </div>
+
+                  <div className="parte2">
 
 
+                    <TextField
+
+                      sx={styleTextField}
+                      className="textField"
+                      required="required"
+                      name="numMaxVagas"
+                      type="number"
+                      label="Máximo de vagas:"
+                      variant="standard"
+                    />
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "3.3em" }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Ambiente
+                      </InputLabel>
+                      <Select // select de ambiente
+                        value={idAmbiente}
+                        name="ambiente"
+                        required
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        onChange={(e) => {
+                          setidAmbiente(e.target.value);
+                          capturarDados(e);
+                        }}
+                      >
+                        {ambiente.map((obj, indice) => (
+                          <MenuItem value={obj.id} key={indice}>
+                            {obj.nome}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="parte3Cad">
+
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Cursos:
+                      </InputLabel>
+                      <Select // select de curso
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="curso"
+                        required
+                        value={idCurso}
+                        onChange={(e) => {
+                          setidCurso(e.target.value);
+                          capturarDados(e);
+                        }}
+                      >
+                        {curso.map((obj) => (
+                          <MenuItem value={obj.id}>{obj.nome}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                  </div>
+
+
+                  <div className="select1">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "-1em" }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Instrutor:
+                      </InputLabel>
+                      <Select // select de instrutores
+                        name="instrutor"
+                        required
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={idInstrutor}
+                        onChange={(e) => {
+                          setidInstrutor(e.target.value);
+                          capturarDados(e);
+                        }}
+                      >
+                        {instrutor.map((obj, indice) => (
+                          <MenuItem value={obj.id}>{obj.nome}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="select2Cad">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Periodo:
+                      </InputLabel>
+                      <Select //select de período
+                        defaultValue={objTurma.periodo}
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="periodo"
+                        required
+                        value={ValuePeriodo}
+                        onChange={(e) => {
+                          setvaluePeriodo(e.target.value);
+                          capturarDados(e);
+                        }}
+                      >
+                        {periodo.map((obj, indice) => (
+                          <MenuItem value={indice} key={indice}>
+                            {obj}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Horario Inicio:
+                      </InputLabel>
+                      <Select //select de período
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="horarioInicio"
+                        required
+                        value={horarioInicioValue}
+                        onChange={(e) => {
+                          setHorarioInicioValue(e.target.value);
+                          capturarDados(e);
+                        }}
+                      >
+                        {horarios.map((obj, indice) => (
+                          <MenuItem value={obj.id} key={indice}>
+                            {obj.horario}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="select3">
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", top: "-1.8em" }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Horario Término:
+                      </InputLabel>
+                      <Select //select de período
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="horarioFinal"
+                        required
+                        value={horarioFinalValue}
+                        onChange={(e) => {
+                          setHorarioFinalValue(e.target.value);
+                          capturarDados(e);
+                        }}
+                      >
+                        {horarios.map((obj, indice) => (
+                          <MenuItem value={obj.id} key={indice}>
+                            {obj.horario}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="select4">
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+
+                      <InputLabel id="demo-simple-select-standard-label">
+
+                        A turma vai para o site?
+
+                      </InputLabel>
+
+                      <Select //select de turmas
+
+                        value={valuesimEnao}
+
+                        labelId="demo-simple-select-standard-label"
+
+                        id="demo-simple-select-standard"
+
+                        name="simEnao"
+
+                        required
+
+                        onChange={(e) => {
+
+                          setvaluesimEnao(e.target.value);
+
+                          capturarDados(e);
+
+                        }}
+
+                      >
+
+                        {simEnao.map((obj, indice) => (
+
+                          <MenuItem value={indice} key={indice}>
+
+                            {obj}
+
+                          </MenuItem>
+
+                        ))}
+
+                      </Select>
+
+                    </FormControl>
+
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", left: "15em" }}>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Status:
+                      </InputLabel>
+                      <Select //select de status
+                        value={ValueStatus}
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        name="status"
+                        required
+                        onChange={(e) => {
+                          setvalueStatus(e.target.value);
+                          capturarDados(e);
+                        }}
+                      >
+                        {status.map((obj, indice) => (
+                          <MenuItem value={indice} key={indice}>
+                            {obj}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                  </div>
+
+                  <FormControl sx={{ m: 1, width: 300, top: 500, left: -10 }} className="diaSemana">
+                    <InputLabel id="demo-multiple-checkbox-label">Dias da Semana</InputLabel>
+                    <Select
+                      labelId="demo-multiple-checkbox-label"
+                      id="demo-multiple-checkbox"
+                      name="diasDaTurma"
+                      multiple
+                      required="required"
+                      defaultValue={diasDaSemana}
+                      onChange={handleChange}
+                      input={<OutlinedInput label="Dias da Semana" />}
+                      renderValue={(selected) => selected.join(",")}
+                      MenuProps={MenuProps}
+                    >
+                      {DiasDaSemana.map((dias) => (
+                        <MenuItem key={dias} value={dias}>
+                          <Checkbox checked={diasDaSemana.indexOf(dias) > -1} />
+                          <ListItemText primary={dias} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  <div>
+                    <div className="horarioInicioCad" style={{ left: 30 }}>
+                      <TextField
+                        sx={estiloData}
+                        label="Data inicio"
+                        name="dataInicio"
+                        required="required"
+                        InputLabelProps={{ shrink: true, required: true }}
+                        type="date"
+                        variant="standard"
+
+                      />
+                    </div>
+
+                    <div className="horarioFinalCad" style={{ left: 270 }}>
+                      <TextField
+                        sx={estiloData}
+                        variant="standard"
+                        name="dataTermino"
+                        label="Data Terminio"
+                        required="required"
+                        InputLabelProps={{ shrink: true, required: true }}
+                        type="date"
+
+                      />
+                    </div>
+                  </div>
+
+                  <div class="parteBotao" style={{ left: 330, top: 535 }}>
+                    <Button
+                      variant="contained"
+                      color="success"
+
+                      type="submit"
+                    >
+                      cadastrar
+                    </Button>
+
+
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-        </Modal.Body>
-      </Modal>
-      </Box>
+            </Modal.Body>
+          </Modal>
+        </Box>
       </Box>
     </>
   );

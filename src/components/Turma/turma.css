@@ -355,3 +355,11 @@ header{
     border: 0.1em solid black;
 
 }
+.btnLinha{
+    background-color: black;
+    border: none;
+    border-radius: 0.5vh;
+    color: white;
+    padding: 1vh;
+    width: 15vh;
+}

@@ -28,7 +28,7 @@ import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import TablePagination from '@mui/material/TablePagination';
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuItem from '@mui/material/MenuItem';
 
 import ListItemText from '@mui/material/ListItemText';
@@ -38,7 +38,20 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import { yellow } from "@mui/material/colors";
 import { maxWidth } from "@mui/system";
+import { Toolbar } from "@mui/material";
+import { InputAdornment } from "@mui/material";
+import { makeStyles } from "@material-ui/core";
+
 const ITEM_HEIGHT = 48;
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        margin: theme.spacing(1),
+    },
+}));
+
+const drawerWidth = 240;
+
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
     PaperProps: {
@@ -73,22 +86,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function Tarefas() {
 
+    const classes = useStyles();
+
     //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
 
-      // variavel que tem acesso a um array com todas as turmas
+    // variavel que tem acesso a um array com todas as turmas
     const [turmas, setTurma] = useState([])
     const moment = require('moment')
-   // variavel que tem acesso a um array com o status
+    // variavel que tem acesso a um array com o status
     const [status, setStatus] = useState([])
     // variavel que tem acesso a um array com o status
     const [ValueStatus, setvalueStatus] = useState([])
-  
+
     const [idTurma, setidTurma] = useState([]);
 
     // estado do obj da turma
     const [objTurma, setObjTurma] = useState()
     // estado da modal
     const [open, setOpen] = useState(false)
+
+
     const [modalAlt, setModalAlt] = useState(false)
     // metodo que abre a modal
     const handleOpen = () => setOpen(true);
@@ -116,7 +133,7 @@ function Tarefas() {
             .then(resp => resp.json())
             .then(retorno_convertido => setStatus(retorno_convertido)) //lista de status
     }, [])
-   // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api  
+    // metodo que atualiza a lista, puxando todos a turma cadastrada da rest api  
     const atualizaLista = async () => {
         const result = await fetch("http://localhost:8080/api/turma")  // await = espera uma promessa
         const resultado = await result.json();
@@ -129,41 +146,41 @@ function Tarefas() {
     const buscarTarefa = async (event) => {
         // valor que esta sendo digitado no input de pesquisa
         let key = event.target.value;
-      
+
         // verifica se existe 'valor'
         if (key) {
-          // fazendo uma requisição na api de busca e passando a key
-          console.log("oiiiiiiiiiiiiii", key);
-          let result = await fetch(
-            `http://localhost:8080/api/turma/buscarDataTarefa/`,
-            {
-              method: "post",
-      
-              body: JSON.stringify(key),
-      
-              headers: {
-                "Content-type": "application/json",
-      
-                Accept: "application/json",
-              },
+            // fazendo uma requisição na api de busca e passando a key
+            console.log("oiiiiiiiiiiiiii", key);
+            let result = await fetch(
+                `http://localhost:8080/api/turma/buscarDataTarefa/`,
+                {
+                    method: "post",
+
+                    body: JSON.stringify(key),
+
+                    headers: {
+                        "Content-type": "application/json",
+
+                        Accept: "application/json",
+                    },
+                }
+            );
+            // tranformando a promessa em json
+            result = await result.json();
+
+            // verifica se existe algum resultado
+            if (result) {
+                // setando as turmas que a api retornou de sua resposta de busca
+                setTurma(result);
             }
-          );
-          // tranformando a promessa em json
-          result = await result.json();
-      
-          // verifica se existe algum resultado
-          if (result) {
-            // setando as turmas que a api retornou de sua resposta de busca
-            setTurma(result);
-          }
-      
-          // caso não exista chave, atualiza a lista
+
+            // caso não exista chave, atualiza a lista
         } else {
-          atualizaLista();
+            atualizaLista();
         }
-      };
-      
-      
+    };
+
+
 
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -191,136 +208,153 @@ function Tarefas() {
         <>
             <MenuLateral />
 
-            <header>
+            <Box sx={{ display: "flex", marginLeft: "40px" }}>
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        p: 3,
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    }}
+                >
 
-                <div className="divTarefas">
-                    <Button className="botaoVoltar" href="/" variant="contained" color="primary" ><ArrowBack />   <i class="bi bi-plus-lg"></i>Voltar</Button>
-                </div>
-                <form className="formBusca">
-                    <input
-                        //faz a busca
+                    <Toolbar />
+
+                    <Button
+                        style={{ margin: 10, fontWeight: "bold", backgroundColor: "black", borderRadius: "2em", float: "right" }}
+                        variant="contained"
+                        size="large"
+                        href="/"
+                        className={classes.button, "botaoTarefaTurma"}
+                        startIcon={<ArrowBackIcon />}
+                    >
+                        Voltar
+                    </Button>
+
+                    <TextField
+
+                        fullWidth
                         onChange={buscarTarefa}
-                        name="parametro"
-                        required="required"
-                        className="buscarInput"
+                        style={{ marginBottom: 25, width: "37em", marginLeft: "5em" }}
+                        label="buscar Cursos"
+                        id="fullWidth"
+                        min="2021-01-01" max="2050-12-31"
                         type="date"
-                    />
-                </form>
+                        name="parametro"
+                        onInput={(e) => {
 
-            </header>
-
-            <div className="conteudoTabela">
-                <TableContainer className="tabelaContainer">
-
-                    <Table sx={{ minWidth: 1500, backgroundColor: "transparent" }} aria-label="customized table" className="tabelaTurma">
-
-                        <TableHead className="theadTurma">
-                            {/*
-                            private Calendar dataLimInscricao;	
-                            private Calendar confirmarTurma;
-                            private Calendar retiradaSite;
-                            private Calendar cobrarEntregaDocum;
-                            private Calendar verificarPCDs;
-                            private Calendar gerarDiarioEletr;
-                            private Calendar montarKitTurma;
-                            private Calendar verifQuemFaltouPrimDia;
-                            private Calendar iniciarTurma;
-                            private Calendar matriculaDefinitiva;
-                            private Calendar encerrarTurma;
-                            private Calendar escanearDocum;
-                            private boolean simEnao;
-                            
-*/}
-                            <TableRow sx={{}} className="STC">
-                                <StyledTableCell sx={maxWidth}>Turma</StyledTableCell>
-                                <StyledTableCell>Data lim. para insc.</StyledTableCell>
-                                <StyledTableCell>Retirada do Site</StyledTableCell>
-                                <StyledTableCell>Cobrar Entrega do Documento</StyledTableCell>
-                                <StyledTableCell>Verificar PCDs</StyledTableCell>
-                                <StyledTableCell>Gerar Diario Eletronica</StyledTableCell>
-                                <StyledTableCell>Montar Kit de Turma</StyledTableCell>
-                                <StyledTableCell>iniciar Turma</StyledTableCell>
-                                <StyledTableCell>Matricula Definitiva</StyledTableCell>
-                                <StyledTableCell>Encerrar Turma</StyledTableCell>
-                                <StyledTableCell>Confirmar Turma</StyledTableCell>
-                                <StyledTableCell>Escanear Documento</StyledTableCell>
-                                <StyledTableCell>Verificar Quem Faltou no 1°dia</StyledTableCell>
-
-
-
-
-
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {turmas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                /*dataLimInscricao: "",
-                                confirmarTurma: "",
-                                retiradaSite: "",
-                                cobrarEntregaDocum: "",
-                                verificarPCDs: "",
-                                gerarDiarioEletr: "",
-                                montarKitTurma: "",
-                                verifQuemFaltouPrimDia: "",
-                                iniciarTurma: "",
-                                matriculaDefinitiva: "",
-                                encerrarTurma: "",
-                                escanearDocum: "",
-                                simEnao: false*/
-                                .map(({ codigo, dataLimInscricao, confirmarTurma, retiradaSite, cobrarEntregaDocum,
-                                    verificarPCDs, gerarDiarioEletr, montarKitTurma, verifQuemFaltouPrimDia, iniciarTurma, matriculaDefinitiva, encerrarTurma, escanearDocum }) => (
-                                    <StyledTableRow >
-
-                                        <StyledTableCell>{codigo}</StyledTableCell>
-                                        <StyledTableCell>{moment(escanearDocum).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(retiradaSite).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(cobrarEntregaDocum).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(verificarPCDs).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(gerarDiarioEletr).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(montarKitTurma).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(iniciarTurma).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(matriculaDefinitiva).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(encerrarTurma).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(confirmarTurma).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(escanearDocum).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell>{moment(verifQuemFaltouPrimDia).format('DD/MM/YYYY')}</StyledTableCell>
-                                        <StyledTableCell></StyledTableCell>
-
-
-                                    </StyledTableRow>
-                                ))
-                            }
-                        </TableBody>
-                    </Table>
-                    <TablePagination
-
-                        sx={{
-                            width: "1600px",
-                            marginTop: "40px",
-                            position: "fixed",
-                            alignItems: "center",
-
-                            textAlign: "center",
+                            e.target.value = (e.target.value).toString().slice(0, 10)
 
                         }}
+                        required="required"
+                        InputProps={{
+                            maxLength: 12,
+                            startAdornment: (
 
-                        rowsPerPageOptions={[3, 5, 10, 15]}
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
 
-                        component="div"
-
-                        count={turmas.length}
-
-                        rowsPerPage={rowsPerPage}
-
-                        page={page}
-
-                        onPageChange={handleChangePage}
-
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-
+                            inputMode: "email",
+                        }}
                     />
-                </TableContainer>
-            </div>
+
+                    <TableContainer component={Paper}>
+                        <Table aria-label="customized table">
+                            <TableHead>
+
+                                <TableRow>
+                                    <StyledTableCell sx={maxWidth}>Turma</StyledTableCell>
+                                    <StyledTableCell>Data lim. para insc.</StyledTableCell>
+                                    <StyledTableCell>Retirada do Site</StyledTableCell>
+                                    <StyledTableCell>Cobrar Entrega do Documento</StyledTableCell>
+                                    <StyledTableCell>Verificar PCDs</StyledTableCell>
+                                    <StyledTableCell>Gerar Diario Eletronica</StyledTableCell>
+                                    <StyledTableCell>Montar Kit de Turma</StyledTableCell>
+                                    <StyledTableCell>iniciar Turma</StyledTableCell>
+                                    <StyledTableCell>Matricula Definitiva</StyledTableCell>
+                                    <StyledTableCell>Encerrar Turma</StyledTableCell>
+                                    <StyledTableCell>Confirmar Turma</StyledTableCell>
+                                    <StyledTableCell>Escanear Documento</StyledTableCell>
+                                    <StyledTableCell>Verificar Quem Faltou no 1°dia</StyledTableCell>
+
+
+
+
+
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {turmas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    /*dataLimInscricao: "",
+                                    confirmarTurma: "",
+                                    retiradaSite: "",
+                                    cobrarEntregaDocum: "",
+                                    verificarPCDs: "",
+                                    gerarDiarioEletr: "",
+                                    montarKitTurma: "",
+                                    verifQuemFaltouPrimDia: "",
+                                    iniciarTurma: "",
+                                    matriculaDefinitiva: "",
+                                    encerrarTurma: "",
+                                    escanearDocum: "",
+                                    simEnao: false*/
+                                    .map(({ codigo, dataLimInscricao, confirmarTurma, retiradaSite, cobrarEntregaDocum,
+                                        verificarPCDs, gerarDiarioEletr, montarKitTurma, verifQuemFaltouPrimDia, iniciarTurma, matriculaDefinitiva, encerrarTurma, escanearDocum }) => (
+                                        <StyledTableRow >
+
+                                            <StyledTableCell>{codigo}</StyledTableCell>
+                                            <StyledTableCell>{moment(escanearDocum).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(retiradaSite).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(cobrarEntregaDocum).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(verificarPCDs).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(gerarDiarioEletr).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(montarKitTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(iniciarTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(matriculaDefinitiva).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(encerrarTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(confirmarTurma).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(escanearDocum).format('DD/MM/YYYY')}</StyledTableCell>
+                                            <StyledTableCell>{moment(verifQuemFaltouPrimDia).format('DD/MM/YYYY')}</StyledTableCell>
+
+
+
+                                        </StyledTableRow>
+                                    ))
+                                }
+                            </TableBody>
+                        </Table>
+                        <TablePagination
+
+                            sx={{
+                                width: "1600px",
+                                marginTop: "40px",
+                                position: "fixed",
+                                alignItems: "center",
+
+                                textAlign: "center",
+
+                            }}
+
+                            rowsPerPageOptions={[3, 5, 10, 15]}
+
+                            component="div"
+
+                            count={turmas.length}
+
+                            rowsPerPage={rowsPerPage}
+
+                            page={page}
+
+                            onPageChange={handleChangePage}
+
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+
+                        />
+                    </TableContainer>
+                </Box>
+            </Box>
 
 
         </>
