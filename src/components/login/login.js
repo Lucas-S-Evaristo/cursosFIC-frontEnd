@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from "react-toastify";
 import { Redirect } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
-import { Button, TextField } from "@mui/material";
+import { Button, Paper, TextField } from "@mui/material";
 import { AlterarSenha, redefinirSenha, verificarEmail } from "./redefinirSenha";
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -114,6 +114,8 @@ const msgMinimoSenha = () => {
 
 
 function Login() {
+
+  const [tokenUser, setTokenUser] = useState()
 
 
   const [values, setValues] = React.useState({
@@ -226,26 +228,25 @@ function Login() {
 
     } else if (result.status === 307) {
       result = await result.json();
-      console.log(result)
 
       setusuario(result)
       abrirModalSenha()
 
+
+    }else if(result.status === 308){
+
+      setOpen(true)
 
     } else if (result) {
       result = await result.json();
 
       const { token } = result;
 
-      console.log("EEEEEEEEEEEEEE")
-
-
-
       sessionStorage.setItem('token', JSON.stringify(token));
 
       if (token != null) {
 
-        function parseJwt(token) {
+         function parseJwt(token) {
 
           var base64Url = token.split(".")[1];
 
@@ -342,6 +343,149 @@ function Login() {
     }
   };
 
+  const msgEmailDuplicados = () => {
+    toast.error("Email ja esta associado a um usuario", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const nifValidacao = () => {
+    toast.error("Nif precisa ter de 5 a 7 caracteres!", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const msgNifDuplicados = () => {
+    toast.error("Nif ja esta associado a um usuario", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const msgCamposVazio = () => {
+    toast.error("Preencha os Campos Corretamente", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const msgCadastro = () => {
+    toast.success("Usuário Cadastrado com Sucesso", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const [tipoUsuario, setTipoUsuario] = useState([]);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/enum/tipoUsuario")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setTipoUsuario(retorno_convertido)); //lista de usuários
+  }, []);
+
+  const cadastrar = async (event) => {
+
+    event.preventDefault()
+    
+    const formData = new FormData(event.target)
+
+    const data = Object.fromEntries(formData);
+
+    if(data.nif.length >= 5 && data.nif.length <= 7){
+      
+    const usuario = {
+
+      nome: data.nome,
+      nif: data.nif,
+      tipoUsuario: data.tipoUsuario,
+      email: data.email,
+      senha: data.senha
+
+    };
+    
+   let result = fetch("http://localhost:8080/api/usuario", {
+      method: "post",
+      body: JSON.stringify(usuario),
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        Authorization: tokenUsuario,
+      },
+    }).then((retorno) => {
+      //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+      if (retorno.status === 500 || retorno.status === 400) {
+        msgCamposVazio();
+
+        // se existir um email existente
+      } else if (retorno.status === 409) {
+        document.getElementById("email").value = ""; // Limpa o campo
+
+        msgEmailDuplicados();
+      } else if (retorno.status === 510) {
+        document.getElementById("nif").value = ""; // Limpa o campo
+        msgNifDuplicados();
+      } else {
+        //faz o processo de cadastro
+        retorno.json().then((retorno_convertido) => {
+          //exibir notificação de sucesso
+          msgCadastro();  
+
+          setOpen(false)
+          
+          setInterval(function () { window.location.reload(); }, 1500);
+
+
+         
+        });
+      }
+    });
+      }else{
+
+        nifValidacao()
+
+      }
+  };
+
   return (
 
     <div className="divLogin">
@@ -356,6 +500,93 @@ function Login() {
         draggable
         pauseOnHover
       />
+
+<Modal
+        show={open}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+
+<ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+        
+        <Box sx={style}>
+          <form onSubmit={cadastrar}>
+            <div>
+              <h2 style={titleModal}>ADICIONAR USUÁRIO</h2>
+              <TextField
+                id="nome"
+                sx={styleTextField}
+                className="textField"
+                name="nome"
+                type="text"
+                label="NOME"
+                variant="outlined"
+              />
+              <InputLabel id="demo-simple-select-label">
+                Tipo Usuario
+              </InputLabel>
+              <select
+                id="tipoUsuario"
+                style={styleSelect}
+                name="tipoUsuario"
+                required
+                className="form-control"
+              >
+
+                {tipoUsuario.map((obj, indice) => (
+                  <option value={indice} key={indice}>{obj}</option>
+                ))}
+              </select>
+              <TextField
+                required
+                sx={styleTextField}
+                id="nif"
+                name="nif"
+                minlength="7"
+                maxlength="9"
+                type="text"
+                label="NIF"
+                variant="outlined"
+              ></TextField>
+              <TextField
+                autoComplete="email"
+                sx={styleTextField}
+                id="email"
+                name="email"
+                type="email"
+                label="EMAIL"
+                variant="outlined"
+              />
+            </div>
+            <Button
+              variant="contained"
+              style={{ color: "white", marginTop: 20 }}
+              color={"success"}
+              type="submit"
+            >
+              Cadastrar
+            </Button>
+
+          </form>
+          <Paper elevation={0}>
+            <img
+              style={imgStyle}
+              src={require('../../imagens/imgAltUsu.png')}
+            />
+          </Paper>
+        </Box>
+      </Modal>
+
       <header style={{ color: "white" }}>
         <img src={require("../login/LogoSenaiOriginal.png")} className="logo" />
         
@@ -495,5 +726,67 @@ function Login() {
     </div>
   )
 }
+
+const imgStyle = {
+  border: "none",
+  width: "400px",
+  height: "400px",
+  margin: "50px auto",
+  position: "center",
+};
+
+const styleTextField = {
+  display: "flex",
+  flexDirection: "row",
+  marginBottom: "30px",
+  width: "450px",
+};
+
+const styleSelect = {
+  width: "235px",
+  height: "40px",
+  marginBottom: "30px",
+};
+
+const titleModal = {
+  marginBottom: 30,
+};
+
+const btnClose = {
+  marginTop: "20px",
+  marginLeft: "20px",
+  borderRadius: "0.5vh",
+  color: "#ffff",
+  backgroundColor: "red",
+};
+
+const style = {
+  position: "absolute",
+  top: "20em",
+  display: "flex",
+  flexDirection: "row",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 900,
+  bgcolor: "background.paper",
+  borderRadius: "1vh",
+  boxShadow: 240,
+  p: 4,
+};
+
+const style2 = {
+  position: "absolute",
+  top: "50%",
+  display: "flex",
+  flexDirection: "row",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  height: 200,
+  borderRadius: "1vh",
+  boxShadow: 240,
+  p: 4,
+};
 
 export default Login; 

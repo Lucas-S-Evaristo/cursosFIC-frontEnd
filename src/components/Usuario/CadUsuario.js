@@ -35,7 +35,7 @@ import MenuLateral from "../menu/MenuLateral";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-
+import Load from "../load";
 import "../Usuario/usuario.css";
 
 const token = sessionStorage.getItem("token");
@@ -62,9 +62,23 @@ function PageUsuario() {
 
   const [modalConfirmar, setModalConfirmar] = useState(false);
 
+  const AbrirModalConfirmar = (id) => {
+    setModalConfirmar(true)
+    setIdUsuario(id)
+  }
+
   const fecharConfirmar = () => setModalConfirmar(false);
 
   const [modalExcluir, setModalExcluir] = useState(false);
+
+  const abrirModalExcluir = (id) => {
+    setModalExcluir(true)
+    setIdUsuario(id)
+
+  };
+  
+
+  const [removeLoad, setRemoveLoad] = useState(false)
 
   // estado do obj do ususario
   const [objUsuario, setObjUsuario] = useState();
@@ -89,9 +103,13 @@ function PageUsuario() {
 
   // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
   useEffect(() => {
+    setTimeout(() => {
     fetch("http://localhost:8080/api/usuario")
       .then((resp) => resp.json())
       .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
+      setRemoveLoad(true)
+    }, 2000)
+
   }, []);
 
   // REQUISIÇÃO GET PARA PUXAR TODOS OS TIPOS DE USUARIOS
@@ -442,7 +460,7 @@ function PageUsuario() {
                 name="tipoUsuario"
                 required
                 className="form-control"
-                onChange={capturarDados}
+                 onChange={capturarDados}
               >
 
                 {tipoUsuario.map((obj, indice) => (
@@ -487,7 +505,7 @@ function PageUsuario() {
               color="error"
               style={btnClose}
               onClick={() => {
-                limparForm();
+
                 handleClose();
               }}
             >
@@ -618,7 +636,7 @@ function PageUsuario() {
                   placeholder="Pesquise pelo nome do usuario"
                   InputProps={{
                     disableUnderline: true,
-                    sx: { fontSize: "default", width: "200px" },
+                    sx: { fontSize: "default", width: "1100px" },
                   }}
                   variant="standard"
                 />
@@ -679,9 +697,9 @@ function PageUsuario() {
                       className="botaoDeleteTurma"
                       onClick={() => {
                         if (payload.id_usuario === id) {
-                          setModalConfirmar(true);
+                          AbrirModalConfirmar(id)
                         } else {
-                          setModalExcluir(true);
+                          abrirModalExcluir(id)
                         }
                       }}
                     >
@@ -721,7 +739,7 @@ function PageUsuario() {
                             variant="contained"
                             color="success"
                             onClick={() => {
-                              deletar(id);
+                              deletar(idUsuario);
                               sessionStorage.removeItem("payload");
                               sessionStorage.removeItem("token");
                               window.location.href =
@@ -764,7 +782,7 @@ function PageUsuario() {
                               variant="contained"
                               color="success"
                               onClick={() => {
-                                deletar(id);
+                                deletar(idUsuario);
                                 setModalExcluir();
                               }}
                             >
@@ -777,6 +795,7 @@ function PageUsuario() {
                   </th>
                 </tr>
               ))}
+              {!removeLoad && <Load/>}
             </tbody>
           </table>
         </Typography>

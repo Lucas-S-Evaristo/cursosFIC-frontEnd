@@ -48,6 +48,7 @@ import LogUsuario from "./components/log/logUsuario/LogUsuario";
 import ListaParametro from "./components/parametros/Parametro";
 
 import LinhaDoTempo from "./components/LinhaDoTempo/PageLinhaTempo"
+import PaginaNaoEncontrada from "./PaginaNaoEncontrada";
 
 function Rotas() {
 
@@ -357,6 +358,7 @@ function Rotas() {
         <Route path="/redefinirSenha" element={<Senha />} />
         <Route path="/home" element={<HomeG/>}/>
         <Route path="/linhaTempo" element={<LinhaDoTempo/>}/>
+        <Route path="*" element={<PaginaNaoEncontrada/>}/>
         <Route path="/listaInstrutores" element={
 
           <PrivadaRotasInstrutores>

@@ -16,6 +16,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddSharpIcon from "@material-ui/icons/AddSharp";
 import SearchIcon from "@mui/icons-material/Search";
+import Load from "../load";
 import { makeStyles } from "@material-ui/core";
 
 const ITEM_HEIGHT = 48;
@@ -177,6 +178,8 @@ const msgNomesIguais = () => {
 
   const [nome, setNome] = useState([])
 
+  const [removeLoad, setRemoveLoad] = useState(false)
+
   const cadastrarArea = async (event) => {
 
     event.preventDefault()
@@ -266,15 +269,21 @@ const msgNomesIguais = () => {
 }
 
   const getArea = async () => {
+   
     let result = await fetch(`http://localhost:8080/api/area`)
+    
     result = await result.json();
+
     setArea(result)
 
   }
 
   useEffect(() => {
+    setTimeout(() => {
     getArea();
-
+    setRemoveLoad(true)
+  }, 2000)
+    
   }, []);
 
   const selecionarArea = (id, nome) => {
@@ -472,6 +481,7 @@ const fecharModalAlterar = () => setShow(false);
                 </StyledTableRow>
               ))
               }
+               {!removeLoad && <Load/>}
             </TableBody>
             
           </Table>

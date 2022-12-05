@@ -10,6 +10,7 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { makeStyles, Paper } from "@material-ui/core";
 import { Box, createTheme } from "@mui/system";
+import SearchIcon from "@mui/icons-material/Search";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -128,8 +129,50 @@ export default function LogInstrutor() {
         setDel(true)
     }
 
+    const atualizaLista = async () => {
+        const result = await fetch("http://localhost:8080/api/log/logInstrutor"); // await = espera uma promessa
+        const resultado = await result.json();
+        setLogInstrutor(resultado);
+      };
 
-    console.log("cad false: ", cad)
+    const buscaInstrutor = async (event) => {
+        // valor que esta sendo digitado no input de pesquisa
+        let key = event.target.value;
+    
+    
+        // verifica se existe 'valor'
+        if (key) {
+          // fazendo uma requisição na api de buscar e passando a key
+          let result = await fetch(
+            "http://localhost:8080/api/log/buscarInstrutor/", {
+    
+            method: "post",
+    
+            body: JSON.stringify(key),
+    
+            headers: {
+    
+              "Content-type": "application/json",
+    
+              Accept: "application/json",
+            }
+          }
+          );
+          // tranformando a promessa em json
+          result = await result.json();
+    
+    
+          // verifica se existe algum resultado
+          if (result) {
+            // setando os cursos que a api retornou de sua resposta de busca
+            setLogInstrutor(result);
+          }
+    
+          // caso não exista chave, atualiza a lista
+        } else {
+          atualizaLista();
+        }
+      };
 
     return (
 
@@ -199,6 +242,25 @@ export default function LogInstrutor() {
 
                             </div>
 
+                            <TextField
+            fullWidth
+            onChange={buscaInstrutor}
+            style={{ width: "37em", display: "flex", flexDirection: "row", margin: "2em auto" }}
+            label="Pesquise aqui;"
+            id="fullWidth"
+            type="curso"
+            name="parametro"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+
+              inputMode: "email",
+            }}
+          />
+
 
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -207,7 +269,7 @@ export default function LogInstrutor() {
                                 <TableRow>
 
                                     <StyledTableCell>Mensagem</StyledTableCell>
-                                    <StyledTableCell>Nif</StyledTableCell>
+                                    <StyledTableCell>Nif de quem fez a ação:</StyledTableCell>
                                     <StyledTableCell>Data</StyledTableCell>
                                     <StyledTableCell>Hora</StyledTableCell>
                                     <StyledTableCell>Excluir</StyledTableCell>

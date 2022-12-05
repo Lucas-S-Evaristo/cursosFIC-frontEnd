@@ -11,7 +11,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import Load from "../load";
 import Nav from "react-bootstrap/Nav";
 import CardMembershipOutlinedIcon from "@mui/icons-material/CardMembershipOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
@@ -208,6 +208,9 @@ function PgPricipal(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   /*  numero de pagina*/
   const [page, setPage] = React.useState(0);
+
+  const [removeLoad, setRemoveLoad] = useState(false)
+
   /* estilo de classes */
   const classes = useStyles();
   /* abrindo modal cadastro */
@@ -248,7 +251,11 @@ function PgPricipal(props) {
   };
  
   useEffect(() => {
+    setTimeout(() => {
     getiInstrutor();
+
+    setRemoveLoad(true)
+  }, 2000)
   }, []);
 
  
@@ -632,6 +639,7 @@ p = JSON.parse(p);
                       </Modal>
                     </StyledTableRow>
                   ))}
+                 
               </TableBody>
             </Table>
           </TableContainer>
@@ -645,6 +653,7 @@ p = JSON.parse(p);
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
+           {!removeLoad && <Load/>}
         </Box>
       </Box>
     </>

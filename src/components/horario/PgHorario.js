@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
+import Load from "../load";
 import { Link as RouterLink, MemoryRouter } from "react-router-dom";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
@@ -175,6 +175,7 @@ const PgHorario = () => {
   const [open3, setOpen3] = React.useState(false);
   const [idiHorario, setidHorario] = useState([]);
   const [pegarHorario, setpegarHorario] = useState([]);
+  const [removeLoad, setRemoveLoad] = useState(false)
   /* linhas maxima na coluna  */
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   /*  numero de pagina*/
@@ -220,7 +221,10 @@ const PgHorario = () => {
   };
 
   useEffect(() => {
+    setTimeout(() => {
     getiHorario();
+    setRemoveLoad(true)
+    }, 2000)
   }, []);
 
   const getiHorario = async () => {
@@ -501,6 +505,7 @@ const PgHorario = () => {
                     </StyledTableRow>
                   ))}
               </TableBody>
+              
             </Table>
           </TableContainer>
           <TablePagination
@@ -513,7 +518,7 @@ const PgHorario = () => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-
+      {!removeLoad && <Load/>}
        
         </Box>
       </Box>

@@ -31,6 +31,7 @@ import { makeStyles } from "@material-ui/core";
 import { InputAdornment } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import FolderIcon from '@mui/icons-material/Folder';
+import Load from "../load";
 
 const tema = createTheme({
   palette: {
@@ -152,6 +153,8 @@ function ListaCurso() {
   const [tipoAtendOrdinal, setTipoAtendOrdinal] = useState();
   const [nivelOrdinal, setNivelOrdinal] = useState();
 
+  const [removeLoad, setRemoveLoad] = useState(false)
+
   console.log("tipoAtendOrdinal ", tipoAtendOrdinal)
   console.log("nivelOrdinal ", nivelOrdinal)
 
@@ -199,9 +202,15 @@ function ListaCurso() {
 
   // REQUISIÇÃO GET PARA PUXAR TODOS OS cursos
   useEffect(() => {
+    setTimeout(() => {
+
+  
     fetch("http://localhost:8080/api/curso")
       .then((resp) => resp.json())
       .then((retorno_convertido) => setCursos(retorno_convertido)); //lista de cursos
+
+        setRemoveLoad(true)
+    }, 2000)
   }, []);
 
   useEffect(() => {
@@ -610,7 +619,7 @@ function ListaCurso() {
           <Table size="medium" style={{ width: "100%" }}>
             <TableHead sx={{ backgroundColor: "#000814", height: "80px" }}>
               <TableRow>
-                <TableCell align="left">
+                <TableCell sx={{ color: "#fff" }} align="left">
                   Nome
                 </TableCell>
                 <TableCell sx={{ color: "#fff" }} align="left">
@@ -845,6 +854,7 @@ function ListaCurso() {
                   )
                 )}
             </TableBody>
+            {!removeLoad && <Load/>}
           </Table>
           <TablePagination
             sx={{

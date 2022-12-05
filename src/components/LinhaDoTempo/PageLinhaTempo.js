@@ -10,13 +10,29 @@ import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import RadioButtonUncheckedTwoToneIcon from '@mui/icons-material/RadioButtonUncheckedTwoTone';
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip, tooltipClasses } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 
 let token = sessionStorage.getItem("token")
+
+let p = sessionStorage.getItem("payload")
+
+p = JSON.parse(p)
+
+const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
+
 
 function LinhaTempo() {
   // variavel que tem acesso a um array com todas as turmas
@@ -102,23 +118,38 @@ function LinhaTempo() {
                       obj.status === true ?  <>
                     
                     <div className="divLinhaDoTempo">
-                    <Tooltip title={"Nif: " + obj.nifUsuario}>
+                    <BootstrapTooltip title={"Nif: " + obj.nifUsuario} style={ p === null ||token === null || p.tipo_usuario === "Secretária" || p.tipo_usuario === "Opp"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
                       <IconButton>
                         <AccountCircleIcon style={{color: "black"}} />
                       </IconButton>
-                    </Tooltip>
+                    </BootstrapTooltip>
                     
-                    <Tooltip title={"Hora: " + obj.hora}>
+                    <BootstrapTooltip title={"Hora: " + obj.hora} style={ p === null ||token === null || p.tipo_usuario === "Secretária" || p.tipo_usuario === "Opp"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
                       <IconButton>
                         <AccessTimeFilledIcon style={{color: "black"}} />
                       </IconButton>
-                    </Tooltip>
+                    </BootstrapTooltip>
 
-                    <Tooltip title={ "Data: "  + obj.data}>
+                    <BootstrapTooltip title={ "Data: "  + obj.data} style={ p === null ||token === null || p.tipo_usuario === "Secretária" || p.tipo_usuario === "Opp"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
                       <IconButton>
                         <CalendarMonthIcon style={{color: "black"}}/>
                       </IconButton>
-                    </Tooltip>
+                    </BootstrapTooltip>
                     </div>
                     
                     <Chip sx={{position: "absolute", top: "11em", left: "4.5em"}}  label="Concluido" color="success"/> </>: <Chip sx={{position: "absolute", top: "11em", left: "4.5em"}} label="Não concluido" color="error"/>

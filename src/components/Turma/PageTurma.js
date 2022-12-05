@@ -42,7 +42,7 @@ import AddSharpIcon from "@material-ui/icons/AddSharp";
 import { InputAdornment, Toolbar } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import FolderIcon from '@mui/icons-material/Folder';
-
+import Load from "../load";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -119,6 +119,8 @@ function CadTurma() {
   const [curso, setCurso] = useState([]);
   const [dataInicio, setDataInicio] = useState();
   const [dataTermino, setDataTermino] = useState();
+
+  const [removeLoad, setRemoveLoad] = useState(false)
 
   const classes = useStyles();
 
@@ -222,9 +224,15 @@ function CadTurma() {
 
   // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
   useEffect(() => {
+    setTimeout(() => {
+
+    
     fetch("http://localhost:8080/api/turma")
       .then((resp) => resp.json())
-      .then((retorno_convertido) => setTurma(retorno_convertido)); //lista de turmas
+      .then((retorno_convertido) => setTurma(retorno_convertido),
+      setRemoveLoad(true)
+     ); //lista de turmas
+    }, 2000)
   }, []);
 
   useEffect(() => {
@@ -466,9 +474,7 @@ function CadTurma() {
               setShowCadastrar(false)
               // exibindo a msg de aviso de cadastro
               msgCadastro();
-              setInterval(function () {
-                window.location.reload();
-              }, 1500);
+             
             });
         }
       });
@@ -1244,6 +1250,7 @@ function CadTurma() {
                       </StyledTableRow>
                     )
                   )}
+                  {!removeLoad && <Load/>}
               </TableBody>
 
             </Table>
