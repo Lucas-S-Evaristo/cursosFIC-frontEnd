@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from "react-toastify";
 import { Redirect } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
-import { Button, Paper, TextField } from "@mui/material";
+import { Button, Paper, styled, TextField, Tooltip, tooltipClasses } from "@mui/material";
 import { AlterarSenha, redefinirSenha, verificarEmail } from "./redefinirSenha";
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -18,7 +18,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import InfoIcon from '@mui/icons-material/Info';
 
 let tokenUsuario = sessionStorage.getItem("token")
 
@@ -486,6 +486,30 @@ function Login() {
       }
   };
 
+  const[usuario, setUsuario] = useState([])
+
+  useEffect(() => {
+    setTimeout(() => {
+    fetch("http://localhost:8080/api/usuario")
+      .then((resp) => resp.json())
+      .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
+    }, 2000)
+
+  }, []);
+
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+    },
+  }));
+
+  console.log("aaaaaaaaaaaaa: ", usuario.length)
+
   return (
 
     <div className="divLogin">
@@ -538,6 +562,7 @@ function Login() {
               <select
                 id="tipoUsuario"
                 style={styleSelect}
+                value={1}
                 name="tipoUsuario"
                 required
                 className="form-control"
@@ -600,8 +625,18 @@ function Login() {
             <h1 className="title">Login</h1>
             <div className="divInput">
               <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                <TextField id="standard-basic" label="Nif" name="nif" variant="standard" />
+              <InputLabel htmlFor="standard-basic">Nif</InputLabel>
+                <Input id="standard-basic" label="Nif" name="nif" variant="standard" endAdornment={
+  <InputAdornment position="start">
+      <BootstrapTooltip title="nenhum usuário cadastrado, informe o acesso default!" style={usuario.length === 0 ? {display: "visible"} : {display: "none"}}>
+      <IconButton>
+        <InfoIcon style={{color: "black"}} />
+      </IconButton>
+      </BootstrapTooltip>
+       </InputAdornment>
+                }/>
               </FormControl>
+
               <FormControl sx={{ m: 1, width: '25ch', height: "5ch", marginTop: "3em" }} variant="standard">
                 <InputLabel htmlFor="standard-adornment-password">Senha</InputLabel>
                 <Input
