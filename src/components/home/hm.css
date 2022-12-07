@@ -1,144 +1,161 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap');
 
-*{
+* {
    font-family: 'Nunito', sans-serif !important;
 
 }
-body{
-}
-.divHome{
-    height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    
-    
+
+body {}
+
+.divHome {
+   height: 100vh;
+   background-repeat: no-repeat;
+   background-size: cover;
+
+
 
 }
-.headHome{
-    background-color: black;
-    color: white;
-    height: 7vh;
-    position: fixed;
-    width: 100%;
+
+.headHome {
+   background-color: black;
+   color: white;
+   height: 7vh;
+   position: fixed;
+   width: 100%;
 }
-@media (min-width: 600px){}   
+
+@media (min-width: 600px) {}
+
 .css-1o5pq7n {
    display: none;
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
+   -webkit-flex-shrink: 0;
+   -ms-flex-negative: 0;
+   flex-shrink: 0;
 }
-.logoHome{
-    float: left;
-    margin: 1.5vh;
-    position: fixed;
-    width: 15vh;
-}
-.btLoginH{
-    float: right;
-    margin: 2vh;
-    color: white;
-    border-radius: 1vh;
-    outline: none;
-    width: 10vh;
-    height: 3vh;
-    border: none;
-    background-color: rgb(255, 0, 0);
-    transition: box-shadow 0.2s;
-    font-size: 1.3vh;
-}
-.btLoginH:hover{
-   
 
-    box-shadow: 0px 0px 0.10vh 0.2vh rgba(255, 120, 120, 0.03);
-    
-}
-.divEstatisticas{
+.logoHome {
+   float: left;
+   margin: 1.5vh;
    position: fixed;
-    left: 29.7vh;
-    width: 169.2vh;
-    height: 100vh;
-    top: 0vh;
-    /*background-color: rgba(255, 0, 0, 0.144);*/
+   width: 15vh;
 }
- .secC{
-    width: 100%;
-    height: 10vh;
-    position: fixed;
-    top: 4vh;
-    display: flex;
-    flex-direction: row;
 
- }  
- .secEst{
-    width: 100vh;
-    height: 5vh;
-    position: absolute;
-    top: 30vh;
-    left: 30vh;
-    display: flex;
-    flex-direction: row;
- }
- .secF{
-    width: 100%;
-    height: 10.4vh;
-    position: fixed;
-    top: 89.6vh;
-    display: flex;
-    flex-direction: row;
-    background-color: rgb(219, 219, 219);
-    color: white;
+.btLoginH {
+   float: right;
+   margin: 2vh;
+   color: white;
+   border-radius: 1vh;
+   outline: none;
+   width: 10vh;
+   height: 3vh;
+   border: none;
+   background-color: rgb(255, 0, 0);
+   transition: box-shadow 0.2s;
+   font-size: 1.3vh;
+}
+
+.btLoginH:hover {
+
+
+   box-shadow: 0px 0px 0.10vh 0.2vh rgba(255, 120, 120, 0.03);
+
+}
+
+.divEstatisticas {
+   position: fixed;
+   left: 29.7vh;
+   width: 169.2vh;
+   height: 100vh;
+   top: 0vh;
+   /*background-color: rgba(255, 0, 0, 0.144);*/
+}
+
+.secC {
+   width: 100%;
+   height: 10vh;
+   position: fixed;
+   top: 4vh;
+   display: flex;
+   flex-direction: row;
+
+}
+
+.secEst {
+   width: 100vh;
+   height: 5vh;
+   position: absolute;
+   top: 30vh;
+   left: 30vh;
+   display: flex;
+   flex-direction: row;
+}
+
+.secF {
+   width: 100%;
+   height: 10.4vh;
+   position: fixed;
+   top: 89.6vh;
+   display: flex;
+   flex-direction: row;
+   background-color: rgb(219, 219, 219);
+   color: white;
    padding: 1vh;
 
- }
- .estCursos{
-    background-color: rgb(0, 0, 0);
-    width: 5vh;
-    height: 5vh;
-    color: white;
-    position: relative;
-    
-    font-size: 2vh;
-    padding-top: 1vh;
-    text-align: center;
-    border-radius: 1vh;
-    top:1vh;
-    left: 5vh;
- }
- .estTurma{
+}
+
+.estCursos {
+   background-color: rgb(0, 0, 0);
+   width: 5vh;
+   height: 5vh;
+   color: white;
+   position: relative;
+
+   font-size: 2vh;
+   padding-top: 1vh;
+   text-align: center;
+   border-radius: 1vh;
+   top: 1vh;
+   left: 5vh;
+}
+
+.estTurma {
    background-color: rgb(0, 0, 0);
    width: 100vh;
    height: 5vh;
    color: white;
    position: relative;
-   
+
    font-size: 2vh;
    padding-top: 1vh;
    text-align: center;
    border-radius: 1vh;
-   top:1vh;
+   top: 1vh;
    left: 9vh;
- }
- .titleC{
-    font-size: 3vh;
-    position: relative;
-    top:2vh;
-    left: 2vh;
- }
- .titleT{
+}
+
+.titleC {
    font-size: 3vh;
    position: relative;
-   top:2vh;
+   top: 2vh;
+   left: 2vh;
+}
+
+.titleT {
+   font-size: 3vh;
+   position: relative;
+   top: 2vh;
    left: 7vh;
- }
- .artStatus{
-    position: fixed;
-    top: 27vh;
-    height: 10vh;
-    width: 40vh;
-    left: 2vh;
- }
- .status{
+}
+
+.artStatus {
+   position: fixed;
+   top: 27vh;
+   height: 10vh;
+   width: 40vh;
+   left: 2vh;
+}
+
+.status {
    font-size: 1.5vh;
    margin: 0%;
    height: 3.5vh;
@@ -146,24 +163,26 @@ body{
    padding-left: 1.4vh;
    display: flex;
    flex-direction: row;
- }
- .ponto{
-      width: 1vh;
+}
+
+.ponto {
+   width: 1vh;
    height: 1vh;
    position: relative;
    top: 3.2vh;
    left: 1vh;
    border-radius: 100%;
- }
- .secStatus{
+}
+
+.secStatus {
    display: flex;
    flex-direction: row;
    position: relative;
    height: 3vh;
- 
+
 }
 
-.estStatus{
+.estStatus {
    color: rgb(0, 0, 0);
    width: 2.5vh;
    height: 2.55vh;
@@ -171,23 +190,26 @@ body{
    font-size: 1.5vh;
    padding-top: 0.5vh;
    margin-top: 2.5vh;
-   margin-left: 2vh;   
+   margin-left: 2vh;
    text-align: center;
    left: 100px;
 }
-.grafico{
+
+.grafico {
    position: relative;
    left: 50%;
    transform: translate(-50%);
    border-radius: 100%;
 }
-.divStatus{
+
+.divStatus {
    background-color: rgb(182, 182, 182);
    position: absolute;
    top: 100%;
 
 }
-.estGeral{
+
+.estGeral {
    background-color: rgb(255, 255, 255);
    display: flex;
    margin: 2vh;
@@ -198,7 +220,7 @@ body{
 }
 
 
-.divFolderH{
+.divFolderH {
    position: relative;
    left: 50%;
    background-color: aquamarine;
@@ -208,9 +230,10 @@ body{
    float: left;
    transform: translate(-90%, -60%);
 }
-.secGrafico{
-}
-.TitleHome{
+
+.secGrafico {}
+
+.TitleHome {
    text-align: center;
    position: relative;
    top: 0vh;
@@ -223,38 +246,43 @@ body{
    left: 50%;
    font-size: 3vh;
    transform: translate(-50%);
-   border-bottom-left-radius:1vh;
+   border-bottom-left-radius: 1vh;
    border-bottom-right-radius: 1vh;
    box-shadow: 0vh 0.5vh 1vh 0vh rgba(0, 0, 0, 0.218);
 
-   
+
 }
-.pest{
+
+.pest {
    width: 8 vh;
-   padding-top: -10vh;   
+   padding-top: -10vh;
    font-size: 2vh;
    padding-right: 10vh;
 }
-.divE{
+
+.divE {
    display: flex;
    flex-direction: row;
    width: 40vh;
 }
 
-.h1c{
+.h1c {
    width: 30vh;
 }
-.pc{
-   
+
+.pc {
+
    position: fixed;
    left: 80vh;
 }
-.pClass{
-   
+
+.pClass {
+
    position: fixed;
    left: 80vh;
 }
-.botaoFolderT{
+
+.botaoFolderT {
    display: flex;
    padding: 1vh;
    position: fixed;
@@ -262,47 +290,51 @@ body{
    top: 90vh;
    color: white;
    border: none;
-   border-bottom: 2px solid rgb(0, 4, 255);
+
 
 }
-.botaoFolderT:hover{
-   background-color: rgb(0, 4, 255) !important;
+
+.botaoFolderT:hover {
+   background-color: rgb(139, 139, 139) !important;
    color: white !important;
 }
 
-.botaoFolderC{
+.botaoFolderC {
    display: flex;
    padding: 1vh;
    position: fixed;
-   
+
    left: 54.2%;
-   top:90vh;
+   top: 90vh;
    color: white;
    border: none;
-   border-bottom: 2px solid rgb(0, 4, 255);
+
 
 }
-.botaoFolderC:hover{
-   background-color: rgb(0, 4, 255)!important;
+
+.botaoFolderC:hover {
+   background-color: rgb(139, 139, 139) !important;
    color: white !important;
 }
 
-.botaoT{
+.botaoT {
    display: flex;
    padding: 1vh;
    position: fixed;
    left: 64.2%;
-   top:90vh;
+   top: 90vh;
    color: white;
    border: none;
-   border-bottom: 2px solid rgb(139, 139, 139);
+
 
 }
-.botaoT:hover{
+
+.botaoT:hover {
    background-color: rgb(139, 139, 139) !important;
    color: white !important;
 }
-.sectFolderC{
+
+.sectFolderC {
    width: 54vh;
    display: flex;
    flex-direction: row;
@@ -311,9 +343,10 @@ body{
    top: -5.5vh;
    padding: 1.5vh;
    margin: 5vh;
-   
+
 }
-#selectFolderC{
+
+#selectFolderC {
    position: fixed;
    margin: 1vh;
    border: none;
@@ -333,7 +366,7 @@ body{
 
 }
 
-.btnfolderC{
+.btnfolderC {
    background-color: rgb(0, 0, 0);
    position: fixed;
    font-size: 2vh;
@@ -345,12 +378,30 @@ body{
    color: white;
    border-top-right-radius: 2vh;
    border-bottom-right-radius: 2vh;
-   
+
 }
 
-.h1Modal{
+.h1Modal {
    position: relative;
    top: -20px;
    left: 12vh;
    font-size: 2.5vh;
+}
+
+.botaoCsv {
+   display: flex;
+   padding: 1vh;
+   position: fixed;
+   left: 73.2%;
+   top: 90vh;
+   border-radius: 6px;
+   color: white;
+   background-color: black;
+   border: none;
+
+}
+
+.botaoCsv:hover {
+   background-color: rgb(139, 139, 139) !important;
+   color: white !important;
 }

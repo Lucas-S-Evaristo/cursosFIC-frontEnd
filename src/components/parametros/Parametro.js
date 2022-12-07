@@ -17,6 +17,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddSharpIcon from "@material-ui/icons/AddSharp";
 import { makeStyles } from "@material-ui/core";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -413,16 +414,23 @@ function ListaParametro() {
                     <Toolbar />
 
                     <Button
-                        style={parametro.length >= 1 ?  { display: "none" } : { margin: 10, fontWeight: "bold" }}
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={abrirModalCadastrar}
-                        className={classes.button}
-                        startIcon={<AddSharpIcon />}
-                    >
-                        NOVO
-                    </Button>
+                    
+            style={parametro.length >= 1 ?  { display: "none" } : { margin: 10, fontWeight: "bold", backgroundColor: "black", borderRadius: "2em" }}
+            variant="contained"
+
+            size="large"
+
+            onClick={abrirModalCadastrar}
+
+            className={classes.button, "botaoTarefaTurma"}
+
+            startIcon={<AssignmentIcon />}
+
+          >
+
+            Novo
+
+          </Button>
                     <TableContainer component={Paper}>
 
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">

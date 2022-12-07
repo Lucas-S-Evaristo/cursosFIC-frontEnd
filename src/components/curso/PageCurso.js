@@ -840,6 +840,8 @@ function ListaCurso() {
                               <Button variant="contained" color="success" onClick={() => {
                                 //excluir a turma pelo id
                                 deletar(idCurso)
+                                setShowExcluir(false)
+                                setDescricaoLog("")
 
                               }}>
                                 Sim
@@ -923,19 +925,6 @@ function ListaCurso() {
                   label="Nome"
                   variant="outlined"
                 />
-
-                <TextField
-                  autoFocus
-                  required
-                  id="objetivo"
-                  className="inputAlterarCurso"
-                  defaultValue={objetivo}
-                  name="objetivo"
-                  type="text"
-                  label="Objetivo"
-                  variant="outlined"
-                />
-
                 <TextField
                   autoFocus
                   required
@@ -1004,6 +993,17 @@ function ListaCurso() {
                     <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
+                
+                <TextField
+                  id="objetivo"
+                  className="textAreaCurso"
+                  name="objetivo"
+                  defaultValue={objetivo}
+                  sx={{width: 200}}
+                  label="Objetivo"
+                  multiline
+                  rows={4}
+                />
 
                 </div>
                 
@@ -1104,164 +1104,153 @@ function ListaCurso() {
             ></img>
           </div>
           <div>
-            <form
-              onSubmit={cadastrar}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                flexWrap: "nowrap",
-                justifyContent: "center",
-                width: "60%",
-                height: "80%",
-                position: "absolute",
-                top: "-4.5em"
-              }}
-            >
-              <section className="sectionComponents">
+          <form onSubmit={cadastrar}>
+                <div className="divGlobalFormAltCurso">
+              <div className="sectionModalAltCurso1">
                 <TextField
                   autoFocus
                   required
-                  id="nomeCad"
-                  sx={styleTextField}
-                  className="textField"
+                  id="nome"
+              
+                  className="inputAlterarCurso"
                   name="nome"
                   type="text"
                   label="Nome"
                   variant="outlined"
                 />
-
                 <TextField
                   autoFocus
                   required
-                  id="objetivoCad"
-                  sx={styleTextField}
-                  className="textField"
-                  name="objetivo"
-                  type="text"
-                  label="Objetivo"
-                  variant="outlined"
-                />
-              </section>
-
-              <section className="sectionComponents">
-                <TextField
-                  multiline
-                  required
-                  sx={styleTextFieldPreReq}
-                  rows={4}
-                  id="preRequisitoCad"
-                  name="preRequisito"
-                  label="Pré requisito"
-                />
-                <TextField
-                  autoFocus
-                  required
-                  id="valorCad"
-                  sx={styleTextField}
-                  className="textField"
+                  id="valor"
+              
                   name="valor"
                   type="number"
                   label="Valor"
                   variant="outlined"
+                  className="inputAlterarCurso"
                 />
 
-              </section>
-
-              <section className="sectionComponents">
                 <TextField
                   autoFocus
-                  id="cargaHorariaCad"
-                  sx={styleTextField}
-                  className="textField"
                   required
+                  className="inputAlterarCurso"
+                  id="cargaHoraria"
+               
                   name="cargaHoraria"
                   type="number"
                   label="Carga Horaria"
                   variant="outlined"
                 />
 
-
-                <TextField
-                  id="outlined-multiline-static"
-                  name="conteudoProgramatico"
-                  label="Conteúdo programático"
-                  multiline
-                  required
-                  sx={styleTextFieldConteudoProg}
-                  rows={4}
-
-                />
-              </section>
-
-              <section className="sectionComponentsSelect" style={{
-                position: "absolute",
-                top: "22em",
-                left: "0.5em",
-
-              }}>
-
-                <InputLabel id="demo-simple-select-label">Área</InputLabel>
-                <select
-                  id="areaCad"
-                  style={styleSelect}
-                  name="area"
-                  required="required"
-                  className="form-control"
-                >
+                <InputLabel className="labelInput" id="demo-simple-select-label">Tipo Área</InputLabel>
+                <select required id="area" className="form-control" name="area">
+                  <option>Selecione:</option>
 
                   {tipoArea.map((obj) => (
-                    <option value={obj.id}>{obj.nome}</option>
+                    <option value={obj.id}>
+                      {obj.nome}
+                    </option>
                   ))}
                 </select>
-                <InputLabel id="demo-simple-select-label">
+
+                
+                <InputLabel className="labelInput" id="demo-simple-select-label">
                   Tipo Atendimento
                 </InputLabel>
+
                 <select
-                  id="tipoAtendimentoCad"
-                  style={styleSelect}
-                  name="tipoAtendimento"
                   required
+                  id="tipoAtendimento"
                   className="form-control"
-                >-
+                  name="tipoAtendimento"
+                >
+                  <option>Selecione:</option>
 
                   {tipoAtendimentos.map((obj, indice) => (
+
                     <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 
-                <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
+                <InputLabel className="labelInput" id="demo-simple-select-label">Nivel</InputLabel>
 
                 <select
-                  id="nivelCad"
-                  style={styleSelect}
-                  name="nivel"
                   required
+                  id="nivel"
                   className="form-control"
+                  name="nivel"
                 >
+                  <option>Selecione:</option>
 
                   {niveis.map((obj, indice) => (
                     <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
 
-              </section>
+                </div>
+                
+                <div className="sectionModalAltCurso2">
 
-              <div
-                style={{ position: "absolute", top: "40em" }}
-              >
+                <TextField
+                  name="conteudoProgramatico"
+                  id="conteudoProgramatico"
+             
+                  label="Conteúdo programático"
+                  required
+                  multiline
+                  style={{width: "150%"}}
+                  rows={4}
+                />
+
+                <TextField
+                  id="objetivo"
+                  className="textAreaCurso"
+                  name="objetivo"
+                  label="Objetivo"
+                  multiline
+                  rows={4}
+                />
+
+                <TextField
+                  autoFocus
+                  required
+                  id="preRequisito"
+               
+                  multiline
+                  rows={4}
+                  className="textAreaCurso"
+                  name="preRequisito"
+                  type="text"
+                  label="Pré requisito"
+                  variant="outlined"
+                />
+
+              </div>
+                </div>
+
+              <div>
                 <Button
-                  variant="contained"
-                  color="success"
-                  style={btnCad2}
+
                   type="submit"
+                  variant="contained"
+                  style={btnCad}
                 >
-                  cadastrar
+                  <CreateIcon
+                    sx={{
+                      color: "#ffff",
+                      width: "100",
+                      border: "none",
+                      marginRight: "10px",
+                    }}
+                  />
+                 Cadastrar
                 </Button>
+
 
                 <Button
                   variant="contained"
                   color="error"
-                  style={btnClose2}
+                  style={btnClose}
                   onClick={() => {
                     limparForm();
                     fecharModalCadastrar();

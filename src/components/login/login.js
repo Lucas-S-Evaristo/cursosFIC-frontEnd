@@ -233,7 +233,7 @@ function Login() {
       abrirModalSenha()
 
 
-    }else if(result.status === 308){
+    } else if (result.status === 308) {
 
       setOpen(true)
 
@@ -246,7 +246,7 @@ function Login() {
 
       if (token != null) {
 
-         function parseJwt(token) {
+        function parseJwt(token) {
 
           var base64Url = token.split(".")[1];
 
@@ -426,73 +426,73 @@ function Login() {
   const cadastrar = async (event) => {
 
     event.preventDefault()
-    
+
     const formData = new FormData(event.target)
 
     const data = Object.fromEntries(formData);
 
-    if(data.nif.length >= 5 && data.nif.length <= 7){
-      
-    const usuario = {
+    if (data.nif.length >= 5 && data.nif.length <= 7) {
 
-      nome: data.nome,
-      nif: data.nif,
-      tipoUsuario: data.tipoUsuario,
-      email: data.email,
-      senha: data.senha
+      const usuario = {
 
-    };
-    
-   let result = fetch("http://localhost:8080/api/usuario", {
-      method: "post",
-      body: JSON.stringify(usuario),
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-        Authorization: tokenUsuario,
-      },
-    }).then((retorno) => {
-      //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-      if (retorno.status === 500 || retorno.status === 400) {
-        msgCamposVazio();
+        nome: data.nome,
+        nif: data.nif,
+        tipoUsuario: data.tipoUsuario,
+        email: data.email,
+        senha: data.senha
 
-        // se existir um email existente
-      } else if (retorno.status === 409) {
-        document.getElementById("email").value = ""; // Limpa o campo
+      };
 
-        msgEmailDuplicados();
-      } else if (retorno.status === 510) {
-        document.getElementById("nif").value = ""; // Limpa o campo
-        msgNifDuplicados();
-      } else {
-        //faz o processo de cadastro
-        retorno.json().then((retorno_convertido) => {
-          //exibir notificação de sucesso
-          msgCadastro();  
+      let result = fetch("http://localhost:8080/api/usuario", {
+        method: "post",
+        body: JSON.stringify(usuario),
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: tokenUsuario,
+        },
+      }).then((retorno) => {
+        //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+        if (retorno.status === 500 || retorno.status === 400) {
+          msgCamposVazio();
 
-          setOpen(false)
-          
-          setInterval(function () { window.location.reload(); }, 1500);
+          // se existir um email existente
+        } else if (retorno.status === 409) {
+          document.getElementById("email").value = ""; // Limpa o campo
+
+          msgEmailDuplicados();
+        } else if (retorno.status === 510) {
+          document.getElementById("nif").value = ""; // Limpa o campo
+          msgNifDuplicados();
+        } else {
+          //faz o processo de cadastro
+          retorno.json().then((retorno_convertido) => {
+            //exibir notificação de sucesso
+            msgCadastro();
+
+            setOpen(false)
+
+            setInterval(function () { window.location.reload(); }, 1500);
 
 
-         
-        });
-      }
-    });
-      }else{
 
-        nifValidacao()
+          });
+        }
+      });
+    } else {
 
-      }
+      nifValidacao()
+
+    }
   };
 
-  const[usuario, setUsuario] = useState([])
+  const [usuario, setUsuario] = useState([])
 
   useEffect(() => {
     setTimeout(() => {
-    fetch("http://localhost:8080/api/usuario")
-      .then((resp) => resp.json())
-      .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
+      fetch("http://localhost:8080/api/usuario")
+        .then((resp) => resp.json())
+        .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
     }, 2000)
 
   }, []);
@@ -525,24 +525,24 @@ function Login() {
         pauseOnHover
       />
 
-<Modal
+      <Modal
         show={open}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
 
-<ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-        
+        <ToastContainer
+          position="top-right"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+
         <Box sx={style}>
           <form onSubmit={cadastrar}>
             <div>
@@ -614,7 +614,7 @@ function Login() {
 
       <header style={{ color: "white" }}>
         <img src={require("../login/LogoSenaiOriginal.png")} className="logo" />
-        
+
 
         <a href="/" className="aTurmas">Lista de Turmas</a>
       </header>
@@ -625,16 +625,16 @@ function Login() {
             <h1 className="title">Login</h1>
             <div className="divInput">
               <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-              <InputLabel htmlFor="standard-basic">Nif</InputLabel>
+                <InputLabel htmlFor="standard-basic">Nif</InputLabel>
                 <Input id="standard-basic" label="Nif" name="nif" variant="standard" endAdornment={
-  <InputAdornment position="start">
-      <BootstrapTooltip title="nenhum usuário cadastrado, informe o acesso default!" style={usuario.length === 0 ? {display: "visible"} : {display: "none"}}>
-      <IconButton>
-        <InfoIcon style={{color: "black"}} />
-      </IconButton>
-      </BootstrapTooltip>
-       </InputAdornment>
-                }/>
+                  <InputAdornment position="start">
+                    <BootstrapTooltip title="nenhum usuário cadastrado, informe o acesso default!" style={usuario.length === 0 ? { display: "visible" } : { display: "none" }}>
+                      <IconButton>
+                        <InfoIcon style={{ color: "black" }} />
+                      </IconButton>
+                    </BootstrapTooltip>
+                  </InputAdornment>
+                } />
               </FormControl>
 
               <FormControl sx={{ m: 1, width: '25ch', height: "5ch", marginTop: "3em" }} variant="standard">
@@ -662,7 +662,7 @@ function Login() {
               <a href="/redefinirSenha" className="aEscSennha">Esqueceu a senha?</a>
               <div className="divBtn">
                 <button className="btnEntrar" type="submit">
-                  <p className="pEntrar" style={{position:"relative", top:'-0.4vh'}}>Entrar</p>
+                  <p className="pEntrar" style={{ position: "relative", top: '-0.4vh' }}>Entrar</p>
                 </button>
               </div>
             </div>
@@ -697,7 +697,7 @@ function Login() {
           />
           <form onSubmit={redefinirSenha} >
             <div className="divForm">
-              <h5 style={{position:"relative", left:"-9.3vh",top:"1vh"}}>Por favor, Redefina sua senha!</h5>
+              <h5 style={{ position: "relative", left: "-9.3vh", top: "1vh" }}>Por favor, Redefina sua senha!</h5>
 
               <FormControl sx={{ m: 1, width: '47.5ch' }} variant="standard">
                 <InputLabel htmlFor="standard-adornment-password">Senha</InputLabel>
@@ -721,7 +721,7 @@ function Login() {
                 />
               </FormControl>
 
-              <h5 style={{position:"relative", left:"-13.9vh",top:"1vh"}}> Confirme sua senha!</h5>
+              <h5 style={{ position: "relative", left: "-13.9vh", top: "1vh" }}> Confirme sua senha!</h5>
 
               <FormControl sx={{ m: 1, width: '47.5ch' }} variant="standard">
                 <InputLabel htmlFor="standard-adornment-password">Senha</InputLabel>

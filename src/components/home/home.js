@@ -1,4 +1,5 @@
 import { Box } from "@material-ui/core";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import { Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Chart from "react-google-charts";
@@ -12,10 +13,10 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: "46vh",
-  height:"17.9vh",
+  height: "17.9vh",
   bgcolor: 'background.paper',
   boxShadow: 0,
-  borderRadius:10,
+  borderRadius: 10,
   p: 4,
 };
 function HomeG() {
@@ -124,58 +125,76 @@ function HomeG() {
       .then((retorno_convertido) => setAdiada(retorno_convertido)); //lista de turmas
   }, []);
 
-  const gerarFolderTurma = async () =>  {
-  let result = await fetch("http://localhost:8080/api/folder/turma")
-   
-   if(result.status === 409){
+  const gerarFolderTurma = async () => {
+    let result = await fetch("http://localhost:8080/api/folder/turma")
 
-    msgErro()
+    if (result.status === 409) {
 
-  }else{
+      msgErro()
 
-    window.location.href = "http://localhost:8080/api/folder/turma"
-    
+    } else {
+
+      window.location.href = "http://localhost:8080/api/folder/turma"
+
+    }
   }
+
+
+  const gerarCsv = async () => {
+
+    let result = await fetch("http://localhost:8080/api/folder/xls")
+
+    if (result) {
+
+      result = await result.json();
+
+      window.location.href = `http://localhost:8080/folders/${result.nome}`
+
+
+
+    }
+
   }
+
 
   function gerarFolderCurso() {
     let id = document.getElementById("selectFolderC").value;
 
     console.log(id)
 
-    if(id === "selecione"){
-       
-       msgWarning();
-    }else{
+    if (id === "selecione") {
 
-       window.location.href = "http://localhost:8080/api/folder/curso/" + id;
+      msgWarning();
+    } else {
+
+      window.location.href = "http://localhost:8080/api/folder/curso/" + id;
     }
-    
 
-     
 
-    
+
+
+
   }
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
- 
+
 
   return (
     <div className="divHome">
       <MenuLateral />
       <ToastContainer position="top-center"
-                autoClose={1500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
 
       <div className="divEstatisticas">
         <section className="secGrafico">
@@ -221,8 +240,10 @@ function HomeG() {
             onClick={gerarFolderTurma}
             variant="contained"
           >
-            folder de turmas
+            Folder de Turmas
           </button>
+
+
 
           <section>
             <button
@@ -231,22 +252,32 @@ function HomeG() {
               onClick={handleOpen}
               variant="contained"
             >
-              folder de curso
+              Folder de Cursos
             </button>
           </section>
 
           <section>
-            <a href="/">  
             <button
-              style={{ borderRadius: "0.5vh ", backgroundColor: "black" }}
-              className="botaoT "
+              className="botaoCsv"
+              onClick={gerarCsv}
               variant="contained"
             >
-              
-              lista de turmas
-              
-              
+              Gerar Excel
             </button>
+          </section>
+
+          <section>
+            <a href="/">
+              <button
+                style={{ borderRadius: "0.5vh ", backgroundColor: "black" }}
+                className="botaoT "
+                variant="contained"
+              >
+
+                Lista de Turmas
+
+
+              </button>
             </a>
           </section>
         </section>
@@ -259,18 +290,18 @@ function HomeG() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <section className="sectFolderC">
-          <h1 className="h1Modal">Gerador de folder de Curso</h1>
-          <select
-        id="selectFolderC"
-        >
+          <section className="sectFolderC">
+            <h1 className="h1Modal">Gerador de folder de Curso</h1>
+            <select
+              id="selectFolderC"
+            >
               <option>selecione</option>
-                    {cursos.map((obj) => (
-                      <option value={obj.id}>{obj.nome}</option>
-                    ))}
-         </select>
+              {cursos.map((obj) => (
+                <option value={obj.id}>{obj.nome}</option>
+              ))}
+            </select>
 
-        <button onClick={gerarFolderCurso} className="btnfolderC"> GERAR </button>
+            <button onClick={gerarFolderCurso} className="btnfolderC"> GERAR </button>
           </section>
         </Box>
       </Modal>

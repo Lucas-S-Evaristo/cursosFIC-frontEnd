@@ -15,7 +15,7 @@ const msgErroRedefinir = () => {
 
     pauseOnHover: true,
 
-    theme: "colored",
+    theme: "dark",
 
     // faz com que seja possivel arrastar
 
@@ -25,94 +25,94 @@ const msgErroRedefinir = () => {
   });
 };
 const msgRedefinir = () => {
-    toast.warning("Verifique o E-mail ", {
-      position: "top-center",
-  
-      autoClose: 12000,
-  
-      hideProgressBar: false,
-  
-      closeOnClick: true,
-  
-      pauseOnHover: true,
-  
-      theme: "colored",
-  
-      // faz com que seja possivel arrastar
-  
-      draggable: true,
-  
-      progress: undefined,
-    });
-  };
+  toast.success("Verifique o E-mail ", {
+    position: "top-center",
 
-  const msgSucessoSenha = () => {
-    toast.success("Senha redefinida com sucesso! ", {
-      position: "top-center",
-  
-      autoClose: 2000,
-  
-      hideProgressBar: false,
-  
-      closeOnClick: true,
-  
-      pauseOnHover: true,
-  
-      theme: "colored",
-  
-      // faz com que seja possivel arrastar
-  
-      draggable: true,
-  
-      progress: undefined,
-    });
-  };
+    autoClose: 2000,
 
-  const msgMinimoSenha = () => {
-    toast.error("Sua senha precisa ter no minimo 4 caracteres! ", {
-      position: "top-center",
-  
-      autoClose: 2000,
-  
-      hideProgressBar: false,
-  
-      closeOnClick: true,
-  
-      pauseOnHover: true,
-  
-      theme: "colored",
-  
-      // faz com que seja possivel arrastar
-  
-      draggable: true,
-  
-      progress: undefined,
-    });
-  };
+    hideProgressBar: false,
 
-  const msgSenhaVazia = () => {
-    toast.error("Por favor, digite sua senha! ", {
-      position: "top-center",
-  
-      autoClose: 2000,
-  
-      hideProgressBar: false,
-  
-      closeOnClick: true,
-  
-      pauseOnHover: true,
-  
-      theme: "colored",
-  
-      // faz com que seja possivel arrastar
-  
-      draggable: true,
-  
-      progress: undefined,
-    });
-  };
+    closeOnClick: true,
 
- export const verificarEmail = async (event) => {
+    pauseOnHover: true,
+
+    theme: "dark",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
+
+const msgSucessoSenha = () => {
+  toast.success("Senha redefinida com sucesso! ", {
+    position: "top-center",
+
+    autoClose: 2000,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
+
+const msgMinimoSenha = () => {
+  toast.error("Sua senha precisa ter no minimo 4 caracteres! ", {
+    position: "top-center",
+
+    autoClose: 2000,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
+
+const msgSenhaVazia = () => {
+  toast.error("Por favor, digite sua senha! ", {
+    position: "top-center",
+
+    autoClose: 2000,
+
+    hideProgressBar: false,
+
+    closeOnClick: true,
+
+    pauseOnHover: true,
+
+    theme: "colored",
+
+    // faz com que seja possivel arrastar
+
+    draggable: true,
+
+    progress: undefined,
+  });
+};
+
+export const verificarEmail = async (event) => {
   /* tiras as características de evento evitando Recarregar  a pagina */
   event.preventDefault();
   /* pegar todos  os valores do evento */
@@ -128,13 +128,18 @@ const msgRedefinir = () => {
       Accept: "application/json",
     },
   });
-  if(result.status === 406){
+  if (result.status === 406) {
     msgErroRedefinir();
 
 
-  }else if(result){
-    msgRedefinir();
+  } else if (result.status === 200) {
 
+    msgRedefinir();
+    document.getElementById("textEmail").value = "";
+    setTimeout(() => {
+      window.location.href = 'http://localhost:3000/login'
+      }, 3000)
+  
   }
 };
 
@@ -154,15 +159,15 @@ export const redefinirSenha = async (event) => {
       Accept: "application/json",
     },
   });
-  if(result.status === 409){
-      msgMinimoSenha()
-      event.preventDefault()
+  if (result.status === 409) {
+    msgMinimoSenha()
+    event.preventDefault()
 
-  }else if(result.status === 406){
-      msgSenhaVazia()
-      event.preventDefault()
+  } else if (result.status === 406) {
+    msgSenhaVazia()
+    event.preventDefault()
 
-  }else{
+  } else {
 
     msgSucessoSenha()
 
@@ -200,15 +205,16 @@ function Senha() {
               <input
                 placeholder="Email"
                 name="email"
+                id="textEmail"
                 className="inEmail inputLogin"
                 type={"email"}
               />
 
-              <div className="divBtn">
-                <button className="btnRedefinir" type="submit">
-                  <p className="pRedefinir">Redefinir</p>
-                </button>
-              </div>
+              <button className="btnRedefinir" type="submit">
+
+                Redefinir
+
+              </button>
             </div>
           </form>
         </div>
@@ -218,7 +224,7 @@ function Senha() {
       </div>
 
 
-      
+
     </div>
   );
 }

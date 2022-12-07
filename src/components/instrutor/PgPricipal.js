@@ -49,6 +49,7 @@ import MenuLateral from "../menu/MenuLateral";
 import Slide from "@mui/material/Slide";
 import api from "../api/api"
 import './intrutor.css'
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const secondary = red[500];
 
@@ -167,7 +168,7 @@ const erroCad = () => {
   toast.warn("Preencha os campos corretamente!", {
     position: "top-center",
 
-    autoClose: 1500,  
+    autoClose: 1500,
 
     hideProgressBar: false,
 
@@ -249,25 +250,25 @@ function PgPricipal(props) {
 
     setPage(0);
   };
- 
+
   useEffect(() => {
     setTimeout(() => {
-    getiInstrutor();
+      getiInstrutor();
 
-    setRemoveLoad(true)
-  }, 2000)
+      setRemoveLoad(true)
+    }, 2000)
   }, []);
 
- 
+
   /* fazendo uma requisição get  */
   const getiInstrutor = async () => {
-   
+
     let result = await fetch(`http://localhost:8080/api/instrutor`);
     /* pegando json da requisição get */
     result = await result.json();
     /* colocando json em uma variavel instrutor */
     setInstrutor(result);
-   
+
   };
 
 
@@ -303,29 +304,30 @@ function PgPricipal(props) {
 
     if (key) {
 
-      console.log("keyyy",  key)
+      console.log("keyyy", key)
 
-       let jsonNome = {
+      let jsonNome = {
 
-        nome:key
+        nome: key
 
-       }
+      }
 
       /* faz uma requisição get  que faz uma busca de instrutor  */
 
-      let result = await fetch(`http://localhost:8080/api/instrutor/buscar/`,{
+      let result = await fetch(`http://localhost:8080/api/instrutor/buscar/`, {
 
-          method: "post",
+        method: "post",
 
-          body: JSON.stringify(key),
+        body: JSON.stringify(key),
 
-          headers: {
+        headers: {
 
-            "Content-type": "application/json",
+          "Content-type": "application/json",
 
-            Accept: "application/json",
+          Accept: "application/json",
 
-          }});
+        }
+      });
 
       /* pega o json da requição  */
 
@@ -360,10 +362,10 @@ function PgPricipal(props) {
         "Authorization": token
       },
     });
-    if(result.status === 409){
-      msgDeletadoerror() 
+    if (result.status === 409) {
+      msgDeletadoerror()
 
-    }else if (result) {
+    } else if (result) {
       /* fecha  Dialog que pergunta se deve excluir  */
       setOpen3(false);
       /* faz  uma requisição get do back end e renderizar página  */
@@ -396,7 +398,7 @@ function PgPricipal(props) {
       erroCad();
       /* verificar se  requisição foi feita com sucesso */
     } else if (result) {
-     
+
       /* mensagem de cadastrar com sucesso */
       msgCadastrando();
       /*fecha modal  de cadastrar */
@@ -409,12 +411,12 @@ function PgPricipal(props) {
   const alterainstrutor = async (event) => {
     /* tiras as características de evento evitando Recarregar  a pagina */
     event.preventDefault();
-  
+
     /* pegar todos  os valores do evento */
     const formData = new FormData(event.target);
     /*formata em um objeto em  json */
     const data = Object.fromEntries(formData);
-   
+
     /*formata em um objeto em json com id */
     let obgj = {
       id: idinstrutor,
@@ -438,7 +440,7 @@ function PgPricipal(props) {
       erroCad();
       /* verificar se  requisição foi feita com sucesso */
     } else if (result) {
-    
+
       // fecha a modal alterar
       setOpen2(false);
       /* mensagem alterar com sucesso */
@@ -449,7 +451,7 @@ function PgPricipal(props) {
   };
 
   let p = localStorage.getItem("payload");
-p = JSON.parse(p);
+  p = JSON.parse(p);
 
   return (
     <>
@@ -508,7 +510,7 @@ p = JSON.parse(p);
         </Dialog>
 
         <CssBaseline />
-       
+
         <Box
           component="nav"
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -547,115 +549,124 @@ p = JSON.parse(p);
           />
 
           <Button
-            style={{ margin: 10, fontWeight: "bold" }}
+
+            style={{ margin: 10, fontWeight: "bold", backgroundColor: "black", borderRadius: "2em" }}
+
             variant="contained"
-            color="primary"
+
             size="large"
+
             onClick={modalCadastroAbrindo}
-            className={classes.button}
-            startIcon={<AddSharpIcon />}
+
+            className={classes.button, "botaoTarefaTurma"}
+
+            startIcon={<AssignmentIcon />}
+
           >
-            NOVO
+
+            Novo
+
           </Button>
+        
 
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center">NOME</StyledTableCell>
-                  <StyledTableCell align="center">ALTERAR</StyledTableCell>
-                  <StyledTableCell align="center">DELETAR</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {instrutor
-                  .slice(
-                    page * rowsPerPage,
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">NOME</StyledTableCell>
+                <StyledTableCell align="center">ALTERAR</StyledTableCell>
+                <StyledTableCell align="center">DELETAR</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {instrutor
+                .slice(
+                  page * rowsPerPage,
 
-                    page * rowsPerPage + rowsPerPage
-                  )
-                  .map(({ id, nome }, index) => (
-                    <StyledTableRow key={id}>
-                      <StyledTableCell align="center">{nome}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Button
-                          variant="contained"
-                          size="large"
-                          style={{ backgroundColor: "#FFD60A" }}
-                          onClick={() => modalAlterarAbrindo(id, nome)}
-                          className={classes.button}
-                          startIcon={
-                            <BorderColorIcon
-                              style={{
-                                color: "#000",
-                                position: "relative",
-                                left: "0.2em",
-                              }}
-                            />
-                          }
-                        ></Button>
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Button
-                          variant="contained"
-                          size="large"
-                          style={{ backgroundColor: "#FF0000" }}
-                          onClick={() => modalAbrindoDelatar(id)}
-                          className={classes.button}
-                          startIcon={
-                            <DeleteIcon
-                              style={{ position: "relative", left: "0.3em" }}
-                            />
-                          }
-                        ></Button>
-                      </StyledTableCell>
+                  page * rowsPerPage + rowsPerPage
+                )
+                .map(({ id, nome }, index) => (
+                  <StyledTableRow key={id}>
+                    <StyledTableCell align="center">{nome}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button
+                        variant="contained"
+                        size="large"
+                        style={{ backgroundColor: "#FFD60A" }}
+                        onClick={() => modalAlterarAbrindo(id, nome)}
+                        className={classes.button}
+                        startIcon={
+                          <BorderColorIcon
+                            style={{
+                              color: "#000",
+                              position: "relative",
+                              left: "0.2em",
+                            }}
+                          />
+                        }
+                      ></Button>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button
+                        variant="contained"
+                        size="large"
+                        style={{ backgroundColor: "#FF0000" }}
+                        onClick={() => modalAbrindoDelatar(id)}
+                        className={classes.button}
+                        startIcon={
+                          <DeleteIcon
+                            style={{ position: "relative", left: "0.3em" }}
+                          />
+                        }
+                      ></Button>
+                    </StyledTableCell>
 
-                      <Modal
-                        open={open2}
-                        onClose={modalAlterarFechando}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                      >
-                        <Box sx={style}>
-                          <h2 id="transition-modal-title">alterar instrutor</h2>
-                          <form onSubmit={alterainstrutor}>
-                            <TextField
-                              name="nome"
-                              type="text"
-                              label="nome"
-                              defaultValue={nomeistrutor}
-                              placeholder={nomeistrutor}
-                              variant="outlined"
-                            />
-                            <Button
-                              variant="contained"
-                              style={{ margin: 10 }}
-                              type="submit"
-                            >
-                              alterar
-                            </Button>
-                          </form>
-                        </Box>
-                      </Modal>
-                    </StyledTableRow>
-                  ))}
-                 
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[3, 5, 10, 15]}
-            component="div"
-            count={instrutor.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            labelRowsPerPage='Linhas por páginas'
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-           {!removeLoad && <Load/>}
-        </Box>
+                    <Modal
+                      open={open2}
+                      onClose={modalAlterarFechando}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <h2 id="transition-modal-title">alterar instrutor</h2>
+                        <form onSubmit={alterainstrutor}>
+                          <TextField
+                            name="nome"
+                            type="text"
+                            label="nome"
+                            defaultValue={nomeistrutor}
+                            placeholder={nomeistrutor}
+                            variant="outlined"
+                          />
+                          <Button
+                            variant="contained"
+                            style={{ margin: 10 }}
+                            type="submit"
+                          >
+                            alterar
+                          </Button>
+                        </form>
+                      </Box>
+                    </Modal>
+                  </StyledTableRow>
+                ))}
+
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[3, 5, 10, 15]}
+          component="div"
+          count={instrutor.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          labelRowsPerPage='Linhas por páginas'
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        {!removeLoad && <Load />}
       </Box>
+    </Box>
     </>
   );
 }

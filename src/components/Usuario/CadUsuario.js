@@ -37,6 +37,8 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Load from "../load";
 import "../Usuario/usuario.css";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import { makeStyles } from "@material-ui/core/styles";
 
 const token = sessionStorage.getItem("token");
 
@@ -76,7 +78,15 @@ function PageUsuario() {
     setIdUsuario(id)
 
   };
-  
+
+  const useStyles = makeStyles((theme) => ({
+    button: {
+      margin: theme.spacing(1),
+    },
+  }));
+
+
+  const classes = useStyles();
 
   const [removeLoad, setRemoveLoad] = useState(false)
 
@@ -86,7 +96,7 @@ function PageUsuario() {
   const handleOpen = () => setOpen(true);
   // metodo que fecha a modal
   const handleClose = () => {
-    
+
     setOpen(false);
     setModalAlt(false)
   }
@@ -104,9 +114,9 @@ function PageUsuario() {
   // REQUISIÇÃO GET PARA PUXAR TODOS OS USUARIOS
   useEffect(() => {
     setTimeout(() => {
-    fetch("http://localhost:8080/api/usuario")
-      .then((resp) => resp.json())
-      .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
+      fetch("http://localhost:8080/api/usuario")
+        .then((resp) => resp.json())
+        .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
       setRemoveLoad(true)
     }, 2000)
 
@@ -123,48 +133,48 @@ function PageUsuario() {
   const alterar = async (event) => {
 
     event.preventDefault()
-    
+
     const formData = new FormData(event.target)
 
     const data = Object.fromEntries(formData);
 
-    if(data.nif.length >= 5 && data.nif.length <= 7){
+    if (data.nif.length >= 5 && data.nif.length <= 7) {
 
-    const usuario = {
-      id: idUsuario,
-      nome: data.nome,
-      nif: data.nif,
-      tipoUsuario: data.tipoUsuario,
-      email: data.email,
+      const usuario = {
+        id: idUsuario,
+        nome: data.nome,
+        nif: data.nif,
+        tipoUsuario: data.tipoUsuario,
+        email: data.email,
 
-    };
-    // requisição ao back-end
-    let resultado = await fetch("http://localhost:8080/api/usuario/" + idUsuario, {
-      method: "PUT",
-      body: JSON.stringify(usuario),
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-        Authorization: token,
-      },
-    });
+      };
+      // requisição ao back-end
+      let resultado = await fetch("http://localhost:8080/api/usuario/" + idUsuario, {
+        method: "PUT",
+        body: JSON.stringify(usuario),
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: token,
+        },
+      });
 
-    // verifica se existe resultado
-    if (resultado) {
-      // atualiza a lista com o usuario alterado
-      atualizaLista();
-      // fecha a modal de alterar
-      setModalAlt(false);
-      // exibe a msg de alteração concluida
-      msgAlteracao();
+      // verifica se existe resultado
+      if (resultado) {
+        // atualiza a lista com o usuario alterado
+        atualizaLista();
+        // fecha a modal de alterar
+        setModalAlt(false);
+        // exibe a msg de alteração concluida
+        msgAlteracao();
+      }
+    } else {
+
+      nifValidacao()
+
     }
-  }else{
-
-    nifValidacao()
-
-  } 
   };
-  
+
 
   const [idUsuario, setIdUsuario] = useState([])
 
@@ -181,60 +191,60 @@ function PageUsuario() {
   const cadastrar = async (event) => {
 
     event.preventDefault()
-    
+
     const formData = new FormData(event.target)
 
     const data = Object.fromEntries(formData);
 
-    if(data.nif.length >= 5 && data.nif.length <= 7){
-      
-    const usuario = {
+    if (data.nif.length >= 5 && data.nif.length <= 7) {
 
-      nome: data.nome,
-      nif: data.nif,
-      tipoUsuario: data.tipoUsuario,
-      email: data.email,
-      senha: data.senha
+      const usuario = {
 
-    };
-    
-    fetch("http://localhost:8080/api/usuario", {
-      method: "post",
-      body: JSON.stringify(usuario),
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-        Authorization: token,
-      },
-    }).then((retorno) => {
-      //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
-      if (retorno.status === 500 || retorno.status === 400) {
-        msgCamposVazio();
+        nome: data.nome,
+        nif: data.nif,
+        tipoUsuario: data.tipoUsuario,
+        email: data.email,
+        senha: data.senha
 
-        // se existir um email existente
-      } else if (retorno.status === 409) {
-        document.getElementById("email").value = ""; // Limpa o campo
+      };
 
-        msgEmailDuplicados();
-      } else if (retorno.status === 510) {
-        document.getElementById("nif").value = ""; // Limpa o campo
-        msgNifDuplicados();
-      } else {
-        //faz o processo de cadastro
-        retorno.json().then((retorno_convertido) => {
-          //exibir notificação de sucesso
-          msgCadastro();
-          atualizaLista();
-          //atualiza a página depois de um tempo
-          setOpen(false);
-        });
-      }
-    });
-      }else{
+      fetch("http://localhost:8080/api/usuario", {
+        method: "post",
+        body: JSON.stringify(usuario),
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: token,
+        },
+      }).then((retorno) => {
+        //se o input estiver vazio, passar uma resposta de erro e enviar mensagem de erro
+        if (retorno.status === 500 || retorno.status === 400) {
+          msgCamposVazio();
 
-        nifValidacao()
+          // se existir um email existente
+        } else if (retorno.status === 409) {
+          document.getElementById("email").value = ""; // Limpa o campo
 
-      }
+          msgEmailDuplicados();
+        } else if (retorno.status === 510) {
+          document.getElementById("nif").value = ""; // Limpa o campo
+          msgNifDuplicados();
+        } else {
+          //faz o processo de cadastro
+          retorno.json().then((retorno_convertido) => {
+            //exibir notificação de sucesso
+            msgCadastro();
+            atualizaLista();
+            //atualiza a página depois de um tempo
+            setOpen(false);
+          });
+        }
+      });
+    } else {
+
+      nifValidacao()
+
+    }
   };
   // metodo que capta o usuario que foi selecionado
   const selecionarUsuario = (id, nome, nif, email, tipoUsuarioOrdinal) => {
@@ -272,8 +282,8 @@ function PageUsuario() {
     setObjUsuario("");
   };
 
-  // metodo que busca um usuario
-  const buscaUsuario = async (event) => {
+   // metodo que busca um usuario
+   const buscaUsuario = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
     let key = event.target.value;
     console.log(key);
@@ -460,7 +470,7 @@ function PageUsuario() {
                 name="tipoUsuario"
                 required
                 className="form-control"
-                 onChange={capturarDados}
+                onChange={capturarDados}
               >
 
                 {tipoUsuario.map((obj, indice) => (
@@ -471,7 +481,7 @@ function PageUsuario() {
                 required
                 sx={styleTextField}
                 id="nif"
-                
+
                 onChange={capturarDados}
                 name="nif"
                 minlength="7"
@@ -558,7 +568,7 @@ function PageUsuario() {
                 <option>Selecione:</option>
 
                 {tipoUsuario.map((obj, indice) => (
-                  <option value={indice}  key={obj}>{obj}</option>
+                  <option value={indice} key={obj}>{obj}</option>
                 ))}
               </select>
               <TextField
@@ -643,12 +653,23 @@ function PageUsuario() {
               </Grid>
               <Grid item>
                 <Button
-                  onClick={handleOpen}
+
+                  style={{ margin: 10, fontWeight: "bold", backgroundColor: "black", borderRadius: "2em" }}
+
                   variant="contained"
-                  color="primary"
+
+                  size="large"
+
+                  onClick={handleOpen}
+
+                  className={classes.button, "botaoTarefaTurma"}
+
+                  startIcon={<AssignmentIcon />}
+
                 >
-                  <AddOutlinedIcon />
+
                   Novo
+
                 </Button>
               </Grid>
             </Grid>
@@ -674,7 +695,7 @@ function PageUsuario() {
             </thead>
 
             <tbody>
-              {usuarios.map(({id, nome, nif, email, tipoUsuarioString, tipoUsuarioOrdinal} ) => (
+              {usuarios.map(({ id, nome, nif, email, tipoUsuarioString, tipoUsuarioOrdinal }) => (
                 <tr key={id}>
                   <th scope="row">{nome}</th>
                   <th scope="row">{email}</th>
@@ -795,7 +816,7 @@ function PageUsuario() {
                   </th>
                 </tr>
               ))}
-              {!removeLoad && <Load/>}
+              {!removeLoad && <Load />}
             </tbody>
           </table>
         </Typography>

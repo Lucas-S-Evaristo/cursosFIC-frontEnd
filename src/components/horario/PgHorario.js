@@ -47,7 +47,7 @@ import Slide from "@mui/material/Slide";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import '../horario/hs.css'
-
+import AssignmentIcon from "@mui/icons-material/Assignment";
 const drawerWidth = 240;
 //modal css
 const style = {
@@ -401,15 +401,23 @@ const PgHorario = () => {
         >
           <Toolbar />
           <Button
-            style={{ margin: 10, fontWeight: "bold" }}
+
+            style={{ margin: 10, fontWeight: "bold", backgroundColor: "black", borderRadius: "2em" }}
+
             variant="contained"
-            color="primary"
+
             size="large"
+
             onClick={modalCadastroAbrindo}
-            className={classes.button}
-            startIcon={<AddSharpIcon />}
+
+            className={classes.button, "botaoTarefaTurma"}
+
+            startIcon={<AssignmentIcon />}
+
           >
-            NOVO
+
+            Novo
+
           </Button>
 
           <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose}>
