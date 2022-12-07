@@ -256,7 +256,7 @@ function PgPricipal(props) {
       getiInstrutor();
 
       setRemoveLoad(true)
-    }, 2000)
+    }, 500)
   }, []);
 
 

@@ -224,7 +224,7 @@ const PgHorario = () => {
     setTimeout(() => {
     getiHorario();
     setRemoveLoad(true)
-    }, 2000)
+    }, 500)
   }, []);
 
   const getiHorario = async () => {

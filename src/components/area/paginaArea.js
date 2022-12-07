@@ -283,7 +283,7 @@ function ListaArea() {
     setTimeout(() => {
       getArea();
       setRemoveLoad(true)
-    }, 2000)
+    }, 500)
 
   }, []);
 

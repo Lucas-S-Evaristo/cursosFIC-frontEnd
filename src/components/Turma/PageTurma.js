@@ -232,7 +232,7 @@ function CadTurma() {
       .then((retorno_convertido) => setTurma(retorno_convertido),
       setRemoveLoad(true)
      ); //lista de turmas
-    }, 2000)
+    }, 500)
   }, []);
 
   useEffect(() => {
@@ -270,12 +270,6 @@ function CadTurma() {
     fetch("http://localhost:8080/api/ambiente")
       .then((resp) => resp.json())
       .then((retorno_convertido) => setAmbiente(retorno_convertido)); //lista de ambiente
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/enum/diasSemana")
-      .then((resp) => resp.json())
-      .then((retorno_convertido) => setDiaSemana(retorno_convertido)); //lista de dia da semana
   }, []);
 
   useEffect(() => {
@@ -401,6 +395,19 @@ function CadTurma() {
     });
   };
 
+  const nmrMatriculaMaiorMaximo = () => {
+    toast.error("O número de matriculas não pode ser maior que a quantidade máxima de vagas!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   // metodo que efetua o cadastro da turma
   const cadastrar = async (event) => {
 
@@ -461,7 +468,7 @@ function CadTurma() {
         } else if (retorno.status === 406) {
           erroHorariosIguais();
 
-        } else if (retorno.status === 451) {
+        } else if (retorno.status === 405) {
           erroMinVagasMaior();
 
         } else {
@@ -494,11 +501,14 @@ function CadTurma() {
     }
     )
 
-    if (result) {
+    if (result.status === 409) {
+      nmrMatriculaMaiorMaximo()
+
+  }else if(result){
       result = await result.json();
 
       atualizaLista()
-    }
+  }
   }
 
   const diminuirQtdMatricula = async (id) => {
@@ -596,9 +606,17 @@ function CadTurma() {
 
       if (result.status === 402) {
 
-        alert("OII")
-      }
-      if (result) {
+        erroHorariosDepois()
+        
+      }else if(result.status === 405){
+        
+        erroMinVagasMaior()
+
+      }else if(result.status === 409){
+        
+        nmrMatriculaMaiorMaximo()
+
+      }else if (result) {
         setInterval(function () {
           window.location.reload();
         }, 1500);
@@ -1054,12 +1072,12 @@ function CadTurma() {
                     { visibility: "visible" }
                   }>Excluir</StyledTableCell>
 
-                  <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
+                  <StyledTableCell id="excluir" style={token === null || p === null
                     ?
                     { display: "none" }
                     :
                     { visibility: "visible" }
-                  }>LinhaTempo</StyledTableCell>
+                  }>Linha do Tempo</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -1235,7 +1253,7 @@ function CadTurma() {
 
                         </StyledTableCell>
 
-                        <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
+                        <StyledTableCell style={token === null || p === null
                           ?
                           { display: "none" }
                           :

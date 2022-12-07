@@ -118,7 +118,7 @@ function PageUsuario() {
         .then((resp) => resp.json())
         .then((retorno_convertido) => setUsuario(retorno_convertido)); //lista de usuários
       setRemoveLoad(true)
-    }, 2000)
+    }, 500)
 
   }, []);
 

@@ -210,7 +210,7 @@ function ListaCurso() {
       .then((retorno_convertido) => setCursos(retorno_convertido)); //lista de cursos
 
         setRemoveLoad(true)
-    }, 2000)
+    }, 500)
   }, []);
 
   useEffect(() => {
@@ -721,7 +721,7 @@ function ListaCurso() {
 
                       <TableCell align="left">{area.nome}</TableCell>
                       <TableCell align="left" component="th" scope="row" s>
-                        {valor}
+                      R$ {valor} 
                       </TableCell>
                       <Tooltip
                         sx={{ paddingTop: "10px" }}
