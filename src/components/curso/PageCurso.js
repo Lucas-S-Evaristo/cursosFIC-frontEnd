@@ -210,7 +210,7 @@ function ListaCurso() {
       .then((retorno_convertido) => setCursos(retorno_convertido)); //lista de cursos
 
         setRemoveLoad(true)
-    }, 500)
+    }, 2000)
   }, []);
 
   useEffect(() => {
@@ -616,43 +616,43 @@ function ListaCurso() {
           <Folder/>
 
         <TableContainer component={Paper}>
-          <Table size="medium" style={{ width: "100%" }}>
+          <Table size="medium" >
             <TableHead sx={{ backgroundColor: "#000814", height: "80px" }}>
               <TableRow>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100} >
                   Nome
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Objetivo
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left"width={100}>
                   Pré Requisito
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Conteúdo Programático
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="center">
+                <TableCell sx={{ color: "#fff" }} align="center" width={100}>
                   Sigla
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Tipo Atendimento
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Nível
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Carga Horaria
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Área
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Valor
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Alterar
                 </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left">
+                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                   Excluir
                 </TableCell>
               </TableRow>
@@ -697,31 +697,31 @@ function ListaCurso() {
                       >
                         {nome}
                       </TableCell>
-                      <TableCell align="left" component="th" scope="row">
-                        {objetivo}
+                      <TableCell align="left" component="th" scope="row" width={10}>
+                        <textarea className="txtArea" disabled>{objetivo}</textarea>
                       </TableCell>
-                      <TableCell align="left" component="th" scope="row">
-                        {preRequisito}
+                      <TableCell align="left" component="th" scope="row" width={10}>
+                      <textarea className="txtArea" disabled>{preRequisito}</textarea>
                       </TableCell>
-                      <TableCell align="left" component="th" scope="row">
-                        {conteudoProgramatico}
+                      <TableCell align="left" component="th" scope="row" width={10}>
+                      <textarea className="txtArea" disabled>{conteudoProgramatico }</textarea>
                       </TableCell>
-                      <TableCell align="left" component="th" scope="row">
+                      <TableCell align="left" component="th" scope="row" width={10}>
                         {sigla}
                       </TableCell>
-                      <TableCell align="left" component="th" scope="row">
+                      <TableCell align="left" component="th" scope="row" width={10}>
                         {tipoAtendString}
                       </TableCell>
-                      <TableCell align="left" component="th" scope="row">
+                      <TableCell align="left" component="th" scope="row" width={10}>
                         {nivelString}
                       </TableCell>
-                      <TableCell align="left" component="th" scope="row">
+                      <TableCell align="left" component="th" scope="row" width={10}>
                         {cargaHoraria}
                       </TableCell>
 
                       <TableCell align="left">{area.nome}</TableCell>
                       <TableCell align="left" component="th" scope="row" s>
-                      R$ {valor} 
+                        {valor}
                       </TableCell>
                       <Tooltip
                         sx={{ paddingTop: "10px" }}
@@ -731,8 +731,8 @@ function ListaCurso() {
                       >
                         <Fab
                           sx={{
-                            marginLeft: "7px",
-                            marginTop: "1.2em",
+                            marginLeft: "2vh",
+                            marginTop: "5vh",
                             borderRadius: 80,
                             width: 50,
                             height: 30,
