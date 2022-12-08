@@ -43,6 +43,7 @@ import { InputAdornment, Toolbar } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import FolderIcon from '@mui/icons-material/Folder';
 import Load from "../load";
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -226,12 +227,12 @@ function CadTurma() {
   useEffect(() => {
     setTimeout(() => {
 
-    
-    fetch("http://localhost:8080/api/turma")
-      .then((resp) => resp.json())
-      .then((retorno_convertido) => setTurma(retorno_convertido),
-      setRemoveLoad(true)
-     ); //lista de turmas
+
+      fetch("http://localhost:8080/api/turma")
+        .then((resp) => resp.json())
+        .then((retorno_convertido) => setTurma(retorno_convertido),
+          setRemoveLoad(true)
+        ); //lista de turmas
     }, 500)
   }, []);
 
@@ -299,6 +300,20 @@ function CadTurma() {
       closeOnClick: true,
       pauseOnHover: true,
       theme: "dark",
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const msgParcela = () => {
+    toast.error("Não existe um parametro cadastrado", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
       draggable: true,
       progress: undefined,
     });
@@ -481,7 +496,7 @@ function CadTurma() {
               setShowCadastrar(false)
               // exibindo a msg de aviso de cadastro
               msgCadastro();
-             
+
             });
         }
       });
@@ -504,11 +519,11 @@ function CadTurma() {
     if (result.status === 409) {
       nmrMatriculaMaiorMaximo()
 
-  }else if(result){
+    } else if (result) {
       result = await result.json();
 
       atualizaLista()
-  }
+    }
   }
 
   const diminuirQtdMatricula = async (id) => {
@@ -607,19 +622,17 @@ function CadTurma() {
       if (result.status === 402) {
 
         erroHorariosDepois()
-        
-      }else if(result.status === 405){
-        
+
+      } else if (result.status === 405) {
+
         erroMinVagasMaior()
 
-      }else if(result.status === 409){
-        
+      } else if (result.status === 409) {
+
         nmrMatriculaMaiorMaximo()
 
-      }else if (result) {
-        setInterval(function () {
-          window.location.reload();
-        }, 1500);
+      } else if (result) {
+
 
         fecharModalAlterar()
         atualizaLista();
@@ -935,9 +948,13 @@ function CadTurma() {
 
       msgErro()
 
+    } else if (result.status === 400) {
+
+      msgParcela();
+
     } else {
 
-      window.location.href = "http://localhost:8080/api/folder/turma"
+      window.open("http://localhost:8080/api/folder/turma", '_blank');
 
     }
   }
@@ -1036,27 +1053,28 @@ function CadTurma() {
             Folder de turmas
           </Button>
 
-          <TableContainer component={Paper}>
-            <Table aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Código de turma</StyledTableCell>
-                  <StyledTableCell>Curso</StyledTableCell>
-                  <StyledTableCell>Instrutor</StyledTableCell>
-                  <StyledTableCell>Quantidade de matricula</StyledTableCell>
-                  <StyledTableCell>Período</StyledTableCell>
-                  <StyledTableCell>Status</StyledTableCell>
-                  <StyledTableCell>Ambiente</StyledTableCell>
-                  <StyledTableCell>Nº Máximo de vagas</StyledTableCell>
-                  <StyledTableCell>Nº Minimo de vagas</StyledTableCell>
-                  <StyledTableCell>Dias da semana</StyledTableCell>
-                  <StyledTableCell>Data de inicio</StyledTableCell>
-                  <StyledTableCell>Data de Término</StyledTableCell>
-                  <StyledTableCell>Horario de Inicio</StyledTableCell>
-                  <StyledTableCell>Horario de término</StyledTableCell>
-                  <StyledTableCell>A turma vai para o site?</StyledTableCell>
-                  <StyledTableCell>Turma pode ser lançada</StyledTableCell>
-                  <StyledTableCell id="alterar"
+          <TableContainer component={Paper} >
+            <Table aria-label="customized table" sx={{ width: 2500 }}>
+              <TableHead >
+                <TableRow  >
+                  <StyledTableCell align="center">Código de turma</StyledTableCell>
+                  <StyledTableCell align="center">Curso</StyledTableCell>
+                  <StyledTableCell align="center">Instrutor</StyledTableCell>
+                  <StyledTableCell align="center">Quantidade de matricula</StyledTableCell>
+                  <StyledTableCell align="center">Turma pode ser lançada</StyledTableCell>
+                  <StyledTableCell align="center">Período</StyledTableCell>
+                  <StyledTableCell align="center">Status</StyledTableCell>
+                  <StyledTableCell align="center">Ambiente</StyledTableCell>
+                  <StyledTableCell align="center">Nº Máximo de vagas</StyledTableCell>
+                  <StyledTableCell align="center">Nº Minimo de vagas</StyledTableCell>
+                  <StyledTableCell align="center">Dias da semana</StyledTableCell>
+                  <StyledTableCell align="center">Data de inicio</StyledTableCell>
+                  <StyledTableCell align="center">Data de Término</StyledTableCell>
+                  <StyledTableCell align="center">Horario de Inicio</StyledTableCell>
+                  <StyledTableCell align="center">Horario de término</StyledTableCell>
+                  <StyledTableCell align="center">A turma vai para o site?</StyledTableCell>
+
+                  <StyledTableCell align="center" id="alterar"
                     style={token === null || p.tipo_usuario === "Secretária" || p === null
                       ?
                       { display: "none" }
@@ -1065,14 +1083,14 @@ function CadTurma() {
                     }
 
                   >Alterar</StyledTableCell>
-                  <StyledTableCell id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
+                  <StyledTableCell align="center" id="excluir" style={token === null || p.tipo_usuario === "Secretária" || p === null
                     ?
                     { display: "none" }
                     :
                     { visibility: "visible" }
                   }>Excluir</StyledTableCell>
 
-                  <StyledTableCell id="excluir" style={token === null || p === null
+                  <StyledTableCell align="center" id="excluir" style={token === null || p === null
                     ?
                     { display: "none" }
                     :
@@ -1115,11 +1133,11 @@ function CadTurma() {
 
                     }) => (
                       <StyledTableRow>
-                        <StyledTableCell>{codigo}</StyledTableCell>
-                        <StyledTableCell>{curso.nome}</StyledTableCell>
-                        <StyledTableCell>{instrutor.nome}</StyledTableCell>
+                        <StyledTableCell align="center">{codigo}</StyledTableCell>
+                        <StyledTableCell align="center">{curso.nome}</StyledTableCell>
+                        <StyledTableCell align="center">{instrutor.nome}</StyledTableCell>
 
-                        <StyledTableCell>
+                        <StyledTableCell align="center">
 
                           <a href="#"><RemoveIcon style={token == null || p.tipo_usuario === "Secretária" || p === null ? { display: "none" } : { visibility: "visible", color: "#9d0208" }}
                             onClick={() => diminuirQtdMatricula(id)} /></a>
@@ -1130,21 +1148,19 @@ function CadTurma() {
                             onClick={() => addQtdMatricula(id)}></AddIcon></a>
 
                         </StyledTableCell>
-                        <StyledTableCell>{periodoString}</StyledTableCell>
-                        <StyledTableCell>{statusString}</StyledTableCell>
-                        <StyledTableCell>{ambiente.nome}</StyledTableCell>
-                        <StyledTableCell>{numMaxVagas}</StyledTableCell>
-                        <StyledTableCell>{numMinVagas}</StyledTableCell>
-                        <StyledTableCell>{diasDaTurma}</StyledTableCell>
-                        <StyledTableCell>{moment(dataInicio).format('DD/MM/YYYY')}</StyledTableCell>
-                        <StyledTableCell>{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
-                        <StyledTableCell>{horarioInicio.horario}</StyledTableCell>
-                        <StyledTableCell>{horarioTermino.horario}</StyledTableCell>
-                        <StyledTableCell>{simNaoString}</StyledTableCell>
-
-                        <StyledTableCell><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em" } : { backgroundColor: "#2AFF00", width: "2em", height: "2em", borderRadius: "3em" }}></div></StyledTableCell>
-
-                        <StyledTableCell style={token === null || p === null || p.tipo_usuario === "Secretária"
+                        <StyledTableCell align="center"><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em", margin: "auto" } : { backgroundColor: "#2AFF00", width: "2em", height: "2em", borderRadius: "3em", margin: "auto" }}></div></StyledTableCell>
+                        <StyledTableCell align="center">{periodoString}</StyledTableCell>
+                        <StyledTableCell align="center">{statusString}</StyledTableCell>
+                        <StyledTableCell align="center">{ambiente.nome}</StyledTableCell>
+                        <StyledTableCell align="center">{numMaxVagas}</StyledTableCell>
+                        <StyledTableCell align="center">{numMinVagas}</StyledTableCell>
+                        <StyledTableCell align="center">{diasDaTurma}</StyledTableCell>
+                        <StyledTableCell align="center">{moment(dataInicio).format('DD/MM/YYYY')}</StyledTableCell>
+                        <StyledTableCell align="center">{moment(dataTermino).format('DD/MM/YYYY')}</StyledTableCell>
+                        <StyledTableCell align="center">{horarioInicio.horario}</StyledTableCell>
+                        <StyledTableCell align="center">{horarioTermino.horario}</StyledTableCell>
+                        <StyledTableCell align="center">{simNaoString}</StyledTableCell>
+                        <StyledTableCell align="center" style={token === null || p === null || p.tipo_usuario === "Secretária"
                           ?
                           { display: "none" }
                           :
@@ -1185,7 +1201,7 @@ function CadTurma() {
 
                           </button>
                         </StyledTableCell>
-                        <StyledTableCell style={token === null || p.tipo_usuario === "Secretária" || p === null
+                        <StyledTableCell align="center" style={token === null || p.tipo_usuario === "Secretária" || p === null
                           ?
                           { display: "none" }
                           :
@@ -1260,15 +1276,15 @@ function CadTurma() {
                           { visibility: "visible" }
                         }>
 
-                          <Button className="btnLinha" onClick={() => {
+                          <button className="botaoDeleteTurma" style={{ backgroundColor: "black" }} onClick={() => {
                             actionLinhaDoTempo(id)
 
-                          }}><RemoveRedEyeIcon/></Button>
+                          }}><LibraryAddCheckIcon /></button>
                         </StyledTableCell>
                       </StyledTableRow>
                     )
                   )}
-                  {!removeLoad && <Load/>}
+                {!removeLoad && <Load />}
               </TableBody>
 
             </Table>

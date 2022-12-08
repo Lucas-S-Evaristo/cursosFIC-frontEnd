@@ -40,7 +40,7 @@ import { yellow } from "@mui/material/colors";
 import { maxWidth } from "@mui/system";
 import { Toolbar } from "@mui/material";
 import { InputAdornment } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import { createTheme, makeStyles } from "@material-ui/core";
 
 const ITEM_HEIGHT = 48;
 
@@ -49,6 +49,14 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
     },
 }));
+
+const tema = createTheme({
+    palette: {
+      primary: {
+        main: "#DADADA"
+      }
+    }
+  })
 
 const drawerWidth = 240;
 
@@ -76,7 +84,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
         //backgroundColor: theme.palette.action.hover,
-        width: 0
+        width: 0,
+        backgroundColor: tema.palette.primary.main,
     },
     // hide last border
     '&:last-child td, &:last-child th': {

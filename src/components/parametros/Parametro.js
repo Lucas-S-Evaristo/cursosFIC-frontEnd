@@ -359,7 +359,8 @@ function ListaParametro() {
             lerArquivo.readAsDataURL(carregarImagem);
         }
 
-        setImagem(base64StringProduto)
+        setImagem(base64StringProduto);
+        {console.log(imagem)}
     };
 
     const base64Produto = (file) => {

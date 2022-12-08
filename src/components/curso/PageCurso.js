@@ -43,11 +43,11 @@ const tema = createTheme({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
-      backgroundColor: tema.palette.primary.main,
+    backgroundColor: tema.palette.primary.main,
   },
   // hide last border
   '&:last-child td, &:last-child th': {
-      border: 0,
+    border: 0,
   },
 }));
 
@@ -119,7 +119,7 @@ const msgDeletadoerror = () => {
 
 let token = sessionStorage.getItem("token")
 
-function ListaCurso() {
+const ListaCurso = () => {
   //  USE ESTATE USADO PARA CONTROLAR O ESTADO DE UMA VARIAVEL
   // estado da modal
   const [openModal, setOpenModal] = useState(false);
@@ -204,12 +204,12 @@ function ListaCurso() {
   useEffect(() => {
     setTimeout(() => {
 
-  
-    fetch("http://localhost:8080/api/curso")
-      .then((resp) => resp.json())
-      .then((retorno_convertido) => setCursos(retorno_convertido)); //lista de cursos
 
-        setRemoveLoad(true)
+      fetch("http://localhost:8080/api/curso")
+        .then((resp) => resp.json())
+        .then((retorno_convertido) => setCursos(retorno_convertido)); //lista de cursos
+
+      setRemoveLoad(true)
     }, 2000)
   }, []);
 
@@ -270,7 +270,7 @@ function ListaCurso() {
       };
 
       // requisição ao back-end
-      let resultado = await fetch("http://localhost:8080/api/curso/" + id, {
+      const resultado = await fetch("http://localhost:8080/api/curso/" + id, {
         method: "PUT",
         body: JSON.stringify(cursoAlt),
         headers: {
@@ -292,7 +292,7 @@ function ListaCurso() {
   };
 
   // metodo que efetua o cadastro do curso
-  const cadastrar = (event) => {
+  const cadastrar = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -328,10 +328,13 @@ function ListaCurso() {
         retorno.json().then((retorno_convertido) => {
           //exibir notificação de sucesso
           msgCadastro();
-          atualizaLista();
+
           //atualiza a página depois de um tempo
           setShowCadastrar(false);
+          atualizaLista();
+
         });
+
       }
     });
   };
@@ -494,6 +497,9 @@ function ListaCurso() {
     });
   };
 
+
+
+
   const msgCamposVazio = () => {
     toast.warn("Preencha os Campos Corretamente", {
       position: "top-center",
@@ -572,7 +578,7 @@ function ListaCurso() {
       <MenuLateral />
 
       <Box sx={{ display: "flex", marginLeft: "40px" }}>
-      <Box
+        <Box
           component="main"
           sx={{
             flexGrow: 1,
@@ -581,9 +587,9 @@ function ListaCurso() {
           }}
         >
 
-        <Toolbar />
+          <Toolbar />
 
-        <Button
+          <Button
             style={{ margin: 10, fontWeight: "bold", backgroundColor: "black", borderRadius: "2em" }}
             variant="contained"
             size="large"
@@ -594,7 +600,7 @@ function ListaCurso() {
             Novo
           </Button>
 
-        <TextField
+          <TextField
             fullWidth
             onChange={buscaCurso}
             style={{ marginBottom: 25, width: "37em", marginLeft: "5em" }}
@@ -613,270 +619,271 @@ function ListaCurso() {
               inputMode: "email",
             }}
           />
-          <Folder/>
+          <Folder />
 
-        <TableContainer component={Paper}>
-          <Table size="medium" >
-            <TableHead sx={{ backgroundColor: "#000814", height: "80px" }}>
-              <TableRow>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100} >
-                  Nome
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Objetivo
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left"width={100}>
-                  Pré Requisito
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Conteúdo Programático
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="center" width={100}>
-                  Sigla
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Tipo Atendimento
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Nível
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Carga Horaria
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Área
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Valor
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Alterar
-                </TableCell>
-                <TableCell sx={{ color: "#fff" }} align="left" width={100}>
-                  Excluir
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody style={{}}>
-              {cursos
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(
-                  ({
-                    id,
-                    valor,
-                    nome,
-                    objetivo,
-                    preRequisito,
-                    conteudoProgramatico,
-                    sigla,
-                    tipoAtendimento,
-                    nivel,
-                    cargaHoraria,
-                    area,
-                    tipoAtendOrdinal,
-                    nivelOrdinal,
-                    tipoAtendString,
-                    nivelString,
+          <TableContainer component={Paper} >
+            <Table size="medium"  sx={{width:2000}}>
+              <TableHead sx={{ backgroundColor: "#000814", height: "80px" }}>
+                <TableRow>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100} >
+                    Nome
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Objetivo
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Pré Requisito
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Conteúdo Programático
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="center" width={100}>
+                    Sigla
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Tipo Atendimento
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Nível
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Carga Horaria
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Área
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Valor
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Alterar
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff" }} align="left" width={100}>
+                    Excluir
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody style={{}}>
+                {cursos
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(
+                    ({
+                      id,
+                      valor,
+                      nome,
+                      objetivo,
+                      preRequisito,
+                      conteudoProgramatico,
+                      sigla,
+                      tipoAtendimento,
+                      nivel,
+                      cargaHoraria,
+                      area,
+                      tipoAtendOrdinal,
+                      nivelOrdinal,
+                      tipoAtendString,
+                      nivelString,
 
 
-                  }) => (
-                    <StyledTableRow
-                      hover
-                      sx={{
-                        "&:last-child td, &:last-child th": {
-                          border: 0,
-                        },
-                        cursor: "pointer",
-                      }}
-                    >
-                      <TableCell
-                        className="row"
-                        align="left"
-                        component="th"
-                        scope="row"
+                    }) => (
+                      <StyledTableRow
+                        hover
+                        sx={{
+                          "&:last-child td, &:last-child th": {
+                            border: 0,
+
+                          },
+                          cursor: "pointer",
+                        }}
                       >
-                        {nome}
-                      </TableCell>
-                      <TableCell align="left" component="th" scope="row" width={10}>
-                        <textarea className="txtArea" disabled>{objetivo}</textarea>
-                      </TableCell>
-                      <TableCell align="left" component="th" scope="row" width={10}>
-                      <textarea className="txtArea" disabled>{preRequisito}</textarea>
-                      </TableCell>
-                      <TableCell align="left" component="th" scope="row" width={10}>
-                      <textarea className="txtArea" disabled>{conteudoProgramatico }</textarea>
-                      </TableCell>
-                      <TableCell align="left" component="th" scope="row" width={10}>
-                        {sigla}
-                      </TableCell>
-                      <TableCell align="left" component="th" scope="row" width={10}>
-                        {tipoAtendString}
-                      </TableCell>
-                      <TableCell align="left" component="th" scope="row" width={10}>
-                        {nivelString}
-                      </TableCell>
-                      <TableCell align="left" component="th" scope="row" width={10}>
-                        {cargaHoraria}
-                      </TableCell>
-
-                      <TableCell align="left">{area.nome}</TableCell>
-                      <TableCell align="left" component="th" scope="row" s>
-                        {valor}
-                      </TableCell>
-                      <Tooltip
-                        sx={{ paddingTop: "10px" }}
-                        title="Alterar"
-                        arrow
-                        placement="top-start"
-                      >
-                        <Fab
-                          sx={{
-                            marginLeft: "2vh",
-                            marginTop: "5vh",
-                            borderRadius: 80,
-                            width: 50,
-                            height: 30,
-                            backgroundColor: "yellow",
-                          }}
-                          variant="circular"
-                          onClick={() => {
-                            selecionarCurso(
-                              id,
-                              valor,
-                              nome,
-                              objetivo,
-                              preRequisito,
-                              conteudoProgramatico,
-                              sigla,
-                              tipoAtendimento,
-                              nivel,
-                              cargaHoraria,
-                              area,
-                              tipoAtendOrdinal,
-                              nivelOrdinal
-
-                            );
-                            abrirModalAlterar();
-                          }}
-                          size="small"
-                          aria-label="edit"
+                        <TableCell
+                          className="row"
+                          align="left"
+                          component="th"
+                          scope="row"
                         >
-                          <img src={require("../curso/updateIcon.png")} />
-                        </Fab>
-                      </Tooltip>
+                          {nome}
+                        </TableCell>
+                        <TableCell align="left" component="th" scope="row" width={10}>
+                          <textarea className="txtArea" value={objetivo} disabled></textarea>
+                        </TableCell>
+                        <TableCell align="left" component="th" scope="row" width={10}>
+                          <textarea disabled className="txtArea" value={preRequisito} ></textarea>
+                        </TableCell>
+                        <TableCell align="left" component="th" scope="row" width={10}>
+                          <textarea disabled className="txtArea" value={conteudoProgramatico} ></textarea>
+                        </TableCell>
+                        <TableCell align="left" component="th" scope="row" width={10}>
+                          {sigla}
+                        </TableCell>
+                        <TableCell align="left" component="th" scope="row" width={10}>
+                          {tipoAtendString}
+                        </TableCell>
+                        <TableCell align="left" component="th" scope="row" width={10}>
+                          {nivelString}
+                        </TableCell>
+                        <TableCell align="left" component="th" scope="row" width={10}>
+                          {cargaHoraria}
+                        </TableCell>
 
-                      <TableCell>
-                        <Tooltip title="Deletar" arrow placement="top-start">
+                        <TableCell align="left">{area.nome}</TableCell>
+                        <TableCell align="left" component="th" scope="row" s>
+                          R$ {valor}
+                        </TableCell>
+                        <Tooltip
+                          sx={{ paddingTop: "10px" }}
+                          title="Alterar"
+                          arrow
+                          placement="top-start"
+                        >
                           <Fab
                             sx={{
-                              marginLeft: "7px",
+                              marginLeft: "2vh",
+                              marginTop: "5vh",
                               borderRadius: 80,
                               width: 50,
-                              backgroundColor: "red",
                               height: 30,
+                              backgroundColor: "yellow",
                             }}
                             variant="circular"
                             onClick={() => {
-                              abrirModalExcluir(id)
+                              selecionarCurso(
+                                id,
+                                valor,
+                                nome,
+                                objetivo,
+                                preRequisito,
+                                conteudoProgramatico,
+                                sigla,
+                                tipoAtendimento,
+                                nivel,
+                                cargaHoraria,
+                                area,
+                                tipoAtendOrdinal,
+                                nivelOrdinal
+
+                              );
+                              abrirModalAlterar();
                             }}
                             size="small"
-                            color="error"
                             aria-label="edit"
                           >
-                            <DeleteIcon />
+                            <img src={require("../curso/updateIcon.png")} />
                           </Fab>
                         </Tooltip>
-                        <Modal
-                          show={modalExcluir}
-                          onHide={fecharModalExcluir}
-                          backdrop="static"
-                          aria-labelledby="contained-modal-title-vcenter"
-                          centered>
+
+                        <TableCell>
+                          <Tooltip title="Deletar" arrow placement="top-start">
+                            <Fab
+                              sx={{
+                                marginLeft: "7px",
+                                borderRadius: 80,
+                                width: 50,
+                                backgroundColor: "red",
+                                height: 30,
+                              }}
+                              variant="circular"
+                              onClick={() => {
+                                abrirModalExcluir(id)
+                              }}
+                              size="small"
+                              color="error"
+                              aria-label="edit"
+                            >
+                              <DeleteIcon />
+                            </Fab>
+                          </Tooltip>
+                          <Modal
+                            show={modalExcluir}
+                            onHide={fecharModalExcluir}
+                            backdrop="static"
+                            aria-labelledby="contained-modal-title-vcenter"
+                            centered>
 
 
-                          <Modal.Header closeButton className="bodyExcluir">
-                            <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
-                          </Modal.Header>
-                          <form>
-                            <Modal.Body>
-                              <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
+                            <Modal.Header closeButton className="bodyExcluir">
+                              <Modal.Title className='tituloExcluir'>ALERTA!</Modal.Title>
+                            </Modal.Header>
+                            <form>
+                              <Modal.Body>
+                                <h4 className="textoExcluir">Tem Certeza que deseja excluir?</h4>
 
 
-                              <TextField
-                                id="outlined-multiline-static"
+                                <TextField
+                                  id="outlined-multiline-static"
 
-                                label="Justificativa:"
-                                hiddenLabel
-                                required
-                                className="textAreaExcluir"
-                                multiline
-                                rows={4}
-                                value={descricaoLog}
-                                onChange={(e) => {
-                                  setDescricaoLog(e.target.value)
-                                }}
+                                  label="Justificativa:"
+                                  hiddenLabel
+                                  required
+                                  className="textAreaExcluir"
+                                  multiline
+                                  rows={4}
+                                  value={descricaoLog}
+                                  onChange={(e) => {
+                                    setDescricaoLog(e.target.value)
+                                  }}
 
+                                />
+                              </Modal.Body>
+
+                              <ToastContainer
+                                position="top-center"
+                                autoClose={1500}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
                               />
-                            </Modal.Body>
-
-                            <ToastContainer
-                              position="top-center"
-                              autoClose={1500}
-                              hideProgressBar={false}
-                              newestOnTop={false}
-                              closeOnClick
-                              rtl={false}
-                              pauseOnFocusLoss
-                              draggable
-                              pauseOnHover
-                            />
 
 
 
-                            <Modal.Footer className="botaoModalExcluir">
-                              <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
-                                Não
-                              </Button>
-                              <Button variant="contained" color="success" onClick={() => {
-                                //excluir a turma pelo id
-                                deletar(idCurso)
-                                setShowExcluir(false)
-                                setDescricaoLog("")
+                              <Modal.Footer className="botaoModalExcluir">
+                                <Button variant="contained" color="error" className="botaoModalSim" onClick={fecharModalExcluir}>
+                                  Não
+                                </Button>
+                                <Button variant="contained" color="success" onClick={() => {
+                                  //excluir a turma pelo id
+                                  deletar(idCurso)
+                                  setShowExcluir(false)
+                                  setDescricaoLog("")
 
-                              }}>
-                                Sim
-                              </Button>
-                            </Modal.Footer>
-                          </form>
+                                }}>
+                                  Sim
+                                </Button>
+                              </Modal.Footer>
+                            </form>
 
-                        </Modal>
+                          </Modal>
 
-                      </TableCell>
-                    </StyledTableRow>
-                  )
-                )}
-            </TableBody>
-            {!removeLoad && <Load/>}
-          </Table>
-          <TablePagination
-            sx={{
-              marginTop: "40px",
+                        </TableCell>
+                      </StyledTableRow>
+                    )
+                  )}
+              </TableBody>
+              {!removeLoad && <Load />}
+            </Table>
+            <TablePagination
+              sx={{
+                marginTop: "40px",
 
-              alignItems: "center",
+                alignItems: "center",
 
-              textAlign: "center",
-            }}
-            rowsPerPageOptions={[3, 5, 10, 15]}
-            component="div"
-            count={cursos.length}
-            labelRowsPerPage='Linhas por páginas'
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </TableContainer>
-      </Box>
+                textAlign: "center",
+              }}
+              rowsPerPageOptions={[3, 5, 10, 15]}
+              component="div"
+              count={cursos.length}
+              labelRowsPerPage='Linhas por páginas'
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+        </Box>
       </Box>
 
       <ToastContainer
@@ -911,8 +918,8 @@ function ListaCurso() {
             ></img>
           </div>
 
-            <form>
-                <div className="divGlobalFormAltCurso">
+          <form>
+            <div className="divGlobalFormAltCurso">
               <div className="sectionModalAltCurso1">
                 <TextField
                   autoFocus
@@ -960,7 +967,7 @@ function ListaCurso() {
                   ))}
                 </select>
 
-                
+
                 <InputLabel className="labelInput" id="demo-simple-select-label">
                   Tipo Atendimento
                 </InputLabel>
@@ -993,21 +1000,21 @@ function ListaCurso() {
                     <option value={indice} key={obj}>{obj}</option>
                   ))}
                 </select>
-                
+
                 <TextField
                   id="objetivo"
                   className="textAreaCurso"
                   name="objetivo"
                   defaultValue={objetivo}
-                  sx={{width: 200}}
+                  sx={{ width: 200 }}
                   label="Objetivo"
                   multiline
                   rows={4}
                 />
 
-                </div>
-                
-                <div className="sectionModalAltCurso2">
+              </div>
+
+              <div className="sectionModalAltCurso2">
 
                 <TextField
                   name="conteudoProgramatico"
@@ -1016,7 +1023,7 @@ function ListaCurso() {
                   label="Conteúdo programático"
                   required
                   multiline
-                  style={{width: "150%"}}
+                  style={{ width: "150%" }}
                   rows={4}
                 />
 
@@ -1044,43 +1051,43 @@ function ListaCurso() {
                 />
 
               </div>
-                </div>
+            </div>
 
-              <div>
-                <Button
+            <div>
+              <Button
 
-                  variant="contained"
-                  style={btnCad}
-                  onClick={() => {
-                    alterar(id);
+                variant="contained"
+                style={btnCad}
+                onClick={() => {
+                  alterar(id);
+                }}
+              >
+                <CreateIcon
+                  sx={{
+                    color: "#ffff",
+                    width: "100",
+                    border: "none",
+                    marginRight: "10px",
                   }}
-                >
-                  <CreateIcon
-                    sx={{
-                      color: "#ffff",
-                      width: "100",
-                      border: "none",
-                      marginRight: "10px",
-                    }}
-                  />
-                  Alterar
-                </Button>
+                />
+                Alterar
+              </Button>
 
 
-                <Button
-                  variant="contained"
-                  color="error"
-                  style={btnClose}
-                  onClick={() => {
-                    limparForm();
-                    fecharModalAlterar();
-                  }}
-                >
-                  <CancelPresentationIcon sx={{ marginRight: "10px" }} />
-                  Fechar
-                </Button>
-              </div>
-            </form>
+              <Button
+                variant="contained"
+                color="error"
+                style={btnClose}
+                onClick={() => {
+                  limparForm();
+                  fecharModalAlterar();
+                }}
+              >
+                <CancelPresentationIcon sx={{ marginRight: "10px" }} />
+                Fechar
+              </Button>
+            </div>
+          </form>
 
         </Modal.Body>
       </Modal>
@@ -1104,129 +1111,129 @@ function ListaCurso() {
             ></img>
           </div>
           <div>
-          <form onSubmit={cadastrar}>
-                <div className="divGlobalFormAltCurso">
-              <div className="sectionModalAltCurso1">
-                <TextField
-                  autoFocus
-                  required
-                  id="nome"
-              
-                  className="inputAlterarCurso"
-                  name="nome"
-                  type="text"
-                  label="Nome"
-                  variant="outlined"
-                />
-                <TextField
-                  autoFocus
-                  required
-                  id="valor"
-              
-                  name="valor"
-                  type="number"
-                  label="Valor"
-                  variant="outlined"
-                  className="inputAlterarCurso"
-                />
+            <form onSubmit={cadastrar}>
+              <div className="divGlobalFormAltCurso">
+                <div className="sectionModalAltCurso1">
+                  <TextField
+                    autoFocus
+                    required
+                    id="nome"
 
-                <TextField
-                  autoFocus
-                  required
-                  className="inputAlterarCurso"
-                  id="cargaHoraria"
-               
-                  name="cargaHoraria"
-                  type="number"
-                  label="Carga Horaria"
-                  variant="outlined"
-                />
+                    className="inputAlterarCurso"
+                    name="nome"
+                    type="text"
+                    label="Nome"
+                    variant="outlined"
+                  />
+                  <TextField
+                    autoFocus
+                    required
+                    id="valor"
 
-                <InputLabel className="labelInput" id="demo-simple-select-label">Tipo Área</InputLabel>
-                <select required id="area" className="form-control" name="area">
-                  <option>Selecione:</option>
+                    name="valor"
+                    type="number"
+                    label="Valor"
+                    variant="outlined"
+                    className="inputAlterarCurso"
+                  />
 
-                  {tipoArea.map((obj) => (
-                    <option value={obj.id}>
-                      {obj.nome}
-                    </option>
-                  ))}
-                </select>
+                  <TextField
+                    autoFocus
+                    required
+                    className="inputAlterarCurso"
+                    id="cargaHoraria"
 
-                
-                <InputLabel className="labelInput" id="demo-simple-select-label">
-                  Tipo Atendimento
-                </InputLabel>
+                    name="cargaHoraria"
+                    type="number"
+                    label="Carga Horaria"
+                    variant="outlined"
+                  />
 
-                <select
-                  required
-                  id="tipoAtendimento"
-                  className="form-control"
-                  name="tipoAtendimento"
-                >
-                  <option>Selecione:</option>
+                  <InputLabel className="labelInput" id="demo-simple-select-label">Tipo Área</InputLabel>
+                  <select required id="area" className="form-control" name="area">
+                    <option>Selecione:</option>
 
-                  {tipoAtendimentos.map((obj, indice) => (
+                    {tipoArea.map((obj) => (
+                      <option value={obj.id}>
+                        {obj.nome}
+                      </option>
+                    ))}
+                  </select>
 
-                    <option value={indice} key={obj}>{obj}</option>
-                  ))}
-                </select>
 
-                <InputLabel className="labelInput" id="demo-simple-select-label">Nivel</InputLabel>
+                  <InputLabel className="labelInput" id="demo-simple-select-label">
+                    Tipo Atendimento
+                  </InputLabel>
 
-                <select
-                  required
-                  id="nivel"
-                  className="form-control"
-                  name="nivel"
-                >
-                  <option>Selecione:</option>
+                  <select
+                    required
+                    id="tipoAtendimento"
+                    className="form-control"
+                    name="tipoAtendimento"
+                  >
+                    <option>Selecione:</option>
 
-                  {niveis.map((obj, indice) => (
-                    <option value={indice} key={obj}>{obj}</option>
-                  ))}
-                </select>
+                    {tipoAtendimentos.map((obj, indice) => (
+
+                      <option value={indice} key={obj}>{obj}</option>
+                    ))}
+                  </select>
+
+                  <InputLabel className="labelInput" id="demo-simple-select-label">Nivel</InputLabel>
+
+                  <select
+                    required
+                    id="nivel"
+                    className="form-control"
+                    name="nivel"
+                  >
+                    <option>Selecione:</option>
+
+                    {niveis.map((obj, indice) => (
+                      <option value={indice} key={obj}>{obj}</option>
+                    ))}
+                  </select>
 
                 </div>
-                
+
                 <div className="sectionModalAltCurso2">
 
-                <TextField
-                  name="conteudoProgramatico"
-                  id="conteudoProgramatico"
-             
-                  label="Conteúdo programático"
-                  required
-                  multiline
-                  style={{width: "150%"}}
-                  rows={4}
-                />
+                  <TextField
+                    name="conteudoProgramatico"
+                    id="conteudoProgramatico"
 
-                <TextField
-                  id="objetivo"
-                  className="textAreaCurso"
-                  name="objetivo"
-                  label="Objetivo"
-                  multiline
-                  rows={4}
-                />
+                    label="Conteúdo programático"
+                    required
+                    multiline
+                    style={{ width: "150%" }}
+                    rows={4}
+                  />
 
-                <TextField
-                  autoFocus
-                  required
-                  id="preRequisito"
-               
-                  multiline
-                  rows={4}
-                  className="textAreaCurso"
-                  name="preRequisito"
-                  type="text"
-                  label="Pré requisito"
-                  variant="outlined"
-                />
+                  <TextField
+                    id="objetivo"
+                    className="textAreaCurso"
+                    name="objetivo"
+                    label="Objetivo"
+                    multiline
+                    rows={4}
+                  />
 
-              </div>
+                  <TextField
+                    autoFocus
+                    required
+                    id="preRequisito"
+
+                    multiline
+                    rows={4}
+                    className="textAreaCurso"
+                    name="preRequisito"
+                    type="text"
+                    label="Pré requisito"
+                    variant="outlined"
+                  />
+
                 </div>
+              </div>
 
               <div>
                 <Button
@@ -1243,7 +1250,7 @@ function ListaCurso() {
                       marginRight: "10px",
                     }}
                   />
-                 Cadastrar
+                  Cadastrar
                 </Button>
 
 
@@ -1265,7 +1272,7 @@ function ListaCurso() {
         </Modal.Body>
       </Modal>
 
-      
+
       <Modal
         open={openfol}
         onClose={handleCloseFol}
@@ -1275,7 +1282,7 @@ function ListaCurso() {
         <Box sx={styles}>
           teste de mmodal
         </Box>
-      </Modal>         
+      </Modal>
 
     </>
   );

@@ -50,15 +50,11 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
 
-            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária"
-                     ? 
-                     {display: "none"} 
-                    :
-                     {visibility: "visible"}
-                     }>
-              <Nav.Link className="navLink" href="/listaArea">
-                <ImportContactsTwoToneIcon sx={{ marginRight: "30px" }} />
-                Área
+            
+            <Nav.Item className="navItem">
+              <Nav.Link className="navLink" href="/">
+                <GroupIcon sx={{ marginRight: "30px" }} /> 
+                Turmas
               </Nav.Link>
             </Nav.Item>
 
@@ -122,14 +118,18 @@ function MenuLateral() {
               </Nav.Link>
             </Nav.Item>
 
-  
-            <Nav.Item className="navItem">
-              <Nav.Link className="navLink" href="/">
-                <GroupIcon sx={{ marginRight: "30px" }} /> 
-                Turmas
+            
+            <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária"
+                     ? 
+                     {display: "none"} 
+                    :
+                     {visibility: "visible"}
+                     }>
+              <Nav.Link className="navLink" href="/listaArea">
+                <ImportContactsTwoToneIcon sx={{ marginRight: "30px" }} />
+                Área
               </Nav.Link>
             </Nav.Item>
-            
 
             <Nav.Item className="navItem" style={ p === null ||token === null || p.tipo_usuario === "Secretária" || p.tipo_usuario === "Opp"
                      ? 

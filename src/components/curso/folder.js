@@ -65,7 +65,7 @@ const msgWarning = () => {
        msgWarning();
     }else{
 
-       window.location.href = "http://localhost:8080/api/folder/curso/" + id;
+      window.open("http://localhost:8080/api/folder/curso/" + id, '_blank');
     }
   } 
 

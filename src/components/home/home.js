@@ -61,6 +61,20 @@ function HomeG() {
     });
   };
 
+  const msgParcela = () => {
+    toast.error("Não existe um parametro cadastrado", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: "dark",
+      // faz com que seja possivel arrastar
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   const msgErro = () => {
     toast.error("Não existe turma aberta!", {
       position: "top-center",
@@ -132,9 +146,13 @@ function HomeG() {
 
       msgErro()
 
+    } else if (result.status === 400) {
+
+      msgParcela();
+
     } else {
 
-      window.location.href = "http://localhost:8080/api/folder/turma"
+      window.open("http://localhost:8080/api/folder/turma", '_blank');
 
     }
   }
@@ -148,9 +166,7 @@ function HomeG() {
 
       result = await result.json();
 
-      window.location.href = `http://localhost:8080/folders/${result.nome}`
-
-
+      window.open(`http://localhost:8080/folders/${result.nome}`, '_blank');
 
     }
 
@@ -167,7 +183,8 @@ function HomeG() {
       msgWarning();
     } else {
 
-      window.location.href = "http://localhost:8080/api/folder/curso/" + id;
+      window.open("http://localhost:8080/api/folder/curso/" + id, '_blank');
+    
     }
 
 
