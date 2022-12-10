@@ -115,7 +115,7 @@ header{
 
 .parte2{
     position: absolute;
-    left: 16em;
+    left: 19em;
     top:0em;
     width: 20%;
    
@@ -139,7 +139,7 @@ header{
 
 .select1{
     position: absolute;
-    left: 16em;
+    left: 19em;
     top: 9em;
     width: 20%;
   
@@ -161,7 +161,7 @@ header{
 
 .select3{
     position: absolute;
-    left: 16em;
+    left: 19em;
     top:14em;
     width: 20%;
   
@@ -187,11 +187,13 @@ header{
 
     position: absolute;
 
-    left: 29.5em;
+    left: 49em;
 
-    top: 10em;
+    top: 0em;
 
     width: 17%;
+
+    font-weight: ;
 
 }
 
@@ -314,7 +316,7 @@ header{
 .justificativaAltTurma{
     position: absolute;
     top: 0.5em;
-    left: 30em;
+    left: 34em;
 }
 
 .botaoAdicionarQtdMatricula{

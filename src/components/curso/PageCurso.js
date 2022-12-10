@@ -28,7 +28,7 @@ import { width } from "@mui/system";
 import "./styles.css"
 import Folder from "./folder";
 import { makeStyles } from "@material-ui/core";
-import { InputAdornment } from "@mui/material";
+import { Chip, InputAdornment } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import FolderIcon from '@mui/icons-material/Folder';
 import Load from "../load";
@@ -625,6 +625,9 @@ const ListaCurso = () => {
             <Table size="medium"  sx={{width:2000}}>
               <TableHead sx={{ backgroundColor: "#000814", height: "80px" }}>
                 <TableRow>
+                <TableCell sx={{ color: "#fff" }} align="center" width={100}>
+                    Sigla
+                  </TableCell>
                   <TableCell sx={{ color: "#fff" }} align="left" width={100} >
                     Nome
                   </TableCell>
@@ -636,9 +639,6 @@ const ListaCurso = () => {
                   </TableCell>
                   <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                     Conteúdo Programático
-                  </TableCell>
-                  <TableCell sx={{ color: "#fff" }} align="center" width={100}>
-                    Sigla
                   </TableCell>
                   <TableCell sx={{ color: "#fff" }} align="left" width={100}>
                     Tipo Atendimento
@@ -696,6 +696,10 @@ const ListaCurso = () => {
                           cursor: "pointer",
                         }}
                       >
+                         <TableCell align="left" component="th" scope="row" width={10}>
+                        <Chip label={sigla} style={{backgroundColor: "#171119", color: "white" }}/>
+                        </TableCell>
+
                         <TableCell
                           className="row"
                           align="left"
@@ -713,9 +717,7 @@ const ListaCurso = () => {
                         <TableCell align="left" component="th" scope="row" width={10}>
                           <textarea disabled className="txtArea" value={conteudoProgramatico} ></textarea>
                         </TableCell>
-                        <TableCell align="left" component="th" scope="row" width={10}>
-                          {sigla}
-                        </TableCell>
+                       
                         <TableCell align="left" component="th" scope="row" width={10}>
                           {tipoAtendString}
                         </TableCell>

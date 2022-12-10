@@ -39,11 +39,13 @@ import { yellow } from "@mui/material/colors";
 import RemoveIcon from '@mui/icons-material/Remove';
 import { createTheme } from "@material-ui/core";
 import AddSharpIcon from "@material-ui/icons/AddSharp";
-import { InputAdornment, Toolbar } from "@mui/material";
+import { Chip, InputAdornment, Toolbar } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import FolderIcon from '@mui/icons-material/Folder';
 import Load from "../load";
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+import DoneIcon from '@mui/icons-material/Done';
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -494,6 +496,10 @@ function CadTurma() {
               atualizaLista();
 
               setShowCadastrar(false)
+
+              setInterval(function () {
+                window.location.reload();
+              }, 1500);
               // exibindo a msg de aviso de cadastro
               msgCadastro();
 
@@ -1132,8 +1138,8 @@ function CadTurma() {
 
 
                     }) => (
-                      <StyledTableRow>
-                        <StyledTableCell align="center">{codigo}</StyledTableCell>
+                      <StyledTableRow theme={tema}>
+                        <StyledTableCell align="center"><Chip label={codigo} style={{backgroundColor: "#171119", color: "white" }}/></StyledTableCell>
                         <StyledTableCell align="center">{curso.nome}</StyledTableCell>
                         <StyledTableCell align="center">{instrutor.nome}</StyledTableCell>
 
@@ -1150,7 +1156,41 @@ function CadTurma() {
                         </StyledTableCell>
                         <StyledTableCell align="center"><div style={podeSerLancado === false ? { backgroundColor: "red", width: "2em", height: "2em", borderRadius: "3em", margin: "auto" } : { backgroundColor: "#2AFF00", width: "2em", height: "2em", borderRadius: "3em", margin: "auto" }}></div></StyledTableCell>
                         <StyledTableCell align="center">{periodoString}</StyledTableCell>
-                        <StyledTableCell align="center">{statusString}</StyledTableCell>
+                       {
+                        statusString === "Aberto"
+                        ?
+                        <StyledTableCell align="center"><Chip sx={{fontWeight: "bold", backgroundColor: "#05F140", color: "black"}} label={statusString} /></StyledTableCell>
+
+                       :
+
+                        statusString === "Fechada"
+
+                        ?
+
+                        <StyledTableCell align="center"><Chip label={statusString} color="error" /></StyledTableCell>
+
+                        :
+
+                        statusString === "Cancelada"
+
+                        ?
+
+                        <StyledTableCell align="center"><Chip label={statusString} color="warning" /></StyledTableCell>
+
+                        :
+
+                        statusString === "Concluida"
+
+                        ?
+
+                        <StyledTableCell align="center">
+                        <Chip color="success" deleteIcon={<DoneIcon />} label={statusString}/>
+                        </StyledTableCell>
+
+                        :
+
+                        <StyledTableCell align="center"><Chip label={statusString} color="primary" /></StyledTableCell>
+                       }
                         <StyledTableCell align="center">{ambiente.nome}</StyledTableCell>
                         <StyledTableCell align="center">{numMaxVagas}</StyledTableCell>
                         <StyledTableCell align="center">{numMinVagas}</StyledTableCell>
@@ -1916,7 +1956,7 @@ function CadTurma() {
 
                     </FormControl>
 
-                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", left: "15em" }}>
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 200, position: "absolute", left: "18em" }}>
                       <InputLabel id="demo-simple-select-standard-label">
                         Status:
                       </InputLabel>
@@ -1978,7 +2018,7 @@ function CadTurma() {
                       />
                     </div>
 
-                    <div className="horarioFinalCad" style={{ left: 270 }}>
+                    <div className="horarioFinalCad" style={{ left: 315 }}>
                       <TextField
                         sx={estiloData}
                         variant="standard"
