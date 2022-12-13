@@ -460,7 +460,7 @@ function ListaParametro() {
                                         <StyledTableCell>{parcelaCartao}</StyledTableCell>
                                         <StyledTableCell>{telefone}</StyledTableCell>
                                         <StyledTableCell>{endereco}</StyledTableCell>
-                                        <StyledTableCell><img src={logo}></img></StyledTableCell>
+                                        <StyledTableCell><img width="100" src={logo}></img></StyledTableCell>
 
                                         <StyledTableCell>
                                             <button className="botaoAlterarTurma" onClick={() => {
@@ -545,7 +545,7 @@ function ListaParametro() {
 
                                 </div>
 
-                                <div id="verImagem"></div>
+                                <div style={{}}  id="verImagem"></div>
 
                                 <input className="arquivoParametro" name="logo" accept="image/*" type="file" id="imagem" onChange={uploadImageProduto} variant="standard" />
 
@@ -589,9 +589,9 @@ function ListaParametro() {
 
                                 </div>
 
-                                <div id="verImagem"><img src={logo}></img></div>
+                                <div id="verImagem"><img width={120} src={logo}></img></div>
 
-                                <input className="arquivoParametro" name="logo" id="imagem" accept="image/*" type="file" onChange={uploadImageProduto} variant="standard" />
+                                <input className="arquivoParametro"  name="logo" id="imagem" accept="image/*" type="file" onChange={uploadImageProduto} variant="standard" />
 
                                 <div class="parteBotaoArea">
                                     <Button variant="contained" color="success" type="submit" >Alterar</Button>

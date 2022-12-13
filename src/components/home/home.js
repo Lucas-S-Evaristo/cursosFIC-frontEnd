@@ -158,9 +158,11 @@ function HomeG() {
   }
 
 
-  const gerarCsv = async () => {
+  const gerarXls = async () => {
 
     let result = await fetch("http://localhost:8080/api/folder/xls")
+
+    msgFeito()
 
     if (result) {
 
@@ -184,7 +186,7 @@ function HomeG() {
     } else {
 
       window.open("http://localhost:8080/api/folder/curso/" + id, '_blank');
-    
+
     }
 
 
@@ -197,6 +199,30 @@ function HomeG() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const msgFeito = () => {
+    toast.success(
+      "Arquivo Gerado com sucesso",
+      {
+        position: "top-center",
+
+        autoClose: 3000,
+
+        hideProgressBar: false,
+
+        closeOnClick: true,
+
+        pauseOnHover: true,
+
+        theme: "dark",
+
+        // faz com que seja possivel arrastar
+
+        draggable: true,
+
+        progress: undefined,
+      }
+    );
+  };
 
 
   return (
@@ -276,7 +302,7 @@ function HomeG() {
           <section>
             <button
               className="botaoCsv"
-              onClick={gerarCsv}
+              onClick={gerarXls}
               variant="contained"
             >
               Gerar Excel
