@@ -191,7 +191,6 @@ function ListaArea() {
     let area = {
       nome: data.nome
     }
-    console.warn(data)
 
     let result = await fetch(`http://localhost:8080/api/area`, {
       method: 'post',
@@ -231,7 +230,7 @@ function ListaArea() {
       nome: data.nome
 
     }
-    console.warn(obgj)
+
     let result = await fetch(`http://localhost:8080/api/area/${idArea}`, {
       method: 'PUT',
       body: JSON.stringify(obgj),
@@ -314,7 +313,6 @@ function ListaArea() {
   const buscarArea = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
     let key = event.target.value;
-    console.log(key);
 
     // verifica se existe 'valor'
     if (key) {
@@ -333,7 +331,6 @@ function ListaArea() {
       });
       // tranformando a promessa em json
       result = await result.json();
-      console.log(result);
 
       // verifica se existe algum resultado
       if (result) {

@@ -177,10 +177,6 @@ function ListaParametro() {
 
         }
 
-        console.log("imagem: ", imagem)
-
-        console.log("parametro: ", parametro)
-
         let result = await fetch(`http://localhost:8080/api/parametro`, {
             method: 'post',
             body: JSON.stringify(parametro),
@@ -220,8 +216,6 @@ function ListaParametro() {
             logo: imagem
 
         }
-
-        console.log(imagem)
 
         let result = await fetch(`http://localhost:8080/api/parametro/${idParametro}`, {
             method: 'PUT',
@@ -304,8 +298,7 @@ function ListaParametro() {
     const buscarParametro = async (event) => {
         // valor que esta sendo digitado no input de pesquisa
         let key = event.target.value;
-        console.log(key);
-
+      
         // verifica se existe 'valor'
         if (key) {
             // fazendo uma requisição na api de buscar e passando a key
@@ -314,7 +307,6 @@ function ListaParametro() {
             );
             // tranformando a promessa em json
             result = await result.json();
-            console.log(result);
 
             // verifica se existe algum resultado
             if (result) {
@@ -330,8 +322,7 @@ function ListaParametro() {
 
     let base64StringProduto;
     const uploadImageProduto = async (e) => {
-        console.log(e.target.files);
-
+       
         const file = e.target.files[0];
         const teste = await base64Produto(file);
         base64StringProduto = teste;
@@ -341,13 +332,10 @@ function ListaParametro() {
         if (receberArquivo.length > 0) {
             var carregarImagem = receberArquivo[0];
 
-            //console.log(carregarImagem);
             var lerArquivo = new FileReader();
 
             lerArquivo.onload = function (arquivoCarregado) {
                 var imagemBase64 = arquivoCarregado.target.result;
-
-                console.log(imagemBase64);
 
                 var novaImagem = document.createElement("img");
 
@@ -360,7 +348,7 @@ function ListaParametro() {
         }
 
         setImagem(base64StringProduto);
-        {console.log(imagem)}
+ 
     };
 
     const base64Produto = (file) => {
@@ -466,7 +454,6 @@ function ListaParametro() {
                                             <button className="botaoAlterarTurma" onClick={() => {
                                                 selecionarParametro(id, pontoEquilibrio, parcelaBoleto, parcelaCartao, telefone, endereco, logo)
 
-                                                console.log(logo)
                                                 abrirModalAlterar()
                                             }}
                                             >

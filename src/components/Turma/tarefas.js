@@ -134,7 +134,6 @@ function Tarefas() {
             .then(resp => resp.json())
             .then(retorno_convertido => setTurma(retorno_convertido)) //lista de turmas
 
-        console.log(turmas)
     }, [])
 
     useEffect(() => {
@@ -159,7 +158,7 @@ function Tarefas() {
         // verifica se existe 'valor'
         if (key) {
             // fazendo uma requisição na api de busca e passando a key
-            console.log("oiiiiiiiiiiiiii", key);
+           
             let result = await fetch(
                 `http://localhost:8080/api/turma/buscarDataTarefa/`,
                 {
@@ -196,10 +195,6 @@ function Tarefas() {
     const [page, setPage] = React.useState(0);
 
     const handleChangePage = (event, newPage) => {
-
-        console.log("EVENTO" + event);
-
-        console.log("PAGINA" + newPage);
 
         setPage(newPage);
 

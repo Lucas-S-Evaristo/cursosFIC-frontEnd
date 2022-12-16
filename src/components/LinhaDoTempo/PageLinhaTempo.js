@@ -46,6 +46,19 @@ function LinhaTempo() {
     setTurma(result);
   };
 
+  const removeAction = async (id) => {
+    let result = await fetch("http://localhost:8080/api/linhaDoTempo/" + id, {
+        method: "DELETE"
+    })
+
+    if (result) {
+
+      getTurma()
+
+    }
+}
+
+
   const addAction = async (id) => {
     // requisição ao back-end
     let resultado = await fetch("http://localhost:8080/api/linhaDoTempo/" + id, {
@@ -68,7 +81,7 @@ function LinhaTempo() {
   // REQUISIÇÃO GET PARA PUXAR TODAS AS TURMAS
   useEffect(() => {
     let id = localStorage.getItem("idLT")
-    console.log(id)
+
     fetch(`http://localhost:8080/api/turma/${id}`)
       .then((resp) => resp.json())
       .then((retorno_convertido) => setTurma(retorno_convertido)); //lista de turmas
@@ -84,14 +97,14 @@ function LinhaTempo() {
       <h1 style={{textAlign:"center",fontFamily:"fantasy",fontWeight:"bold"}}>LINHA DO TEMPO</h1>
         <div className="tabelaContainer">
           <div className="position">
-            {console.log(turmas)}
+   
             {turmas.map((obj) => (
               <div class="wrapper">
                 {
                 obj.status === true ? <div style={{backgroundColor: "rgb(0, 173, 0)"}} class="center-line"> {/* linha */}
                   <a class="scroll-icon">
                   {
-                    obj.status === true ? <button className="botaoCheckok"> <CheckCircleOutlineOutlinedIcon /></button> : <button className="botaoCheck" onClick={() => addAction(obj.id)}> <CheckCircleOutlineOutlinedIcon /></button>
+                    obj.status === true ? <button className="botaoCheckok" onClick={() => removeAction(obj.id)}> <CheckCircleOutlineOutlinedIcon /></button> : <button className="botaoCheck" onClick={() => addAction(obj.id)}> <CheckCircleOutlineOutlinedIcon /></button>
                   }
                   </a>
                 </div>
@@ -99,7 +112,7 @@ function LinhaTempo() {
                 <div class="center-line"> {/* linha */}
                   <a class="scroll-icon">
                   {
-                    obj.status === true ? <button className="botaoCheckok"> <CheckCircleOutlineOutlinedIcon /></button> : <button className="botaoCheck" onClick={() => addAction(obj.id)}> <CheckCircleOutlineOutlinedIcon /></button>
+                    obj.status === true ? <button className="botaoCheckok" onClick={() => removeAction(obj.id)}> <CheckCircleOutlineOutlinedIcon /></button> : <button className="botaoCheck" onClick={() => addAction(obj.id)}> <CheckCircleOutlineOutlinedIcon /></button>
                   }
                   </a>
                 </div>
@@ -112,7 +125,6 @@ function LinhaTempo() {
                     <p>
                       {moment(obj.dataPrevista).format('DD/MM/YYYY')}
                     </p>
-                    {console.log(obj.status)}
 
                     {
                       obj.status === true ?  <>

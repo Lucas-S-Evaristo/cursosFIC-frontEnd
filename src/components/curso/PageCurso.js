@@ -155,9 +155,6 @@ const ListaCurso = () => {
 
   const [removeLoad, setRemoveLoad] = useState(false)
 
-  console.log("tipoAtendOrdinal ", tipoAtendOrdinal)
-  console.log("nivelOrdinal ", nivelOrdinal)
-
   const [idCurso, setIdCurso] = useState()
 
   const [modalAlterar, setShow] = useState(false);

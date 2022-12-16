@@ -217,10 +217,7 @@ export default function LogInstrutor() {
                     <Button type="button" onClick={() => {
 
                         ativarCad()
-                        console.log("clique 1")
-
-
-
+            
                     }}>Cadastrados</Button>
 
                     <Button type="button" onClick={() => {

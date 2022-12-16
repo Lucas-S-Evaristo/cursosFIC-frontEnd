@@ -218,9 +218,6 @@ export default function LogUsuario() {
                     <Button type="button" onClick={() => {
 
                         ativarCad()
-                        console.log("clique 1")
-
-
 
                     }}>Cadastrados</Button>
 

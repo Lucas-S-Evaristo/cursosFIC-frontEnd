@@ -218,9 +218,6 @@ export default function LogCurso() {
                     <Button type="button" onClick={() => {
 
                         ativarCad()
-                        console.log("clique 1")
-
-
 
                     }}>Cadastrados</Button>
 

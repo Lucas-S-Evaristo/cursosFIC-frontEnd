@@ -216,9 +216,6 @@ export default function LogTurma() {
                     <Button type="button" onClick={() => {
 
                         ativarCad()
-                        console.log("clique 1")
-
-
 
                     }}>Cadastrados</Button>
 

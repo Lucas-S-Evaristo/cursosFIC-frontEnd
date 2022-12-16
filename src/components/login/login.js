@@ -221,7 +221,6 @@ function Login() {
       },
     });
 
-    console.log("oi result " + result);
     /* verificar se a requisição Retornou um erro 401*/
     if (result.status === 401) {
       msgErroLogin()
@@ -288,11 +287,6 @@ function Login() {
     if (data.senha === data.senha2) {
       if (data.senha.length >= 4) {
 
-
-        console.log(usuario2)
-
-        console.log(data);
-
         let obj = {
 
           id: usuario2.id,
@@ -329,9 +323,6 @@ function Login() {
           setInterval(function () { window.location.reload(); }, 1500);
 
           msgSucessoSenha()
-
-          console.log(result)
-
         }
 
       } else {
@@ -507,8 +498,6 @@ function Login() {
       backgroundColor: theme.palette.common.black,
     },
   }));
-
-  console.log("aaaaaaaaaaaaa: ", usuario.length)
 
   return (
 

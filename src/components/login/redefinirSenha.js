@@ -119,7 +119,7 @@ export const verificarEmail = async (event) => {
   const formData = new FormData(event.target);
   /*formata em um objeto em  json */
   const data = Object.fromEntries(formData);
-  console.log(data);
+
   let result = await fetch(`http://localhost:8080/api/usuario/verificarParametro`, {
     method: "post",
     body: JSON.stringify(data),
@@ -150,7 +150,7 @@ export const redefinirSenha = async (event) => {
   const formData = new FormData(event.target);
   /*formata em um objeto em  json */
   const data = Object.fromEntries(formData);
-  console.log(data);
+
   let result = await fetch(`http://localhost:8080/api/usuario/redefinirSenha`, {
     method: "post",
     body: JSON.stringify(data),

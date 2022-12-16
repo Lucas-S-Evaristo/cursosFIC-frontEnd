@@ -58,8 +58,6 @@ const msgWarning = () => {
   function gerarFolderCurso() {
     let id = document.getElementById("selectFolderC").value;
 
-    console.log(id)
-
     if(id === "selecione"){
        
        msgWarning();

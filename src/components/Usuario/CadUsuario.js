@@ -107,7 +107,7 @@ function PageUsuario() {
 
   // metodo que captura informações do input
   const capturarDados = (e) => {
-    console.log(e.target.value);
+   
     setObjUsuario({ ...objUsuario, [e.target.name]: e.target.value });
   };
 
@@ -286,8 +286,7 @@ function PageUsuario() {
    const buscaUsuario = async (event) => {
     // valor que esta sendo digitado no input de pesquisa
     let key = event.target.value;
-    console.log(key);
-
+   
     // verifica se existe 'valor'
     if (key) {
       // fazendo uma requisição na api de buscar e passando a key
@@ -304,8 +303,7 @@ function PageUsuario() {
       });
       // tranformando a promessa em json
       result = await result.json();
-      console.log(result);
-
+    
       // verifica se existe algum resultado
       if (result) {
         // setando os usuarios que a api retornou de sua resposta de busca
@@ -705,7 +703,7 @@ function PageUsuario() {
                     <button
                       className="botaoAlterarTurma"
                       onClick={() => {
-                        console.log(tipoUsuarioOrdinal)
+                       
                         selecionarUsuario(id, nome, nif, email, tipoUsuarioOrdinal);
                         setModalAlt(true);
                       }}

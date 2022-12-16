@@ -230,9 +230,6 @@ export default function LogArea() {
                     <Button type="button" onClick={() => {
 
                         ativarCad()
-                        console.log("clique 1")
-
-
 
                     }}>Cadastrados</Button>
 

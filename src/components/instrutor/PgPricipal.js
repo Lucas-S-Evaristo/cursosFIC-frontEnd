@@ -304,8 +304,6 @@ function PgPricipal(props) {
 
     if (key) {
 
-      console.log("keyyy", key)
-
       let jsonNome = {
 
         nome: key
@@ -332,8 +330,6 @@ function PgPricipal(props) {
       /* pega o json da requição  */
 
       result = await result.json();
-
-      console.log("result: ", result)
 
       /* verificar se  requição foi feita com sucesso */
 
