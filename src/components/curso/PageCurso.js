@@ -32,6 +32,7 @@ import { Chip, InputAdornment } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import FolderIcon from '@mui/icons-material/Folder';
 import Load from "../load";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 
 const tema = createTheme({
   palette: {
@@ -207,7 +208,7 @@ const ListaCurso = () => {
         .then((retorno_convertido) => setCursos(retorno_convertido)); //lista de cursos
 
       setRemoveLoad(true)
-    }, 2000)
+    }, 500  )
   }, []);
 
   useEffect(() => {
@@ -726,8 +727,10 @@ const ListaCurso = () => {
                         </TableCell>
 
                         <TableCell align="left">{area.nome}</TableCell>
-                        <TableCell align="left" component="th" scope="row" s>
-                          R$ {valor}
+                        <TableCell align="left" component="th" scope="row">
+                        <Chip label= {valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                         style={{backgroundColor: "#008000", color: "white" }}/>
+                         
                         </TableCell>
                         <Tooltip
                           sx={{ paddingTop: "10px" }}
@@ -767,7 +770,7 @@ const ListaCurso = () => {
                             size="small"
                             aria-label="edit"
                           >
-                            <img src={require("../curso/updateIcon.png")} />
+                            <ModeEditOutlinedIcon/>
                           </Fab>
                         </Tooltip>
 
@@ -1135,7 +1138,6 @@ const ListaCurso = () => {
                     variant="outlined"
                     className="inputAlterarCurso"
                   />
-
                   <TextField
                     autoFocus
                     required

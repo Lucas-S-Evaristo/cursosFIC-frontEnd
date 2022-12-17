@@ -794,7 +794,7 @@ function CadTurma() {
     // verifica se existe 'valor'
     if (key) {
       // fazendo uma requisição na api de busca e passando a key
-    
+      console.log("oiiiiiiiiiiiiii", key);
       let result = await fetch(
         `http://localhost:8080/api/turma/buscarData/`,
         {
