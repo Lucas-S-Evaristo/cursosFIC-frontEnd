@@ -47,7 +47,7 @@ function HomeG() {
     is3D: false,
   };
 
-  const msgWarning = () => {
+  const msgIdErrado = () => {
     toast.warning("Selecione um curso existente", {
       position: "top-center",
       autoClose: 7500,
@@ -61,10 +61,12 @@ function HomeG() {
     });
   };
 
-  const msgParcela = () => {
-    toast.error("Não existe um parametro cadastrado", {
+
+
+  const msgErro = () => {
+    toast.error("Não existe turma aberta!", {
       position: "top-center",
-      autoClose: 1500,
+      autoClose: 7500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -75,8 +77,8 @@ function HomeG() {
     });
   };
 
-  const msgErro = () => {
-    toast.error("Não existe turma aberta!", {
+  const msgParametro = () => {
+    toast.error("Não existe um parametro cadastrado!", {
       position: "top-center",
       autoClose: 7500,
       hideProgressBar: false,
@@ -146,9 +148,9 @@ function HomeG() {
 
       msgErro()
 
-    } else if (result.status === 400) {
+    } else if (result.status === 208) {
 
-      msgParcela();
+      msgParametro();
 
     } else {
 
@@ -175,19 +177,28 @@ function HomeG() {
   }
 
 
-  function gerarFolderCurso() {
+  const gerarFolderCurso = async () => {
+
     let id = document.getElementById("selectFolderC").value;
-    
+
+    let result = await fetch("http://localhost:8080/api/folder/curso/" + id)
+
+
     if (id === "selecione") {
 
-      msgWarning();
+      msgIdErrado();
+
+    }
+
+    else if (result.status === 208) {
+
+      msgParametro()
+
     } else {
 
       window.open("http://localhost:8080/api/folder/curso/" + id, '_blank');
 
     }
-
-
 
 
 

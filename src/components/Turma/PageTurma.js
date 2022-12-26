@@ -307,7 +307,7 @@ function CadTurma() {
     });
   };
 
-  const msgParcela = () => {
+  const msgParametro = () => {
     toast.error("Não existe um parametro cadastrado", {
       position: "top-center",
       autoClose: 1500,
@@ -954,9 +954,9 @@ function CadTurma() {
 
       msgErro()
 
-    } else if (result.status === 400) {
+    } else if (result.status === 208) {
 
-      msgParcela();
+      msgParametro();
 
     } else {
 
